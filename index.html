@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mis Exámenes</title>
+  <style>
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+    }
+
+    body{
+      font-family: Arial, Helvetica, sans-serif;
+      min-height:100vh;
+      background: linear-gradient(135deg, #e0f2fe, #f8fafc, #dbeafe);
+      color:#1e293b;
+    }
+
+    header{
+      text-align:center;
+      padding:50px 20px 30px;
+    }
+
+    header h1{
+      font-size: clamp(2rem, 5vw, 3.3rem);
+      color:#1e3a8a;
+      margin-bottom:12px;
+    }
+
+    header p{
+      max-width:700px;
+      margin:auto;
+      font-size:1.05rem;
+      line-height:1.6;
+      color:#334155;
+    }
+
+    .container{
+      width:min(1100px, 92%);
+      margin:0 auto 50px;
+    }
+
+    .top-box{
+      background: rgba(255,255,255,0.75);
+      backdrop-filter: blur(8px);
+      border:1px solid rgba(255,255,255,0.5);
+      border-radius:24px;
+      padding:28px;
+      box-shadow:0 10px 30px rgba(30,58,138,0.10);
+      margin-bottom:30px;
+      text-align:center;
+    }
+
+    .top-box h2{
+      color:#1d4ed8;
+      margin-bottom:10px;
+      font-size:1.5rem;
+    }
+
+    .top-box p{
+      color:#475569;
+      line-height:1.6;
+      max-width:760px;
+      margin:auto;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit, minmax(240px, 1fr));
+      gap:22px;
+    }
+
+    .card{
+      background: rgba(255,255,255,0.88);
+      border-radius:22px;
+      padding:24px;
+      box-shadow:0 10px 25px rgba(0,0,0,0.08);
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+      border:1px solid rgba(255,255,255,0.7);
+    }
+
+    .card:hover{
+      transform: translateY(-6px);
+      box-shadow:0 14px 32px rgba(30,64,175,0.14);
+    }
+
+    .card .icon{
+      font-size:2rem;
+      margin-bottom:12px;
+    }
+
+    .card h3{
+      color:#1e40af;
+      margin-bottom:10px;
+      font-size:1.3rem;
+    }
+
+    .card p{
+      color:#475569;
+      line-height:1.55;
+      margin-bottom:18px;
+      min-height:72px;
+    }
+
+    .card a{
+      display:inline-block;
+      text-decoration:none;
+      background:#2563eb;
+      color:white;
+      padding:11px 18px;
+      border-radius:12px;
+      font-weight:bold;
+      transition: background 0.2s ease, transform 0.2s ease;
+    }
+
+    .card a:hover{
+      background:#1d4ed8;
+      transform: scale(1.03);
+    }
+
+    footer{
+      text-align:center;
+      padding:20px;
+      color:#64748b;
+      font-size:0.95rem;
+    }
+
+    @media (max-width: 600px){
+      .card p{
+        min-height:auto;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Mis Exámenes</h1>
+    <p>
+      Página principal para organizar mis exámenes, prácticas y simuladores en un solo lugar.
+    </p>
+  </header>
+
+  <div class="container">
+
+    <div class="top-box">
+      <h2>Centro de práctica</h2>
+      <p>
+        Aquí podré acceder a mis exámenes digitales de cada materia y practicar de forma más ordenada, rápida e interactiva.
+      </p>
+    </div>
+
+    <div class="grid">
+
+      <div class="card">
+        <div class="icon">🧬</div>
+        <h3>Biología</h3>
+        <p>
+          Accede a tus exámenes, repasos y prácticas de biología.
+        </p>
+        <a href="biologia.html">Entrar</a>
+      </div>
+
+      <div class="card">
+        <div class="icon">⚗️</div>
+        <h3>Química</h3>
+        <p>
+          Reúne tus exámenes y actividades de química en un solo espacio.
+        </p>
+        <a href="quimica.html">Entrar</a>
+      </div>
+
+      <div class="card">
+        <div class="icon">📐</div>
+        <h3>Matemáticas</h3>
+        <p>
+          Practica ejercicios, evaluaciones y simuladores matemáticos.
+        </p>
+        <a href="matematicas.html">Entrar</a>
+      </div>
+
+      <div class="card">
+        <div class="icon">🧠</div>
+        <h3>Verbal</h3>
+        <p>
+          Organiza analogías, comprensión lectora y razonamiento verbal.
+        </p>
+        <a href="verbal.html">Entrar</a>
+      </div>
+
+    </div>
+  </div>
+
+  <footer>
+    Hecho para uso personal • Plataforma de estudio
+  </footer>
+
+</body>
+</html>
