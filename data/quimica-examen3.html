@@ -1,1 +1,496 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Química - Examen 3</title>
+  <style>
+    *{
+      box-sizing:border-box;
+      margin:0;
+      padding:0;
+    }
 
+    body{
+      font-family: Arial, Helvetica, sans-serif;
+      background: linear-gradient(135deg, #fff7ed, #fffbeb, #fef3c7);
+      color:#92400e;
+      min-height:100vh;
+      padding:30px 15px;
+    }
+
+    .container{
+      max-width:1000px;
+      margin:0 auto;
+      background:#ffffff;
+      border-radius:24px;
+      box-shadow:0 12px 35px rgba(0,0,0,0.08);
+      overflow:hidden;
+    }
+
+    .header{
+      background: linear-gradient(135deg, #d97706, #f59e0b);
+      color:white;
+      padding:30px 25px;
+      text-align:center;
+    }
+
+    .header h1{
+      font-size: clamp(1.9rem, 4vw, 2.8rem);
+      margin-bottom:10px;
+    }
+
+    .header p{
+      opacity:0.95;
+      line-height:1.5;
+      font-size:1rem;
+    }
+
+    .top-link{
+      display:inline-block;
+      margin-top:12px;
+      color:white;
+      text-decoration:none;
+      font-weight:bold;
+    }
+
+    .top-link:hover{
+      text-decoration:underline;
+    }
+
+    .content{
+      padding:25px;
+    }
+
+    .question{
+      background:#fffdf7;
+      border:1px solid #fde68a;
+      border-radius:18px;
+      padding:18px;
+      margin-bottom:18px;
+    }
+
+    .question h3{
+      font-size:1.05rem;
+      line-height:1.5;
+      margin-bottom:14px;
+      color:#92400e;
+    }
+
+    .option{
+      display:block;
+      margin:10px 0;
+      padding:10px 12px;
+      border-radius:12px;
+      cursor:pointer;
+      transition:0.2s ease;
+      border:1px solid transparent;
+      color:#1f2937;
+    }
+
+    .option:hover{
+      background:#fffbeb;
+      border-color:#fcd34d;
+    }
+
+    .option input{
+      margin-right:10px;
+      accent-color:#d97706;
+    }
+
+    .buttons{
+      display:flex;
+      flex-wrap:wrap;
+      gap:12px;
+      justify-content:center;
+      margin-top:25px;
+    }
+
+    button{
+      border:none;
+      border-radius:14px;
+      padding:13px 22px;
+      font-size:1rem;
+      font-weight:bold;
+      cursor:pointer;
+      transition:0.2s ease;
+    }
+
+    .btn-primary{
+      background:#d97706;
+      color:white;
+    }
+
+    .btn-primary:hover{
+      background:#b45309;
+    }
+
+    .btn-secondary{
+      background:#fef3c7;
+      color:#92400e;
+    }
+
+    .btn-secondary:hover{
+      background:#fde68a;
+    }
+
+    .result{
+      margin-top:25px;
+      padding:20px;
+      border-radius:18px;
+      background:#fffbeb;
+      border:1px solid #fde68a;
+      text-align:center;
+      display:none;
+    }
+
+    .result h2{
+      margin-bottom:10px;
+      color:#b45309;
+    }
+
+    .result p{
+      font-size:1.08rem;
+      line-height:1.6;
+      color:#92400e;
+    }
+
+    .review{
+      margin-top:18px;
+      text-align:left;
+      color:#1f2937;
+    }
+
+    .review-item{
+      background:#ffffff;
+      border:1px solid #fde68a;
+      border-radius:12px;
+      padding:12px;
+      margin-bottom:10px;
+    }
+
+    .correct{
+      color:#15803d;
+      font-weight:bold;
+    }
+
+    .incorrect{
+      color:#b91c1c;
+      font-weight:bold;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>Química - Examen 3</h1>
+      <p>Versión digital interactiva</p>
+      <a class="top-link" href="../quimica.html">← Volver a Química</a>
+    </div>
+
+    <div class="content">
+      <form id="quizForm">
+
+        <div class="question">
+          <h3>1. ¿Qué nombre reciben los elementos que se ubican en la zona sombreada de la tabla periódica?</h3>
+          <label class="option"><input type="radio" name="q1" value="a"> A. Metales</label>
+          <label class="option"><input type="radio" name="q1" value="b"> B. Alcalinotérreos</label>
+          <label class="option"><input type="radio" name="q1" value="c"> C. Metaloides</label>
+          <label class="option"><input type="radio" name="q1" value="d"> D. De transición</label>
+        </div>
+
+        <div class="question">
+          <h3>2. ¿Cuál es la configuración electrónica semidesarrollada del elemento K, si su número atómico es 19?</h3>
+          <label class="option"><input type="radio" name="q2" value="a"> A. 1s² 2s² 2p⁶ 3s² 3p⁶ 4s¹</label>
+          <label class="option"><input type="radio" name="q2" value="b"> B. 1s² 2s² 2p⁶ 3s² 3p⁶ 4s²</label>
+          <label class="option"><input type="radio" name="q2" value="c"> C. 1s² 2s² 2p⁶ 3s² 3p⁵ 4s²</label>
+          <label class="option"><input type="radio" name="q2" value="d"> D. 1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹</label>
+        </div>
+
+        <div class="question">
+          <h3>3. Del electrón se afirma lo siguiente:</h3>
+          <label class="option"><input type="radio" name="q3" value="a"> A. Es una partícula subatómica neutra con masa de 1 uma en el núcleo</label>
+          <label class="option"><input type="radio" name="q3" value="b"> B. Es una partícula subatómica con carga negativa y masa diminuta</label>
+          <label class="option"><input type="radio" name="q3" value="c"> C. Es la partícula más pequeña de un elemento</label>
+          <label class="option"><input type="radio" name="q3" value="d"> D. Es una partícula subatómica positiva en el núcleo</label>
+        </div>
+
+        <div class="question">
+          <h3>4. ¿Cuántas moléculas de H₂O hay en 0.5 moles de H₂O?</h3>
+          <label class="option"><input type="radio" name="q4" value="a"> A. 0.5</label>
+          <label class="option"><input type="radio" name="q4" value="b"> B. 1.21 × 10²⁴</label>
+          <label class="option"><input type="radio" name="q4" value="c"> C. 3.011 × 10²³</label>
+          <label class="option"><input type="radio" name="q4" value="d"> D. 9.05</label>
+        </div>
+
+        <div class="question">
+          <h3>5. Ordene los elementos Mg, Na, P, Si, Cl y S en orden creciente de electronegatividad:</h3>
+          <label class="option"><input type="radio" name="q5" value="a"> A. Na &lt; Mg &lt; Si &lt; P &lt; S &lt; Cl</label>
+          <label class="option"><input type="radio" name="q5" value="b"> B. Na &lt; Mg &lt; P &lt; Si &lt; Cl &lt; S</label>
+          <label class="option"><input type="radio" name="q5" value="c"> C. Na &lt; Si &lt; Mg &lt; Cl &lt; P &lt; S</label>
+          <label class="option"><input type="radio" name="q5" value="d"> D. Cl &lt; S &lt; P &lt; Si &lt; Mg &lt; Na</label>
+        </div>
+
+        <div class="question">
+          <h3>6. ¿Cuántos gramos de CO₂ hay en 0.05 moles de CO₂?</h3>
+          <label class="option"><input type="radio" name="q6" value="a"> A. 2.20 g</label>
+          <label class="option"><input type="radio" name="q6" value="b"> B. 1.4 g</label>
+          <label class="option"><input type="radio" name="q6" value="c"> C. 1.40 g</label>
+          <label class="option"><input type="radio" name="q6" value="d"> D. 0.0013 g</label>
+        </div>
+
+        <div class="question">
+          <h3>7. ¿Qué número de oxidación utiliza el S en el compuesto Cu₂SO₃?</h3>
+          <label class="option"><input type="radio" name="q7" value="a"> A. -4</label>
+          <label class="option"><input type="radio" name="q7" value="b"> B. +4</label>
+          <label class="option"><input type="radio" name="q7" value="c"> C. +6</label>
+          <label class="option"><input type="radio" name="q7" value="d"> D. -3</label>
+        </div>
+
+        <div class="question">
+          <h3>8. ¿Cuál es el elemento más electronegativo de la tabla periódica?</h3>
+          <label class="option"><input type="radio" name="q8" value="a"> A. Oxígeno</label>
+          <label class="option"><input type="radio" name="q8" value="b"> B. Cloro</label>
+          <label class="option"><input type="radio" name="q8" value="c"> C. Hidrógeno</label>
+          <label class="option"><input type="radio" name="q8" value="d"> D. Flúor</label>
+        </div>
+
+        <div class="question">
+          <h3>9. ¿Qué tipo de enlace se forma en CH₄?</h3>
+          <label class="option"><input type="radio" name="q9" value="a"> A. Polar</label>
+          <label class="option"><input type="radio" name="q9" value="b"> B. Apolar</label>
+          <label class="option"><input type="radio" name="q9" value="c"> C. Iónico</label>
+          <label class="option"><input type="radio" name="q9" value="d"> D. Metálico</label>
+        </div>
+
+        <div class="question">
+          <h3>10. El término orgánico describe moléculas formadas principalmente por:</h3>
+          <label class="option"><input type="radio" name="q10" value="a"> A. Átomos de carbono e hidrógeno</label>
+          <label class="option"><input type="radio" name="q10" value="b"> B. Átomos de hierro e hidrógeno</label>
+          <label class="option"><input type="radio" name="q10" value="c"> C. Átomos de hierro y nitrógeno</label>
+          <label class="option"><input type="radio" name="q10" value="d"> D. Átomos de sodio y cloro</label>
+        </div>
+
+        <div class="question">
+          <h3>11. ¿Cuál es el nombre del compuesto Cl₂O₇ en nomenclatura clásica?</h3>
+          <label class="option"><input type="radio" name="q11" value="a"> A. Heptaóxido de dicloro</label>
+          <label class="option"><input type="radio" name="q11" value="b"> B. Anhídrido de cloro VII</label>
+          <label class="option"><input type="radio" name="q11" value="c"> C. Óxido clórico</label>
+          <label class="option"><input type="radio" name="q11" value="d"> D. Anhídrido perclórico</label>
+        </div>
+
+        <div class="question">
+          <h3>12. ¿Cuál es el nombre del compuesto H₂Te (ac)?</h3>
+          <label class="option"><input type="radio" name="q12" value="a"> A. Hidruro de telurio</label>
+          <label class="option"><input type="radio" name="q12" value="b"> B. Teluro de hidrógeno</label>
+          <label class="option"><input type="radio" name="q12" value="c"> C. Ácido telurhídrico</label>
+          <label class="option"><input type="radio" name="q12" value="d"> D. Monotelurio de dihidrógeno</label>
+        </div>
+
+        <div class="question">
+          <h3>13. Si un elemento tiene la configuración 1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d⁴, corresponde a:</h3>
+          <label class="option"><input type="radio" name="q13" value="a"> A. Manganeso (Mn)</label>
+          <label class="option"><input type="radio" name="q13" value="b"> B. Cromo (Cr)</label>
+          <label class="option"><input type="radio" name="q13" value="c"> C. Hierro (Fe)</label>
+          <label class="option"><input type="radio" name="q13" value="d"> D. Vanadio (V)</label>
+        </div>
+
+        <div class="question">
+          <h3>14. La fórmula general de los carbohidratos es:</h3>
+          <label class="option"><input type="radio" name="q14" value="a"> A. (CH₂O)n</label>
+          <label class="option"><input type="radio" name="q14" value="b"> B. (CH₂O₂)n</label>
+          <label class="option"><input type="radio" name="q14" value="c"> C. (2CH₂O)n</label>
+          <label class="option"><input type="radio" name="q14" value="d"> D. (CH₃O)n</label>
+        </div>
+
+        <div class="question">
+          <h3>15. Las moléculas que tienen la misma fórmula química pero estructura diferente se llaman:</h3>
+          <label class="option"><input type="radio" name="q15" value="a"> A. Sacarosa</label>
+          <label class="option"><input type="radio" name="q15" value="b"> B. Enlaces glucosídicos</label>
+          <label class="option"><input type="radio" name="q15" value="c"> C. Isómeros</label>
+          <label class="option"><input type="radio" name="q15" value="d"> D. Fructuosa</label>
+        </div>
+
+        <div class="question">
+          <h3>16. La característica del enlace beta es:</h3>
+          <label class="option"><input type="radio" name="q16" value="a"> A. Recto y fácil de romper</label>
+          <label class="option"><input type="radio" name="q16" value="b"> B. Cruzado y difícil de romper</label>
+          <label class="option"><input type="radio" name="q16" value="c"> C. Recto y difícil de romper</label>
+          <label class="option"><input type="radio" name="q16" value="d"> D. Cruzado y fácil de romper</label>
+        </div>
+
+        <div class="question">
+          <h3>17. Los enlaces que se crean por la unión de dos o más monosacáridos se llaman:</h3>
+          <label class="option"><input type="radio" name="q17" value="a"> A. Glucosídicos</label>
+          <label class="option"><input type="radio" name="q17" value="b"> B. Peptídicos</label>
+          <label class="option"><input type="radio" name="q17" value="c"> C. Gamma</label>
+          <label class="option"><input type="radio" name="q17" value="d"> D. Éter</label>
+        </div>
+
+        <div class="question">
+          <h3>18. ¿Cuál es el polisacárido de reserva energética en células animales?</h3>
+          <label class="option"><input type="radio" name="q18" value="a"> A. Almidón</label>
+          <label class="option"><input type="radio" name="q18" value="b"> B. Celulosa</label>
+          <label class="option"><input type="radio" name="q18" value="c"> C. Quitina</label>
+          <label class="option"><input type="radio" name="q18" value="d"> D. Glucógeno</label>
+        </div>
+
+        <div class="question">
+          <h3>19. En la estructura secundaria de proteína se encuentran:</h3>
+          <label class="option"><input type="radio" name="q19" value="a"> A. Puentes disulfuro</label>
+          <label class="option"><input type="radio" name="q19" value="b"> B. Puentes eléctricos</label>
+          <label class="option"><input type="radio" name="q19" value="c"> C. Puentes de hidrógeno</label>
+          <label class="option"><input type="radio" name="q19" value="d"> D. Puentes metálicos</label>
+        </div>
+
+        <div class="question">
+          <h3>20. El proceso de volver a la forma más básica de una proteína se llama:</h3>
+          <label class="option"><input type="radio" name="q20" value="a"> A. Estructura primaria</label>
+          <label class="option"><input type="radio" name="q20" value="b"> B. Estructura secundaria</label>
+          <label class="option"><input type="radio" name="q20" value="c"> C. Desnaturalización</label>
+          <label class="option"><input type="radio" name="q20" value="d"> D. Glucosilación</label>
+        </div>
+
+        <div class="question">
+          <h3>21. El grupo de proteínas que incrementan la velocidad de reacciones químicas son:</h3>
+          <label class="option"><input type="radio" name="q21" value="a"> A. Reguladoras</label>
+          <label class="option"><input type="radio" name="q21" value="b"> B. Motoras</label>
+          <label class="option"><input type="radio" name="q21" value="c"> C. Enzimas</label>
+          <label class="option"><input type="radio" name="q21" value="d"> D. Transportadoras</label>
+        </div>
+
+        <div class="question">
+          <h3>22. La materia biológica se organiza de la siguiente manera:</h3>
+          <label class="option"><input type="radio" name="q22" value="a"> A. Átomos, moléculas, células, tejidos, órganos, sistemas</label>
+          <label class="option"><input type="radio" name="q22" value="b"> B. Moléculas, átomos, órganos, tejidos, células, sistemas</label>
+          <label class="option"><input type="radio" name="q22" value="c"> C. Sistemas, órganos, tejidos, células, moléculas, átomos</label>
+          <label class="option"><input type="radio" name="q22" value="d"> D. Átomos, tejidos, moléculas, órganos, células, sistemas</label>
+        </div>
+
+        <div class="buttons">
+          <button type="button" class="btn-primary" onclick="calificarExamen()">Calificar examen</button>
+          <button type="reset" class="btn-secondary" onclick="reiniciarExamen()">Reiniciar</button>
+        </div>
+
+        <div class="result" id="resultado">
+          <h2>Resultado</h2>
+          <p id="puntajeTexto"></p>
+          <div class="review" id="revision"></div>
+        </div>
+
+      </form>
+    </div>
+  </div>
+
+  <script>
+    const respuestasCorrectas = {
+      q1:"c",
+      q2:"a",
+      q3:"b",
+      q4:"c",
+      q5:"a",
+      q6:"c",
+      q7:"b",
+      q8:"d",
+      q9:"b",
+      q10:"a",
+      q11:"d",
+      q12:"c",
+      q13:"b",
+      q14:"a",
+      q15:"c",
+      q16:"b",
+      q17:"a",
+      q18:"d",
+      q19:"c",
+      q20:"c",
+      q21:"c",
+      q22:"a"
+    };
+
+    const textosCorrectos = {
+      q1:"C. Metaloides",
+      q2:"A. 1s² 2s² 2p⁶ 3s² 3p⁶ 4s¹",
+      q3:"B. Es una partícula subatómica con carga negativa y masa diminuta",
+      q4:"C. 3.011 × 10²³",
+      q5:"A. Na < Mg < Si < P < S < Cl",
+      q6:"C. 1.40 g",
+      q7:"B. +4",
+      q8:"D. Flúor",
+      q9:"B. Apolar",
+      q10:"A. Átomos de carbono e hidrógeno",
+      q11:"D. Anhídrido perclórico",
+      q12:"C. Ácido telurhídrico",
+      q13:"B. Cromo (Cr)",
+      q14:"A. (CH₂O)n",
+      q15:"C. Isómeros",
+      q16:"B. Cruzado y difícil de romper",
+      q17:"A. Glucosídicos",
+      q18:"D. Glucógeno",
+      q19:"C. Puentes de hidrógeno",
+      q20:"C. Desnaturalización",
+      q21:"C. Enzimas",
+      q22:"A. Átomos, moléculas, células, tejidos, órganos, sistemas"
+    };
+
+    function calificarExamen() {
+      let total = Object.keys(respuestasCorrectas).length;
+      let correctas = 0;
+      let respondidas = 0;
+      let revisionHTML = "";
+
+      for (let pregunta in respuestasCorrectas) {
+        const seleccionada = document.querySelector(`input[name="${pregunta}"]:checked`);
+
+        if (seleccionada) {
+          respondidas++;
+          if (seleccionada.value === respuestasCorrectas[pregunta]) {
+            correctas++;
+            revisionHTML += `
+              <div class="review-item">
+                <span class="correct">${pregunta.toUpperCase()}: Correcta</span><br>
+                Respuesta: ${textosCorrectos[pregunta]}
+              </div>
+            `;
+          } else {
+            const textoMarcado = seleccionada.parentElement.textContent.trim();
+            revisionHTML += `
+              <div class="review-item">
+                <span class="incorrect">${pregunta.toUpperCase()}: Incorrecta</span><br>
+                Tu respuesta: ${textoMarcado}<br>
+                Correcta: ${textosCorrectos[pregunta]}
+              </div>
+            `;
+          }
+        } else {
+          revisionHTML += `
+            <div class="review-item">
+              <span class="incorrect">${pregunta.toUpperCase()}: Sin responder</span><br>
+              Correcta: ${textosCorrectos[pregunta]}
+            </div>
+          `;
+        }
+      }
+
+      const porcentaje = ((correctas / total) * 100).toFixed(1);
+
+      document.getElementById("puntajeTexto").innerHTML = `
+        Respondiste <strong>${respondidas}</strong> de <strong>${total}</strong> preguntas.<br>
+        Obtuviste <strong>${correctas}</strong> correctas de <strong>${total}</strong>.<br>
+        Tu nota fue: <strong>${porcentaje}%</strong>
+      `;
+
+      document.getElementById("revision").innerHTML = revisionHTML;
+      document.getElementById("resultado").style.display = "block";
+      document.getElementById("resultado").scrollIntoView({ behavior: "smooth" });
+    }
+
+    function reiniciarExamen() {
+      document.getElementById("resultado").style.display = "none";
+      document.getElementById("revision").innerHTML = "";
+      document.getElementById("puntajeTexto").innerHTML = "";
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  </script>
+</body>
+</html>
