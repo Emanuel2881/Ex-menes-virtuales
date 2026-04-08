@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Biología - Examen 1</title>
+  <title>Biología - Examen 2</title>
   <style>
     *{
       box-sizing:border-box;
@@ -13,14 +13,14 @@
 
     body{
       font-family: Arial, Helvetica, sans-serif;
-      background: linear-gradient(135deg, #ecfdf5, #f0fdf4, #dcfce7);
-      color:#14532d;
+      background: linear-gradient(135deg, #eff6ff, #f8fafc, #dbeafe);
+      color:#1e3a8a;
       min-height:100vh;
       padding:30px 15px;
     }
 
     .container{
-      max-width:950px;
+      max-width:1000px;
       margin:0 auto;
       background:#ffffff;
       border-radius:24px;
@@ -29,14 +29,14 @@
     }
 
     .header{
-      background: linear-gradient(135deg, #166534, #22c55e);
+      background: linear-gradient(135deg, #1d4ed8, #2563eb);
       color:white;
       padding:30px 25px;
       text-align:center;
     }
 
     .header h1{
-      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      font-size: clamp(1.9rem, 4vw, 2.8rem);
       margin-bottom:10px;
     }
 
@@ -46,23 +46,35 @@
       font-size:1rem;
     }
 
+    .top-link{
+      display:inline-block;
+      margin-top:12px;
+      color:white;
+      text-decoration:none;
+      font-weight:bold;
+    }
+
+    .top-link:hover{
+      text-decoration:underline;
+    }
+
     .content{
       padding:25px;
     }
 
     .question{
-      background:#f7fff9;
-      border:1px solid #d1fae5;
+      background:#f8fbff;
+      border:1px solid #dbeafe;
       border-radius:18px;
       padding:18px;
       margin-bottom:18px;
     }
 
     .question h3{
-      font-size:1.08rem;
+      font-size:1.06rem;
       line-height:1.5;
       margin-bottom:14px;
-      color:#14532d;
+      color:#1e3a8a;
     }
 
     .option{
@@ -73,16 +85,17 @@
       cursor:pointer;
       transition:0.2s ease;
       border:1px solid transparent;
+      color:#1e293b;
     }
 
     .option:hover{
-      background:#ecfdf5;
-      border-color:#bbf7d0;
+      background:#eff6ff;
+      border-color:#bfdbfe;
     }
 
     .option input{
       margin-right:10px;
-      accent-color:#16a34a;
+      accent-color:#2563eb;
     }
 
     .buttons{
@@ -104,53 +117,53 @@
     }
 
     .btn-primary{
-      background:#16a34a;
+      background:#2563eb;
       color:white;
     }
 
     .btn-primary:hover{
-      background:#15803d;
+      background:#1d4ed8;
     }
 
     .btn-secondary{
-      background:#dcfce7;
-      color:#166534;
+      background:#dbeafe;
+      color:#1e3a8a;
     }
 
     .btn-secondary:hover{
-      background:#bbf7d0;
+      background:#bfdbfe;
     }
 
     .result{
       margin-top:25px;
       padding:20px;
       border-radius:18px;
-      background:#f0fdf4;
-      border:1px solid #bbf7d0;
+      background:#f0f9ff;
+      border:1px solid #bae6fd;
       text-align:center;
       display:none;
     }
 
     .result h2{
       margin-bottom:10px;
-      color:#166534;
+      color:#1d4ed8;
     }
 
     .result p{
       font-size:1.08rem;
       line-height:1.6;
-      color:#166534;
+      color:#1e3a8a;
     }
 
     .review{
       margin-top:18px;
       text-align:left;
-      color:#14532d;
+      color:#1e293b;
     }
 
     .review-item{
       background:#ffffff;
-      border:1px solid #dcfce7;
+      border:1px solid #dbeafe;
       border-radius:12px;
       padding:12px;
       margin-bottom:10px;
@@ -165,26 +178,13 @@
       color:#b91c1c;
       font-weight:bold;
     }
-
-    .top-link{
-      display:inline-block;
-      margin-top:12px;
-      color:white;
-      text-decoration:none;
-      font-weight:bold;
-      opacity:0.95;
-    }
-
-    .top-link:hover{
-      text-decoration:underline;
-    }
   </style>
 </head>
 <body>
   <div class="container">
     <div class="header">
-      <h1>Biología - Examen 1</h1>
-      <p>Versión digital interactiva basada en tu material de estudio.</p>
+      <h1>Biología - Examen 2</h1>
+      <p>Parcial digital interactivo</p>
       <a class="top-link" href="biologia.html">← Volver a Biología</a>
     </div>
 
@@ -192,163 +192,307 @@
       <form id="quizForm">
 
         <div class="question">
-          <h3>1. Son las biomoléculas entre las cuales se encuentran los ácidos grasos:</h3>
-          <label class="option"><input type="radio" name="q1" value="a"> A. Lípidos</label>
-          <label class="option"><input type="radio" name="q1" value="b"> B. Carbohidratos</label>
-          <label class="option"><input type="radio" name="q1" value="c"> C. Ácidos nucleicos</label>
-          <label class="option"><input type="radio" name="q1" value="d"> D. Proteínas</label>
+          <h3>1. Indicá la opción que represente el nivel subcelular en un individuo perteneciente al reino vegetal exclusivamente:</h3>
+          <label class="option"><input type="radio" name="q1" value="a"> A. Complejo de Golgi y pared celular de celulosa</label>
+          <label class="option"><input type="radio" name="q1" value="b"> B. Cloroplastos y vacuola central</label>
+          <label class="option"><input type="radio" name="q1" value="c"> C. Ribosomas y cloroplastos</label>
+          <label class="option"><input type="radio" name="q1" value="d"> D. Almidón y ADN con histonas</label>
         </div>
 
         <div class="question">
-          <h3>2. Respecto a la oxidación completa de la glucosa, se afirma lo siguiente:</h3>
-          <label class="option"><input type="radio" name="q2" value="a"> A. Se producen 36-38 moléculas de ATP</label>
-          <label class="option"><input type="radio" name="q2" value="b"> B. Se produce en el citoplasma</label>
-          <label class="option"><input type="radio" name="q2" value="c"> C. Puede darse en presencia o ausencia de O₂</label>
-          <label class="option"><input type="radio" name="q2" value="d"> D. El producto final es piruvato y NADH</label>
+          <h3>2. ¿Cuál de las siguientes opciones presenta dos características de todos los seres vivos?</h3>
+          <label class="option"><input type="radio" name="q2" value="a"> A. Fotosíntesis y crecimiento</label>
+          <label class="option"><input type="radio" name="q2" value="b"> B. Homeostasis y respiración celular</label>
+          <label class="option"><input type="radio" name="q2" value="c"> C. Respiración y autopoiesis</label>
+          <label class="option"><input type="radio" name="q2" value="d"> D. Metabolismo e irritabilidad</label>
         </div>
 
         <div class="question">
-          <h3>3. Respecto de la teoría celular, se afirma lo siguiente:</h3>
-          <label class="option"><input type="radio" name="q3" value="a"> A. Incluye cinco postulados básicos</label>
-          <label class="option"><input type="radio" name="q3" value="b"> B. Propone que las células son las unidades básicas de la vida</label>
-          <label class="option"><input type="radio" name="q3" value="c"> C. Algunas células se dividen por reproducción sexual y otras asexual</label>
-          <label class="option"><input type="radio" name="q3" value="d"> D. Indica que los organismos procariotas se originaron de los eucariotas</label>
+          <h3>3. Se analiza una muestra con un organismo unicelular, autótrofo y con envoltura nuclear. ¿En qué categoría podría ser clasificado?</h3>
+          <label class="option"><input type="radio" name="q3" value="a"> A. Reino Chromista</label>
+          <label class="option"><input type="radio" name="q3" value="b"> B. Reino Fungi</label>
+          <label class="option"><input type="radio" name="q3" value="c"> C. Reino Animal</label>
+          <label class="option"><input type="radio" name="q3" value="d"> D. Reino Plantae</label>
         </div>
 
         <div class="question">
-          <h3>4. El transporte pasivo a través de la membrana:</h3>
-          <label class="option"><input type="radio" name="q4" value="a"> A. Requiere consumo energético en pequeñas cantidades</label>
-          <label class="option"><input type="radio" name="q4" value="b"> B. Las partículas se mueven en contra del gradiente de concentración</label>
-          <label class="option"><input type="radio" name="q4" value="c"> C. Incluye la difusión simple y la difusión facilitada</label>
-          <label class="option"><input type="radio" name="q4" value="d"> D. Cualquier molécula puede realizarlo independientemente de su gradiente</label>
+          <h3>4. Los viroides, priones y virus son agentes que:</h3>
+          <label class="option"><input type="radio" name="q4" value="a"> A. Tienen la misma composición química</label>
+          <label class="option"><input type="radio" name="q4" value="b"> B. Infectan organismos vivos</label>
+          <label class="option"><input type="radio" name="q4" value="c"> C. Tienen ADN como material genético</label>
+          <label class="option"><input type="radio" name="q4" value="d"> D. Infectan a un mismo tipo de individuos</label>
         </div>
 
         <div class="question">
-          <h3>5. ¿Cuál de las siguientes biomoléculas es un monosacárido?</h3>
-          <label class="option"><input type="radio" name="q5" value="a"> A. Galactosa</label>
-          <label class="option"><input type="radio" name="q5" value="b"> B. Lactosa</label>
-          <label class="option"><input type="radio" name="q5" value="c"> C. Sacarosa</label>
-          <label class="option"><input type="radio" name="q5" value="d"> D. Maltosa</label>
+          <h3>5. Los hongos de sombrero, las levaduras y los mohos pertenecen al reino Fungi. Estos organismos se caracterizan por ser:</h3>
+          <label class="option"><input type="radio" name="q5" value="a"> A. Eucariontes y heterótrofos</label>
+          <label class="option"><input type="radio" name="q5" value="b"> B. Eucariontes y autótrofos</label>
+          <label class="option"><input type="radio" name="q5" value="c"> C. Procariontes y heterótrofos</label>
+          <label class="option"><input type="radio" name="q5" value="d"> D. Procariontes y autótrofos</label>
         </div>
 
         <div class="question">
-          <h3>6. La cromatina está formada de los siguientes:</h3>
-          <label class="option"><input type="radio" name="q6" value="a"> A. ADN y proteínas</label>
-          <label class="option"><input type="radio" name="q6" value="b"> B. De cromosomas y ADN</label>
-          <label class="option"><input type="radio" name="q6" value="c"> C. Únicamente incluye el ADN</label>
-          <label class="option"><input type="radio" name="q6" value="d"> D. Proteínas exclusivamente</label>
+          <h3>6. ¿Cuál de los siguientes pares de lípidos constituyen las membranas biológicas?</h3>
+          <label class="option"><input type="radio" name="q6" value="a"> A. Aceites y colesterol</label>
+          <label class="option"><input type="radio" name="q6" value="b"> B. Triglicéridos y colesterol</label>
+          <label class="option"><input type="radio" name="q6" value="c"> C. Fosfolípidos y glucolípidos</label>
+          <label class="option"><input type="radio" name="q6" value="d"> D. Fosfolípidos y triglicéridos</label>
         </div>
 
         <div class="question">
-          <h3>7. Estructura especializada del cromosoma que sirve como lugar de unión de los microtúbulos durante la división celular:</h3>
-          <label class="option"><input type="radio" name="q7" value="a"> A. Telómero</label>
-          <label class="option"><input type="radio" name="q7" value="b"> B. Centrómero</label>
-          <label class="option"><input type="radio" name="q7" value="c"> C. Locus</label>
-          <label class="option"><input type="radio" name="q7" value="d"> D. Cromátide</label>
+          <h3>7. ¿Cuál de las siguientes moléculas NO es el resultado de una polimerización?</h3>
+          <label class="option"><input type="radio" name="q7" value="a"> A. Glucógeno</label>
+          <label class="option"><input type="radio" name="q7" value="b"> B. ARNr</label>
+          <label class="option"><input type="radio" name="q7" value="c"> C. Fosfolípidos</label>
+          <label class="option"><input type="radio" name="q7" value="d"> D. Proteínas</label>
         </div>
 
         <div class="question">
-          <h3>8. Identifique las bases nitrogenadas pirimidinas del ADN:</h3>
-          <label class="option"><input type="radio" name="q8" value="a"> A. Timina – Citosina</label>
-          <label class="option"><input type="radio" name="q8" value="b"> B. Uracilo – Timina</label>
-          <label class="option"><input type="radio" name="q8" value="c"> C. Uracilo – Guanina</label>
-          <label class="option"><input type="radio" name="q8" value="d"> D. Arginina – Guanina</label>
+          <h3>8. ¿Qué diferencia estructuralmente el ADN del ARN?</h3>
+          <label class="option"><input type="radio" name="q8" value="a"> A. El ADN es un polímero mientras que el ARN es un monómero</label>
+          <label class="option"><input type="radio" name="q8" value="b"> B. El tipo de hidrato de carbono que presentan en su estructura</label>
+          <label class="option"><input type="radio" name="q8" value="c"> C. El tipo de lípido que presentan en su estructura</label>
+          <label class="option"><input type="radio" name="q8" value="d"> D. Los tipos de aminoácidos que los conforman</label>
         </div>
 
         <div class="question">
-          <h3>9. ¿Cuál es el proceso en el que se sintetizan moléculas complejas a partir de sustancias más sencillas?</h3>
-          <label class="option"><input type="radio" name="q9" value="a"> A. Termodinámica</label>
-          <label class="option"><input type="radio" name="q9" value="b"> B. Metabolismo</label>
-          <label class="option"><input type="radio" name="q9" value="c"> C. Anabolismo</label>
-          <label class="option"><input type="radio" name="q9" value="d"> D. Catabolismo</label>
+          <h3>9. Indicá cuál de las siguientes son funciones del Complejo de Golgi:</h3>
+          <label class="option"><input type="radio" name="q9" value="a"> A. La síntesis de triglicéridos y colesterol</label>
+          <label class="option"><input type="radio" name="q9" value="b"> B. La síntesis de glucosa</label>
+          <label class="option"><input type="radio" name="q9" value="c"> C. La polimerización y glicosilación de proteínas</label>
+          <label class="option"><input type="radio" name="q9" value="d"> D. La formación de vesículas de secreción</label>
         </div>
 
         <div class="question">
-          <h3>10. De la mitosis se afirma lo siguiente:</h3>
-          <label class="option"><input type="radio" name="q10" value="a"> A. Se generan cuatro células haploides</label>
-          <label class="option"><input type="radio" name="q10" value="b"> B. Ocurre en todas las células</label>
-          <label class="option"><input type="radio" name="q10" value="c"> C. Se generan dos células hijas</label>
-          <label class="option"><input type="radio" name="q10" value="d"> D. Forma gametos para reproducción sexual</label>
+          <h3>10. Un aumento de la fluidez de las membranas puede deberse a:</h3>
+          <label class="option"><input type="radio" name="q10" value="a"> A. Una mayor cantidad de colas insaturadas en los fosfolípidos</label>
+          <label class="option"><input type="radio" name="q10" value="b"> B. Una mayor presencia de colesterol</label>
+          <label class="option"><input type="radio" name="q10" value="c"> C. Una menor temperatura del medio</label>
+          <label class="option"><input type="radio" name="q10" value="d"> D. Un mayor pH del medio</label>
         </div>
 
         <div class="question">
-          <h3>11. ¿A qué se refiere el término autosómico?</h3>
-          <label class="option"><input type="radio" name="q11" value="a"> A. A los cromosomas XY en un organismo</label>
-          <label class="option"><input type="radio" name="q11" value="b"> B. Al rasgo homocigoto dominante</label>
-          <label class="option"><input type="radio" name="q11" value="c"> C. Al gen localizado en cromosomas no sexuales</label>
-          <label class="option"><input type="radio" name="q11" value="d"> D. Al rasgo homocigoto recesivo</label>
+          <h3>11. Uno de los procesos más frecuentes del metabolismo celular es la oxidación de la glucosa. Este proceso podemos calificarlo como:</h3>
+          <label class="option"><input type="radio" name="q11" value="a"> A. Catabólico y endergónico, acoplado a la hidrólisis de ATP</label>
+          <label class="option"><input type="radio" name="q11" value="b"> B. Catabólico y exergónico, acoplado a la síntesis de ATP</label>
+          <label class="option"><input type="radio" name="q11" value="c"> C. Anabólico y endergónico, acoplado a la hidrólisis de ATP</label>
+          <label class="option"><input type="radio" name="q11" value="d"> D. Anabólico y exergónico, acoplado a la síntesis de ATP</label>
         </div>
 
         <div class="question">
-          <h3>12. ¿Cuál es una característica del agua?</h3>
-          <label class="option"><input type="radio" name="q12" value="a"> A. Tiene carga eléctrica</label>
-          <label class="option"><input type="radio" name="q12" value="b"> B. Carece de polaridad</label>
-          <label class="option"><input type="radio" name="q12" value="c"> C. Es molécula orgánica</label>
-          <label class="option"><input type="radio" name="q12" value="d"> D. Es un disolvente</label>
+          <h3>12. Cuando una reacción enzimática llega a su velocidad máxima (Vmax):</h3>
+          <label class="option"><input type="radio" name="q12" value="a"> A. Deja de generarse producto</label>
+          <label class="option"><input type="radio" name="q12" value="b"> B. La afinidad por el sustrato alcanza su mayor nivel</label>
+          <label class="option"><input type="radio" name="q12" value="c"> C. La cantidad de sustrato generado por unidad de tiempo es constante</label>
+          <label class="option"><input type="radio" name="q12" value="d"> D. La cantidad de producto generado por unidad de tiempo es constante</label>
         </div>
 
         <div class="question">
-          <h3>13. Las enzimas que unen moléculas acoplando la hidrólisis de ATP pertenecen a la clase de:</h3>
-          <label class="option"><input type="radio" name="q13" value="a"> A. Liasas</label>
-          <label class="option"><input type="radio" name="q13" value="b"> B. Hidrolasas</label>
-          <label class="option"><input type="radio" name="q13" value="c"> C. Ligasas</label>
-          <label class="option"><input type="radio" name="q13" value="d"> D. Transferasas</label>
+          <h3>13. Una señal químicamente hidrofóbica se une a receptores celulares que se ubican en:</h3>
+          <label class="option"><input type="radio" name="q13" value="a"> A. El citoplasma, a pesar que la señal no pueda atravesar libremente la membrana</label>
+          <label class="option"><input type="radio" name="q13" value="b"> B. El citoplasma, dado que la señal puede atravesar por difusión simple la membrana</label>
+          <label class="option"><input type="radio" name="q13" value="c"> C. La membrana plasmática, dado que la señal no puede atravesar libremente la membrana</label>
+          <label class="option"><input type="radio" name="q13" value="d"> D. La membrana plasmática, a pesar que la señal pueda atravesar libremente la membrana</label>
         </div>
 
         <div class="question">
-          <h3>14. La descripción "larga cadena hidrocarbonada, no ramificada con un grupo carboxilo en un extremo" corresponde a:</h3>
-          <label class="option"><input type="radio" name="q14" value="a"> A. Glucolípido</label>
-          <label class="option"><input type="radio" name="q14" value="b"> B. Colesterol</label>
-          <label class="option"><input type="radio" name="q14" value="c"> C. Fosfolípido</label>
-          <label class="option"><input type="radio" name="q14" value="d"> D. Ácido graso</label>
+          <h3>14. ¿Cuáles de las siguientes funciones están relacionadas con los microtúbulos?</h3>
+          <label class="option"><input type="radio" name="q14" value="a"> A. Contracción muscular y formación de cilios</label>
+          <label class="option"><input type="radio" name="q14" value="b"> B. Contracción muscular y transporte intracelular de vesículas</label>
+          <label class="option"><input type="radio" name="q14" value="c"> C. Formación de flagelos y transporte intracelular de vesículas</label>
+          <label class="option"><input type="radio" name="q14" value="d"> D. División del citoplasma y transporte intracelular de vesículas</label>
         </div>
 
         <div class="question">
-          <h3>15. Proceso por el cual una molécula de glucosa de 6 carbonos se convierte en dos moléculas de piruvato:</h3>
-          <label class="option"><input type="radio" name="q15" value="a"> A. Ciclo de Krebs</label>
-          <label class="option"><input type="radio" name="q15" value="b"> B. Glucólisis</label>
-          <label class="option"><input type="radio" name="q15" value="c"> C. Descarboxilación del piruvato</label>
-          <label class="option"><input type="radio" name="q15" value="d"> D. Fermentación</label>
+          <h3>15. La fosforilación oxidativa es un mecanismo celular que consiste en:</h3>
+          <label class="option"><input type="radio" name="q15" value="a"> A. La síntesis de ATP y ocurre en la membrana mitocondrial</label>
+          <label class="option"><input type="radio" name="q15" value="b"> B. La síntesis de ATP y ocurre en el cloroplasto</label>
+          <label class="option"><input type="radio" name="q15" value="c"> C. La ruptura de ATP y ocurre en el lisosoma</label>
+          <label class="option"><input type="radio" name="q15" value="d"> D. La ruptura de ATP y ocurre en la membrana mitocondrial</label>
         </div>
 
         <div class="question">
-          <h3>16. ¿Cuál es el producto final de la fermentación láctica?</h3>
-          <label class="option"><input type="radio" name="q16" value="a"> A. Alcohol</label>
-          <label class="option"><input type="radio" name="q16" value="b"> B. Carbono</label>
-          <label class="option"><input type="radio" name="q16" value="c"> C. Lactato</label>
-          <label class="option"><input type="radio" name="q16" value="d"> D. Agua</label>
+          <h3>16. Durante el ciclo de Krebs se lleva a cabo:</h3>
+          <label class="option"><input type="radio" name="q16" value="a"> A. La liberación de dióxido de carbono</label>
+          <label class="option"><input type="radio" name="q16" value="b"> B. La liberación de oxígeno al ambiente</label>
+          <label class="option"><input type="radio" name="q16" value="c"> C. La formación de gran parte del ATP celular</label>
+          <label class="option"><input type="radio" name="q16" value="d"> D. La formación de acetil CoA</label>
         </div>
 
         <div class="question">
-          <h3>17. ¿Cuál es la proteína motora asociada a microfilamentos?</h3>
-          <label class="option"><input type="radio" name="q17" value="a"> A. Miosina</label>
-          <label class="option"><input type="radio" name="q17" value="b"> B. Kinesina</label>
-          <label class="option"><input type="radio" name="q17" value="c"> C. Tubulina</label>
-          <label class="option"><input type="radio" name="q17" value="d"> D. Dineína</label>
+          <h3>17. ¿Cuál de las siguientes opciones corresponde al orden de eventos de la fotosíntesis?</h3>
+          <label class="option"><input type="radio" name="q17" value="a"> A. Captación de energía solar / síntesis de glucosa / ruptura del agua</label>
+          <label class="option"><input type="radio" name="q17" value="b"> B. Captación de energía solar / degradación de ATP / fijación de CO2</label>
+          <label class="option"><input type="radio" name="q17" value="c"> C. Liberación de oxígeno / incorporación de CO2 a una biomolécula / síntesis de hidratos de carbono</label>
+          <label class="option"><input type="radio" name="q17" value="d"> D. Liberación de oxígeno / síntesis de glucosa / síntesis de ATP</label>
         </div>
 
         <div class="question">
-          <h3>18. ¿Cuál de las características describe al retículo endoplasmático rugoso?</h3>
-          <label class="option"><input type="radio" name="q18" value="a"> A. Vesícula de membrana que contiene enzimas digestivas</label>
-          <label class="option"><input type="radio" name="q18" value="b"> B. Organelo que produce energía por medio de la respiración celular</label>
-          <label class="option"><input type="radio" name="q18" value="c"> C. Organelo dispuesto en forma de túbulos, cisternas y sacos aplanados</label>
-          <label class="option"><input type="radio" name="q18" value="d"> D. Organelo que sintetiza proteínas en el citoplasma</label>
+          <h3>18. ¿Cuál es la opción que corresponde a la secuencia “hierro - aminoácido - virus del HPV - corazón de un ser humano - rata”?</h3>
+          <label class="option"><input type="radio" name="q18" value="a"> A. Subatómico - molecular - celular - tisular - individuo</label>
+          <label class="option"><input type="radio" name="q18" value="b"> B. Subatómico - macromolecular - subcelular - individuo - órgano</label>
+          <label class="option"><input type="radio" name="q18" value="c"> C. Atómico - macromolecular - subcelular - tisular - individuo</label>
+          <label class="option"><input type="radio" name="q18" value="d"> D. Atómico - molecular - subcelular - órgano - individuo</label>
         </div>
 
         <div class="question">
-          <h3>19. ¿Cómo se denominan las subunidades básicas que componen el ADN y ARN?</h3>
-          <label class="option"><input type="radio" name="q19" value="a"> A. Nucleótidos</label>
-          <label class="option"><input type="radio" name="q19" value="b"> B. Genes</label>
-          <label class="option"><input type="radio" name="q19" value="c"> C. Alelos</label>
-          <label class="option"><input type="radio" name="q19" value="d"> D. Aminoácidos</label>
+          <h3>19. Indicá cuál de las siguientes situaciones se vincula al concepto de homeostasis:</h3>
+          <label class="option"><input type="radio" name="q19" value="a"> A. Al aumentar la cantidad de nutrientes en un cultivo de manera constante, las células se reproducen ilimitadamente</label>
+          <label class="option"><input type="radio" name="q19" value="b"> B. En ausencia prolongada de luz una población de girasoles se marchita debido a la interrupción del ciclo de Calvin</label>
+          <label class="option"><input type="radio" name="q19" value="c"> C. En una laguna con baja disponibilidad de oxígeno los organismos aeróbicos mueren por no poder llevar a cabo la respiración celular</label>
+          <label class="option"><input type="radio" name="q19" value="d"> D. Al consumir una golosina, aumenta la liberación de la insulina retornando los niveles de azúcar en sangre a la normalidad</label>
         </div>
 
         <div class="question">
-          <h3>20. La propiedad de los fosfolípidos que les induce a formar bicapas lipídicas en soluciones acuosas se denomina:</h3>
-          <label class="option"><input type="radio" name="q20" value="a"> A. Hidrofóbicas</label>
-          <label class="option"><input type="radio" name="q20" value="b"> B. Hidrosolubles</label>
-          <label class="option"><input type="radio" name="q20" value="c"> C. Hidrofílicas</label>
-          <label class="option"><input type="radio" name="q20" value="d"> D. Anfipáticas</label>
+          <h3>20. ¿Cuál de las siguientes opciones permite caracterizar a las células procariotas?</h3>
+          <label class="option"><input type="radio" name="q20" value="a"> A. Presenta ribosomas y complejo de Golgi</label>
+          <label class="option"><input type="radio" name="q20" value="b"> B. Puede realizar fotosíntesis a pesar de no tener cloroplastos</label>
+          <label class="option"><input type="radio" name="q20" value="c"> C. No posee flagelos ya que carece de citoesqueleto</label>
+          <label class="option"><input type="radio" name="q20" value="d"> D. No puede realizar la glucólisis dado que no posee mitocondrias</label>
+        </div>
+
+        <div class="question">
+          <h3>21. Los virus bacteriófagos pueden replicarse por medio de dos vías o ciclos alternativos. Indicá cuál afirmación es correcta:</h3>
+          <label class="option"><input type="radio" name="q21" value="a"> A. El ciclo lisogénico lleva a la integración del ADN y muerte de la célula infectada</label>
+          <label class="option"><input type="radio" name="q21" value="b"> B. Sólo en el ciclo lítico ocurre la fijación o adsorción y la penetración como primeros pasos</label>
+          <label class="option"><input type="radio" name="q21" value="c"> C. En el ciclo lítico, el ADN del virus se integra al ADN bacteriano y se replica junto con éste</label>
+          <label class="option"><input type="radio" name="q21" value="d"> D. El ciclo lítico lleva a la ruptura y muerte de la célula bacteriana infectada</label>
+        </div>
+
+        <div class="question">
+          <h3>22. ¿Cuál de las siguientes características permiten diferenciar una célula procarionte autótrofa de una eucarionte autótrofa?</h3>
+          <label class="option"><input type="radio" name="q22" value="a"> A. La presencia de mitocondrias</label>
+          <label class="option"><input type="radio" name="q22" value="b"> B. La presencia de ribosomas</label>
+          <label class="option"><input type="radio" name="q22" value="c"> C. La presencia de permeabilidad selectiva</label>
+          <label class="option"><input type="radio" name="q22" value="d"> D. La presencia de pared celular</label>
+        </div>
+
+        <div class="question">
+          <h3>23. ¿Cuál de las siguientes afirmaciones es correcta?</h3>
+          <label class="option"><input type="radio" name="q23" value="a"> A. La celulosa y el glucógeno tienen función estructural</label>
+          <label class="option"><input type="radio" name="q23" value="b"> B. Los ácidos grasos y los triglicéridos son anfipáticos</label>
+          <label class="option"><input type="radio" name="q23" value="c"> C. Todos los nucleótidos tienen una pentosa</label>
+          <label class="option"><input type="radio" name="q23" value="d"> D. Las proteínas son moléculas formadas por aminoácidos unidos por enlaces fosfodiéster</label>
+        </div>
+
+        <div class="question">
+          <h3>24. El transporte de glucosa desde la luz intestinal hacia el interior de las células junto con Na+ es un ejemplo de:</h3>
+          <label class="option"><input type="radio" name="q24" value="a"> A. Transporte activo secundario / no requiere ATP</label>
+          <label class="option"><input type="radio" name="q24" value="b"> B. Transporte activo secundario / requiere ATP</label>
+          <label class="option"><input type="radio" name="q24" value="c"> C. Difusión facilitada por canales iónicos / no requiere ATP</label>
+          <label class="option"><input type="radio" name="q24" value="d"> D. Transporte en masa / requiere ATP</label>
+        </div>
+
+        <div class="question">
+          <h3>25. En la membrana biológica representada, las estructuras 1 y 2 pueden presentar respectivamente una función de:</h3>
+          <label class="option"><input type="radio" name="q25" value="a"> A. Receptor y enzimática</label>
+          <label class="option"><input type="radio" name="q25" value="b"> B. Receptor y aporte energético</label>
+          <label class="option"><input type="radio" name="q25" value="c"> C. Aporte energético y transporte de iones</label>
+          <label class="option"><input type="radio" name="q25" value="d"> D. Estabilizar las membranas y enzimática</label>
+        </div>
+
+        <div class="question">
+          <h3>26. Si se produjera la hidrólisis de las estructuras 1 y 2 de la figura, se hallarían respectivamente:</h3>
+          <label class="option"><input type="radio" name="q26" value="a"> A. Aminoácidos y monosacáridos</label>
+          <label class="option"><input type="radio" name="q26" value="b"> B. Monosacáridos y aminoácidos</label>
+          <label class="option"><input type="radio" name="q26" value="c"> C. Monosacáridos y nucleótidos</label>
+          <label class="option"><input type="radio" name="q26" value="d"> D. Fosfolípidos y aminoácidos</label>
+        </div>
+
+        <div class="question">
+          <h3>27. Si el ión sodio es transportado hacia el medio extracelular en contra de su gradiente, podemos decir que se trata de un proceso:</h3>
+          <label class="option"><input type="radio" name="q27" value="a"> A. Anabólico y endergónico</label>
+          <label class="option"><input type="radio" name="q27" value="b"> B. Endergónico pero no anabólico</label>
+          <label class="option"><input type="radio" name="q27" value="c"> C. Catabólico y endergónico</label>
+          <label class="option"><input type="radio" name="q27" value="d"> D. Exergónico pero no anabólico</label>
+        </div>
+
+        <div class="question">
+          <h3>28. Indicá cuál de las siguientes afirmaciones acerca del proceso de comunicación celular es correcta:</h3>
+          <label class="option"><input type="radio" name="q28" value="a"> A. Las señales químicas que circulan por la sangre reciben el nombre de hormonas</label>
+          <label class="option"><input type="radio" name="q28" value="b"> B. Las señales químicamente hidrofóbicas se unen a receptores de membrana</label>
+          <label class="option"><input type="radio" name="q28" value="c"> C. Los receptores siempre se ubican en la membrana</label>
+          <label class="option"><input type="radio" name="q28" value="d"> D. La célula diana o inducida es aquella que emite señales a otra célula</label>
+        </div>
+
+        <div class="question">
+          <h3>29. El gráfico representa la variación de energía a lo largo de una reacción química. ¿Cuál afirmación es correcta?</h3>
+          <label class="option"><input type="radio" name="q29" value="a"> A. El gráfico representa una reacción endergónica dado que la energía de los productos es menor que la de los sustratos</label>
+          <label class="option"><input type="radio" name="q29" value="b"> B. El gráfico representa una reacción exergónica dado que la energía de los productos es mayor que la de los sustratos</label>
+          <label class="option"><input type="radio" name="q29" value="c"> C. El gráfico podría corresponder a: glucosa + glucosa → maltosa</label>
+          <label class="option"><input type="radio" name="q29" value="d"> D. El gráfico podría corresponder a: sacarosa → glucosa + fructosa</label>
+        </div>
+
+        <div class="question">
+          <h3>30. ¿Cuál será la secuencia ordenada de componentes celulares involucrados en la síntesis de una proteína de la matriz extracelular como el colágeno?</h3>
+          <label class="option"><input type="radio" name="q30" value="a"> A. Ribosoma, REL, vesícula de secreción, complejo de Golgi, exocitosis</label>
+          <label class="option"><input type="radio" name="q30" value="b"> B. Retículo endoplasmático liso, complejo de Golgi, exocitosis, vesícula de secreción, ribosoma</label>
+          <label class="option"><input type="radio" name="q30" value="c"> C. Ribosoma, REG, complejo de Golgi, vesícula de secreción, exocitosis</label>
+          <label class="option"><input type="radio" name="q30" value="d"> D. Complejo de Golgi, REG, ribosoma, vesícula de secreción, exocitosis</label>
+        </div>
+
+        <div class="question">
+          <h3>31. El Retículo Endoplasmático Liso (REL) y el complejo de Golgi intervienen respectivamente en:</h3>
+          <label class="option"><input type="radio" name="q31" value="a"> A. La síntesis de fosfolípidos y formación de lisosomas</label>
+          <label class="option"><input type="radio" name="q31" value="b"> B. La síntesis de triglicéridos y la síntesis de colesterol</label>
+          <label class="option"><input type="radio" name="q31" value="c"> C. La síntesis de proteínas de membrana y la formación de lisosomas</label>
+          <label class="option"><input type="radio" name="q31" value="d"> D. La síntesis de proteínas de secreción y la formación de lisosomas</label>
+        </div>
+
+        <div class="question">
+          <h3>32. Señale la opción correcta:</h3>
+          <label class="option"><input type="radio" name="q32" value="a"> A. La fijación y posterior reducción del carbono en el ciclo de Calvin es catabólica</label>
+          <label class="option"><input type="radio" name="q32" value="b"> B. La oxidación de la glucosa es un proceso anabólico</label>
+          <label class="option"><input type="radio" name="q32" value="c"> C. El ciclo de Calvin es anabólico y endergónico</label>
+          <label class="option"><input type="radio" name="q32" value="d"> D. La fosforilación del ADP es exergónica</label>
+        </div>
+
+        <div class="question">
+          <h3>33. En una reacción donde la enzima 1 transforma A en B y C, podemos afirmar que:</h3>
+          <label class="option"><input type="radio" name="q33" value="a"> A. Al modificar el pH se altera la estructura 1 y aumentan B y C por unidad de tiempo</label>
+          <label class="option"><input type="radio" name="q33" value="b"> B. Al modificar la temperatura se altera la estructura 1 y disminuye la cantidad de A presente</label>
+          <label class="option"><input type="radio" name="q33" value="c"> C. La enzima 1 no se llega a saturar dado que se puede reutilizar muchísimas veces</label>
+          <label class="option"><input type="radio" name="q33" value="d"> D. Con altas concentraciones de A, las cantidades de B y C generados por unidad de tiempo pueden alcanzar valores constantes</label>
+        </div>
+
+        <div class="question">
+          <h3>34. Si en la reacción A → B + C se libera energía es posible que:</h3>
+          <label class="option"><input type="radio" name="q34" value="a"> A. La energía potencial de los productos sea mayor que la de los reactivos</label>
+          <label class="option"><input type="radio" name="q34" value="b"> B. La reacción sea endergónica y espontánea</label>
+          <label class="option"><input type="radio" name="q34" value="c"> C. Se trate de una reacción anabólica</label>
+          <label class="option"><input type="radio" name="q34" value="d"> D. Se haya sintetizado ATP</label>
+        </div>
+
+        <div class="question">
+          <h3>35. La respiración celular es un proceso que se desarrolla en distintos pasos. ¿Cuál opción corresponde al orden cronológicamente correcto?</h3>
+          <label class="option"><input type="radio" name="q35" value="a"> A. Formación del NADH y FADH - síntesis del ácido pirúvico - cadena de transporte de electrones</label>
+          <label class="option"><input type="radio" name="q35" value="b"> B. Formación de ácido pirúvico - formación del NADH - síntesis de ATP</label>
+          <label class="option"><input type="radio" name="q35" value="c"> C. Cadena de transporte de electrones - ciclo de Krebs - síntesis de ATP</label>
+          <label class="option"><input type="radio" name="q35" value="d"> D. Ciclo de Krebs - síntesis de ATP - cadena de transporte de electrones</label>
+        </div>
+
+        <div class="question">
+          <h3>36. El orden de los eventos que ocurren durante la respiración celular es:</h3>
+          <label class="option"><input type="radio" name="q36" value="a"> A. Formación del NADH - transporte de protones - descarboxilación del ácido pirúvico y ciclo de Krebs</label>
+          <label class="option"><input type="radio" name="q36" value="b"> B. Transporte de electrones - síntesis de NADH - síntesis de ATP</label>
+          <label class="option"><input type="radio" name="q36" value="c"> C. Formación del NADH - transporte de electrones - síntesis de ATP</label>
+          <label class="option"><input type="radio" name="q36" value="d"> D. Formación de ATP - bombeo de protones - transporte de electrones</label>
+        </div>
+
+        <div class="question">
+          <h3>37. En un vivero que cultiva plantines, indicá cuál opción es correcta respecto a la fotosíntesis:</h3>
+          <label class="option"><input type="radio" name="q37" value="a"> A. Si no hay suministro de agua, inmediatamente se detiene la etapa fotoquímica</label>
+          <label class="option"><input type="radio" name="q37" value="b"> B. Si solo ingresa dióxido de carbono, se detiene la etapa fotoindependiente</label>
+          <label class="option"><input type="radio" name="q37" value="c"> C. Si no ingresa luz, la etapa directamente afectada es el ciclo de Calvin-Benson</label>
+          <label class="option"><input type="radio" name="q37" value="d"> D. Si no ingresa dióxido de carbono, inmediatamente se detiene la liberación de oxígeno</label>
+        </div>
+
+        <div class="question">
+          <h3>38. Si se aíslan mitocondrias de una célula eucariota y se las coloca en un medio adecuado con NAD+, FAD y ADP + Pi, el proceso de oxidación podrá completarse agregando:</h3>
+          <label class="option"><input type="radio" name="q38" value="a"> A. Ácido pirúvico y CO2</label>
+          <label class="option"><input type="radio" name="q38" value="b"> B. Ácido pirúvico y O2</label>
+          <label class="option"><input type="radio" name="q38" value="c"> C. Glucosa, O2 y CO2</label>
+          <label class="option"><input type="radio" name="q38" value="d"> D. Glucosa, luz y CO2</label>
         </div>
 
         <div class="buttons">
@@ -368,49 +512,51 @@
 
   <script>
     const respuestasCorrectas = {
-      q1: "a",
-      q2: "a",
-      q3: "b",
-      q4: "c",
-      q5: "a",
-      q6: "a",
-      q7: "b",
-      q8: "a",
-      q9: "c",
-      q10: "c",
-      q11: "c",
-      q12: "d",
-      q13: "c",
-      q14: "d",
-      q15: "b",
-      q16: "c",
-      q17: "a",
-      q18: "c",
-      q19: "a",
-      q20: "d"
+      q1:"b", q2:"d", q3:"a", q4:"b", q5:"a", q6:"c", q7:"c", q8:"b", q9:"d", q10:"a",
+      q11:"b", q12:"d", q13:"b", q14:"c", q15:"a", q16:"a", q17:"c", q18:"d", q19:"d", q20:"b",
+      q21:"d", q22:"a", q23:"c", q24:"b", q25:"a", q26:"b", q27:"b", q28:"a", q29:"d", q30:"c",
+      q31:"a", q32:"c", q33:"d", q34:"d", q35:"b", q36:"c", q37:"a", q38:"b"
     };
 
     const textosCorrectos = {
-      q1: "A. Lípidos",
-      q2: "A. Se producen 36-38 moléculas de ATP",
-      q3: "B. Propone que las células son las unidades básicas de la vida",
-      q4: "C. Incluye la difusión simple y la difusión facilitada",
-      q5: "A. Galactosa",
-      q6: "A. ADN y proteínas",
-      q7: "B. Centrómero",
-      q8: "A. Timina – Citosina",
-      q9: "C. Anabolismo",
-      q10: "C. Se generan dos células hijas",
-      q11: "C. Al gen localizado en cromosomas no sexuales",
-      q12: "D. Es un disolvente",
-      q13: "C. Ligasas",
-      q14: "D. Ácido graso",
-      q15: "B. Glucólisis",
-      q16: "C. Lactato",
-      q17: "A. Miosina",
-      q18: "C. Organelo dispuesto en forma de túbulos, cisternas y sacos aplanados",
-      q19: "A. Nucleótidos",
-      q20: "D. Anfipáticas"
+      q1:"B. Cloroplastos y vacuola central",
+      q2:"D. Metabolismo e irritabilidad",
+      q3:"A. Reino Chromista",
+      q4:"B. Infectan organismos vivos",
+      q5:"A. Eucariontes y heterótrofos",
+      q6:"C. Fosfolípidos y glucolípidos",
+      q7:"C. Fosfolípidos",
+      q8:"B. El tipo de hidrato de carbono que presentan en su estructura",
+      q9:"D. La formación de vesículas de secreción",
+      q10:"A. Una mayor cantidad de colas insaturadas en los fosfolípidos",
+      q11:"B. Catabólico y exergónico, acoplado a la síntesis de ATP",
+      q12:"D. La cantidad de producto generado por unidad de tiempo es constante",
+      q13:"B. El citoplasma, dado que la señal puede atravesar por difusión simple la membrana",
+      q14:"C. Formación de flagelos y transporte intracelular de vesículas",
+      q15:"A. La síntesis de ATP y ocurre en la membrana mitocondrial",
+      q16:"A. La liberación de dióxido de carbono",
+      q17:"C. Liberación de oxígeno / incorporación de CO2 a una biomolécula / síntesis de hidratos de carbono",
+      q18:"D. Atómico - molecular - subcelular - órgano - individuo",
+      q19:"D. Al consumir una golosina, aumenta la liberación de la insulina retornando los niveles de azúcar en sangre a la normalidad",
+      q20:"B. Puede realizar fotosíntesis a pesar de no tener cloroplastos",
+      q21:"D. El ciclo lítico lleva a la ruptura y muerte de la célula bacteriana infectada",
+      q22:"A. La presencia de mitocondrias",
+      q23:"C. Todos los nucleótidos tienen una pentosa",
+      q24:"B. Transporte activo secundario / requiere ATP",
+      q25:"A. Receptor y enzimática",
+      q26:"B. Monosacáridos y aminoácidos",
+      q27:"B. Endergónico pero no anabólico",
+      q28:"A. Las señales químicas que circulan por la sangre reciben el nombre de hormonas",
+      q29:"D. El gráfico podría corresponder a: sacarosa → glucosa + fructosa",
+      q30:"C. Ribosoma, REG, complejo de Golgi, vesícula de secreción, exocitosis",
+      q31:"A. La síntesis de fosfolípidos y formación de lisosomas",
+      q32:"C. El ciclo de Calvin es anabólico y endergónico",
+      q33:"D. Con altas concentraciones de A, las cantidades de B y C generados por unidad de tiempo pueden alcanzar valores constantes",
+      q34:"D. Se haya sintetizado ATP",
+      q35:"B. Formación de ácido pirúvico - formación del NADH - síntesis de ATP",
+      q36:"C. Formación del NADH - transporte de electrones - síntesis de ATP",
+      q37:"A. Si no hay suministro de agua, inmediatamente se detiene la etapa fotoquímica",
+      q38:"B. Ácido pirúvico y O2"
     };
 
     function calificarExamen() {
@@ -424,7 +570,6 @@
 
         if (seleccionada) {
           respondidas++;
-
           if (seleccionada.value === respuestasCorrectas[pregunta]) {
             correctas++;
             revisionHTML += `
