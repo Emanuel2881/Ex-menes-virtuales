@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Matemáticas | MediGuía</title>
+  <style>
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+    }
+
+    body{
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #0f172a, #1e3a8a, #2563eb);
+      min-height:100vh;
+      color:white;
+    }
+
+    .overlay{
+      min-height:100vh;
+      background: rgba(0,0,0,0.18);
+      padding: 30px 20px 50px;
+    }
+
+    .container{
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .topbar{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      flex-wrap:wrap;
+      gap:15px;
+      margin-bottom:30px;
+    }
+
+    .logo{
+      font-size: 1.8rem;
+      font-weight: bold;
+      letter-spacing: .5px;
+    }
+
+    .back-btn{
+      text-decoration:none;
+      background: rgba(255,255,255,0.15);
+      color:white;
+      padding:12px 18px;
+      border-radius:14px;
+      font-weight:bold;
+      transition:.25s ease;
+      border:1px solid rgba(255,255,255,0.15);
+    }
+
+    .back-btn:hover{
+      background: rgba(255,255,255,0.25);
+      transform: translateY(-2px);
+    }
+
+    .hero{
+      text-align:center;
+      padding: 35px 20px;
+      background: rgba(255,255,255,0.08);
+      border-radius: 26px;
+      box-shadow: 0 12px 30px rgba(0,0,0,0.18);
+      backdrop-filter: blur(10px);
+      margin-bottom: 30px;
+    }
+
+    .hero h1{
+      font-size: 2.5rem;
+      margin-bottom: 12px;
+    }
+
+    .hero p{
+      font-size: 1.05rem;
+      max-width: 800px;
+      margin: 0 auto;
+      line-height: 1.7;
+      opacity: .95;
+    }
+
+    .stats{
+      display:grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap:16px;
+      margin: 28px 0 35px;
+    }
+
+    .stat-card{
+      background: rgba(255,255,255,0.10);
+      border-radius: 20px;
+      padding: 20px;
+      text-align:center;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+    }
+
+    .stat-card h3{
+      font-size: 1.8rem;
+      margin-bottom: 6px;
+      color: #ffd54f;
+    }
+
+    .stat-card p{
+      opacity: .9;
+      font-size: .95rem;
+    }
+
+    .section-title{
+      font-size: 1.8rem;
+      margin-bottom: 18px;
+      text-align:center;
+    }
+
+    .cards{
+      display:grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+    }
+
+    .card{
+      background: rgba(255,255,255,0.10);
+      border-radius: 22px;
+      padding: 24px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.18);
+      transition: .25s ease;
+      display:flex;
+      flex-direction:column;
+      justify-content:space-between;
+      min-height: 260px;
+    }
+
+    .card:hover{
+      transform: translateY(-6px);
+      background: rgba(255,255,255,0.14);
+    }
+
+    .badge{
+      display:inline-block;
+      background: rgba(255,213,79,0.18);
+      color: #ffe082;
+      padding: 7px 12px;
+      border-radius: 999px;
+      font-size: .82rem;
+      font-weight: bold;
+      margin-bottom: 14px;
+      border: 1px solid rgba(255,224,130,0.25);
+    }
+
+    .card h3{
+      font-size: 1.35rem;
+      margin-bottom: 12px;
+    }
+
+    .card p{
+      line-height: 1.65;
+      opacity: .95;
+      margin-bottom: 20px;
+      font-size: .98rem;
+    }
+
+    .card-buttons{
+      display:flex;
+      gap:12px;
+      flex-wrap:wrap;
+      margin-top:auto;
+    }
+
+    .btn{
+      text-decoration:none;
+      padding:12px 16px;
+      border-radius:14px;
+      font-weight:bold;
+      transition:.25s ease;
+      display:inline-block;
+      text-align:center;
+    }
+
+    .btn-primary{
+      background:#ffd54f;
+      color:#1f2937;
+    }
+
+    .btn-primary:hover{
+      transform:scale(1.03);
+      background:#ffca28;
+    }
+
+    .btn-secondary{
+      background: rgba(255,255,255,0.16);
+      color:white;
+      border:1px solid rgba(255,255,255,0.14);
+    }
+
+    .btn-secondary:hover{
+      background: rgba(255,255,255,0.24);
+    }
+
+    .tips{
+      margin-top: 35px;
+      background: rgba(255,255,255,0.09);
+      border-radius: 24px;
+      padding: 26px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.18);
+    }
+
+    .tips h2{
+      margin-bottom: 14px;
+      text-align:center;
+    }
+
+    .tips ul{
+      max-width: 850px;
+      margin: 0 auto;
+      padding-left: 20px;
+      line-height: 1.8;
+    }
+
+    .tips li{
+      margin-bottom: 8px;
+    }
+
+    .footer-note{
+      text-align:center;
+      margin-top: 28px;
+      opacity: .85;
+      font-size: .95rem;
+    }
+
+    @media (max-width: 700px){
+      .hero h1{
+        font-size: 2rem;
+      }
+
+      .logo{
+        font-size: 1.5rem;
+      }
+
+      .topbar{
+        flex-direction:column;
+        align-items:flex-start;
+      }
+
+      .card{
+        min-height:auto;
+      }
+
+      .card-buttons{
+        flex-direction:column;
+      }
+
+      .btn{
+        width:100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="overlay">
+    <div class="container">
+
+      <div class="topbar">
+        <div class="logo">MediGuía 🩺</div>
+        <a href="index.html" class="back-btn">⬅ Volver al inicio</a>
+      </div>
+
+      <section class="hero">
+        <h1>Matemáticas / Habilidad Numérica</h1>
+        <p>
+          Pon a prueba tu razonamiento numérico con exámenes digitales de práctica. 
+          Aquí encontrarás distintos niveles y estilos de preguntas para reforzar operaciones, 
+          series, proporciones, porcentajes, lógica matemática y problemas tipo admisión.
+        </p>
+
+        <div class="stats">
+          <div class="stat-card">
+            <h3>6</h3>
+            <p>Exámenes disponibles</p>
+          </div>
+          <div class="stat-card">
+            <h3>+100</h3>
+            <p>Preguntas de práctica</p>
+          </div>
+          <div class="stat-card">
+            <h3>3</h3>
+            <p>Niveles de dificultad</p>
+          </div>
+          <div class="stat-card">
+            <h3>100%</h3>
+            <p>Formato digital</p>
+          </div>
+        </div>
+      </section>
+
+      <h2 class="section-title">Selecciona un examen</h2>
+
+      <section class="cards">
+        <div class="card">
+          <div>
+            <span class="badge">Nivel base</span>
+            <h3>Examen Numérica 1</h3>
+            <p>
+              Primer examen para comenzar a practicar. Ideal para entrar en ritmo y reforzar
+              operaciones básicas, proporciones, series y divisibilidad.
+            </p>
+          </div>
+          <div class="card-buttons">
+            <a href="data/numerica-examen1.html" class="btn btn-primary">Abrir examen</a>
+          </div>
+        </div>
+
+        <div class="card">
+          <div>
+            <span class="badge">Nivel intermedio</span>
+            <h3>Examen Numérica 2</h3>
+            <p>
+              Un examen más variado, con preguntas tipo admisión y ejercicios donde debes
+              pensar con más cuidado antes de responder.
+            </p>
+          </div>
+          <div class="card-buttons">
+            <a href="data/numerica-examen2.html" class="btn btn-primary">Abrir examen</a>
+          </div>
+        </div>
+
+        <div class="card">
+          <div>
+            <span class="badge">Simulador</span>
+            <h3>Examen Numérica 3</h3>
+            <p>
+              Incluye problemas de comparación, porcentajes, tablas y razonamiento aplicado.
+              Sirve para practicar lectura matemática y análisis.
+            </p>
+          </div>
+          <div class="card-buttons">
+            <a href="data/numerica-examen3.html" class="btn btn-primary">Abrir examen</a>
+          </div>
+        </div>
+
+        <div class="card">
+          <div>
+            <span class="badge">Más retador</span>
+            <h3>Examen Numérica 4</h3>
+            <p>
+              Pensado para subir la dificultad con funciones, ecuaciones, geometría,
+              porcentajes y razonamiento lógico.
+            </p>
+          </div>
+          <div class="card-buttons">
+            <a href="data/numerica-examen4.html" class="btn btn-primary">Abrir examen</a>
+          </div>
+        </div>
+
+        <div class="card">
+          <div>
+            <span class="badge">Mixto</span>
+            <h3>Examen Numérica 5</h3>
+            <p>
+              Examen construido con preguntas legibles de tus PDFs y documentos, mezclando
+              operaciones, series, tablas y problemas prácticos.
+            </p>
+          </div>
+          <div class="card-buttons">
+            <a href="data/numerica-examen5.html" class="btn btn-primary">Abrir examen</a>
+          </div>
+        </div>
+
+        <div class="card">
+          <div>
+            <span class="badge">Fiel al PDF</span>
+            <h3>Examen Numérica 6</h3>
+            <p>
+              Basado en el examen numérico resuelto, con enfoque en divisibilidad,
+              fracciones, porcentajes, series y sustitución de valores.
+            </p>
+          </div>
+          <div class="card-buttons">
+            <a href="data/numerica-examen6.html" class="btn btn-primary">Abrir examen</a>
+          </div>
+        </div>
+      </section>
+
+      <section class="tips">
+        <h2>Consejos para practicar</h2>
+        <ul>
+          <li>Empieza por los exámenes base y luego sube a los más retadores.</li>
+          <li>Intenta resolver primero sin calculadora si quieres practicar razonamiento más rápido.</li>
+          <li>Si fallas una pregunta, revisa el tipo de ejercicio para identificar en qué tema reforzar.</li>
+          <li>Haz varios exámenes en distintos días para medir tu progreso.</li>
+        </ul>
+      </section>
+
+      <p class="footer-note">
+        Sigue practicando y refuerza tu habilidad numérica paso a paso.
+      </p>
+
+    </div>
+  </div>
+</body>
+</html>
