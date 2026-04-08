@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Examen de Habilidad Numérica 5</title>
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg,#111827,#1f2937,#374151);
+      color:#fff;
+      min-height:100vh;
+      padding:20px;
+    }
+    .container{
+      max-width:1000px;
+      margin:auto;
+      background:rgba(255,255,255,.08);
+      border-radius:22px;
+      padding:26px;
+      box-shadow:0 10px 30px rgba(0,0,0,.25);
+      backdrop-filter: blur(10px);
+    }
+    h1{
+      text-align:center;
+      margin-bottom:10px;
+      font-size:2rem;
+    }
+    .subtitle{
+      text-align:center;
+      margin-bottom:20px;
+      opacity:.9;
+    }
+    .topbar{
+      display:flex;
+      justify-content:space-between;
+      flex-wrap:wrap;
+      gap:10px;
+      background:rgba(255,255,255,.12);
+      padding:14px 16px;
+      border-radius:14px;
+      margin-bottom:18px;
+      font-weight:bold;
+    }
+    .progress-wrap{
+      width:100%;
+      height:14px;
+      background:rgba(255,255,255,.18);
+      border-radius:999px;
+      overflow:hidden;
+      margin-bottom:24px;
+    }
+    .progress{
+      height:100%;
+      width:0%;
+      background:#ffd54f;
+      transition:.3s ease;
+    }
+    .question-card{
+      display:none;
+      background:rgba(255,255,255,.1);
+      border-radius:18px;
+      padding:24px;
+      animation:fade .25s ease;
+      margin-bottom:20px;
+    }
+    .question-card.active{display:block}
+    .qnum{
+      font-size:.95rem;
+      opacity:.8;
+      margin-bottom:10px;
+    }
+    .qtext{
+      font-size:1.15rem;
+      line-height:1.6;
+      margin-bottom:18px;
+    }
+    .mini-box{
+      background:rgba(255,255,255,.1);
+      border-left:4px solid #ffd54f;
+      padding:12px 14px;
+      border-radius:12px;
+      margin:12px 0 18px;
+      white-space:pre-line;
+      line-height:1.55;
+      font-size:.97rem;
+    }
+    .option{
+      background:rgba(255,255,255,.12);
+      border:2px solid transparent;
+      border-radius:12px;
+      padding:12px 14px;
+      margin:10px 0;
+      cursor:pointer;
+      transition:.2s ease;
+    }
+    .option:hover{
+      transform:translateY(-1px);
+      background:rgba(255,255,255,.18);
+    }
+    .option.selected{
+      border-color:#ffd54f;
+      background:rgba(255,213,79,.18);
+    }
+    .option.correct{
+      border-color:#4caf50;
+      background:rgba(76,175,80,.2);
+    }
+    .option.incorrect{
+      border-color:#f44336;
+      background:rgba(244,67,54,.2);
+    }
+    .buttons{
+      display:flex;
+      justify-content:space-between;
+      gap:12px;
+      margin-top:18px;
+      flex-wrap:wrap;
+    }
+    button{
+      border:none;
+      border-radius:12px;
+      padding:12px 18px;
+      font-size:1rem;
+      font-weight:bold;
+      cursor:pointer;
+      transition:.2s ease;
+    }
+    button:hover{transform:scale(1.02)}
+    .prev{background:#93c5fd;color:#102030}
+    .next{background:#ffd54f;color:#222}
+    .finish{background:#66bb6a;color:#fff}
+    .result{
+      display:none;
+      text-align:center;
+      margin-top:22px;
+      background:rgba(255,255,255,.1);
+      padding:28px;
+      border-radius:18px;
+    }
+    .review{
+      background:#ffb74d;
+      color:#222;
+      margin-top:12px;
+    }
+    @keyframes fade{
+      from{opacity:0;transform:translateY(10px)}
+      to{opacity:1;transform:translateY(0)}
+    }
+    @media(max-width:700px){
+      .qtext{font-size:1.05rem}
+      .buttons{flex-direction:column}
+      button{width:100%}
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🧠 Examen de Habilidad Numérica 5</h1>
+    <p class="subtitle">Basado en preguntas de tus PDFs</p>
+
+    <div class="topbar">
+      <div>Pregunta: <span id="currentQuestion">1</span>/<span id="totalQuestions">20</span></div>
+      <div>Puntaje: <span id="scoreDisplay">0</span></div>
+      <div>Respondidas: <span id="answeredCount">0</span></div>
+    </div>
+
+    <div class="progress-wrap">
+      <div class="progress" id="progressBar"></div>
+    </div>
+
+    <div id="quiz"></div>
+
+    <div class="result" id="resultBox">
+      <h2>🎉 Examen finalizado</h2>
+      <p>Tu puntaje: <strong id="finalScore"></strong></p>
+      <p id="finalMessage"></p>
+      <button class="review" onclick="reviewAnswers()">Revisar respuestas</button>
+    </div>
+  </div>
+
+  <script>
+    const questions = [
+      {
+        question: "¿Cuál es el resultado de 258 + 749 − 312?",
+        options: ["695", "689", "703", "715"],
+        answer: 0
+      },
+      {
+        question: "Si tienes 48 lápices y los distribuyes entre 6 personas, ¿cuántos recibe cada una?",
+        options: ["6", "8", "10", "12"],
+        answer: 1
+      },
+      {
+        question: "¿Cuál es el valor de 17 × 12?",
+        options: ["204", "214", "224", "234"],
+        answer: 0
+      },
+      {
+        question: "Calcula 180 ÷ 15",
+        options: ["10", "12", "14", "16"],
+        answer: 1
+      },
+      {
+        question: "Si la razón entre a y b es 3:4, ¿cuál es el valor de a si b = 20?",
+        options: ["12", "15", "18", "25"],
+        answer: 1
+      },
+      {
+        question: "Un mapa tiene una escala de 1:5000. Si dos puntos están a 4 cm en el mapa, ¿cuál es la distancia real?",
+        options: ["200 m", "20 km", "2 km", "0.2 km"],
+        answer: 0
+      },
+      {
+        question: "En un salón hay 24 hombres y 16 mujeres. ¿Cuál es la razón entre hombres y mujeres?",
+        options: ["2:3", "3:2", "4:3", "3:4"],
+        answer: 1
+      },
+      {
+        question: "Un producto costaba Q400 y se le aplicó un descuento del 25%. ¿Cuál es su precio con el descuento?",
+        options: ["Q100", "Q275", "Q300", "Q325"],
+        answer: 2
+      },
+      {
+        question: "¿Cuál es el número que sigue en esta serie? 3, 6, 12, 24, 48, ?",
+        options: ["60", "72", "96", "108"],
+        answer: 2
+      },
+      {
+        question: "¿Qué número falta en la serie? 81, 27, 9, ___, 1",
+        options: ["5", "4", "3", "6"],
+        answer: 2
+      },
+      {
+        question: "¿Cuál de las siguientes respuestas es mayor?",
+        extra: "a) 12 ÷ 6\nb) 3²\nc) 28 - 23\nd) √16",
+        options: ["a", "b", "c", "d"],
+        answer: 1
+      },
+      {
+        question: "¿Cuál de las siguientes respuestas es mayor?",
+        extra: "a) (45 ÷ 5) + 17 - 12\nb) 21 + (24 ÷ 3) - 15\nc) 6 + (8 ÷ 2) + 9\nd) (21 ÷ 7) + 11 + 1",
+        options: ["a", "b", "c", "d"],
+        answer: 2
+      },
+      {
+        question: "En una finca hay 4 árboles y cada uno da 10 frutos a la semana. ¿Cuántos frutos darán todos los árboles en dos semanas?",
+        options: ["20 frutos", "40 frutos", "80 frutos", "100 frutos"],
+        answer: 2
+      },
+      {
+        question: "Luis tiene 30 euros y se ha gastado en ropa una cantidad igual a 2/3 de lo que tiene ahora. ¿Cuánto se ha gastado en ropa?",
+        options: ["10 euros", "15 euros", "20 euros", "60 euros"],
+        answer: 1
+      },
+      {
+        question: "Un inversor compra 20 acciones al precio de 3.20 euros cada una y un año después las vende. ¿Cuánto ganó si el valor aumentó un 25%?",
+        options: ["16", "64", "80", "8"],
+        answer: 0
+      },
+      {
+        question: "¿Cuántas toneladas de trigo se han importado en los 3 primeros años?",
+        extra: "Tabla usada en el PDF:\nTrigo importado\nAño 1: 5\nAño 2: 20\nAño 3: 40",
+        options: ["55", "65", "115", "355"],
+        answer: 1
+      },
+      {
+        question: "¿En cuánto superan las importaciones a las exportaciones de cebada en el año 4?",
+        extra: "Tabla usada en el PDF:\nCebada año 4\nExportaciones: 30\nImportaciones: 400",
+        options: ["260", "270", "330", "370"],
+        answer: 3
+      },
+      {
+        question: "¿Cuántas toneladas de cebada se han exportado por término medio cada año?",
+        extra: "Tabla usada en el PDF:\nExportaciones de cebada: 20, 50, 40, 30",
+        options: ["25", "35", "40", "275"],
+        answer: 1
+      },
+      {
+        question: "¿En cuánto superan las importaciones a las exportaciones en el año 3?",
+        extra: "Tabla usada en el PDF:\nAño 3\nCebada: Exp 40 Imp 200\nTrigo: Exp 100 Imp 40\nAvena: Exp 150 Imp 250",
+        options: ["140 toneladas", "200 toneladas", "220 toneladas", "240 toneladas"],
+        answer: 1
+      },
+      {
+        question: "¿Cuál es el número más pequeño que es divisible exactamente por 2, 4, 7 y 21?",
+        options: ["1176", "168", "84", "42", "Ninguna de ellas"],
+        answer: 2
+      }
+    ];
+
+    const quizContainer = document.getElementById("quiz");
+    const currentQuestionEl = document.getElementById("currentQuestion");
+    const totalQuestionsEl = document.getElementById("totalQuestions");
+    const scoreDisplay = document.getElementById("scoreDisplay");
+    const answeredCount = document.getElementById("answeredCount");
+    const progressBar = document.getElementById("progressBar");
+    const resultBox = document.getElementById("resultBox");
+    const finalScore = document.getElementById("finalScore");
+    const finalMessage = document.getElementById("finalMessage");
+
+    let current = 0;
+    let userAnswers = new Array(questions.length).fill(null);
+    let reviewed = false;
+
+    totalQuestionsEl.textContent = questions.length;
+
+    function renderQuiz() {
+      quizContainer.innerHTML = "";
+
+      questions.forEach((q, index) => {
+        const card = document.createElement("div");
+        card.className = "question-card";
+        if (index === current) card.classList.add("active");
+
+        const extra = q.extra ? `<div class="mini-box">${q.extra}</div>` : "";
+
+        let optionsHTML = "";
+        q.options.forEach((option, i) => {
+          optionsHTML += `
+            <div class="option ${userAnswers[index] === i ? 'selected' : ''}" onclick="selectOption(${index}, ${i})">
+              ${String.fromCharCode(65 + i)}. ${option}
+            </div>
+          `;
+        });
+
+        card.innerHTML = `
+          <div class="qnum">Pregunta ${index + 1}</div>
+          <div class="qtext">${q.question}</div>
+          ${extra}
+          <div class="options">${optionsHTML}</div>
+          <div class="buttons">
+            <button class="prev" onclick="prevQuestion()" ${index === 0 ? "disabled" : ""}>⬅ Anterior</button>
+            ${
+              index === questions.length - 1
+              ? `<button class="finish" onclick="finishQuiz()">Finalizar</button>`
+              : `<button class="next" onclick="nextQuestion()">Siguiente ➡</button>`
+            }
+          </div>
+        `;
+
+        quizContainer.appendChild(card);
+      });
+
+      updateTopBar();
+    }
+
+    function selectOption(questionIndex, optionIndex) {
+      if (reviewed) return;
+      userAnswers[questionIndex] = optionIndex;
+      renderQuiz();
+    }
+
+    function nextQuestion() {
+      if (current < questions.length - 1) {
+        current++;
+        renderQuiz();
+      }
+    }
+
+    function prevQuestion() {
+      if (current > 0) {
+        current--;
+        renderQuiz();
+      }
+    }
+
+    function updateTopBar() {
+      currentQuestionEl.textContent = current + 1;
+      const answered = userAnswers.filter(ans => ans !== null).length;
+      answeredCount.textContent = answered;
+      progressBar.style.width = `${(answered / questions.length) * 100}%`;
+
+      const score = userAnswers.reduce((acc, ans, i) => ans === questions[i].answer ? acc + 1 : acc, 0);
+      scoreDisplay.textContent = score;
+    }
+
+    function finishQuiz() {
+      const score = userAnswers.reduce((acc, ans, i) => ans === questions[i].answer ? acc + 1 : acc, 0);
+      finalScore.textContent = `${score} / ${questions.length}`;
+
+      let msg = "";
+      if (score >= 17) {
+        msg = "🔥 Muy buen nivel. Este sí ya va agarrando forma de simulador serio.";
+      } else if (score >= 13) {
+        msg = "💪 Vas bien, pero todavía hay varias para reforzar.";
+      } else if (score >= 9) {
+        msg = "📚 Nivel aceptable, pero toca practicar más.";
+      } else {
+        msg = "🫠 Hay que seguirle metiendo, pero por eso estamos armando todo esto.";
+      }
+
+      finalMessage.textContent = msg;
+      resultBox.style.display = "block";
+      window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
+    }
+
+    function reviewAnswers() {
+      reviewed = true;
+      const cards = document.querySelectorAll(".question-card");
+
+      cards.forEach((card, qIndex) => {
+        const options = card.querySelectorAll(".option");
+        options.forEach((option, oIndex) => {
+          option.onclick = null;
+          option.classList.remove("selected");
+
+          if (oIndex === questions[qIndex].answer) {
+            option.classList.add("correct");
+          }
+
+          if (userAnswers[qIndex] === oIndex && oIndex !== questions[qIndex].answer) {
+            option.classList.add("incorrect");
+          }
+        });
+      });
+
+      alert("Ahora puedes revisar tus respuestas correctas e incorrectas.");
+      resultBox.scrollIntoView({ behavior: "smooth" });
+    }
+
+    renderQuiz();
+  </script>
+</body>
+</html>
