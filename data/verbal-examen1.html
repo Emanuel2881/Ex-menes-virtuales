@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Examen Verbal 1</title>
+
+<style>
+body{
+  font-family: Arial;
+  background: linear-gradient(135deg,#fff1f2,#ffe4e6,#fecdd3);
+  color:#7f1d1d;
+  padding:20px;
+}
+
+.container{
+  max-width:900px;
+  margin:auto;
+  background:rgba(255,255,255,0.9);
+  padding:25px;
+  border-radius:20px;
+}
+
+.question{display:none;}
+.question.active{display:block;}
+
+.option{
+  background:#ffe4e6;
+  padding:10px;
+  margin:8px 0;
+  border-radius:10px;
+  cursor:pointer;
+}
+
+.option.selected{
+  background:#f43f5e;
+  color:white;
+}
+
+button{
+  margin-top:10px;
+  padding:10px 15px;
+  border:none;
+  border-radius:10px;
+  cursor:pointer;
+}
+
+.next{background:#fb7185;color:white;}
+.prev{background:#fda4af;}
+.finish{background:#dc2626;color:white;}
+
+.top{
+  display:flex;
+  justify-content:space-between;
+  margin-bottom:15px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+<h1>📖 Examen Verbal 1</h1>
+
+<div class="top">
+<div>Pregunta <span id="qNum">1</span>/15</div>
+<div>Puntaje: <span id="score">0</span></div>
+</div>
+
+<div id="quiz"></div>
+
+</div>
+
+<script>
+
+const questions = [
+
+{
+q:"CIUDAD es a HOMBRE como COLMENA es a ___",
+o:["Hormiga","Mosquito","Araña","Abeja"],
+a:3
+},
+{
+q:"BATIDO es a BATIR como ZUMO es a ___",
+o:["Exprimir","Aplastar","Machacar","Succionar"],
+a:0
+},
+{
+q:"CONSEJERO es a CONSEJO como CANTANTE es a ___",
+o:["Fama","Éxito","Composición","Canción"],
+a:3
+},
+{
+q:"ESTUFA es a CALOR como NEVERA es a ___",
+o:["Temperatura","Frío","Conservación","Congelación"],
+a:1
+},
+{
+q:"MARTILLO es a CLAVO como DESTORNILLADOR es a ___",
+o:["Hierro","Tornillo","Remache","Herramienta"],
+a:1
+},
+{
+q:"ASA es a CESTA como POMO es a ___",
+o:["Puerta","Tirador","Envase","Manillar"],
+a:0
+},
+{
+q:"LÍQUIDO es a SOPA como SÓLIDO es a ___",
+o:["Comer","Bebida","Plátano","Gaseoso"],
+a:2
+},
+{
+q:"BALLENA es a ACUÁTICO como LEÓN es a ___",
+o:["Carnívoro","Terrestre","Depredador","Devorador"],
+a:1
+},
+{
+q:"RESTAR es a SUMAR como ARREGLAR es a ___",
+o:["Incluir","Corregir","Estropear","Resarcir"],
+a:2
+},
+{
+q:"MÁS es a MENOS como DESPUÉS es a ___",
+o:["Tiempo","Siguiente","Pronto","Antes"],
+a:3
+},
+{
+q:"FÉMUR es a HUESO como CORAZÓN es a ___",
+o:["Glándula","Vena","Músculo","Arteria"],
+a:2
+},
+{
+q:"CUATRO es a CINCO como CUADRADO es a ___",
+o:["Triángulo","Heptágono","Hexágono","Pentágono"],
+a:3
+},
+{
+q:"HARINA es a TRIGO como CERVEZA es a ___",
+o:["Manzana","Patata","Cebada","Alfalfa"],
+a:2
+},
+{
+q:"PIE es a CUERPO como BOMBILLA es a ___",
+o:["Ojos","Luz","Vela","Lámpara"],
+a:3
+},
+{
+q:"EXCAVAR es a CAVIDAD como ALINEAR es a ___",
+o:["Seguido","Recta","Acodo","Ensamblar"],
+a:1
+}
+
+];
+
+let current=0;
+let answers=new Array(questions.length).fill(null);
+
+const quiz=document.getElementById("quiz");
+
+function render(){
+quiz.innerHTML="";
+
+questions.forEach((q,i)=>{
+let div=document.createElement("div");
+div.className="question"+(i===current?" active":"");
+
+let opts="";
+q.o.forEach((op,j)=>{
+opts+=`<div class="option ${answers[i]===j?"selected":""}" onclick="select(${i},${j})">${String.fromCharCode(65+j)}. ${op}</div>`;
+});
+
+div.innerHTML=`
+<h3>${q.q}</h3>
+${opts}
+<button class="prev" onclick="prev()" ${i===0?"disabled":""}>Anterior</button>
+${i===questions.length-1?
+`<button class="finish" onclick="finish()">Finalizar</button>`:
+`<button class="next" onclick="next()">Siguiente</button>`}
+`;
+
+quiz.appendChild(div);
+});
+
+update();
+}
+
+function select(i,j){
+answers[i]=j;
+render();
+}
+
+function next(){current++;render();}
+function prev(){current--;render();}
+
+function update(){
+document.getElementById("qNum").innerText=current+1;
+let score=answers.reduce((acc,a,i)=>a===questions[i].a?acc+1:acc,0);
+document.getElementById("score").innerText=score;
+}
+
+function finish(){
+let score=answers.reduce((acc,a,i)=>a===questions[i].a?acc+1:acc,0);
+alert("Tu puntaje: "+score+"/"+questions.length);
+}
+
+render();
+
+</script>
+
+</body>
+</html>
