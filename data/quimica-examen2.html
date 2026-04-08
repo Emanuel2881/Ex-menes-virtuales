@@ -1,1 +1,577 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Química - Examen 2</title>
+  <style>
+    *{
+      box-sizing:border-box;
+      margin:0;
+      padding:0;
+    }
 
+    body{
+      font-family: Arial, Helvetica, sans-serif;
+      background: linear-gradient(135deg, #f0f9ff, #ecfeff, #e0f2fe);
+      color:#0f172a;
+      min-height:100vh;
+      padding:30px 15px;
+    }
+
+    .container{
+      max-width:1000px;
+      margin:0 auto;
+      background:#ffffff;
+      border-radius:24px;
+      box-shadow:0 12px 35px rgba(0,0,0,0.08);
+      overflow:hidden;
+    }
+
+    .header{
+      background: linear-gradient(135deg, #0284c7, #0ea5e9);
+      color:white;
+      padding:30px 25px;
+      text-align:center;
+    }
+
+    .header h1{
+      font-size: clamp(1.9rem, 4vw, 2.8rem);
+      margin-bottom:10px;
+    }
+
+    .header p{
+      opacity:0.95;
+      line-height:1.5;
+      font-size:1rem;
+    }
+
+    .top-link{
+      display:inline-block;
+      margin-top:12px;
+      color:white;
+      text-decoration:none;
+      font-weight:bold;
+    }
+
+    .top-link:hover{
+      text-decoration:underline;
+    }
+
+    .content{
+      padding:25px;
+    }
+
+    .question{
+      background:#f8fcff;
+      border:1px solid #bae6fd;
+      border-radius:18px;
+      padding:18px;
+      margin-bottom:18px;
+    }
+
+    .question h3{
+      font-size:1.05rem;
+      line-height:1.5;
+      margin-bottom:14px;
+      color:#0369a1;
+    }
+
+    .option{
+      display:block;
+      margin:10px 0;
+      padding:10px 12px;
+      border-radius:12px;
+      cursor:pointer;
+      transition:0.2s ease;
+      border:1px solid transparent;
+      color:#1f2937;
+    }
+
+    .option:hover{
+      background:#ecfeff;
+      border-color:#7dd3fc;
+    }
+
+    .option input{
+      margin-right:10px;
+      accent-color:#0ea5e9;
+    }
+
+    .buttons{
+      display:flex;
+      flex-wrap:wrap;
+      gap:12px;
+      justify-content:center;
+      margin-top:25px;
+    }
+
+    button{
+      border:none;
+      border-radius:14px;
+      padding:13px 22px;
+      font-size:1rem;
+      font-weight:bold;
+      cursor:pointer;
+      transition:0.2s ease;
+    }
+
+    .btn-primary{
+      background:#0284c7;
+      color:white;
+    }
+
+    .btn-primary:hover{
+      background:#0369a1;
+    }
+
+    .btn-secondary{
+      background:#dbeafe;
+      color:#075985;
+    }
+
+    .btn-secondary:hover{
+      background:#bfdbfe;
+    }
+
+    .result{
+      margin-top:25px;
+      padding:20px;
+      border-radius:18px;
+      background:#f0f9ff;
+      border:1px solid #bae6fd;
+      text-align:center;
+      display:none;
+    }
+
+    .result h2{
+      margin-bottom:10px;
+      color:#0369a1;
+    }
+
+    .result p{
+      font-size:1.08rem;
+      line-height:1.6;
+      color:#0f172a;
+    }
+
+    .review{
+      margin-top:18px;
+      text-align:left;
+      color:#1f2937;
+    }
+
+    .review-item{
+      background:#ffffff;
+      border:1px solid #dbeafe;
+      border-radius:12px;
+      padding:12px;
+      margin-bottom:10px;
+    }
+
+    .correct{
+      color:#15803d;
+      font-weight:bold;
+    }
+
+    .incorrect{
+      color:#b91c1c;
+      font-weight:bold;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>Química - Examen 2</h1>
+      <p>Versión digital interactiva</p>
+      <a class="top-link" href="../quimica.html">← Volver a Química</a>
+    </div>
+
+    <div class="content">
+      <form id="quizForm">
+
+        <div class="question">
+          <h3>1. Son las propiedades que dependen de la cantidad de materia:</h3>
+          <label class="option"><input type="radio" name="q1" value="a"> A. Solubilidad y temperatura</label>
+          <label class="option"><input type="radio" name="q1" value="b"> B. Masa y volumen</label>
+          <label class="option"><input type="radio" name="q1" value="c"> C. Densidad y viscosidad</label>
+          <label class="option"><input type="radio" name="q1" value="d"> D. Fusión y ebullición</label>
+        </div>
+
+        <div class="question">
+          <h3>2. Cambio de estado de agregación de sólido a líquido por efecto de la temperatura:</h3>
+          <label class="option"><input type="radio" name="q2" value="a"> A. Filtración</label>
+          <label class="option"><input type="radio" name="q2" value="b"> B. Evaporación</label>
+          <label class="option"><input type="radio" name="q2" value="c"> C. Ebullición</label>
+          <label class="option"><input type="radio" name="q2" value="d"> D. Fusión</label>
+        </div>
+
+        <div class="question">
+          <h3>3. El agua está constituida por hidrógeno y oxígeno, por lo que se considera:</h3>
+          <label class="option"><input type="radio" name="q3" value="a"> A. Compuesto</label>
+          <label class="option"><input type="radio" name="q3" value="b"> B. Elemento</label>
+          <label class="option"><input type="radio" name="q3" value="c"> C. Átomo</label>
+          <label class="option"><input type="radio" name="q3" value="d"> D. Mezcla</label>
+        </div>
+
+        <div class="question">
+          <h3>4. Un lingote de oro está constituido por átomos de la misma especie, por lo tanto es:</h3>
+          <label class="option"><input type="radio" name="q4" value="a"> A. Elemento</label>
+          <label class="option"><input type="radio" name="q4" value="b"> B. Compuesto</label>
+          <label class="option"><input type="radio" name="q4" value="c"> C. Mezcla</label>
+          <label class="option"><input type="radio" name="q4" value="d"> D. Molécula</label>
+        </div>
+
+        <div class="question">
+          <h3>5. Es la unidad constituyente más pequeña de un elemento químico:</h3>
+          <label class="option"><input type="radio" name="q5" value="a"> A. Átomo</label>
+          <label class="option"><input type="radio" name="q5" value="b"> B. Ion</label>
+          <label class="option"><input type="radio" name="q5" value="c"> C. Protón</label>
+          <label class="option"><input type="radio" name="q5" value="d"> D. Molécula</label>
+        </div>
+
+        <div class="question">
+          <h3>6. Tipo de enlace que se forma cuando dos átomos no metálicos comparten electrones:</h3>
+          <label class="option"><input type="radio" name="q6" value="a"> A. Metálico</label>
+          <label class="option"><input type="radio" name="q6" value="b"> B. Covalente</label>
+          <label class="option"><input type="radio" name="q6" value="c"> C. Iónico</label>
+          <label class="option"><input type="radio" name="q6" value="d"> D. Polar</label>
+        </div>
+
+        <div class="question">
+          <h3>7. La unión de un metal con un no metal forma un enlace:</h3>
+          <label class="option"><input type="radio" name="q7" value="a"> A. Covalente</label>
+          <label class="option"><input type="radio" name="q7" value="b"> B. No metálico</label>
+          <label class="option"><input type="radio" name="q7" value="c"> C. Metálico</label>
+          <label class="option"><input type="radio" name="q7" value="d"> D. Iónico</label>
+        </div>
+
+        <div class="question">
+          <h3>8. Mezcla de sustancias químicas que nutren las plantas:</h3>
+          <label class="option"><input type="radio" name="q8" value="a"> A. Pesticidas</label>
+          <label class="option"><input type="radio" name="q8" value="b"> B. Herbicidas</label>
+          <label class="option"><input type="radio" name="q8" value="c"> C. Fertilizantes</label>
+          <label class="option"><input type="radio" name="q8" value="d"> D. Contaminantes</label>
+        </div>
+
+        <div class="question">
+          <h3>9. Es una cualidad de un material que se percibe con los sentidos y no se puede medir:</h3>
+          <label class="option"><input type="radio" name="q9" value="a"> A. Magnitud</label>
+          <label class="option"><input type="radio" name="q9" value="b"> B. Propiedad extensiva</label>
+          <label class="option"><input type="radio" name="q9" value="c"> C. Propiedad cualitativa</label>
+          <label class="option"><input type="radio" name="q9" value="d"> D. Propiedad intensiva</label>
+        </div>
+
+        <div class="question">
+          <h3>10. Todos los elementos químicos se encuentran ordenados de manera creciente por su número atómico en:</h3>
+          <label class="option"><input type="radio" name="q10" value="a"> A. Estructura de Lewis</label>
+          <label class="option"><input type="radio" name="q10" value="b"> B. Tabla de multiplicar</label>
+          <label class="option"><input type="radio" name="q10" value="c"> C. Tabla periódica</label>
+          <label class="option"><input type="radio" name="q10" value="d"> D. Tabla de radicales libres</label>
+        </div>
+
+        <div class="question">
+          <h3>11. ¿Qué tienen en común F, Cl, Br, I y At?</h3>
+          <label class="option"><input type="radio" name="q11" value="a"> A. 1 electrón de valencia</label>
+          <label class="option"><input type="radio" name="q11" value="b"> B. 6 electrones de valencia</label>
+          <label class="option"><input type="radio" name="q11" value="c"> C. 7 electrones de valencia</label>
+          <label class="option"><input type="radio" name="q11" value="d"> D. 2 electrones de valencia</label>
+        </div>
+
+        <div class="question">
+          <h3>12. Los elementos que constituyen a todos los seres vivos son:</h3>
+          <label class="option"><input type="radio" name="q12" value="a"> A. C, H, O y F</label>
+          <label class="option"><input type="radio" name="q12" value="b"> B. C, H, O, Na y N</label>
+          <label class="option"><input type="radio" name="q12" value="c"> C. C, H, O, N, P, S</label>
+          <label class="option"><input type="radio" name="q12" value="d"> D. C, H, O y Br</label>
+        </div>
+
+        <div class="question">
+          <h3>13. Las partículas subatómicas que intervienen en la formación de enlaces químicos son:</h3>
+          <label class="option"><input type="radio" name="q13" value="a"> A. Neutrones</label>
+          <label class="option"><input type="radio" name="q13" value="b"> B. Electrones</label>
+          <label class="option"><input type="radio" name="q13" value="c"> C. Positrones</label>
+          <label class="option"><input type="radio" name="q13" value="d"> D. Protones</label>
+        </div>
+
+        <div class="question">
+          <h3>14. ¿Qué característica de los átomos indica la capacidad de unirse con otros elementos?</h3>
+          <label class="option"><input type="radio" name="q14" value="a"> A. Estado de agregación</label>
+          <label class="option"><input type="radio" name="q14" value="b"> B. Número atómico</label>
+          <label class="option"><input type="radio" name="q14" value="c"> C. Valencia</label>
+          <label class="option"><input type="radio" name="q14" value="d"> D. Masa atómica</label>
+        </div>
+
+        <div class="question">
+          <h3>15. El tipo de enlace químico que mantiene unidos a los átomos de los metales entre sí es:</h3>
+          <label class="option"><input type="radio" name="q15" value="a"> A. Covalente</label>
+          <label class="option"><input type="radio" name="q15" value="b"> B. Sintético</label>
+          <label class="option"><input type="radio" name="q15" value="c"> C. Metálico</label>
+          <label class="option"><input type="radio" name="q15" value="d"> D. Iónico</label>
+        </div>
+
+        <div class="question">
+          <h3>16. Los electrones externos de la última capa reciben el nombre de:</h3>
+          <label class="option"><input type="radio" name="q16" value="a"> A. Intercambio</label>
+          <label class="option"><input type="radio" name="q16" value="b"> B. De valencia</label>
+          <label class="option"><input type="radio" name="q16" value="c"> C. De trabajo</label>
+          <label class="option"><input type="radio" name="q16" value="d"> D. De unión</label>
+        </div>
+
+        <div class="question">
+          <h3>17. Algunos materiales son buenos conductores de la corriente eléctrica porque:</h3>
+          <label class="option"><input type="radio" name="q17" value="a"> A. Tienen electrones libres en su estructura</label>
+          <label class="option"><input type="radio" name="q17" value="b"> B. Los protones atraen electrones de la corriente</label>
+          <label class="option"><input type="radio" name="q17" value="c"> C. Los electrones saltan de un nivel a otro</label>
+          <label class="option"><input type="radio" name="q17" value="d"> D. Dejan electrones libres al pasar la corriente</label>
+        </div>
+
+        <div class="question">
+          <h3>18. Si un limpiador comercial con indicador de col morada se vuelve verde, indica que es una disolución:</h3>
+          <label class="option"><input type="radio" name="q18" value="a"> A. Neutra</label>
+          <label class="option"><input type="radio" name="q18" value="b"> B. Salina</label>
+          <label class="option"><input type="radio" name="q18" value="c"> C. Ácida</label>
+          <label class="option"><input type="radio" name="q18" value="d"> D. Básica</label>
+        </div>
+
+        <div class="question">
+          <h3>19. Los componentes principales de una ecuación química son:</h3>
+          <label class="option"><input type="radio" name="q19" value="a"> A. Reactivos y coeficientes</label>
+          <label class="option"><input type="radio" name="q19" value="b"> B. Reactivos y número de átomos</label>
+          <label class="option"><input type="radio" name="q19" value="c"> C. Reactivos y productos</label>
+          <label class="option"><input type="radio" name="q19" value="d"> D. Reactivos y número de moléculas</label>
+        </div>
+
+        <div class="question">
+          <h3>20. Las reacciones químicas que liberan energía en forma de calor o luz se conocen como:</h3>
+          <label class="option"><input type="radio" name="q20" value="a"> A. Exotérmicas</label>
+          <label class="option"><input type="radio" name="q20" value="b"> B. De oxidación</label>
+          <label class="option"><input type="radio" name="q20" value="c"> C. De efervescencia</label>
+          <label class="option"><input type="radio" name="q20" value="d"> D. Endotérmicas</label>
+        </div>
+
+        <div class="question">
+          <h3>21. ¿Cuál es la ecuación que representa correctamente la conservación de la masa?</h3>
+          <label class="option"><input type="radio" name="q21" value="a"> A. C + O₂ → 2CO + H₂O</label>
+          <label class="option"><input type="radio" name="q21" value="b"> B. 2KClO₃ → KCl + 3O₂</label>
+          <label class="option"><input type="radio" name="q21" value="c"> C. 2H₂ + O₂ → 2H₂O</label>
+          <label class="option"><input type="radio" name="q21" value="d"> D. Al(OH)₃ + 3HCl → AlCl₃ + H₂O</label>
+        </div>
+
+        <div class="question">
+          <h3>22. En la reacción 2Fe₂O₃ + 3C → 4Fe + 3CO₂, ¿qué ocurre?</h3>
+          <label class="option"><input type="radio" name="q22" value="a"> A. El carbono se mantiene y el hierro se oxida</label>
+          <label class="option"><input type="radio" name="q22" value="b"> B. El carbono se oxida y el hierro se reduce</label>
+          <label class="option"><input type="radio" name="q22" value="c"> C. El carbono se reduce y el hierro se oxida</label>
+          <label class="option"><input type="radio" name="q22" value="d"> D. El carbono se reduce y el hierro se mantiene</label>
+        </div>
+
+        <div class="question">
+          <h3>23. Proceso electroquímico por el cual un átomo o ion gana electrones:</h3>
+          <label class="option"><input type="radio" name="q23" value="a"> A. Saponificación</label>
+          <label class="option"><input type="radio" name="q23" value="b"> B. Oxidación</label>
+          <label class="option"><input type="radio" name="q23" value="c"> C. Reducción</label>
+          <label class="option"><input type="radio" name="q23" value="d"> D. Neutralización</label>
+        </div>
+
+        <div class="question">
+          <h3>24. Reacción en la que un átomo, ion o molécula pierde electrones:</h3>
+          <label class="option"><input type="radio" name="q24" value="a"> A. Reducción</label>
+          <label class="option"><input type="radio" name="q24" value="b"> B. Neutralización</label>
+          <label class="option"><input type="radio" name="q24" value="c"> C. Saponificación</label>
+          <label class="option"><input type="radio" name="q24" value="d"> D. Oxidación</label>
+        </div>
+
+        <div class="question">
+          <h3>25. El componente principal del ácido gástrico es:</h3>
+          <label class="option"><input type="radio" name="q25" value="a"> A. Ácido acético</label>
+          <label class="option"><input type="radio" name="q25" value="b"> B. Ácido clorhídrico</label>
+          <label class="option"><input type="radio" name="q25" value="c"> C. Ácido muriático</label>
+          <label class="option"><input type="radio" name="q25" value="d"> D. Ácido ascórbico</label>
+        </div>
+
+        <div class="question">
+          <h3>26. ¿Qué alimentos provocan acidez estomacal con más frecuencia?</h3>
+          <label class="option"><input type="radio" name="q26" value="a"> A. Manzanas</label>
+          <label class="option"><input type="radio" name="q26" value="b"> B. Calabaza</label>
+          <label class="option"><input type="radio" name="q26" value="c"> C. Comidas bajas en grasa</label>
+          <label class="option"><input type="radio" name="q26" value="d"> D. Comidas picantes</label>
+        </div>
+
+        <div class="question">
+          <h3>27. El electrón que se encuentra en el nivel principal de energía más alto se llama:</h3>
+          <label class="option"><input type="radio" name="q27" value="a"> A. Electrón de transición</label>
+          <label class="option"><input type="radio" name="q27" value="b"> B. Electrón de valencia</label>
+          <label class="option"><input type="radio" name="q27" value="c"> C. Electrón estable</label>
+          <label class="option"><input type="radio" name="q27" value="d"> D. Electrón neutro</label>
+        </div>
+
+        <div class="question">
+          <h3>28. Si al hornear un pastel se detecta cambio de olor, color y textura, esto es manifestación de:</h3>
+          <label class="option"><input type="radio" name="q28" value="a"> A. Cambios químicos</label>
+          <label class="option"><input type="radio" name="q28" value="b"> B. Mutaciones</label>
+          <label class="option"><input type="radio" name="q28" value="c"> C. Mezclas</label>
+          <label class="option"><input type="radio" name="q28" value="d"> D. Cambios físicos</label>
+        </div>
+
+        <div class="question">
+          <h3>29. Una manifestación evidente de cambio químico es:</h3>
+          <label class="option"><input type="radio" name="q29" value="a"> A. Formación de gases</label>
+          <label class="option"><input type="radio" name="q29" value="b"> B. Emisión de luz</label>
+          <label class="option"><input type="radio" name="q29" value="c"> C. Formación de precipitados</label>
+          <label class="option"><input type="radio" name="q29" value="d"> D. Cambio del color</label>
+        </div>
+
+        <div class="question">
+          <h3>30. El elemento metálico con 13 protones, resistente a la corrosión y muy usado después del acero es:</h3>
+          <label class="option"><input type="radio" name="q30" value="a"> A. Si</label>
+          <label class="option"><input type="radio" name="q30" value="b"> B. Mg</label>
+          <label class="option"><input type="radio" name="q30" value="c"> C. Al</label>
+          <label class="option"><input type="radio" name="q30" value="d"> D. P</label>
+        </div>
+
+        <div class="buttons">
+          <button type="button" class="btn-primary" onclick="calificarExamen()">Calificar examen</button>
+          <button type="reset" class="btn-secondary" onclick="reiniciarExamen()">Reiniciar</button>
+        </div>
+
+        <div class="result" id="resultado">
+          <h2>Resultado</h2>
+          <p id="puntajeTexto"></p>
+          <div class="review" id="revision"></div>
+        </div>
+
+      </form>
+    </div>
+  </div>
+
+  <script>
+    const respuestasCorrectas = {
+      q1:"b",
+      q2:"d",
+      q3:"a",
+      q4:"a",
+      q5:"a",
+      q6:"b",
+      q7:"d",
+      q8:"c",
+      q9:"c",
+      q10:"c",
+      q11:"c",
+      q12:"c",
+      q13:"b",
+      q14:"c",
+      q15:"c",
+      q16:"b",
+      q17:"a",
+      q18:"d",
+      q19:"c",
+      q20:"a",
+      q21:"c",
+      q22:"b",
+      q23:"c",
+      q24:"d",
+      q25:"b",
+      q26:"d",
+      q27:"b",
+      q28:"a",
+      q29:"d",
+      q30:"c"
+    };
+
+    const textosCorrectos = {
+      q1:"B. Masa y volumen",
+      q2:"D. Fusión",
+      q3:"A. Compuesto",
+      q4:"A. Elemento",
+      q5:"A. Átomo",
+      q6:"B. Covalente",
+      q7:"D. Iónico",
+      q8:"C. Fertilizantes",
+      q9:"C. Propiedad cualitativa",
+      q10:"C. Tabla periódica",
+      q11:"C. 7 electrones de valencia",
+      q12:"C. C, H, O, N, P, S",
+      q13:"B. Electrones",
+      q14:"C. Valencia",
+      q15:"C. Metálico",
+      q16:"B. De valencia",
+      q17:"A. Tienen electrones libres en su estructura",
+      q18:"D. Básica",
+      q19:"C. Reactivos y productos",
+      q20:"A. Exotérmicas",
+      q21:"C. 2H₂ + O₂ → 2H₂O",
+      q22:"B. El carbono se oxida y el hierro se reduce",
+      q23:"C. Reducción",
+      q24:"D. Oxidación",
+      q25:"B. Ácido clorhídrico",
+      q26:"D. Comidas picantes",
+      q27:"B. Electrón de valencia",
+      q28:"A. Cambios químicos",
+      q29:"D. Cambio del color",
+      q30:"C. Al"
+    };
+
+    function calificarExamen() {
+      let total = Object.keys(respuestasCorrectas).length;
+      let correctas = 0;
+      let respondidas = 0;
+      let revisionHTML = "";
+
+      for (let pregunta in respuestasCorrectas) {
+        const seleccionada = document.querySelector(`input[name="${pregunta}"]:checked`);
+
+        if (seleccionada) {
+          respondidas++;
+
+          if (seleccionada.value === respuestasCorrectas[pregunta]) {
+            correctas++;
+            revisionHTML += `
+              <div class="review-item">
+                <span class="correct">${pregunta.toUpperCase()}: Correcta</span><br>
+                Respuesta: ${textosCorrectos[pregunta]}
+              </div>
+            `;
+          } else {
+            const textoMarcado = seleccionada.parentElement.textContent.trim();
+            revisionHTML += `
+              <div class="review-item">
+                <span class="incorrect">${pregunta.toUpperCase()}: Incorrecta</span><br>
+                Tu respuesta: ${textoMarcado}<br>
+                Correcta: ${textosCorrectos[pregunta]}
+              </div>
+            `;
+          }
+        } else {
+          revisionHTML += `
+            <div class="review-item">
+              <span class="incorrect">${pregunta.toUpperCase()}: Sin responder</span><br>
+              Correcta: ${textosCorrectos[pregunta]}
+            </div>
+          `;
+        }
+      }
+
+      const porcentaje = ((correctas / total) * 100).toFixed(1);
+
+      document.getElementById("puntajeTexto").innerHTML = `
+        Respondiste <strong>${respondidas}</strong> de <strong>${total}</strong> preguntas.<br>
+        Obtuviste <strong>${correctas}</strong> correctas de <strong>${total}</strong>.<br>
+        Tu nota fue: <strong>${porcentaje}%</strong>
+      `;
+
+      document.getElementById("revision").innerHTML = revisionHTML;
+      document.getElementById("resultado").style.display = "block";
+      document.getElementById("resultado").scrollIntoView({ behavior: "smooth" });
+    }
+
+    function reiniciarExamen() {
+      document.getElementById("resultado").style.display = "none";
+      document.getElementById("revision").innerHTML = "";
+      document.getElementById("puntajeTexto").innerHTML = "";
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  </script>
+</body>
+</html>
