@@ -1,1 +1,477 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Biología - Examen 1</title>
+  <style>
+    *{
+      box-sizing:border-box;
+      margin:0;
+      padding:0;
+    }
 
+    body{
+      font-family: Arial, Helvetica, sans-serif;
+      background: linear-gradient(135deg, #ecfdf5, #f0fdf4, #dcfce7);
+      color:#14532d;
+      min-height:100vh;
+      padding:30px 15px;
+    }
+
+    .container{
+      max-width:950px;
+      margin:0 auto;
+      background:#ffffff;
+      border-radius:24px;
+      box-shadow:0 12px 35px rgba(0,0,0,0.08);
+      overflow:hidden;
+    }
+
+    .header{
+      background: linear-gradient(135deg, #166534, #22c55e);
+      color:white;
+      padding:30px 25px;
+      text-align:center;
+    }
+
+    .header h1{
+      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      margin-bottom:10px;
+    }
+
+    .header p{
+      opacity:0.95;
+      line-height:1.5;
+      font-size:1rem;
+    }
+
+    .content{
+      padding:25px;
+    }
+
+    .question{
+      background:#f7fff9;
+      border:1px solid #d1fae5;
+      border-radius:18px;
+      padding:18px;
+      margin-bottom:18px;
+    }
+
+    .question h3{
+      font-size:1.08rem;
+      line-height:1.5;
+      margin-bottom:14px;
+      color:#14532d;
+    }
+
+    .option{
+      display:block;
+      margin:10px 0;
+      padding:10px 12px;
+      border-radius:12px;
+      cursor:pointer;
+      transition:0.2s ease;
+      border:1px solid transparent;
+    }
+
+    .option:hover{
+      background:#ecfdf5;
+      border-color:#bbf7d0;
+    }
+
+    .option input{
+      margin-right:10px;
+      accent-color:#16a34a;
+    }
+
+    .buttons{
+      display:flex;
+      flex-wrap:wrap;
+      gap:12px;
+      justify-content:center;
+      margin-top:25px;
+    }
+
+    button{
+      border:none;
+      border-radius:14px;
+      padding:13px 22px;
+      font-size:1rem;
+      font-weight:bold;
+      cursor:pointer;
+      transition:0.2s ease;
+    }
+
+    .btn-primary{
+      background:#16a34a;
+      color:white;
+    }
+
+    .btn-primary:hover{
+      background:#15803d;
+    }
+
+    .btn-secondary{
+      background:#dcfce7;
+      color:#166534;
+    }
+
+    .btn-secondary:hover{
+      background:#bbf7d0;
+    }
+
+    .result{
+      margin-top:25px;
+      padding:20px;
+      border-radius:18px;
+      background:#f0fdf4;
+      border:1px solid #bbf7d0;
+      text-align:center;
+      display:none;
+    }
+
+    .result h2{
+      margin-bottom:10px;
+      color:#166534;
+    }
+
+    .result p{
+      font-size:1.08rem;
+      line-height:1.6;
+      color:#166534;
+    }
+
+    .review{
+      margin-top:18px;
+      text-align:left;
+      color:#14532d;
+    }
+
+    .review-item{
+      background:#ffffff;
+      border:1px solid #dcfce7;
+      border-radius:12px;
+      padding:12px;
+      margin-bottom:10px;
+    }
+
+    .correct{
+      color:#15803d;
+      font-weight:bold;
+    }
+
+    .incorrect{
+      color:#b91c1c;
+      font-weight:bold;
+    }
+
+    .top-link{
+      display:inline-block;
+      margin-top:12px;
+      color:white;
+      text-decoration:none;
+      font-weight:bold;
+      opacity:0.95;
+    }
+
+    .top-link:hover{
+      text-decoration:underline;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>Biología - Examen 1</h1>
+      <p>Versión digital interactiva basada en tu material de estudio.</p>
+      <a class="top-link" href="biologia.html">← Volver a Biología</a>
+    </div>
+
+    <div class="content">
+      <form id="quizForm">
+
+        <div class="question">
+          <h3>1. Son las biomoléculas entre las cuales se encuentran los ácidos grasos:</h3>
+          <label class="option"><input type="radio" name="q1" value="a"> A. Lípidos</label>
+          <label class="option"><input type="radio" name="q1" value="b"> B. Carbohidratos</label>
+          <label class="option"><input type="radio" name="q1" value="c"> C. Ácidos nucleicos</label>
+          <label class="option"><input type="radio" name="q1" value="d"> D. Proteínas</label>
+        </div>
+
+        <div class="question">
+          <h3>2. Respecto a la oxidación completa de la glucosa, se afirma lo siguiente:</h3>
+          <label class="option"><input type="radio" name="q2" value="a"> A. Se producen 36-38 moléculas de ATP</label>
+          <label class="option"><input type="radio" name="q2" value="b"> B. Se produce en el citoplasma</label>
+          <label class="option"><input type="radio" name="q2" value="c"> C. Puede darse en presencia o ausencia de O₂</label>
+          <label class="option"><input type="radio" name="q2" value="d"> D. El producto final es piruvato y NADH</label>
+        </div>
+
+        <div class="question">
+          <h3>3. Respecto de la teoría celular, se afirma lo siguiente:</h3>
+          <label class="option"><input type="radio" name="q3" value="a"> A. Incluye cinco postulados básicos</label>
+          <label class="option"><input type="radio" name="q3" value="b"> B. Propone que las células son las unidades básicas de la vida</label>
+          <label class="option"><input type="radio" name="q3" value="c"> C. Algunas células se dividen por reproducción sexual y otras asexual</label>
+          <label class="option"><input type="radio" name="q3" value="d"> D. Indica que los organismos procariotas se originaron de los eucariotas</label>
+        </div>
+
+        <div class="question">
+          <h3>4. El transporte pasivo a través de la membrana:</h3>
+          <label class="option"><input type="radio" name="q4" value="a"> A. Requiere consumo energético en pequeñas cantidades</label>
+          <label class="option"><input type="radio" name="q4" value="b"> B. Las partículas se mueven en contra del gradiente de concentración</label>
+          <label class="option"><input type="radio" name="q4" value="c"> C. Incluye la difusión simple y la difusión facilitada</label>
+          <label class="option"><input type="radio" name="q4" value="d"> D. Cualquier molécula puede realizarlo independientemente de su gradiente</label>
+        </div>
+
+        <div class="question">
+          <h3>5. ¿Cuál de las siguientes biomoléculas es un monosacárido?</h3>
+          <label class="option"><input type="radio" name="q5" value="a"> A. Galactosa</label>
+          <label class="option"><input type="radio" name="q5" value="b"> B. Lactosa</label>
+          <label class="option"><input type="radio" name="q5" value="c"> C. Sacarosa</label>
+          <label class="option"><input type="radio" name="q5" value="d"> D. Maltosa</label>
+        </div>
+
+        <div class="question">
+          <h3>6. La cromatina está formada de los siguientes:</h3>
+          <label class="option"><input type="radio" name="q6" value="a"> A. ADN y proteínas</label>
+          <label class="option"><input type="radio" name="q6" value="b"> B. De cromosomas y ADN</label>
+          <label class="option"><input type="radio" name="q6" value="c"> C. Únicamente incluye el ADN</label>
+          <label class="option"><input type="radio" name="q6" value="d"> D. Proteínas exclusivamente</label>
+        </div>
+
+        <div class="question">
+          <h3>7. Estructura especializada del cromosoma que sirve como lugar de unión de los microtúbulos durante la división celular:</h3>
+          <label class="option"><input type="radio" name="q7" value="a"> A. Telómero</label>
+          <label class="option"><input type="radio" name="q7" value="b"> B. Centrómero</label>
+          <label class="option"><input type="radio" name="q7" value="c"> C. Locus</label>
+          <label class="option"><input type="radio" name="q7" value="d"> D. Cromátide</label>
+        </div>
+
+        <div class="question">
+          <h3>8. Identifique las bases nitrogenadas pirimidinas del ADN:</h3>
+          <label class="option"><input type="radio" name="q8" value="a"> A. Timina – Citosina</label>
+          <label class="option"><input type="radio" name="q8" value="b"> B. Uracilo – Timina</label>
+          <label class="option"><input type="radio" name="q8" value="c"> C. Uracilo – Guanina</label>
+          <label class="option"><input type="radio" name="q8" value="d"> D. Arginina – Guanina</label>
+        </div>
+
+        <div class="question">
+          <h3>9. ¿Cuál es el proceso en el que se sintetizan moléculas complejas a partir de sustancias más sencillas?</h3>
+          <label class="option"><input type="radio" name="q9" value="a"> A. Termodinámica</label>
+          <label class="option"><input type="radio" name="q9" value="b"> B. Metabolismo</label>
+          <label class="option"><input type="radio" name="q9" value="c"> C. Anabolismo</label>
+          <label class="option"><input type="radio" name="q9" value="d"> D. Catabolismo</label>
+        </div>
+
+        <div class="question">
+          <h3>10. De la mitosis se afirma lo siguiente:</h3>
+          <label class="option"><input type="radio" name="q10" value="a"> A. Se generan cuatro células haploides</label>
+          <label class="option"><input type="radio" name="q10" value="b"> B. Ocurre en todas las células</label>
+          <label class="option"><input type="radio" name="q10" value="c"> C. Se generan dos células hijas</label>
+          <label class="option"><input type="radio" name="q10" value="d"> D. Forma gametos para reproducción sexual</label>
+        </div>
+
+        <div class="question">
+          <h3>11. ¿A qué se refiere el término autosómico?</h3>
+          <label class="option"><input type="radio" name="q11" value="a"> A. A los cromosomas XY en un organismo</label>
+          <label class="option"><input type="radio" name="q11" value="b"> B. Al rasgo homocigoto dominante</label>
+          <label class="option"><input type="radio" name="q11" value="c"> C. Al gen localizado en cromosomas no sexuales</label>
+          <label class="option"><input type="radio" name="q11" value="d"> D. Al rasgo homocigoto recesivo</label>
+        </div>
+
+        <div class="question">
+          <h3>12. ¿Cuál es una característica del agua?</h3>
+          <label class="option"><input type="radio" name="q12" value="a"> A. Tiene carga eléctrica</label>
+          <label class="option"><input type="radio" name="q12" value="b"> B. Carece de polaridad</label>
+          <label class="option"><input type="radio" name="q12" value="c"> C. Es molécula orgánica</label>
+          <label class="option"><input type="radio" name="q12" value="d"> D. Es un disolvente</label>
+        </div>
+
+        <div class="question">
+          <h3>13. Las enzimas que unen moléculas acoplando la hidrólisis de ATP pertenecen a la clase de:</h3>
+          <label class="option"><input type="radio" name="q13" value="a"> A. Liasas</label>
+          <label class="option"><input type="radio" name="q13" value="b"> B. Hidrolasas</label>
+          <label class="option"><input type="radio" name="q13" value="c"> C. Ligasas</label>
+          <label class="option"><input type="radio" name="q13" value="d"> D. Transferasas</label>
+        </div>
+
+        <div class="question">
+          <h3>14. La descripción "larga cadena hidrocarbonada, no ramificada con un grupo carboxilo en un extremo" corresponde a:</h3>
+          <label class="option"><input type="radio" name="q14" value="a"> A. Glucolípido</label>
+          <label class="option"><input type="radio" name="q14" value="b"> B. Colesterol</label>
+          <label class="option"><input type="radio" name="q14" value="c"> C. Fosfolípido</label>
+          <label class="option"><input type="radio" name="q14" value="d"> D. Ácido graso</label>
+        </div>
+
+        <div class="question">
+          <h3>15. Proceso por el cual una molécula de glucosa de 6 carbonos se convierte en dos moléculas de piruvato:</h3>
+          <label class="option"><input type="radio" name="q15" value="a"> A. Ciclo de Krebs</label>
+          <label class="option"><input type="radio" name="q15" value="b"> B. Glucólisis</label>
+          <label class="option"><input type="radio" name="q15" value="c"> C. Descarboxilación del piruvato</label>
+          <label class="option"><input type="radio" name="q15" value="d"> D. Fermentación</label>
+        </div>
+
+        <div class="question">
+          <h3>16. ¿Cuál es el producto final de la fermentación láctica?</h3>
+          <label class="option"><input type="radio" name="q16" value="a"> A. Alcohol</label>
+          <label class="option"><input type="radio" name="q16" value="b"> B. Carbono</label>
+          <label class="option"><input type="radio" name="q16" value="c"> C. Lactato</label>
+          <label class="option"><input type="radio" name="q16" value="d"> D. Agua</label>
+        </div>
+
+        <div class="question">
+          <h3>17. ¿Cuál es la proteína motora asociada a microfilamentos?</h3>
+          <label class="option"><input type="radio" name="q17" value="a"> A. Miosina</label>
+          <label class="option"><input type="radio" name="q17" value="b"> B. Kinesina</label>
+          <label class="option"><input type="radio" name="q17" value="c"> C. Tubulina</label>
+          <label class="option"><input type="radio" name="q17" value="d"> D. Dineína</label>
+        </div>
+
+        <div class="question">
+          <h3>18. ¿Cuál de las características describe al retículo endoplasmático rugoso?</h3>
+          <label class="option"><input type="radio" name="q18" value="a"> A. Vesícula de membrana que contiene enzimas digestivas</label>
+          <label class="option"><input type="radio" name="q18" value="b"> B. Organelo que produce energía por medio de la respiración celular</label>
+          <label class="option"><input type="radio" name="q18" value="c"> C. Organelo dispuesto en forma de túbulos, cisternas y sacos aplanados</label>
+          <label class="option"><input type="radio" name="q18" value="d"> D. Organelo que sintetiza proteínas en el citoplasma</label>
+        </div>
+
+        <div class="question">
+          <h3>19. ¿Cómo se denominan las subunidades básicas que componen el ADN y ARN?</h3>
+          <label class="option"><input type="radio" name="q19" value="a"> A. Nucleótidos</label>
+          <label class="option"><input type="radio" name="q19" value="b"> B. Genes</label>
+          <label class="option"><input type="radio" name="q19" value="c"> C. Alelos</label>
+          <label class="option"><input type="radio" name="q19" value="d"> D. Aminoácidos</label>
+        </div>
+
+        <div class="question">
+          <h3>20. La propiedad de los fosfolípidos que les induce a formar bicapas lipídicas en soluciones acuosas se denomina:</h3>
+          <label class="option"><input type="radio" name="q20" value="a"> A. Hidrofóbicas</label>
+          <label class="option"><input type="radio" name="q20" value="b"> B. Hidrosolubles</label>
+          <label class="option"><input type="radio" name="q20" value="c"> C. Hidrofílicas</label>
+          <label class="option"><input type="radio" name="q20" value="d"> D. Anfipáticas</label>
+        </div>
+
+        <div class="buttons">
+          <button type="button" class="btn-primary" onclick="calificarExamen()">Calificar examen</button>
+          <button type="reset" class="btn-secondary" onclick="reiniciarExamen()">Reiniciar</button>
+        </div>
+
+        <div class="result" id="resultado">
+          <h2>Resultado</h2>
+          <p id="puntajeTexto"></p>
+          <div class="review" id="revision"></div>
+        </div>
+
+      </form>
+    </div>
+  </div>
+
+  <script>
+    const respuestasCorrectas = {
+      q1: "a",
+      q2: "a",
+      q3: "b",
+      q4: "c",
+      q5: "a",
+      q6: "a",
+      q7: "b",
+      q8: "a",
+      q9: "c",
+      q10: "c",
+      q11: "c",
+      q12: "d",
+      q13: "c",
+      q14: "d",
+      q15: "b",
+      q16: "c",
+      q17: "a",
+      q18: "c",
+      q19: "a",
+      q20: "d"
+    };
+
+    const textosCorrectos = {
+      q1: "A. Lípidos",
+      q2: "A. Se producen 36-38 moléculas de ATP",
+      q3: "B. Propone que las células son las unidades básicas de la vida",
+      q4: "C. Incluye la difusión simple y la difusión facilitada",
+      q5: "A. Galactosa",
+      q6: "A. ADN y proteínas",
+      q7: "B. Centrómero",
+      q8: "A. Timina – Citosina",
+      q9: "C. Anabolismo",
+      q10: "C. Se generan dos células hijas",
+      q11: "C. Al gen localizado en cromosomas no sexuales",
+      q12: "D. Es un disolvente",
+      q13: "C. Ligasas",
+      q14: "D. Ácido graso",
+      q15: "B. Glucólisis",
+      q16: "C. Lactato",
+      q17: "A. Miosina",
+      q18: "C. Organelo dispuesto en forma de túbulos, cisternas y sacos aplanados",
+      q19: "A. Nucleótidos",
+      q20: "D. Anfipáticas"
+    };
+
+    function calificarExamen() {
+      let total = Object.keys(respuestasCorrectas).length;
+      let correctas = 0;
+      let respondidas = 0;
+      let revisionHTML = "";
+
+      for (let pregunta in respuestasCorrectas) {
+        const seleccionada = document.querySelector(`input[name="${pregunta}"]:checked`);
+
+        if (seleccionada) {
+          respondidas++;
+
+          if (seleccionada.value === respuestasCorrectas[pregunta]) {
+            correctas++;
+            revisionHTML += `
+              <div class="review-item">
+                <span class="correct">${pregunta.toUpperCase()}: Correcta</span><br>
+                Respuesta: ${textosCorrectos[pregunta]}
+              </div>
+            `;
+          } else {
+            const textoMarcado = seleccionada.parentElement.textContent.trim();
+            revisionHTML += `
+              <div class="review-item">
+                <span class="incorrect">${pregunta.toUpperCase()}: Incorrecta</span><br>
+                Tu respuesta: ${textoMarcado}<br>
+                Correcta: ${textosCorrectos[pregunta]}
+              </div>
+            `;
+          }
+        } else {
+          revisionHTML += `
+            <div class="review-item">
+              <span class="incorrect">${pregunta.toUpperCase()}: Sin responder</span><br>
+              Correcta: ${textosCorrectos[pregunta]}
+            </div>
+          `;
+        }
+      }
+
+      const porcentaje = ((correctas / total) * 100).toFixed(1);
+
+      document.getElementById("puntajeTexto").innerHTML = `
+        Respondiste <strong>${respondidas}</strong> de <strong>${total}</strong> preguntas.<br>
+        Obtuviste <strong>${correctas}</strong> correctas de <strong>${total}</strong>.<br>
+        Tu nota fue: <strong>${porcentaje}%</strong>
+      `;
+
+      document.getElementById("revision").innerHTML = revisionHTML;
+      document.getElementById("resultado").style.display = "block";
+      document.getElementById("resultado").scrollIntoView({ behavior: "smooth" });
+    }
+
+    function reiniciarExamen() {
+      document.getElementById("resultado").style.display = "none";
+      document.getElementById("revision").innerHTML = "";
+      document.getElementById("puntajeTexto").innerHTML = "";
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  </script>
+</body>
+</html>
