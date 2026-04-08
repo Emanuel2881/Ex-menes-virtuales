@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Examen Verbal 2</title>
+
+<style>
+body{
+  font-family: Arial;
+  background: linear-gradient(135deg,#fff1f2,#ffe4e6,#fecdd3);
+  color:#7f1d1d;
+  padding:20px;
+}
+
+.container{
+  max-width:900px;
+  margin:auto;
+  background:rgba(255,255,255,0.92);
+  padding:25px;
+  border-radius:20px;
+  box-shadow:0 10px 25px rgba(0,0,0,0.08);
+}
+
+.question{
+  display:none;
+}
+
+.question.active{
+  display:block;
+}
+
+.option{
+  background:#ffe4e6;
+  padding:10px;
+  margin:8px 0;
+  border-radius:10px;
+  cursor:pointer;
+  transition:0.2s ease;
+}
+
+.option:hover{
+  background:#fecdd3;
+}
+
+.option.selected{
+  background:#f43f5e;
+  color:white;
+}
+
+button{
+  margin-top:10px;
+  padding:10px 15px;
+  border:none;
+  border-radius:10px;
+  cursor:pointer;
+  font-weight:bold;
+}
+
+.next{background:#fb7185;color:white;}
+.prev{background:#fda4af;color:#881337;}
+.finish{background:#dc2626;color:white;}
+
+.top{
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+  margin-bottom:15px;
+  flex-wrap:wrap;
+}
+
+h1{
+  margin-bottom:18px;
+}
+
+.mini{
+  color:#9f1239;
+  margin-bottom:12px;
+  line-height:1.5;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+  <h1>📖 Examen Verbal 2</h1>
+
+  <div class="top">
+    <div>Pregunta <span id="qNum">1</span>/15</div>
+    <div>Puntaje: <span id="score">0</span></div>
+  </div>
+
+  <div id="quiz"></div>
+</div>
+
+<script>
+const questions = [
+  {
+    q:"La _________ sobresalía ________",
+    o:["Jarra – del vaso","Bebida – del agua","Arena – del recipiente","Cazuela – de la sopa"],
+    a:0
+  },
+  {
+    q:"A menudo es conveniente ser ___________ con lo que se __________ delante de los demás.",
+    o:["Sincero – hace","Modesto – opina","Conforme – pacta","Cauteloso – dice"],
+    a:3
+  },
+  {
+    q:"Su postura era _________, no tenía una opinión ___________ acerca de las ideas propuestas por su equipo.",
+    o:["Positiva – adecuada","Neutral – definida","Ambigua – incierta","Subjetiva – personal"],
+    a:1
+  },
+  {
+    q:"RESPETO",
+    mini:"Selecciona la palabra contraria.",
+    o:["Deferencia","Displicencia","Desprecio","Estima"],
+    a:2
+  },
+  {
+    q:"SOCIEGO",
+    mini:"Selecciona la palabra contraria.",
+    o:["Intranquilidad","Salazón","Escarnio","Ocurrencia"],
+    a:0
+  },
+  {
+    q:"SUEÑO",
+    mini:"Selecciona la palabra contraria.",
+    o:["Sopor","Modorra","Letargo","Vigilia"],
+    a:3
+  },
+  {
+    q:"__________ es a DEMOCRACIA como REY es a ___________",
+    o:["Demócrata – reina","Oligarquía – dictadura","Pueblo – monarquía","Voto – presidente"],
+    a:2
+  },
+  {
+    q:"__________ es a ABETO como SANGRE es a ____________",
+    o:["Savia – hombre","Clorofila – arteria","Verde – rojo","Hoja – célula"],
+    a:0
+  },
+  {
+    q:"¿Cuál de estas palabras no pertenece al mismo grupo?",
+    o:["Arpa","Trompeta","Saxofón","Flauta"],
+    a:0
+  },
+  {
+    q:"¿Cuál de estas palabras no pertenece al mismo grupo?",
+    o:["Soluble","Rollizo","Fornido","Enjuto"],
+    a:0
+  },
+  {
+    q:"EBRIO",
+    mini:"Selecciona la palabra contraria.",
+    o:["Embriagado","Sobrio","Alegre","Confuso"],
+    a:1
+  },
+  {
+    q:"Era un _________ que por su peligrosidad ____________ la intervención policial.",
+    o:["Caso – controlaba","Dilema – erigía","Asunto – demandaba","Hecho – completaría"],
+    a:2
+  },
+  {
+    q:"La _________ de la tragedia fue de ridículas dimensiones en comparación con su _________.",
+    o:["Trama – predecesor","Consecuencia – final","Película – largometraje","Causa – efecto"],
+    a:3
+  },
+  {
+    q:"El joven ________ a la cita antes de tiempo y tuvo que ________ la llegada de sus amigos.",
+    o:["Llegaba – demorar","Acudió – aguardar","Asiste – esperar","Venía – atender"],
+    a:1
+  },
+  {
+    q:"PARQUEDAD",
+    mini:"Selecciona la palabra contraria.",
+    o:["Templanza","Educación","Humedad","Derroche"],
+    a:3
+  }
+];
+
+let current = 0;
+let answers = new Array(questions.length).fill(null);
+
+const quiz = document.getElementById("quiz");
+
+function render(){
+  quiz.innerHTML = "";
+
+  questions.forEach((q,i)=>{
+    let div = document.createElement("div");
+    div.className = "question" + (i===current ? " active" : "");
+
+    let extra = q.mini ? `<p class="mini">${q.mini}</p>` : "";
+
+    let opts = "";
+    q.o.forEach((op,j)=>{
+      opts += `<div class="option ${answers[i]===j ? "selected" : ""}" onclick="selectOption(${i},${j})">${String.fromCharCode(65+j)}. ${op}</div>`;
+    });
+
+    div.innerHTML = `
+      <h3>${q.q}</h3>
+      ${extra}
+      ${opts}
+      <button class="prev" onclick="prevQuestion()" ${i===0 ? "disabled" : ""}>Anterior</button>
+      ${i===questions.length-1
+        ? `<button class="finish" onclick="finishQuiz()">Finalizar</button>`
+        : `<button class="next" onclick="nextQuestion()">Siguiente</button>`}
+    `;
+
+    quiz.appendChild(div);
+  });
+
+  updateTop();
+}
+
+function selectOption(i,j){
+  answers[i] = j;
+  render();
+}
+
+function nextQuestion(){
+  if(current < questions.length-1){
+    current++;
+    render();
+  }
+}
+
+function prevQuestion(){
+  if(current > 0){
+    current--;
+    render();
+  }
+}
+
+function updateTop(){
+  document.getElementById("qNum").innerText = current + 1;
+  let score = answers.reduce((acc,a,i)=> a===questions[i].a ? acc+1 : acc, 0);
+  document.getElementById("score").innerText = score;
+}
+
+function finishQuiz(){
+  let score = answers.reduce((acc,a,i)=> a===questions[i].a ? acc+1 : acc, 0);
+  alert("Tu puntaje: " + score + "/" + questions.length);
+}
+
+render();
+</script>
+
+</body>
+</html>
