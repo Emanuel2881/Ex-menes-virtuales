@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Examen de Habilidad Numérica 4</title>
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg,#0f172a,#1e3a5f,#2563eb);
+      color:#fff;
+      min-height:100vh;
+      padding:20px;
+    }
+    .container{
+      max-width:1000px;
+      margin:auto;
+      background:rgba(255,255,255,.08);
+      border-radius:22px;
+      padding:26px;
+      box-shadow:0 10px 30px rgba(0,0,0,.25);
+      backdrop-filter: blur(10px);
+    }
+    h1{
+      text-align:center;
+      margin-bottom:10px;
+      font-size:2rem;
+    }
+    .subtitle{
+      text-align:center;
+      margin-bottom:20px;
+      opacity:.9;
+    }
+    .topbar{
+      display:flex;
+      justify-content:space-between;
+      flex-wrap:wrap;
+      gap:10px;
+      background:rgba(255,255,255,.12);
+      padding:14px 16px;
+      border-radius:14px;
+      margin-bottom:18px;
+      font-weight:bold;
+    }
+    .progress-wrap{
+      width:100%;
+      height:14px;
+      background:rgba(255,255,255,.18);
+      border-radius:999px;
+      overflow:hidden;
+      margin-bottom:24px;
+    }
+    .progress{
+      height:100%;
+      width:0%;
+      background:#ffd54f;
+      transition:.3s ease;
+    }
+    .question-card{
+      display:none;
+      background:rgba(255,255,255,.1);
+      border-radius:18px;
+      padding:24px;
+      animation:fade .25s ease;
+      margin-bottom:20px;
+    }
+    .question-card.active{display:block}
+    .qnum{
+      font-size:.95rem;
+      opacity:.8;
+      margin-bottom:10px;
+    }
+    .qtext{
+      font-size:1.15rem;
+      line-height:1.6;
+      margin-bottom:18px;
+    }
+    .mini-box{
+      background:rgba(255,255,255,.1);
+      border-left:4px solid #ffd54f;
+      padding:12px 14px;
+      border-radius:12px;
+      margin:12px 0 18px;
+      white-space:pre-line;
+      line-height:1.55;
+      font-size:.97rem;
+    }
+    .option{
+      background:rgba(255,255,255,.12);
+      border:2px solid transparent;
+      border-radius:12px;
+      padding:12px 14px;
+      margin:10px 0;
+      cursor:pointer;
+      transition:.2s ease;
+    }
+    .option:hover{
+      transform:translateY(-1px);
+      background:rgba(255,255,255,.18);
+    }
+    .option.selected{
+      border-color:#ffd54f;
+      background:rgba(255,213,79,.18);
+    }
+    .option.correct{
+      border-color:#4caf50;
+      background:rgba(76,175,80,.2);
+    }
+    .option.incorrect{
+      border-color:#f44336;
+      background:rgba(244,67,54,.2);
+    }
+    .buttons{
+      display:flex;
+      justify-content:space-between;
+      gap:12px;
+      margin-top:18px;
+      flex-wrap:wrap;
+    }
+    button{
+      border:none;
+      border-radius:12px;
+      padding:12px 18px;
+      font-size:1rem;
+      font-weight:bold;
+      cursor:pointer;
+      transition:.2s ease;
+    }
+    button:hover{transform:scale(1.02)}
+    .prev{background:#90caf9;color:#102030}
+    .next{background:#ffd54f;color:#222}
+    .finish{background:#66bb6a;color:#fff}
+    .result{
+      display:none;
+      text-align:center;
+      margin-top:22px;
+      background:rgba(255,255,255,.1);
+      padding:28px;
+      border-radius:18px;
+    }
+    .result h2{margin-bottom:10px}
+    .review{
+      background:#ffb74d;
+      color:#222;
+      margin-top:12px;
+    }
+    @keyframes fade{
+      from{opacity:0;transform:translateY(10px)}
+      to{opacity:1;transform:translateY(0)}
+    }
+    @media(max-width:700px){
+      .qtext{font-size:1.05rem}
+      .buttons{flex-direction:column}
+      button{width:100%}
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🧠 Examen de Habilidad Numérica 4</h1>
+    <p class="subtitle">Nivel más retador • práctica tipo admisión</p>
+
+    <div class="topbar">
+      <div>Pregunta: <span id="currentQuestion">1</span>/<span id="totalQuestions">25</span></div>
+      <div>Puntaje: <span id="scoreDisplay">0</span></div>
+      <div>Respondidas: <span id="answeredCount">0</span></div>
+    </div>
+
+    <div class="progress-wrap">
+      <div class="progress" id="progressBar"></div>
+    </div>
+
+    <div id="quiz"></div>
+
+    <div class="result" id="resultBox">
+      <h2>🎉 Examen finalizado</h2>
+      <p>Tu puntaje: <strong id="finalScore"></strong></p>
+      <p id="finalMessage"></p>
+      <button class="review" onclick="reviewAnswers()">Revisar respuestas</button>
+    </div>
+  </div>
+
+  <script>
+    const questions = [
+      {
+        question: "Si a = -1, b = 1 y c = 0, entonces 2a + 2b - c =",
+        options: ["0", "-1", "-2", "3"],
+        answer: 0
+      },
+      {
+        question: "Si a = 0, b = 1 y c = 2, entonces 2a + b - c =",
+        options: ["3", "2", "-1", "0"],
+        answer: 2
+      },
+      {
+        question: "Si x = 5, entonces el valor de f(x) = x² + 3 es:",
+        options: ["14", "28", "5", "30"],
+        answer: 1
+      },
+      {
+        question: "Si a = -2, b = 2 y c = -2, entonces a² - 2b - c =",
+        options: ["-2", "9", "2", "-1"],
+        answer: 0
+      },
+      {
+        question: "En esta tabla falta X:",
+        extra: "Compras\nMiércoles: Zapatos 8 | Gorras ? | Total 33\nJueves: Zapatos 10 | Gorras X | Total 35\nTotal Zapatos: 18 | Total general: 68",
+        question2: "¿Cuánto vale X?",
+        options: ["25", "35", "15", "20"],
+        answer: 0
+      },
+      {
+        question: "Si x = 3, entonces el valor de f(x) = 3x + 5 es:",
+        options: ["12", "10", "5", "14"],
+        answer: 3
+      },
+      {
+        question: "Si a = 5 y b = 3, entonces a + 2b - 3 =",
+        options: ["5", "8", "13", "2"],
+        answer: 1
+      },
+      {
+        question: "Selecciona la ecuación que representa: “El doble de un número sumado dos es igual a tres”",
+        options: ["2x + 2 = 50", "2x + 2 = 3", "x + 2 = 3", "2x - 2 = 3"],
+        answer: 1
+      },
+      {
+        question: "Tomás ganó un premio de lotería. Regaló el 40% a sus padres y se quedó con Q900. ¿Cuánto ganó en total?",
+        options: ["Q1500", "Q1000", "Q1400", "Q1200"],
+        answer: 0
+      },
+      {
+        question: "Selecciona la ecuación correcta: “El triple de un número sumado tres es igual a cinco”",
+        options: ["x + 3 = 3", "3x + 3 = 5", "x - 3 = 5", "x + 2 = 3"],
+        answer: 1
+      },
+      {
+        question: "Selecciona la ecuación correcta: “El doble de un número restado dos es igual al triple de un número sumado uno”",
+        options: ["x - 2 = x + 3", "x - 2 = 1", "2x - 2 = 3x + 1", "2x - 2 = x + 1"],
+        answer: 2
+      },
+      {
+        question: "Abrí una cuenta bancaria con $4000 y después de 11 meses me devolvieron $4500. ¿Qué interés porcentual me pagaron?",
+        options: ["11%", "11.5%", "10%", "12.5%"],
+        answer: 3
+      },
+      {
+        question: "Martha recibió un collar que pesa 54 g. Los 3/4 del collar son de plata pura. ¿Cuántos gramos de plata tiene?",
+        options: ["30.5", "13.5", "40", "40.5"],
+        answer: 3
+      },
+      {
+        question: "Ana compró una casa de 240 m². María compró otra 1/4 más grande. Si el m² cuesta $250, ¿cuánto costó la casa de María?",
+        options: ["$60,000", "$15,000", "$35,000", "$75,000"],
+        answer: 3
+      },
+      {
+        question: "Si x = -3, entonces el valor de f(x) = x² + 1 es:",
+        options: ["28", "12", "10", "30"],
+        answer: 2
+      },
+      {
+        question: "Si x = -1, entonces el valor de f(x) = x² - x + 1 es:",
+        options: ["0", "2", "3", "1"],
+        answer: 2
+      },
+      {
+        question: "En esta tabla faltan X y Y:",
+        extra: "Ventas\nVideos: Josué 3 | Ernesto X | Rosa ? | Total 14\nPodcasts: Josué 5 | Ernesto 8 | Rosa Y | Total 6\nTotales generales: 20",
+        question2: "¿Qué valores corresponden?",
+        options: ["X=5, Y=1", "X=4, Y=3", "X=1, Y=5", "X=4, Y=2"],
+        answer: 0
+      },
+      {
+        question: "“Un número sumado dos es igual a tres”. ¿Cuál es el número?",
+        options: ["2", "4", "3", "1"],
+        answer: 3
+      },
+      {
+        question: "En esta tabla falta X:",
+        extra: "Ventas\n12h00: Papa 15 | Zanahoria X | Total 29\n17h00: Papa 10 | Zanahoria ? | Total 45\nTotal Papa: 25 | Total general: 74",
+        question2: "¿Cuál es el valor de X?",
+        options: ["17", "12", "11", "14"],
+        answer: 3
+      },
+      {
+        question: "Si el área de un cuadrado es 144 m², ¿cuál es su perímetro?",
+        options: ["12 m", "15 m", "48 m", "10 m"],
+        answer: 2
+      },
+      {
+        question: "Si a = 1 y b = 2, entonces a + 2b - 3 =",
+        options: ["5", "9", "2", "8"],
+        answer: 2
+      },
+      {
+        question: "Selecciona la ecuación correcta: “El quíntuple de un número restado dos es igual a uno”",
+        options: ["5x - 2 = 1", "x - 2 = 1", "5x - 3 = 1", "5x + 2 = 1"],
+        answer: 0
+      },
+      {
+        question: "Si a = -1, b = 3 y c = -2, entonces a + 3b - 4c =",
+        options: ["-2", "4", "16", "-1"],
+        answer: 2
+      },
+      {
+        question: "Si x = -2, entonces el valor de f(x) = -2x - 3 es:",
+        options: ["5", "1", "2", "3"],
+        answer: 1
+      },
+      {
+        question: "Si el área de un cuadrado es 36 m² y su lado aumenta 4 veces, ¿cuál es su nuevo perímetro?",
+        options: ["96 m", "15 m", "10 m", "100 m"],
+        answer: 0
+      }
+    ];
+
+    const quizContainer = document.getElementById("quiz");
+    const currentQuestionEl = document.getElementById("currentQuestion");
+    const totalQuestionsEl = document.getElementById("totalQuestions");
+    const scoreDisplay = document.getElementById("scoreDisplay");
+    const answeredCount = document.getElementById("answeredCount");
+    const progressBar = document.getElementById("progressBar");
+    const resultBox = document.getElementById("resultBox");
+    const finalScore = document.getElementById("finalScore");
+    const finalMessage = document.getElementById("finalMessage");
+
+    let current = 0;
+    let userAnswers = new Array(questions.length).fill(null);
+    let reviewed = false;
+
+    totalQuestionsEl.textContent = questions.length;
+
+    function renderQuiz() {
+      quizContainer.innerHTML = "";
+
+      questions.forEach((q, index) => {
+        const card = document.createElement("div");
+        card.className = "question-card";
+        if (index === current) card.classList.add("active");
+
+        const title = q.question2 ? q.question2 : q.question;
+        const extra = q.extra ? `<div class="mini-box">${q.extra}</div>` : "";
+
+        let optionsHTML = "";
+        q.options.forEach((option, i) => {
+          optionsHTML += `
+            <div class="option ${userAnswers[index] === i ? 'selected' : ''}" onclick="selectOption(${index}, ${i})">
+              ${String.fromCharCode(65 + i)}. ${option}
+            </div>
+          `;
+        });
+
+        card.innerHTML = `
+          <div class="qnum">Pregunta ${index + 1}</div>
+          <div class="qtext">${title}</div>
+          ${extra}
+          <div class="options">${optionsHTML}</div>
+          <div class="buttons">
+            <button class="prev" onclick="prevQuestion()" ${index === 0 ? "disabled" : ""}>⬅ Anterior</button>
+            ${
+              index === questions.length - 1
+              ? `<button class="finish" onclick="finishQuiz()">Finalizar</button>`
+              : `<button class="next" onclick="nextQuestion()">Siguiente ➡</button>`
+            }
+          </div>
+        `;
+
+        quizContainer.appendChild(card);
+      });
+
+      updateTopBar();
+    }
+
+    function selectOption(questionIndex, optionIndex) {
+      if (reviewed) return;
+      userAnswers[questionIndex] = optionIndex;
+      renderQuiz();
+    }
+
+    function nextQuestion() {
+      if (current < questions.length - 1) {
+        current++;
+        renderQuiz();
+      }
+    }
+
+    function prevQuestion() {
+      if (current > 0) {
+        current--;
+        renderQuiz();
+      }
+    }
+
+    function updateTopBar() {
+      currentQuestionEl.textContent = current + 1;
+      const answered = userAnswers.filter(ans => ans !== null).length;
+      answeredCount.textContent = answered;
+      progressBar.style.width = `${(answered / questions.length) * 100}%`;
+
+      const score = userAnswers.reduce((acc, ans, i) => ans === questions[i].answer ? acc + 1 : acc, 0);
+      scoreDisplay.textContent = score;
+    }
+
+    function finishQuiz() {
+      const score = userAnswers.reduce((acc, ans, i) => ans === questions[i].answer ? acc + 1 : acc, 0);
+      finalScore.textContent = `${score} / ${questions.length}`;
+
+      let msg = "";
+      if (score >= 21) {
+        msg = "🔥 Muy buen nivel. Este ya está bastante más tramposito.";
+      } else if (score >= 16) {
+        msg = "💪 Vas bien, pero todavía hay varias que reforzar.";
+      } else if (score >= 10) {
+        msg = "📚 Nivel aceptable, pero todavía hay que practicar más.";
+      } else {
+        msg = "🫠 Hay que seguirle metiendo, pero para eso estamos.";
+      }
+
+      finalMessage.textContent = msg;
+      resultBox.style.display = "block";
+      window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
+    }
+
+    function reviewAnswers() {
+      reviewed = true;
+      const cards = document.querySelectorAll(".question-card");
+
+      cards.forEach((card, qIndex) => {
+        const options = card.querySelectorAll(".option");
+        options.forEach((option, oIndex) => {
+          option.onclick = null;
+          option.classList.remove("selected");
+
+          if (oIndex === questions[qIndex].answer) {
+            option.classList.add("correct");
+          }
+
+          if (userAnswers[qIndex] === oIndex && oIndex !== questions[qIndex].answer) {
+            option.classList.add("incorrect");
+          }
+        });
+      });
+
+      alert("Ahora puedes revisar tus respuestas correctas e incorrectas.");
+      resultBox.scrollIntoView({ behavior: "smooth" });
+    }
+
+    renderQuiz();
+  </script>
+</body>
+</html>
