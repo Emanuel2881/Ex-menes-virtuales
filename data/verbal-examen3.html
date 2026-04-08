@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Examen Verbal 3</title>
+
+<style>
+body{
+  font-family: Arial;
+  background: linear-gradient(135deg,#fff1f2,#ffe4e6,#fecdd3);
+  color:#7f1d1d;
+  padding:20px;
+}
+
+.container{
+  max-width:900px;
+  margin:auto;
+  background:rgba(255,255,255,0.92);
+  padding:25px;
+  border-radius:20px;
+  box-shadow:0 10px 25px rgba(0,0,0,0.08);
+}
+
+.question{
+  display:none;
+}
+
+.question.active{
+  display:block;
+}
+
+.option{
+  background:#ffe4e6;
+  padding:10px;
+  margin:8px 0;
+  border-radius:10px;
+  cursor:pointer;
+  transition:0.2s ease;
+}
+
+.option:hover{
+  background:#fecdd3;
+}
+
+.option.selected{
+  background:#f43f5e;
+  color:white;
+}
+
+button{
+  margin-top:10px;
+  padding:10px 15px;
+  border:none;
+  border-radius:10px;
+  cursor:pointer;
+  font-weight:bold;
+}
+
+.next{background:#fb7185;color:white;}
+.prev{background:#fda4af;color:#881337;}
+.finish{background:#dc2626;color:white;}
+
+.top{
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+  margin-bottom:15px;
+  flex-wrap:wrap;
+}
+
+h1{
+  margin-bottom:18px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+  <h1>📖 Examen Verbal 3</h1>
+
+  <div class="top">
+    <div>Pregunta <span id="qNum">1</span>/16</div>
+    <div>Puntaje: <span id="score">0</span></div>
+  </div>
+
+  <div id="quiz"></div>
+</div>
+
+<script>
+const questions = [
+  {
+    q:"ROJO es a AMARILLO como DULCE es a ___",
+    o:["Amargo","Suave","Oscuro","Áspero"],
+    a:0
+  },
+  {
+    q:"PALABRA es a FRASE como VERSO es a ___",
+    o:["Rima","Canción","Estrofa","Sermón"],
+    a:2
+  },
+  {
+    q:"LÁTIGO es a DOMADOR como ESPUELA es a ___",
+    o:["Jinete","Futbolista","Trapecista","Malabarista"],
+    a:0
+  },
+  {
+    q:"PIE es a CUERPO como BOMBILLA es a ___",
+    o:["Ojos","Luz","Vela","Lámpara"],
+    a:3
+  },
+  {
+    q:"BICICLETA es a AVIÓN como METAL es a ___",
+    o:["Solidez","Madera","Velocidad","Fragmento"],
+    a:1
+  },
+  {
+    q:"DERMATOLOGÍA es a MEDICINA como CARTOGRAFÍA es a ___",
+    o:["Geografía","Geología","Astronomía","Heráldica"],
+    a:0
+  },
+  {
+    q:"ESCULTOR es a ESTUDIO como ACTOR es a ___",
+    o:["Arte","Escenario","Drama","Literatura"],
+    a:1
+  },
+  {
+    q:"PERDER es a GANAR como REPOSO es a ___",
+    o:["Ganancia","Descanso","Actividad","Calma"],
+    a:2
+  },
+  {
+    q:"APOCADO es a TÍMIDO como ARROGANTE es a ___",
+    o:["Listo","Humilde","Virtuoso","Soberbio"],
+    a:3
+  },
+  {
+    q:"___ es a DÍA como PRÓLOGO es a ___",
+    o:["Hora – artículo","Hora – hoja","Mañana – libro","Noche – logo"],
+    a:2
+  },
+  {
+    q:"___ es a ÁNGULO como LITRO es a ___",
+    o:["Metro – peso","Grado – volumen","Agudo – agua","Obtuso – líquido"],
+    a:1
+  },
+  {
+    q:"___ es a ÓPTIMO como MALO es a ___",
+    o:["Bueno – pésimo","Pésimo – fatal","Fraude – engaño","Mejor – peor"],
+    a:0
+  },
+  {
+    q:"INDEFENSO es a DESVALIDO como ENLAZADO es a ___",
+    o:["Conexo","Recorrido","Torcido","Explorado"],
+    a:0
+  },
+  {
+    q:"___ es a BLANCO como FUEGO es a ___",
+    o:["Hielo – calor","Frío – rojo","Nieve – calor","Nieve – rojo"],
+    a:2
+  },
+  {
+    q:"FUGAZ es a DURADERO como TRANSLÚCIDO es a ___",
+    o:["Luz","Oscuridad","Opaco","Perenne"],
+    a:2
+  },
+  {
+    q:"ADELANTAR es a DEMORAR como ANTICIPAR es a ___",
+    o:["Aplazar","Desistir","Proveer","Achacar"],
+    a:0
+  }
+];
+
+let current = 0;
+let answers = new Array(questions.length).fill(null);
+
+const quiz = document.getElementById("quiz");
+
+function render(){
+  quiz.innerHTML = "";
+
+  questions.forEach((q,i)=>{
+    let div = document.createElement("div");
+    div.className = "question" + (i===current ? " active" : "");
+
+    let opts = "";
+    q.o.forEach((op,j)=>{
+      opts += `<div class="option ${answers[i]===j ? "selected" : ""}" onclick="selectOption(${i},${j})">${String.fromCharCode(65+j)}. ${op}</div>`;
+    });
+
+    div.innerHTML = `
+      <h3>${q.q}</h3>
+      ${opts}
+      <button class="prev" onclick="prevQuestion()" ${i===0 ? "disabled" : ""}>Anterior</button>
+      ${i===questions.length-1
+        ? `<button class="finish" onclick="finishQuiz()">Finalizar</button>`
+        : `<button class="next" onclick="nextQuestion()">Siguiente</button>`}
+    `;
+
+    quiz.appendChild(div);
+  });
+
+  updateTop();
+}
+
+function selectOption(i,j){
+  answers[i] = j;
+  render();
+}
+
+function nextQuestion(){
+  if(current < questions.length-1){
+    current++;
+    render();
+  }
+}
+
+function prevQuestion(){
+  if(current > 0){
+    current--;
+    render();
+  }
+}
+
+function updateTop(){
+  document.getElementById("qNum").innerText = current + 1;
+  let score = answers.reduce((acc,a,i)=> a===questions[i].a ? acc+1 : acc, 0);
+  document.getElementById("score").innerText = score;
+}
+
+function finishQuiz(){
+  let score = answers.reduce((acc,a,i)=> a===questions[i].a ? acc+1 : acc, 0);
+  alert("Tu puntaje: " + score + "/" + questions.length);
+}
+
+render();
+</script>
+
+</body>
+</html>
