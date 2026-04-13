@@ -7,18 +7,72 @@
 
 <style>
 body{
-  font-family: Arial;
+  font-family: Arial, sans-serif;
   background: linear-gradient(135deg,#0f2027,#2c5364);
   color:#fff;
   padding:20px;
 }
 
 .container{
-  max-width:800px;
+  max-width:850px;
   margin:auto;
   background:rgba(255,255,255,0.08);
   padding:25px;
   border-radius:20px;
+  box-shadow:0 10px 30px rgba(0,0,0,.25);
+}
+
+h1,p{
+  text-align:center;
+}
+
+.config{
+  display:flex;
+  flex-wrap:wrap;
+  gap:15px;
+  justify-content:center;
+  align-items:end;
+  margin:25px 0;
+  background:rgba(255,255,255,.08);
+  padding:18px;
+  border-radius:16px;
+}
+
+.config-item{
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+  min-width:180px;
+}
+
+label{
+  font-weight:bold;
+}
+
+select, button{
+  padding:12px;
+  border:none;
+  border-radius:10px;
+  font-size:1rem;
+}
+
+.start-btn{
+  background:#ffd54f;
+  color:#222;
+  font-weight:bold;
+  cursor:pointer;
+}
+
+.topbar{
+  display:none;
+  justify-content:space-between;
+  gap:10px;
+  flex-wrap:wrap;
+  margin-bottom:20px;
+  background:rgba(255,255,255,.1);
+  padding:14px;
+  border-radius:14px;
+  font-weight:bold;
 }
 
 .question{
@@ -31,64 +85,114 @@ body{
 
 .sum{
   text-align:center;
-  font-size:1.5rem;
-  margin:20px 0;
-  line-height:1.6;
+  font-size:1.7rem;
+  margin:25px 0;
+  line-height:1.8;
 }
 
 .line{
-  border-top:2px solid #fff;
-  width:120px;
-  margin:10px auto;
+  border-top:3px solid #fff;
+  width:130px;
+  margin:12px auto;
 }
 
 .buttons{
   display:flex;
   justify-content:center;
   gap:20px;
+  flex-wrap:wrap;
+  margin-top:25px;
 }
 
-button{
-  padding:12px 20px;
+.answer-btn{
+  padding:14px 24px;
   border:none;
-  border-radius:10px;
+  border-radius:12px;
   font-weight:bold;
   cursor:pointer;
+  font-size:1rem;
 }
 
-.true{background:#4caf50;}
-.false{background:#f44336;}
-
-.next{
-  background:#ffd54f;
-  margin-top:20px;
-}
+.true{background:#4caf50;color:#fff;}
+.false{background:#f44336;color:#fff;}
 
 .result{
   text-align:center;
   display:none;
+  margin-top:20px;
+  background:rgba(255,255,255,.1);
+  padding:25px;
+  border-radius:16px;
+}
+
+.restart{
+  background:#90caf9;
+  color:#102030;
+  margin-top:15px;
+  cursor:pointer;
+  font-weight:bold;
+}
+
+@media(max-width:700px){
+  .sum{font-size:1.4rem;}
+  .buttons{flex-direction:column;}
+  .answer-btn{width:100%;}
 }
 </style>
 </head>
-
 <body>
 
 <div class="container">
-<h1>Factor N</h1>
-<p>Indica si la suma es correcta o incorrecta</p>
+  <h1>Factor N</h1>
+  <p>Indica si la suma es correcta o incorrecta</p>
 
-<div id="quiz"></div>
+  <div class="config" id="configBox">
+    <div class="config-item">
+      <label for="questionCount">Cantidad de preguntas</label>
+      <select id="questionCount">
+        <option value="5">5 preguntas</option>
+        <option value="10" selected>10 preguntas</option>
+        <option value="15">15 preguntas</option>
+        <option value="20">20 preguntas</option>
+        <option value="30">30 preguntas</option>
+      </select>
+    </div>
 
-<div class="result" id="result">
-<h2>Resultado</h2>
-<p id="score"></p>
-</div>
+    <div class="config-item">
+      <label for="timerSelect">Tiempo</label>
+      <select id="timerSelect">
+        <option value="0">Sin tiempo</option>
+        <option value="60">1 minuto</option>
+        <option value="120">2 minutos</option>
+        <option value="180">3 minutos</option>
+        <option value="300" selected>5 minutos</option>
+        <option value="600">10 minutos</option>
+      </select>
+    </div>
 
+    <div class="config-item">
+      <button class="start-btn" onclick="startQuiz()">Empezar</button>
+    </div>
+  </div>
+
+  <div class="topbar" id="topbar">
+    <div>Pregunta: <span id="currentQuestion">0</span>/<span id="totalQuestions">0</span></div>
+    <div>Puntaje: <span id="scoreDisplay">0</span></div>
+    <div>Tiempo: <span id="timerDisplay">Sin tiempo</span></div>
+  </div>
+
+  <div id="quiz"></div>
+
+  <div class="result" id="result">
+    <h2>Resultado</h2>
+    <p id="score"></p>
+    <p id="extraMessage"></p>
+    <button class="restart" onclick="resetQuiz()">Volver a empezar</button>
+  </div>
 </div>
 
 <script>
-
-const questions = [
+const allQuestions = [
   {nums:[61,34,78,53], result:226},
   {nums:[31,59,52,68], result:200},
   {nums:[66,73,15,38], result:202},
@@ -97,58 +201,248 @@ const questions = [
   {nums:[48,45,17,82], result:192},
   {nums:[88,29,69,96], result:284},
   {nums:[86,49,54,22], result:111},
-  {nums:[69,44,89,84], result:286}
+  {nums:[69,44,89,84], result:286},
+  {nums:[71,37,66,55], result:129},
+  {nums:[44,49,23,48], result:164},
+  {nums:[75,54,36,17], result:162},
+  {nums:[26,44,75,51], result:196},
+  {nums:[99,77,82,68], result:316},
+  {nums:[25,46,92,57], result:220},
+  {nums:[43,34,89,32], result:198},
+  {nums:[31,73,13,48], result:185},
+  {nums:[59,29,39,45], result:192},
+  {nums:[52,56,99,17], result:124},
+  {nums:[68,33,32,82], result:225},
+  {nums:[78,56,76,35], result:245},
+  {nums:[95,49,44,37], result:205},
+  {nums:[79,22,64,55], result:240},
+  {nums:[89,64,61,34], result:258},
+  {nums:[97,35,66,73], result:271},
+  {nums:[13,92,31,36], result:172},
+  {nums:[26,99,26,62], result:213},
+  {nums:[44,77,66,68], result:275},
+  {nums:[97,92,26,86], result:201},
+  {nums:[13,99,86,79], result:367},
+  {nums:[26,77,32,99], result:234},
+  {nums:[44,82,84,32], result:232},
+  {nums:[75,68,39,57], result:339},
+  {nums:[51,39,92,32], result:314},
+  {nums:[81,46,43,48], result:208},
+  {nums:[32,98,22,91], result:243},
+  {nums:[97,63,76,57], result:303},
+  {nums:[23,36,41,65], result:165},
+  {nums:[71,46,67,62], result:236},
+  {nums:[48,59,17,16], result:150},
+  {nums:[24,85,94,47], result:250},
+  {nums:[89,95,55,79], result:218},
+  {nums:[26,86,34,99], result:345},
+  {nums:[81,39,84,79], result:293},
+  {nums:[75,47,55,19], result:196},
+  {nums:[18,15,57,96], result:186},
+  {nums:[59,44,78,89], result:280},
+  {nums:[64,61,34,19], result:188},
+  {nums:[83,34,41,16], result:174},
+  {nums:[32,97,23,71], result:243},
+  {nums:[98,63,36,46], result:243},
+  {nums:[22,76,41,57], result:196},
+  {nums:[91,57,65,62], result:295},
+  {nums:[28,63,62,87], result:260},
+  {nums:[81,39,67,52], result:239},
+  {nums:[89,86,69,71], result:315},
+  {nums:[75,82,99,87], result:243},
+  {nums:[51,68,32,23], result:174},
+  {nums:[43,73,39,17], result:182},
+  {nums:[31,29,99,82], result:251},
+  {nums:[59,56,32,19], result:146},
+  {nums:[52,33,55,33], result:173},
+  {nums:[68,47,56,58], result:239},
+  {nums:[31,43,92,79], result:245},
+  {nums:[59,73,43,57], result:232},
+  {nums:[42,29,13,32], result:106},
+  {nums:[68,56,39,48], result:201},
+  {nums:[75,33,45,99], result:242},
+  {nums:[78,47,32,17], result:154},
+  {nums:[23,56,55,82], result:216}
 ];
 
+let questions = [];
 let current = 0;
 let score = 0;
+let timer = null;
+let timeLeft = 0;
+let quizStarted = false;
 
 const quiz = document.getElementById("quiz");
+const resultBox = document.getElementById("result");
+const scoreText = document.getElementById("score");
+const extraMessage = document.getElementById("extraMessage");
+const topbar = document.getElementById("topbar");
+const configBox = document.getElementById("configBox");
+const currentQuestionEl = document.getElementById("currentQuestion");
+const totalQuestionsEl = document.getElementById("totalQuestions");
+const scoreDisplay = document.getElementById("scoreDisplay");
+const timerDisplay = document.getElementById("timerDisplay");
 
-function render(){
+function shuffleArray(array) {
+  const copy = [...array];
+  for (let i = copy.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [copy[i], copy[j]] = [copy[j], copy[i]];
+  }
+  return copy;
+}
+
+function formatTime(seconds) {
+  const min = Math.floor(seconds / 60);
+  const sec = seconds % 60;
+  return `${min}:${sec.toString().padStart(2, "0")}`;
+}
+
+function startQuiz() {
+  const selectedCount = parseInt(document.getElementById("questionCount").value, 10);
+  timeLeft = parseInt(document.getElementById("timerSelect").value, 10);
+
+  questions = shuffleArray(allQuestions).slice(0, selectedCount);
+  current = 0;
+  score = 0;
+  quizStarted = true;
+
+  configBox.style.display = "none";
+  resultBox.style.display = "none";
+  topbar.style.display = "flex";
+
+  totalQuestionsEl.textContent = questions.length;
+  scoreDisplay.textContent = score;
+
+  if (timer) {
+    clearInterval(timer);
+    timer = null;
+  }
+
+  if (timeLeft > 0) {
+    timerDisplay.textContent = formatTime(timeLeft);
+    timer = setInterval(() => {
+      timeLeft--;
+      timerDisplay.textContent = formatTime(timeLeft);
+
+      if (timeLeft <= 0) {
+        clearInterval(timer);
+        finishQuiz(true);
+      }
+    }, 1000);
+  } else {
+    timerDisplay.textContent = "Sin tiempo";
+  }
+
+  render();
+}
+
+function render() {
+  if (!quizStarted) return;
+
   quiz.innerHTML = "";
 
-  if(current >= questions.length){
-    document.getElementById("result").style.display = "block";
-    document.getElementById("score").textContent =
-      "Puntaje: " + score + " / " + questions.length;
+  if (current >= questions.length) {
+    finishQuiz(false);
     return;
   }
 
+  currentQuestionEl.textContent = current + 1;
+  scoreDisplay.textContent = score;
+
   const q = questions[current];
 
-  let html = `<div class="question active">
-  <div class="sum">`;
+  const questionDiv = document.createElement("div");
+  questionDiv.className = "question active";
 
-  q.nums.forEach(n=>{
-    html += n + "<br>";
+  const sumDiv = document.createElement("div");
+  sumDiv.className = "sum";
+
+  q.nums.forEach(num => {
+    const line = document.createElement("div");
+    line.textContent = num;
+    sumDiv.appendChild(line);
   });
 
-  html += `<div class="line"></div>
-  ${q.result}
-  </div>
+  const lineDiv = document.createElement("div");
+  lineDiv.className = "line";
+  sumDiv.appendChild(lineDiv);
 
-  <div class="buttons">
-    <button class="true" onclick="answer(true)">✔ Verdadero</button>
-    <button class="false" onclick="answer(false)">❌ Falso</button>
-  </div>
-  </div>`;
+  const resultDiv = document.createElement("div");
+  resultDiv.textContent = q.result;
+  sumDiv.appendChild(resultDiv);
 
-  quiz.innerHTML = html;
+  const buttonsDiv = document.createElement("div");
+  buttonsDiv.className = "buttons";
+
+  const trueBtn = document.createElement("button");
+  trueBtn.className = "answer-btn true";
+  trueBtn.textContent = "✔ Verdadero";
+  trueBtn.onclick = () => answer(true);
+
+  const falseBtn = document.createElement("button");
+  falseBtn.className = "answer-btn false";
+  falseBtn.textContent = "❌ Falso";
+  falseBtn.onclick = () => answer(false);
+
+  buttonsDiv.appendChild(trueBtn);
+  buttonsDiv.appendChild(falseBtn);
+
+  questionDiv.appendChild(sumDiv);
+  questionDiv.appendChild(buttonsDiv);
+  quiz.appendChild(questionDiv);
 }
 
-function answer(user){
+function answer(userChoice) {
   const q = questions[current];
-  const real = q.nums.reduce((a,b)=>a+b,0) === q.result;
+  const realAnswer = q.nums.reduce((a, b) => a + b, 0) === q.result;
 
-  if(user === real) score++;
+  if (userChoice === realAnswer) {
+    score++;
+  }
 
   current++;
   render();
 }
 
-render();
+function finishQuiz(timeUp) {
+  quiz.innerHTML = "";
 
+  if (timer) {
+    clearInterval(timer);
+    timer = null;
+  }
+
+  resultBox.style.display = "block";
+  scoreText.textContent = `Puntaje: ${score} / ${questions.length}`;
+
+  if (timeUp) {
+    extraMessage.textContent = "Se acabó el tiempo.";
+  } else {
+    extraMessage.textContent = "Examen finalizado.";
+  }
+}
+
+function resetQuiz() {
+  quizStarted = false;
+  questions = [];
+  current = 0;
+  score = 0;
+
+  if (timer) {
+    clearInterval(timer);
+    timer = null;
+  }
+
+  quiz.innerHTML = "";
+  resultBox.style.display = "none";
+  topbar.style.display = "none";
+  configBox.style.display = "flex";
+  timerDisplay.textContent = "Sin tiempo";
+  currentQuestionEl.textContent = "0";
+  totalQuestionsEl.textContent = "0";
+  scoreDisplay.textContent = "0";
+}
 </script>
 
 </body>
