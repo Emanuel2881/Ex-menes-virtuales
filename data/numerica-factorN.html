@@ -19,46 +19,26 @@ body{
   background:rgba(255,255,255,0.08);
   padding:25px;
   border-radius:20px;
-  box-shadow:0 10px 30px rgba(0,0,0,.25);
 }
 
-h1,p{
-  text-align:center;
-}
+h1,p{text-align:center;}
 
 .config{
   display:flex;
   flex-wrap:wrap;
   gap:15px;
   justify-content:center;
-  align-items:end;
-  margin:25px 0;
-  background:rgba(255,255,255,.08);
-  padding:18px;
-  border-radius:16px;
-}
-
-.config-item{
-  display:flex;
-  flex-direction:column;
-  gap:8px;
-  min-width:180px;
-}
-
-label{
-  font-weight:bold;
+  margin:20px 0;
 }
 
 select, button{
-  padding:12px;
-  border:none;
+  padding:10px;
   border-radius:10px;
-  font-size:1rem;
+  border:none;
 }
 
 .start-btn{
   background:#ffd54f;
-  color:#222;
   font-weight:bold;
   cursor:pointer;
 }
@@ -66,139 +46,76 @@ select, button{
 .topbar{
   display:none;
   justify-content:space-between;
-  gap:10px;
-  flex-wrap:wrap;
   margin-bottom:20px;
-  background:rgba(255,255,255,.1);
-  padding:14px;
-  border-radius:14px;
-  font-weight:bold;
-}
-
-.question{
-  display:none;
-}
-
-.question.active{
-  display:block;
 }
 
 .sum{
   text-align:center;
   font-size:1.7rem;
-  margin:25px 0;
-  line-height:1.8;
+  margin:20px 0;
 }
 
 .line{
   border-top:3px solid #fff;
-  width:130px;
-  margin:12px auto;
+  width:120px;
+  margin:10px auto;
 }
 
 .buttons{
   display:flex;
   justify-content:center;
   gap:20px;
-  flex-wrap:wrap;
-  margin-top:25px;
 }
 
-.answer-btn{
-  padding:14px 24px;
-  border:none;
-  border-radius:12px;
-  font-weight:bold;
-  cursor:pointer;
-  font-size:1rem;
-}
-
-.true{background:#4caf50;color:#fff;}
-.false{background:#f44336;color:#fff;}
+.true{background:#4caf50;color:white;}
+.false{background:#f44336;color:white;}
 
 .result{
-  text-align:center;
   display:none;
-  margin-top:20px;
-  background:rgba(255,255,255,.1);
-  padding:25px;
-  border-radius:16px;
-}
-
-.restart{
-  background:#90caf9;
-  color:#102030;
-  margin-top:15px;
-  cursor:pointer;
-  font-weight:bold;
-}
-
-.status{
   text-align:center;
-  margin:15px 0;
-  font-weight:bold;
-  opacity:.9;
-}
-
-@media(max-width:700px){
-  .sum{font-size:1.4rem;}
-  .buttons{flex-direction:column;}
-  .answer-btn{width:100%;}
+  margin-top:20px;
 }
 </style>
 </head>
+
 <body>
 
 <div class="container">
-  <h1>Factor N</h1>
-  <p>Indica si la suma es correcta o incorrecta</p>
+<h1>Factor N</h1>
+<p>Verdadero o falso</p>
 
-  <div class="status" id="statusMessage">Cargando banco de preguntas...</div>
+<div id="status">Cargando banco...</div>
 
-  <div class="config" id="configBox" style="display:none;">
-    <div class="config-item">
-      <label for="questionCount">Cantidad de preguntas</label>
-      <select id="questionCount">
-        <option value="5">5 preguntas</option>
-        <option value="10" selected>10 preguntas</option>
-        <option value="15">15 preguntas</option>
-        <option value="20">20 preguntas</option>
-        <option value="30">30 preguntas</option>
-        <option value="50">50 preguntas</option>
-      </select>
-    </div>
+<div class="config" id="config" style="display:none;">
+  <select id="count">
+    <option value="5">5</option>
+    <option value="10" selected>10</option>
+    <option value="20">20</option>
+    <option value="30">30</option>
+  </select>
 
-    <div class="config-item">
-      <label for="timerSelect">Tiempo</label>
-      <select id="timerSelect">
-        <option value="0">Sin tiempo</option>
-        <option value="60">1 minuto</option>
-        <option value="120">2 minutos</option>
-        <option value="180">3 minutos</option>
-        <option value="300" selected>5 minutos</option>
-        <option value="600">10 minutos</option>
-      </select>
-    </div>
+  <select id="time">
+    <option value="0">Sin tiempo</option>
+    <option value="60">1 min</option>
+    <option value="120">2 min</option>
+    <option value="300" selected>5 min</option>
+  </select>
 
-    <div class="config-item">
-      <button class="start-btn" onclick="startQuiz()">Empezar</button>
-    </div>
-  </div>
+  <button class="start-btn" onclick="start()">Empezar</button>
+</div>
 
-  <div class="topbar" id="topbar">
-    <div>Pregunta: <span id="currentQuestion">0</span>/<span id="totalQuestions">0</span></div>
-    <div>Puntaje: <span id="scoreDisplay">0</span></div>
-    <div>Tiempo: <span id="timerDisplay">Sin tiempo</span></div>
-  </div>
+<div class="topbar" id="topbar">
+  <div id="progress"></div>
+  <div id="timer"></div>
+</div>
 
-  <div id="quiz"></div>
+<div id="quiz"></div>
 
-  <div class="result" id="result">
-    <h2>Resultado</h2>
-    <p id="score"></p>
-    <p id="extraMessage"></p>
-    <button class="restart" onclick="resetQuiz()">Volver a empezar</button>
-  </div>
+<div class="result" id="result">
+  <h2 id="score"></h2>
+  <button onclick="location.reload()">Reiniciar</button>
+</div>
+
 </div>
 
 <script>
@@ -206,173 +123,99 @@ let allQuestions = [];
 let questions = [];
 let current = 0;
 let score = 0;
-let timer = null;
+let timerInterval;
 let timeLeft = 0;
-let quizStarted = false;
 
-const quiz = document.getElementById("quiz");
-const resultBox = document.getElementById("result");
-const scoreText = document.getElementById("score");
-const extraMessage = document.getElementById("extraMessage");
-const topbar = document.getElementById("topbar");
-const configBox = document.getElementById("configBox");
-const currentQuestionEl = document.getElementById("currentQuestion");
-const totalQuestionsEl = document.getElementById("totalQuestions");
-const scoreDisplay = document.getElementById("scoreDisplay");
-const timerDisplay = document.getElementById("timerDisplay");
-const statusMessage = document.getElementById("statusMessage");
+// CARGAR JSON
+async function load(){
+  try{
+    const res = await fetch("../banco/mate.json");
+    const data = await res.json();
 
-async function loadQuestions() {
-  try {
-    const response = await fetch("/banco/mate.json");
+    allQuestions = data;
+    document.getElementById("status").innerText =
+      "Banco cargado: " + allQuestions.length + " preguntas";
 
-    if (!response.ok) {
-      throw new Error("No se pudo cargar el archivo JSON");
-    }
-
-    const data = await response.json();
-
-    if (!Array.isArray(data)) {
-      throw new Error("El archivo JSON no tiene un arreglo válido");
-    }
-
-    allQuestions = data.filter(item =>
-      item &&
-      Array.isArray(item.nums) &&
-      item.nums.length === 4 &&
-      typeof item.result === "number" &&
-      typeof item.isCorrect === "boolean"
-    );
-
-    if (allQuestions.length === 0) {
-      throw new Error("El banco no tiene preguntas válidas");
-    }
-
-    statusMessage.textContent = `Banco cargado: ${allQuestions.length} preguntas disponibles`;
-    configBox.style.display = "flex";
-  } catch (error) {
-    console.error(error);
-    statusMessage.textContent = "Error al cargar /banco/mate.json";
+    document.getElementById("config").style.display = "flex";
+  }catch(e){
+    document.getElementById("status").innerText =
+      "Error cargando JSON";
+    console.error(e);
   }
 }
 
-function shuffleArray(array) {
-  const copy = [...array];
-  for (let i = copy.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [copy[i], copy[j]] = [copy[j], copy[i]];
-  }
-  return copy;
+function shuffle(arr){
+  return arr.sort(()=>Math.random()-0.5);
 }
 
-function formatTime(seconds) {
-  const min = Math.floor(seconds / 60);
-  const sec = seconds % 60;
-  return `${min}:${sec.toString().padStart(2, "0")}`;
-}
+function start(){
+  const count = parseInt(document.getElementById("count").value);
+  timeLeft = parseInt(document.getElementById("time").value);
 
-function startQuiz() {
-  if (allQuestions.length === 0) return;
+  questions = shuffle([...allQuestions]).slice(0,count);
 
-  const selectedCount = parseInt(document.getElementById("questionCount").value, 10);
-  timeLeft = parseInt(document.getElementById("timerSelect").value, 10);
-
-  questions = shuffleArray(allQuestions).slice(0, selectedCount);
   current = 0;
   score = 0;
-  quizStarted = true;
 
-  configBox.style.display = "none";
-  resultBox.style.display = "none";
-  topbar.style.display = "flex";
-  statusMessage.style.display = "none";
+  document.getElementById("config").style.display = "none";
+  document.getElementById("status").style.display = "none";
+  document.getElementById("topbar").style.display = "flex";
 
-  totalQuestionsEl.textContent = questions.length;
-  scoreDisplay.textContent = score;
-
-  if (timer) {
-    clearInterval(timer);
-    timer = null;
-  }
-
-  if (timeLeft > 0) {
-    timerDisplay.textContent = formatTime(timeLeft);
-    timer = setInterval(() => {
+  if(timeLeft>0){
+    updateTimer();
+    timerInterval = setInterval(()=>{
       timeLeft--;
-      timerDisplay.textContent = formatTime(timeLeft);
-
-      if (timeLeft <= 0) {
-        clearInterval(timer);
-        finishQuiz(true);
+      updateTimer();
+      if(timeLeft<=0){
+        finish();
       }
-    }, 1000);
-  } else {
-    timerDisplay.textContent = "Sin tiempo";
+    },1000);
+  }else{
+    document.getElementById("timer").innerText="Sin tiempo";
   }
 
   render();
 }
 
-function render() {
-  if (!quizStarted) return;
+function updateTimer(){
+  const m = Math.floor(timeLeft/60);
+  const s = timeLeft%60;
+  document.getElementById("timer").innerText = m+":"+String(s).padStart(2,"0");
+}
 
-  quiz.innerHTML = "";
-
-  if (current >= questions.length) {
-    finishQuiz(false);
+function render(){
+  if(current>=questions.length){
+    finish();
     return;
   }
 
-  currentQuestionEl.textContent = current + 1;
-  scoreDisplay.textContent = score;
-
   const q = questions[current];
+  const quiz = document.getElementById("quiz");
 
-  const questionDiv = document.createElement("div");
-  questionDiv.className = "question active";
+  document.getElementById("progress").innerText =
+    "Pregunta "+(current+1)+" / "+questions.length;
 
-  const sumDiv = document.createElement("div");
-  sumDiv.className = "sum";
+  let html = `<div class="sum">`;
 
-  q.nums.forEach(num => {
-    const line = document.createElement("div");
-    line.textContent = num;
-    sumDiv.appendChild(line);
+  q.nums.forEach(n=>{
+    html += n + "<br>";
   });
 
-  const lineDiv = document.createElement("div");
-  lineDiv.className = "line";
-  sumDiv.appendChild(lineDiv);
+  html += `<div class="line"></div>${q.result}</div>`;
 
-  const resultDiv = document.createElement("div");
-  resultDiv.textContent = q.result;
-  sumDiv.appendChild(resultDiv);
+  html += `
+  <div class="buttons">
+    <button class="true" onclick="answer(true)">✔ Verdadero</button>
+    <button class="false" onclick="answer(false)">❌ Falso</button>
+  </div>`;
 
-  const buttonsDiv = document.createElement("div");
-  buttonsDiv.className = "buttons";
-
-  const trueBtn = document.createElement("button");
-  trueBtn.className = "answer-btn true";
-  trueBtn.textContent = "✔ Verdadero";
-  trueBtn.onclick = () => answer(true);
-
-  const falseBtn = document.createElement("button");
-  falseBtn.className = "answer-btn false";
-  falseBtn.textContent = "❌ Falso";
-  falseBtn.onclick = () => answer(false);
-
-  buttonsDiv.appendChild(trueBtn);
-  buttonsDiv.appendChild(falseBtn);
-
-  questionDiv.appendChild(sumDiv);
-  questionDiv.appendChild(buttonsDiv);
-  quiz.appendChild(questionDiv);
+  quiz.innerHTML = html;
 }
 
-function answer(userChoice) {
+function answer(user){
   const q = questions[current];
 
-  if (userChoice === q.isCorrect) {
+  if(user === q.isCorrect){
     score++;
   }
 
@@ -380,43 +223,17 @@ function answer(userChoice) {
   render();
 }
 
-function finishQuiz(timeUp) {
-  quiz.innerHTML = "";
+function finish(){
+  clearInterval(timerInterval);
 
-  if (timer) {
-    clearInterval(timer);
-    timer = null;
-  }
+  document.getElementById("quiz").innerHTML="";
+  document.getElementById("result").style.display="block";
 
-  resultBox.style.display = "block";
-  scoreText.textContent = `Puntaje: ${score} / ${questions.length}`;
-  extraMessage.textContent = timeUp ? "Se acabó el tiempo." : "Examen finalizado.";
+  document.getElementById("score").innerText =
+    "Puntaje: "+score+" / "+questions.length;
 }
 
-function resetQuiz() {
-  quizStarted = false;
-  questions = [];
-  current = 0;
-  score = 0;
-
-  if (timer) {
-    clearInterval(timer);
-    timer = null;
-  }
-
-  quiz.innerHTML = "";
-  resultBox.style.display = "none";
-  topbar.style.display = "none";
-  configBox.style.display = "flex";
-  statusMessage.style.display = "block";
-  statusMessage.textContent = `Banco cargado: ${allQuestions.length} preguntas disponibles`;
-  timerDisplay.textContent = "Sin tiempo";
-  currentQuestionEl.textContent = "0";
-  totalQuestionsEl.textContent = "0";
-  scoreDisplay.textContent = "0";
-}
-
-loadQuestions();
+load();
 </script>
 
 </body>
