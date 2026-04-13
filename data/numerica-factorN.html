@@ -31,10 +31,22 @@ h1,p{text-align:center;}
   margin:20px 0;
 }
 
-select, button{
+.config-item{
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+  min-width:180px;
+}
+
+label{
+  font-weight:bold;
+}
+
+select, input, button{
   padding:10px;
   border-radius:10px;
   border:none;
+  font-size:1rem;
 }
 
 .start-btn{
@@ -46,13 +58,20 @@ select, button{
 .topbar{
   display:none;
   justify-content:space-between;
+  gap:10px;
+  flex-wrap:wrap;
   margin-bottom:20px;
+  background:rgba(255,255,255,.1);
+  padding:14px;
+  border-radius:14px;
+  font-weight:bold;
 }
 
 .sum{
   text-align:center;
   font-size:1.7rem;
   margin:20px 0;
+  line-height:1.8;
 }
 
 .line{
@@ -65,6 +84,16 @@ select, button{
   display:flex;
   justify-content:center;
   gap:20px;
+  flex-wrap:wrap;
+}
+
+.answer-btn{
+  padding:12px 20px;
+  border:none;
+  border-radius:12px;
+  font-weight:bold;
+  cursor:pointer;
+  font-size:1rem;
 }
 
 .true{background:#4caf50;color:white;}
@@ -74,6 +103,38 @@ select, button{
   display:none;
   text-align:center;
   margin-top:20px;
+  background:rgba(255,255,255,.1);
+  padding:25px;
+  border-radius:16px;
+}
+
+.result button{
+  margin-top:12px;
+  background:#90caf9;
+  color:#102030;
+  font-weight:bold;
+  cursor:pointer;
+}
+
+#status{
+  text-align:center;
+  margin-bottom:10px;
+  font-weight:bold;
+}
+
+.hint{
+  text-align:center;
+  opacity:.85;
+  font-size:.95rem;
+  margin-top:-5px;
+  margin-bottom:10px;
+}
+
+@media(max-width:700px){
+  .sum{font-size:1.4rem;}
+  .buttons{flex-direction:column;}
+  .answer-btn{width:100%;}
+  .config{flex-direction:column;}
 }
 </style>
 </head>
@@ -81,41 +142,57 @@ select, button{
 <body>
 
 <div class="container">
-<h1>Factor N</h1>
-<p>Verdadero o falso</p>
+  <h1>Factor N</h1>
+  <p>Verdadero o falso</p>
 
-<div id="status">Cargando banco...</div>
+  <div id="status">Cargando banco...</div>
 
-<div class="config" id="config" style="display:none;">
-  <select id="count">
-    <option value="5">5</option>
-    <option value="10" selected>10</option>
-    <option value="20">20</option>
-    <option value="30">30</option>
-  </select>
+  <div class="config" id="config" style="display:none;">
+    <div class="config-item">
+      <label for="count">Cantidad de preguntas</label>
+      <select id="count">
+        <option value="5">5</option>
+        <option value="10" selected>10</option>
+        <option value="15">15</option>
+        <option value="20">20</option>
+        <option value="30">30</option>
+        <option value="40">40</option>
+        <option value="50">50</option>
+        <option value="60">60</option>
+        <option value="70">70</option>
+        <option value="80">80</option>
+        <option value="90">90</option>
+      </select>
+    </div>
 
-  <select id="time">
-    <option value="0">Sin tiempo</option>
-    <option value="60">1 min</option>
-    <option value="120">2 min</option>
-    <option value="300" selected>5 min</option>
-  </select>
+    <div class="config-item">
+      <label for="timeMinutes">Tiempo en minutos</label>
+      <input id="timeMinutes" type="number" min="0" step="1" value="5" placeholder="Ej. 5">
+    </div>
 
-  <button class="start-btn" onclick="start()">Empezar</button>
-</div>
+    <div class="config-item">
+      <label>&nbsp;</label>
+      <button class="start-btn" onclick="start()">Empezar</button>
+    </div>
+  </div>
 
-<div class="topbar" id="topbar">
-  <div id="progress"></div>
-  <div id="timer"></div>
-</div>
+  <div class="hint" id="hintText" style="display:none;">
+    Escribe 0 en tiempo si quieres jugar sin límite.
+  </div>
 
-<div id="quiz"></div>
+  <div class="topbar" id="topbar">
+    <div id="progress"></div>
+    <div id="scoreLive"></div>
+    <div id="timer"></div>
+  </div>
 
-<div class="result" id="result">
-  <h2 id="score"></h2>
-  <button onclick="location.reload()">Reiniciar</button>
-</div>
+  <div id="quiz"></div>
 
+  <div class="result" id="result">
+    <h2 id="score"></h2>
+    <p id="finalMessage"></p>
+    <button onclick="location.reload()">Reiniciar</button>
+  </div>
 </div>
 
 <script>
@@ -123,69 +200,130 @@ let allQuestions = [];
 let questions = [];
 let current = 0;
 let score = 0;
-let timerInterval;
+let timerInterval = null;
 let timeLeft = 0;
 
-// CARGAR JSON
 async function load(){
   try{
     const res = await fetch("../banco/mate.json");
+
+    if(!res.ok){
+      throw new Error("No se pudo leer el archivo JSON");
+    }
+
     const data = await res.json();
 
-    allQuestions = data;
+    if(!Array.isArray(data)){
+      throw new Error("El JSON no tiene formato de arreglo");
+    }
+
+    allQuestions = data.filter(q =>
+      q &&
+      Array.isArray(q.nums) &&
+      q.nums.length === 4 &&
+      typeof q.result === "number" &&
+      typeof q.isCorrect === "boolean"
+    );
+
+    if(allQuestions.length === 0){
+      throw new Error("No hay preguntas válidas en el banco");
+    }
+
     document.getElementById("status").innerText =
       "Banco cargado: " + allQuestions.length + " preguntas";
 
     document.getElementById("config").style.display = "flex";
+    document.getElementById("hintText").style.display = "block";
+
+    ajustarSelectorPreguntas();
   }catch(e){
-    document.getElementById("status").innerText =
-      "Error cargando JSON";
+    document.getElementById("status").innerText = "Error cargando ../banco/mate.json";
     console.error(e);
   }
 }
 
+function ajustarSelectorPreguntas(){
+  const select = document.getElementById("count");
+  const maxDisponibles = allQuestions.length;
+
+  Array.from(select.options).forEach(option => {
+    const value = parseInt(option.value, 10);
+    option.disabled = value > maxDisponibles;
+  });
+
+  if(parseInt(select.value, 10) > maxDisponibles){
+    select.value = String(maxDisponibles);
+  }
+}
+
 function shuffle(arr){
-  return arr.sort(()=>Math.random()-0.5);
+  const copy = [...arr];
+  for(let i = copy.length - 1; i > 0; i--){
+    const j = Math.floor(Math.random() * (i + 1));
+    [copy[i], copy[j]] = [copy[j], copy[i]];
+  }
+  return copy;
+}
+
+function formatTime(totalSeconds){
+  const m = Math.floor(totalSeconds / 60);
+  const s = totalSeconds % 60;
+  return m + ":" + String(s).padStart(2,"0");
 }
 
 function start(){
-  const count = parseInt(document.getElementById("count").value);
-  timeLeft = parseInt(document.getElementById("time").value);
+  const requestedCount = parseInt(document.getElementById("count").value, 10);
+  const minutesInput = parseInt(document.getElementById("timeMinutes").value, 10);
 
-  questions = shuffle([...allQuestions]).slice(0,count);
+  const safeCount = Math.min(
+    isNaN(requestedCount) ? 10 : requestedCount,
+    allQuestions.length
+  );
 
+  const safeMinutes = isNaN(minutesInput) || minutesInput < 0 ? 0 : minutesInput;
+  timeLeft = safeMinutes * 60;
+
+  questions = shuffle(allQuestions).slice(0, safeCount);
   current = 0;
   score = 0;
 
   document.getElementById("config").style.display = "none";
+  document.getElementById("hintText").style.display = "none";
   document.getElementById("status").style.display = "none";
+  document.getElementById("result").style.display = "none";
   document.getElementById("topbar").style.display = "flex";
 
-  if(timeLeft>0){
+  document.getElementById("scoreLive").innerText = "Puntaje: 0";
+
+  if(timerInterval){
+    clearInterval(timerInterval);
+    timerInterval = null;
+  }
+
+  if(timeLeft > 0){
     updateTimer();
-    timerInterval = setInterval(()=>{
+    timerInterval = setInterval(() => {
       timeLeft--;
       updateTimer();
-      if(timeLeft<=0){
-        finish();
+
+      if(timeLeft <= 0){
+        finish(true);
       }
-    },1000);
+    }, 1000);
   }else{
-    document.getElementById("timer").innerText="Sin tiempo";
+    document.getElementById("timer").innerText = "Sin tiempo";
   }
 
   render();
 }
 
 function updateTimer(){
-  const m = Math.floor(timeLeft/60);
-  const s = timeLeft%60;
-  document.getElementById("timer").innerText = m+":"+String(s).padStart(2,"0");
+  document.getElementById("timer").innerText = formatTime(timeLeft);
 }
 
 function render(){
-  if(current>=questions.length){
-    finish();
+  if(current >= questions.length){
+    finish(false);
     return;
   }
 
@@ -193,21 +331,25 @@ function render(){
   const quiz = document.getElementById("quiz");
 
   document.getElementById("progress").innerText =
-    "Pregunta "+(current+1)+" / "+questions.length;
+    "Pregunta " + (current + 1) + " / " + questions.length;
+
+  document.getElementById("scoreLive").innerText =
+    "Puntaje: " + score;
 
   let html = `<div class="sum">`;
 
-  q.nums.forEach(n=>{
+  q.nums.forEach(n => {
     html += n + "<br>";
   });
 
   html += `<div class="line"></div>${q.result}</div>`;
 
   html += `
-  <div class="buttons">
-    <button class="true" onclick="answer(true)">✔ Verdadero</button>
-    <button class="false" onclick="answer(false)">❌ Falso</button>
-  </div>`;
+    <div class="buttons">
+      <button class="answer-btn true" onclick="answer(true)">✔ Verdadero</button>
+      <button class="answer-btn false" onclick="answer(false)">❌ Falso</button>
+    </div>
+  `;
 
   quiz.innerHTML = html;
 }
@@ -223,14 +365,20 @@ function answer(user){
   render();
 }
 
-function finish(){
-  clearInterval(timerInterval);
+function finish(timeUp){
+  if(timerInterval){
+    clearInterval(timerInterval);
+    timerInterval = null;
+  }
 
-  document.getElementById("quiz").innerHTML="";
-  document.getElementById("result").style.display="block";
-
+  document.getElementById("quiz").innerHTML = "";
+  document.getElementById("topbar").style.display = "none";
+  document.getElementById("result").style.display = "block";
   document.getElementById("score").innerText =
-    "Puntaje: "+score+" / "+questions.length;
+    "Puntaje: " + score + " / " + questions.length;
+
+  document.getElementById("finalMessage").innerText =
+    timeUp ? "Se acabó el tiempo." : "Examen finalizado.";
 }
 
 load();
