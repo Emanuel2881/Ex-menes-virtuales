@@ -1,453 +1,264 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Examen de Habilidad Numérica 3</title>
-  <style>
-    *{box-sizing:border-box;margin:0;padding:0}
-    body{
-      font-family: Arial, sans-serif;
-      background: linear-gradient(135deg,#16222a,#3a6073);
-      color:#fff;
-      min-height:100vh;
-      padding:20px;
+<script>
+  const questions = [
+    {
+      question: "¿Cuál de las siguientes respuestas es mayor?",
+      options: ["12 ÷ 6", "3²", "28 - 23", "√16"],
+      answer: 1
+    },
+    {
+      question: "¿Cuál de las siguientes respuestas es mayor?",
+      options: [
+        "(45 ÷ 5) + 17 - 12",
+        "21 + (24 ÷ 3) - 15",
+        "6 + (8 ÷ 2) + 9",
+        "(21 ÷ 7) + 11 + 1"
+      ],
+      answer: 2
+    },
+    {
+      question: "¿Cuál de las siguientes respuestas es mayor?",
+      options: ["2 × 1/2", "3¹", "8 ÷ 4", "10% de 25"],
+      answer: 1
+    },
+    {
+      question: "En una finca hay 4 árboles y cada uno da 10 frutos a la semana. ¿Cuántos frutos darán todos los árboles en dos semanas?",
+      options: ["20 frutos", "40 frutos", "80 frutos", "100 frutos"],
+      answer: 2
+    },
+    {
+      question: "Luis tiene 30 euros y se ha gastado en ropa una cantidad igual a 2/3 de lo que tiene ahora. ¿Cuánto se ha gastado?",
+      options: ["10 euros", "15 euros", "20 euros", "60 euros"],
+      answer: 1
+    },
+    {
+      question: "Un inversor compra 20 acciones a 3.20 euros cada una. Un año después suben 25%. ¿Cuánto ganó?",
+      options: ["16", "64", "80", "8"],
+      answer: 0
+    },
+    {
+      question: "Usa esta tabla para responder:",
+      extra: "CEREAL\nCebada: Año1 Exp 20 Imp 400 | Año2 Exp 50 Imp 100 | Año3 Exp 40 Imp 200 | Año4 Exp 30 Imp 400\nTrigo: Año1 Exp 55 Imp 5 | Año2 Exp 200 Imp 20 | Año3 Exp 100 Imp 40 | Año4 Exp 100 Imp 50\nAvena: Año1 Exp 100 Imp 120 | Año2 Exp 120 Imp 200 | Año3 Exp 150 Imp 250 | Año4 Exp 200 Imp 290",
+      question2: "¿Cuántas toneladas de trigo se importaron en los 3 primeros años?",
+      options: ["55", "65", "115", "355"],
+      answer: 1
+    },
+    {
+      question: "Con la misma tabla de cereales, ¿en cuánto superan las importaciones a las exportaciones de cebada en el año 4?",
+      options: ["260", "270", "330", "370"],
+      answer: 3
+    },
+    {
+      question: "Con la misma tabla de cereales, ¿cuántas toneladas de cebada se exportaron por término medio cada año?",
+      options: ["25", "35", "40", "275"],
+      answer: 1
+    },
+    {
+      question: "Con la misma tabla de cereales, ¿en cuánto superan las importaciones a las exportaciones en el año 3?",
+      options: ["140 toneladas", "200 toneladas", "220 toneladas", "240 toneladas"],
+      answer: 1
+    },
+    {
+      question: "¿Cuál de las siguientes respuestas es mayor?",
+      options: ["2.5 × 15", "(50 ÷ 2) × (8 ÷ 4)", "20% de 250", "10 × 23"],
+      answer: 3
+    },
+    {
+      question: "¿Cuál de las siguientes respuestas es mayor?",
+      options: ["(6 × 4) + 9 - 3", "18 + 9 - (3 × 2)", "4 + (3 × 5) + 9", "50 - 6 - (6 × 3)"],
+      answer: 3
+    },
+    {
+      question: "¿Cuál de las siguientes respuestas es mayor?",
+      options: ["15.5 + 9.8", "30 - 4.9", "14.8 + 9.85", "8.1 + 16.4"],
+      answer: 2
+    },
+    {
+      question: "¿Cuál de las siguientes respuestas es mayor?",
+      options: ["(8 × 3) + 17 - 8", "28 + 35 - (4 × 9)", "8 + 12 + (4 × 3)", "19 + (5 × 2) + 2"],
+      answer: 0
+    },
+    {
+      question: "Una persona compra una cazadora por 70 euros. La cambia por un abrigo de 90 euros y paga con un billete de 50 euros. ¿Cuánto le devuelven?",
+      options: ["20", "25", "30", "40"],
+      answer: 2
+    },
+    {
+      question: "Cuando Ana nació su madre tenía 28 años. ¿Cuántos años tendrá Ana cuando la edad de su madre sea 5 veces mayor que la suya?",
+      options: ["4", "7", "8", "35"],
+      answer: 1
+    },
+    {
+      question: "En el plano del terreno aparecen estas medidas: 15 m, 3 m, 32 m y los campos X, Y, Z. ¿Cuánto mide el lado más largo del campo Y?",
+      options: ["11 m", "12 m", "15 m", "17 m"],
+      answer: 1
+    },
+    {
+      question: "Con el mismo terreno, si se dan dos vueltas completas al terreno, ¿qué distancia se recorrerá?",
+      options: ["47 m", "94 m", "124 m", "188 m"],
+      answer: 1
+    },
+    {
+      question: "Con el mismo terreno, ¿cuál es la superficie del campo X?",
+      options: ["45 m²", "78 m²", "90 m²", "96 m²"],
+      answer: 2
+    },
+    {
+      question: "Con el mismo terreno, ¿cuánto mide el perímetro del campo Z?",
+      options: ["27 m", "30 m", "54 m", "60 m"],
+      answer: 0
+    },
+    {
+      question: "Con el mismo terreno, ¿en cuánto supera la superficie del campo Y a la del campo Z?",
+      options: ["12 m²", "24 m²", "30 m²", "36 m²"],
+      answer: 2
+    },
+    {
+      question: "Ahora usa esta información de oficina:",
+      extra: "Precios por unidad:\nRecambio de pluma 51 céntimos\nCuaderno 39 céntimos\nPapel A-3 12 céntimos\nDisquete 45 céntimos\nSobre 3 céntimos\nCarpeta 6 céntimos\n\nLa gráfica muestra unidades gastadas por semana.",
+      question2: "En un día de trabajo, ¿cuántas unidades de papel A3 se gastan por término medio?",
+      options: ["5", "7", "14", "35"],
+      answer: 1
+    },
+    {
+      question: "Con la misma información de oficina, ¿en cuál de los materiales se gasta más dinero al mes?",
+      options: ["Cuadernos", "Disquetes", "Sobres", "Recambios de plumas"],
+      answer: 3
+    },
+    {
+      question: "Si en la primera semana de mayo se gastó 20% más que el promedio en todos los materiales, ¿cuántos disquetes se gastaron aproximadamente esa semana?",
+      options: ["4", "12", "22", "24"],
+      answer: 3
     }
-    .container{
-      max-width:1000px;
-      margin:auto;
-      background:rgba(255,255,255,0.08);
-      border-radius:20px;
-      padding:25px;
-      box-shadow:0 10px 30px rgba(0,0,0,.25);
-      backdrop-filter: blur(8px);
-    }
-    h1{
-      text-align:center;
-      margin-bottom:8px;
-      font-size:2rem;
-    }
-    .subtitle{
-      text-align:center;
-      opacity:.9;
-      margin-bottom:20px;
-    }
-    .topbar{
-      display:flex;
-      flex-wrap:wrap;
-      gap:10px;
-      justify-content:space-between;
-      background:rgba(255,255,255,0.12);
-      padding:14px 16px;
-      border-radius:14px;
-      margin-bottom:18px;
-      font-weight:bold;
-    }
-    .progress-wrap{
-      width:100%;
-      height:14px;
-      border-radius:999px;
-      overflow:hidden;
-      background:rgba(255,255,255,.18);
-      margin-bottom:24px;
-    }
-    .progress{
-      height:100%;
-      width:0%;
-      background:#ffd54f;
-      transition:.3s ease;
-    }
-    .question-card{
-      display:none;
-      background:rgba(255,255,255,.1);
-      border-radius:18px;
-      padding:24px;
-      animation:fade .25s ease;
-    }
-    .question-card.active{display:block}
-    .qnum{
-      opacity:.8;
-      margin-bottom:10px;
-      font-size:.95rem;
-    }
-    .qtext{
-      font-size:1.15rem;
-      line-height:1.6;
-      margin-bottom:18px;
-    }
-    .mini-box{
-      background:rgba(255,255,255,.1);
-      border-left:4px solid #ffd54f;
-      padding:12px 14px;
-      border-radius:12px;
-      margin:12px 0 18px;
-      white-space:pre-line;
-      line-height:1.55;
-      font-size:.97rem;
-    }
-    .option{
-      background:rgba(255,255,255,.12);
-      border:2px solid transparent;
-      border-radius:12px;
-      padding:12px 14px;
-      margin:10px 0;
-      cursor:pointer;
-      transition:.2s ease;
-    }
-    .option:hover{
-      transform:translateY(-1px);
-      background:rgba(255,255,255,.18);
-    }
-    .option.selected{
-      border-color:#ffd54f;
-      background:rgba(255,213,79,.18);
-    }
-    .option.correct{
-      border-color:#4caf50;
-      background:rgba(76,175,80,.2);
-    }
-    .option.incorrect{
-      border-color:#f44336;
-      background:rgba(244,67,54,.2);
-    }
-    .buttons{
-      display:flex;
-      justify-content:space-between;
-      gap:12px;
-      margin-top:18px;
-      flex-wrap:wrap;
-    }
-    button{
-      border:none;
-      border-radius:12px;
-      padding:12px 18px;
-      font-size:1rem;
-      font-weight:bold;
-      cursor:pointer;
-      transition:.2s ease;
-    }
-    button:hover{transform:scale(1.02)}
-    .prev{background:#90caf9;color:#102030}
-    .next{background:#ffd54f;color:#222}
-    .finish{background:#66bb6a;color:#fff}
-    .result{
-      display:none;
-      text-align:center;
-      margin-top:22px;
-      background:rgba(255,255,255,.1);
-      padding:28px;
-      border-radius:18px;
-    }
-    .result h2{margin-bottom:10px}
-    .result p{margin:8px 0}
-    .review{
-      background:#ffb74d;
-      color:#222;
-      margin-top:10px;
-    }
-    @keyframes fade{
-      from{opacity:0;transform:translateY(10px)}
-      to{opacity:1;transform:translateY(0)}
-    }
-    @media(max-width:700px){
-      .qtext{font-size:1.05rem}
-      .buttons{flex-direction:column}
-      button{width:100%}
-    }
-  </style>
-</head>
-<body>
-  <div class="container">
-    <h1>📘 Examen de Habilidad Numérica 3</h1>
-    <p class="subtitle">Simulador de práctica • Matemática específico</p>
+  ];
 
-    <div class="topbar">
-      <div>Pregunta: <span id="currentQuestion">1</span>/<span id="totalQuestions">24</span></div>
-      <div>Puntaje: <span id="scoreDisplay">0</span></div>
-      <div>Respondidas: <span id="answeredCount">0</span></div>
-    </div>
+  const quizContainer = document.getElementById("quiz");
+  const currentQuestionEl = document.getElementById("currentQuestion");
+  const totalQuestionsEl = document.getElementById("totalQuestions");
+  const scoreDisplay = document.getElementById("scoreDisplay");
+  const answeredCount = document.getElementById("answeredCount");
+  const progressBar = document.getElementById("progressBar");
+  const resultBox = document.getElementById("resultBox");
+  const finalScore = document.getElementById("finalScore");
+  const finalMessage = document.getElementById("finalMessage");
 
-    <div class="progress-wrap">
-      <div class="progress" id="progressBar"></div>
-    </div>
+  let current = 0;
+  let userAnswers = new Array(questions.length).fill(null);
+  let reviewed = false;
 
-    <div id="quiz"></div>
+  totalQuestionsEl.textContent = questions.length;
 
-    <div class="result" id="resultBox">
-      <h2>🎉 Examen finalizado</h2>
-      <p>Tu puntaje: <strong id="finalScore"></strong></p>
-      <p id="finalMessage"></p>
-      <button class="review" onclick="reviewAnswers()">Revisar respuestas</button>
-    </div>
-  </div>
+  function renderQuiz() {
+    quizContainer.innerHTML = "";
 
-  <script>
-    const questions = [
-      {
-        question: "¿Cuál de las siguientes respuestas es mayor?",
-        extra: "a) 12 ÷ 6\nb) 3²\nc) 28 - 23\nd) √16",
-        options: ["a", "b", "c", "d"],
-        answer: 1
-      },
-      {
-        question: "¿Cuál de las siguientes respuestas es mayor?",
-        extra: "a) (45 ÷ 5) + 17 - 12\nb) 21 + (24 ÷ 3) - 15\nc) 6 + (8 ÷ 2) + 9\nd) (21 ÷ 7) + 11 + 1",
-        options: ["a", "b", "c", "d"],
-        answer: 2
-      },
-      {
-        question: "¿Cuál de las siguientes respuestas es mayor?",
-        extra: "a) 2 × 1/2\nb) 3¹\nc) 8 ÷ 4\nd) 10% de 25",
-        options: ["a", "b", "c", "d"],
-        answer: 1
-      },
-      {
-        question: "En una finca hay 4 árboles y cada uno da 10 frutos a la semana. ¿Cuántos frutos darán todos los árboles en dos semanas?",
-        options: ["20 frutos", "40 frutos", "80 frutos", "100 frutos"],
-        answer: 2
-      },
-      {
-        question: "Luis tiene 30 euros y se ha gastado en ropa una cantidad igual a 2/3 de lo que tiene ahora. ¿Cuánto se ha gastado?",
-        options: ["10 euros", "15 euros", "20 euros", "60 euros"],
-        answer: 1
-      },
-      {
-        question: "Un inversor compra 20 acciones a 3.20 euros cada una. Un año después suben 25%. ¿Cuánto ganó?",
-        options: ["16", "64", "80", "8"],
-        answer: 0
-      },
-      {
-        question: "Usa esta tabla para responder:",
-        extra: "CEREAL\nCebada: Año1 Exp 20 Imp 400 | Año2 Exp 50 Imp 100 | Año3 Exp 40 Imp 200 | Año4 Exp 30 Imp 400\nTrigo: Año1 Exp 55 Imp 5 | Año2 Exp 200 Imp 20 | Año3 Exp 100 Imp 40 | Año4 Exp 100 Imp 50\nAvena: Año1 Exp 100 Imp 120 | Año2 Exp 120 Imp 200 | Año3 Exp 150 Imp 250 | Año4 Exp 200 Imp 290",
-        question2: "¿Cuántas toneladas de trigo se importaron en los 3 primeros años?",
-        options: ["55", "65", "115", "355"],
-        answer: 1
-      },
-      {
-        question: "Con la misma tabla de cereales, ¿en cuánto superan las importaciones a las exportaciones de cebada en el año 4?",
-        options: ["260", "270", "330", "370"],
-        answer: 3
-      },
-      {
-        question: "Con la misma tabla de cereales, ¿cuántas toneladas de cebada se exportaron por término medio cada año?",
-        options: ["25", "35", "40", "275"],
-        answer: 1
-      },
-      {
-        question: "Con la misma tabla de cereales, ¿en cuánto superan las importaciones a las exportaciones en el año 3?",
-        options: ["140 toneladas", "200 toneladas", "220 toneladas", "240 toneladas"],
-        answer: 1
-      },
-      {
-        question: "¿Cuál de las siguientes respuestas es mayor?",
-        extra: "a) 2.5 × 15\nb) (50 ÷ 2) × (8 ÷ 4)\nc) 20% de 250\nd) 10 × 23",
-        options: ["a", "b", "c", "d"],
-        answer: 3
-      },
-      {
-        question: "¿Cuál de las siguientes respuestas es mayor?",
-        extra: "a) (6 × 4) + 9 - 3\nb) 18 + 9 - (3 × 2)\nc) 4 + (3 × 5) + 9\nd) 50 - 6 - (6 × 3)",
-        options: ["a", "b", "c", "d"],
-        answer: 3
-      },
-      {
-        question: "¿Cuál de las siguientes respuestas es mayor?",
-        extra: "a) 15.5 + 9.8\nb) 30 - 4.9\nc) 14.8 + 9.85\nd) 8.1 + 16.4",
-        options: ["a", "b", "c", "d"],
-        answer: 2
-      },
-      {
-        question: "¿Cuál de las siguientes respuestas es mayor?",
-        extra: "a) (8 × 3) + 17 - 8\nb) 28 + 35 - (4 × 9)\nc) 8 + 12 + (4 × 3)\nd) 19 + (5 × 2) + 2",
-        options: ["a", "b", "c", "d"],
-        answer: 0
-      },
-      {
-        question: "Una persona compra una cazadora por 70 euros. La cambia por un abrigo de 90 euros y paga con un billete de 50 euros. ¿Cuánto le devuelven?",
-        options: ["20", "25", "30", "40"],
-        answer: 2
-      },
-      {
-        question: "Cuando Ana nació su madre tenía 28 años. ¿Cuántos años tendrá Ana cuando la edad de su madre sea 5 veces mayor que la suya?",
-        options: ["4", "7", "8", "35"],
-        answer: 1
-      },
-      {
-        question: "En el plano del terreno aparecen estas medidas: 15 m, 3 m, 32 m y los campos X, Y, Z. ¿Cuánto mide el lado más largo del campo Y?",
-        options: ["11 m", "12 m", "15 m", "17 m"],
-        answer: 1
-      },
-      {
-        question: "Con el mismo terreno, si se dan dos vueltas completas al terreno, ¿qué distancia se recorrerá?",
-        options: ["47 m", "94 m", "124 m", "188 m"],
-        answer: 1
-      },
-      {
-        question: "Con el mismo terreno, ¿cuál es la superficie del campo X?",
-        options: ["45 m²", "78 m²", "90 m²", "96 m²"],
-        answer: 2
-      },
-      {
-        question: "Con el mismo terreno, ¿cuánto mide el perímetro del campo Z?",
-        options: ["27 m", "30 m", "54 m", "60 m"],
-        answer: 0
-      },
-      {
-        question: "Con el mismo terreno, ¿en cuánto supera la superficie del campo Y a la del campo Z?",
-        options: ["12 m²", "24 m²", "30 m²", "36 m²"],
-        answer: 2
-      },
-      {
-        question: "Ahora usa esta información de oficina:",
-        extra: "Precios por unidad:\nRecambio de pluma 51 céntimos\nCuaderno 39 céntimos\nPapel A-3 12 céntimos\nDisquete 45 céntimos\nSobre 3 céntimos\nCarpeta 6 céntimos\n\nLa gráfica muestra unidades gastadas por semana.",
-        question2: "En un día de trabajo, ¿cuántas unidades de papel A3 se gastan por término medio?",
-        options: ["5", "7", "14", "35"],
-        answer: 1
-      },
-      {
-        question: "Con la misma información de oficina, ¿en cuál de los materiales se gasta más dinero al mes?",
-        options: ["Cuadernos", "Disquetes", "Sobres", "Recambios de plumas"],
-        answer: 3
-      },
-      {
-        question: "Si en la primera semana de mayo se gastó 20% más que el promedio en todos los materiales, ¿cuántos disquetes se gastaron aproximadamente esa semana?",
-        options: ["4", "12", "22", "24"],
-        answer: 3
-      }
-    ];
+    questions.forEach((q, index) => {
+      const card = document.createElement("div");
+      card.className = "question-card";
+      if (index === current) card.classList.add("active");
 
-    const quizContainer = document.getElementById("quiz");
-    const currentQuestionEl = document.getElementById("currentQuestion");
-    const totalQuestionsEl = document.getElementById("totalQuestions");
-    const scoreDisplay = document.getElementById("scoreDisplay");
-    const answeredCount = document.getElementById("answeredCount");
-    const progressBar = document.getElementById("progressBar");
-    const resultBox = document.getElementById("resultBox");
-    const finalScore = document.getElementById("finalScore");
-    const finalMessage = document.getElementById("finalMessage");
-
-    let current = 0;
-    let userAnswers = new Array(questions.length).fill(null);
-    let reviewed = false;
-
-    totalQuestionsEl.textContent = questions.length;
-
-    function renderQuiz() {
-      quizContainer.innerHTML = "";
-
-      questions.forEach((q, index) => {
-        const card = document.createElement("div");
-        card.className = "question-card";
-        if (index === current) card.classList.add("active");
-
-        const title = q.question2 ? q.question2 : q.question;
-        const extra = q.extra ? `<div class="mini-box">${q.extra}</div>` : "";
-
-        let optionsHTML = "";
-        q.options.forEach((option, i) => {
-          optionsHTML += `
-            <div class="option ${userAnswers[index] === i ? 'selected' : ''}" onclick="selectOption(${index}, ${i})">
-              ${String.fromCharCode(65 + i)}. ${option}
-            </div>
-          `;
-        });
-
-        card.innerHTML = `
-          <div class="qnum">Pregunta ${index + 1}</div>
-          <div class="qtext">${title}</div>
-          ${extra}
-          <div class="options">${optionsHTML}</div>
-          <div class="buttons">
-            <button class="prev" onclick="prevQuestion()" ${index === 0 ? "disabled" : ""}>⬅ Anterior</button>
-            ${
-              index === questions.length - 1
-              ? `<button class="finish" onclick="finishQuiz()">Finalizar</button>`
-              : `<button class="next" onclick="nextQuestion()">Siguiente ➡</button>`
-            }
+      let optionsHTML = "";
+      q.options.forEach((option, i) => {
+        optionsHTML += `
+          <div class="option ${userAnswers[index] === i ? 'selected' : ''}" onclick="selectOption(${index}, ${i})">
+            ${String.fromCharCode(65 + i)}. ${option}
           </div>
         `;
-
-        quizContainer.appendChild(card);
       });
 
-      updateTopBar();
-    }
+      card.innerHTML = `
+        <div class="qnum">Pregunta ${index + 1}</div>
+        <div class="qtext">${q.question}</div>
+        ${q.extra ? `<div class="mini-box">${q.extra}</div>` : ""}
+        ${q.question2 ? `<div class="qtext" style="margin-top:12px;">${q.question2}</div>` : ""}
+        <div class="options">${optionsHTML}</div>
+        <div class="buttons">
+          <button class="prev" onclick="prevQuestion()" ${index === 0 ? "disabled" : ""}>⬅ Anterior</button>
+          ${
+            index === questions.length - 1
+              ? `<button class="finish" onclick="finishQuiz()">Finalizar</button>`
+              : `<button class="next" onclick="nextQuestion()">Siguiente ➡</button>`
+          }
+        </div>
+      `;
 
-    function selectOption(questionIndex, optionIndex) {
-      if (reviewed) return;
-      userAnswers[questionIndex] = optionIndex;
+      quizContainer.appendChild(card);
+    });
+
+    updateTopBar();
+  }
+
+  function selectOption(questionIndex, optionIndex) {
+    if (reviewed) return;
+    userAnswers[questionIndex] = optionIndex;
+    renderQuiz();
+  }
+
+  function nextQuestion() {
+    if (current < questions.length - 1) {
+      current++;
       renderQuiz();
     }
+  }
 
-    function nextQuestion() {
-      if (current < questions.length - 1) {
-        current++;
-        renderQuiz();
-      }
+  function prevQuestion() {
+    if (current > 0) {
+      current--;
+      renderQuiz();
+    }
+  }
+
+  function updateTopBar() {
+    currentQuestionEl.textContent = current + 1;
+    const answered = userAnswers.filter(ans => ans !== null).length;
+    answeredCount.textContent = answered;
+    progressBar.style.width = `${(answered / questions.length) * 100}%`;
+
+    const score = userAnswers.reduce((acc, ans, i) => ans === questions[i].answer ? acc + 1 : acc, 0);
+    scoreDisplay.textContent = score;
+  }
+
+  function finishQuiz() {
+    const score = userAnswers.reduce((acc, ans, i) => ans === questions[i].answer ? acc + 1 : acc, 0);
+    finalScore.textContent = `${score} / ${questions.length}`;
+
+    let msg = "";
+    if (score >= 20) {
+      msg = "🔥 Muy buen nivel. Este ya está más pesadito y lo manejaste bien.";
+    } else if (score >= 15) {
+      msg = "💪 Vas bien, pero todavía hay varias que reforzar.";
+    } else if (score >= 10) {
+      msg = "📚 Nivel aceptable, pero toca practicar más problemas.";
+    } else {
+      msg = "🫠 Hay que seguir metiéndole, pero justo para eso es el simulador.";
     }
 
-    function prevQuestion() {
-      if (current > 0) {
-        current--;
-        renderQuiz();
-      }
-    }
+    finalMessage.textContent = msg;
+    resultBox.style.display = "block";
+    window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
+  }
 
-    function updateTopBar() {
-      currentQuestionEl.textContent = current + 1;
-      const answered = userAnswers.filter(ans => ans !== null).length;
-      answeredCount.textContent = answered;
-      progressBar.style.width = `${(answered / questions.length) * 100}%`;
+  function reviewAnswers() {
+    reviewed = true;
+    const cards = document.querySelectorAll(".question-card");
 
-      const score = userAnswers.reduce((acc, ans, i) => ans === questions[i].answer ? acc + 1 : acc, 0);
-      scoreDisplay.textContent = score;
-    }
+    cards.forEach((card, qIndex) => {
+      const options = card.querySelectorAll(".option");
+      options.forEach((option, oIndex) => {
+        option.onclick = null;
+        option.classList.remove("selected");
 
-    function finishQuiz() {
-      const score = userAnswers.reduce((acc, ans, i) => ans === questions[i].answer ? acc + 1 : acc, 0);
-      finalScore.textContent = `${score} / ${questions.length}`;
+        if (oIndex === questions[qIndex].answer) {
+          option.classList.add("correct");
+        }
 
-      let msg = "";
-      if (score >= 20) {
-        msg = "🔥 Muy buen nivel. Este ya está más pesadito y lo manejaste bien.";
-      } else if (score >= 15) {
-        msg = "💪 Vas bien, pero todavía hay varias que reforzar.";
-      } else if (score >= 10) {
-        msg = "📚 Nivel aceptable, pero toca practicar más problemas.";
-      } else {
-        msg = "🫠 Hay que seguir metiéndole, pero justo para eso es el simulador.";
-      }
-
-      finalMessage.textContent = msg;
-      resultBox.style.display = "block";
-      window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
-    }
-
-    function reviewAnswers() {
-      reviewed = true;
-      const cards = document.querySelectorAll(".question-card");
-
-      cards.forEach((card, qIndex) => {
-        const options = card.querySelectorAll(".option");
-        options.forEach((option, oIndex) => {
-          option.onclick = null;
-          option.classList.remove("selected");
-
-          if (oIndex === questions[qIndex].answer) {
-            option.classList.add("correct");
-          }
-
-          if (userAnswers[qIndex] === oIndex && oIndex !== questions[qIndex].answer) {
-            option.classList.add("incorrect");
-          }
-        });
+        if (userAnswers[qIndex] === oIndex && oIndex !== questions[qIndex].answer) {
+          option.classList.add("incorrect");
+        }
       });
+    });
 
-      alert("Ahora ya puedes revisar tus respuestas correctas e incorrectas.");
-      resultBox.scrollIntoView({ behavior: "smooth" });
-    }
+    alert("Ahora ya puedes revisar tus respuestas correctas e incorrectas.");
+    resultBox.scrollIntoView({ behavior: "smooth" });
+  }
 
-    renderQuiz();
-  </script>
-</body>
-</html>
+  renderQuiz();
+</script>
