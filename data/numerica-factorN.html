@@ -1,1 +1,155 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Factor N</title>
 
+<style>
+body{
+  font-family: Arial;
+  background: linear-gradient(135deg,#0f2027,#2c5364);
+  color:#fff;
+  padding:20px;
+}
+
+.container{
+  max-width:800px;
+  margin:auto;
+  background:rgba(255,255,255,0.08);
+  padding:25px;
+  border-radius:20px;
+}
+
+.question{
+  display:none;
+}
+
+.question.active{
+  display:block;
+}
+
+.sum{
+  text-align:center;
+  font-size:1.5rem;
+  margin:20px 0;
+  line-height:1.6;
+}
+
+.line{
+  border-top:2px solid #fff;
+  width:120px;
+  margin:10px auto;
+}
+
+.buttons{
+  display:flex;
+  justify-content:center;
+  gap:20px;
+}
+
+button{
+  padding:12px 20px;
+  border:none;
+  border-radius:10px;
+  font-weight:bold;
+  cursor:pointer;
+}
+
+.true{background:#4caf50;}
+.false{background:#f44336;}
+
+.next{
+  background:#ffd54f;
+  margin-top:20px;
+}
+
+.result{
+  text-align:center;
+  display:none;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+<h1>Factor N</h1>
+<p>Indica si la suma es correcta o incorrecta</p>
+
+<div id="quiz"></div>
+
+<div class="result" id="result">
+<h2>Resultado</h2>
+<p id="score"></p>
+</div>
+
+</div>
+
+<script>
+
+const questions = [
+  {nums:[61,34,78,53], result:226},
+  {nums:[31,59,52,68], result:200},
+  {nums:[66,73,15,38], result:202},
+  {nums:[73,29,56,33], result:211},
+  {nums:[13,39,99,32], result:183},
+  {nums:[48,45,17,82], result:192},
+  {nums:[88,29,69,96], result:284},
+  {nums:[86,49,54,22], result:111},
+  {nums:[69,44,89,84], result:286}
+];
+
+let current = 0;
+let score = 0;
+
+const quiz = document.getElementById("quiz");
+
+function render(){
+  quiz.innerHTML = "";
+
+  if(current >= questions.length){
+    document.getElementById("result").style.display = "block";
+    document.getElementById("score").textContent =
+      "Puntaje: " + score + " / " + questions.length;
+    return;
+  }
+
+  const q = questions[current];
+
+  let html = `<div class="question active">
+  <div class="sum">`;
+
+  q.nums.forEach(n=>{
+    html += n + "<br>";
+  });
+
+  html += `<div class="line"></div>
+  ${q.result}
+  </div>
+
+  <div class="buttons">
+    <button class="true" onclick="answer(true)">✔ Verdadero</button>
+    <button class="false" onclick="answer(false)">❌ Falso</button>
+  </div>
+  </div>`;
+
+  quiz.innerHTML = html;
+}
+
+function answer(user){
+  const q = questions[current];
+  const real = q.nums.reduce((a,b)=>a+b,0) === q.result;
+
+  if(user === real) score++;
+
+  current++;
+  render();
+}
+
+render();
+
+</script>
+
+</body>
+</html>
