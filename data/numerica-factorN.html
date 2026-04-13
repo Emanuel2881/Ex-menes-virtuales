@@ -133,6 +133,13 @@ select, button{
   font-weight:bold;
 }
 
+.status{
+  text-align:center;
+  margin:15px 0;
+  font-weight:bold;
+  opacity:.9;
+}
+
 @media(max-width:700px){
   .sum{font-size:1.4rem;}
   .buttons{flex-direction:column;}
@@ -146,7 +153,9 @@ select, button{
   <h1>Factor N</h1>
   <p>Indica si la suma es correcta o incorrecta</p>
 
-  <div class="config" id="configBox">
+  <div class="status" id="statusMessage">Cargando banco de preguntas...</div>
+
+  <div class="config" id="configBox" style="display:none;">
     <div class="config-item">
       <label for="questionCount">Cantidad de preguntas</label>
       <select id="questionCount">
@@ -155,6 +164,7 @@ select, button{
         <option value="15">15 preguntas</option>
         <option value="20">20 preguntas</option>
         <option value="30">30 preguntas</option>
+        <option value="50">50 preguntas</option>
       </select>
     </div>
 
@@ -192,79 +202,7 @@ select, button{
 </div>
 
 <script>
-const allQuestions = [
-  {nums:[61,34,78,53], result:226},
-  {nums:[31,59,52,68], result:200},
-  {nums:[66,73,15,38], result:202},
-  {nums:[73,29,56,33], result:211},
-  {nums:[13,39,99,32], result:183},
-  {nums:[48,45,17,82], result:192},
-  {nums:[88,29,69,96], result:284},
-  {nums:[86,49,54,22], result:111},
-  {nums:[69,44,89,84], result:286},
-  {nums:[71,37,66,55], result:129},
-  {nums:[44,49,23,48], result:164},
-  {nums:[75,54,36,17], result:162},
-  {nums:[26,44,75,51], result:196},
-  {nums:[99,77,82,68], result:316},
-  {nums:[25,46,92,57], result:220},
-  {nums:[43,34,89,32], result:198},
-  {nums:[31,73,13,48], result:185},
-  {nums:[59,29,39,45], result:192},
-  {nums:[52,56,99,17], result:124},
-  {nums:[68,33,32,82], result:225},
-  {nums:[78,56,76,35], result:245},
-  {nums:[95,49,44,37], result:205},
-  {nums:[79,22,64,55], result:240},
-  {nums:[89,64,61,34], result:258},
-  {nums:[97,35,66,73], result:271},
-  {nums:[13,92,31,36], result:172},
-  {nums:[26,99,26,62], result:213},
-  {nums:[44,77,66,68], result:275},
-  {nums:[97,92,26,86], result:201},
-  {nums:[13,99,86,79], result:367},
-  {nums:[26,77,32,99], result:234},
-  {nums:[44,82,84,32], result:232},
-  {nums:[75,68,39,57], result:339},
-  {nums:[51,39,92,32], result:314},
-  {nums:[81,46,43,48], result:208},
-  {nums:[32,98,22,91], result:243},
-  {nums:[97,63,76,57], result:303},
-  {nums:[23,36,41,65], result:165},
-  {nums:[71,46,67,62], result:236},
-  {nums:[48,59,17,16], result:150},
-  {nums:[24,85,94,47], result:250},
-  {nums:[89,95,55,79], result:218},
-  {nums:[26,86,34,99], result:345},
-  {nums:[81,39,84,79], result:293},
-  {nums:[75,47,55,19], result:196},
-  {nums:[18,15,57,96], result:186},
-  {nums:[59,44,78,89], result:280},
-  {nums:[64,61,34,19], result:188},
-  {nums:[83,34,41,16], result:174},
-  {nums:[32,97,23,71], result:243},
-  {nums:[98,63,36,46], result:243},
-  {nums:[22,76,41,57], result:196},
-  {nums:[91,57,65,62], result:295},
-  {nums:[28,63,62,87], result:260},
-  {nums:[81,39,67,52], result:239},
-  {nums:[89,86,69,71], result:315},
-  {nums:[75,82,99,87], result:243},
-  {nums:[51,68,32,23], result:174},
-  {nums:[43,73,39,17], result:182},
-  {nums:[31,29,99,82], result:251},
-  {nums:[59,56,32,19], result:146},
-  {nums:[52,33,55,33], result:173},
-  {nums:[68,47,56,58], result:239},
-  {nums:[31,43,92,79], result:245},
-  {nums:[59,73,43,57], result:232},
-  {nums:[42,29,13,32], result:106},
-  {nums:[68,56,39,48], result:201},
-  {nums:[75,33,45,99], result:242},
-  {nums:[78,47,32,17], result:154},
-  {nums:[23,56,55,82], result:216}
-];
-
+let allQuestions = [];
 let questions = [];
 let current = 0;
 let score = 0;
@@ -282,6 +220,41 @@ const currentQuestionEl = document.getElementById("currentQuestion");
 const totalQuestionsEl = document.getElementById("totalQuestions");
 const scoreDisplay = document.getElementById("scoreDisplay");
 const timerDisplay = document.getElementById("timerDisplay");
+const statusMessage = document.getElementById("statusMessage");
+
+async function loadQuestions() {
+  try {
+    const response = await fetch("/banco/mate.json");
+
+    if (!response.ok) {
+      throw new Error("No se pudo cargar el archivo JSON");
+    }
+
+    const data = await response.json();
+
+    if (!Array.isArray(data)) {
+      throw new Error("El archivo JSON no tiene un arreglo válido");
+    }
+
+    allQuestions = data.filter(item =>
+      item &&
+      Array.isArray(item.nums) &&
+      item.nums.length === 4 &&
+      typeof item.result === "number" &&
+      typeof item.isCorrect === "boolean"
+    );
+
+    if (allQuestions.length === 0) {
+      throw new Error("El banco no tiene preguntas válidas");
+    }
+
+    statusMessage.textContent = `Banco cargado: ${allQuestions.length} preguntas disponibles`;
+    configBox.style.display = "flex";
+  } catch (error) {
+    console.error(error);
+    statusMessage.textContent = "Error al cargar /banco/mate.json";
+  }
+}
 
 function shuffleArray(array) {
   const copy = [...array];
@@ -299,6 +272,8 @@ function formatTime(seconds) {
 }
 
 function startQuiz() {
+  if (allQuestions.length === 0) return;
+
   const selectedCount = parseInt(document.getElementById("questionCount").value, 10);
   timeLeft = parseInt(document.getElementById("timerSelect").value, 10);
 
@@ -310,6 +285,7 @@ function startQuiz() {
   configBox.style.display = "none";
   resultBox.style.display = "none";
   topbar.style.display = "flex";
+  statusMessage.style.display = "none";
 
   totalQuestionsEl.textContent = questions.length;
   scoreDisplay.textContent = score;
@@ -395,9 +371,8 @@ function render() {
 
 function answer(userChoice) {
   const q = questions[current];
-  const realAnswer = q.nums.reduce((a, b) => a + b, 0) === q.result;
 
-  if (userChoice === realAnswer) {
+  if (userChoice === q.isCorrect) {
     score++;
   }
 
@@ -415,12 +390,7 @@ function finishQuiz(timeUp) {
 
   resultBox.style.display = "block";
   scoreText.textContent = `Puntaje: ${score} / ${questions.length}`;
-
-  if (timeUp) {
-    extraMessage.textContent = "Se acabó el tiempo.";
-  } else {
-    extraMessage.textContent = "Examen finalizado.";
-  }
+  extraMessage.textContent = timeUp ? "Se acabó el tiempo." : "Examen finalizado.";
 }
 
 function resetQuiz() {
@@ -438,11 +408,15 @@ function resetQuiz() {
   resultBox.style.display = "none";
   topbar.style.display = "none";
   configBox.style.display = "flex";
+  statusMessage.style.display = "block";
+  statusMessage.textContent = `Banco cargado: ${allQuestions.length} preguntas disponibles`;
   timerDisplay.textContent = "Sin tiempo";
   currentQuestionEl.textContent = "0";
   totalQuestionsEl.textContent = "0";
   scoreDisplay.textContent = "0";
 }
+
+loadQuestions();
 </script>
 
 </body>
