@@ -1,0 +1,819 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Clase de Nomenclatura</title>
+  <style>
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+    }
+
+    :root{
+      --bg1:#0f172a;
+      --bg2:#1e293b;
+      --card:#111827;
+      --card2:#1f2937;
+      --line:#334155;
+      --text:#e2e8f0;
+      --muted:#94a3b8;
+      --blue:#3b82f6;
+      --blue2:#60a5fa;
+      --green:#22c55e;
+      --red:#ef4444;
+      --yellow:#f59e0b;
+    }
+
+    body{
+      font-family: Arial, Helvetica, sans-serif;
+      background: linear-gradient(135deg, var(--bg1), var(--bg2));
+      color: var(--text);
+      min-height:100vh;
+      padding:24px;
+    }
+
+    .container{
+      width:min(1200px, 96%);
+      margin:auto;
+    }
+
+    .hero{
+      background: rgba(15, 23, 42, 0.75);
+      border:1px solid rgba(255,255,255,0.08);
+      border-radius:28px;
+      padding:30px;
+      margin-bottom:22px;
+      box-shadow:0 15px 40px rgba(0,0,0,0.25);
+    }
+
+    .hero h1{
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      margin-bottom:12px;
+      color:#dbeafe;
+    }
+
+    .hero p{
+      color:var(--muted);
+      max-width:900px;
+      line-height:1.7;
+      font-size:1.03rem;
+    }
+
+    .actions{
+      display:flex;
+      gap:12px;
+      flex-wrap:wrap;
+      margin-top:20px;
+    }
+
+    .btn{
+      display:inline-block;
+      text-decoration:none;
+      padding:12px 18px;
+      border-radius:14px;
+      border:none;
+      cursor:pointer;
+      font-weight:bold;
+      transition:0.2s ease;
+    }
+
+    .btn-primary{
+      background:linear-gradient(135deg, var(--blue), var(--blue2));
+      color:white;
+    }
+
+    .btn-secondary{
+      background:#1e293b;
+      color:#e2e8f0;
+      border:1px solid rgba(255,255,255,0.08);
+    }
+
+    .btn:hover{
+      transform:translateY(-2px);
+    }
+
+    .layout{
+      display:grid;
+      grid-template-columns: 280px 1fr;
+      gap:22px;
+    }
+
+    .sidebar,
+    .main{
+      background: rgba(15, 23, 42, 0.78);
+      border:1px solid rgba(255,255,255,0.08);
+      border-radius:24px;
+      box-shadow:0 15px 40px rgba(0,0,0,0.22);
+    }
+
+    .sidebar{
+      padding:18px;
+      height:fit-content;
+      position:sticky;
+      top:20px;
+    }
+
+    .sidebar h2{
+      font-size:1.15rem;
+      margin-bottom:14px;
+      color:#bfdbfe;
+    }
+
+    .tab-btn{
+      width:100%;
+      text-align:left;
+      background:#0f172a;
+      color:var(--text);
+      border:1px solid rgba(255,255,255,0.06);
+      border-radius:16px;
+      padding:14px 14px;
+      margin-bottom:10px;
+      cursor:pointer;
+      transition:0.2s ease;
+      font-weight:bold;
+    }
+
+    .tab-btn:hover{
+      background:#172033;
+    }
+
+    .tab-btn.active{
+      background:linear-gradient(135deg, #1d4ed8, #2563eb);
+      border-color:transparent;
+    }
+
+    .sidebar small{
+      display:block;
+      margin-top:10px;
+      color:var(--muted);
+      line-height:1.6;
+    }
+
+    .main{
+      padding:24px;
+    }
+
+    .section-card{
+      background: #111827;
+      border:1px solid rgba(255,255,255,0.06);
+      border-radius:22px;
+      padding:22px;
+      margin-bottom:20px;
+    }
+
+    .section-card h3{
+      color:#bfdbfe;
+      margin-bottom:12px;
+      font-size:1.35rem;
+    }
+
+    .section-card p{
+      color:#cbd5e1;
+      line-height:1.7;
+      margin-bottom:12px;
+    }
+
+    .section-card ul{
+      margin-left:20px;
+      line-height:1.8;
+      color:#cbd5e1;
+    }
+
+    .board{
+      background:
+        linear-gradient(rgba(255,255,255,0.03), rgba(255,255,255,0.03)),
+        linear-gradient(180deg, #0b1220, #111827);
+      border:2px solid #334155;
+      border-radius:24px;
+      padding:24px;
+      position:relative;
+      overflow:hidden;
+    }
+
+    .board::before{
+      content:"PIZARRÓN";
+      position:absolute;
+      top:12px;
+      right:18px;
+      font-size:0.8rem;
+      letter-spacing:2px;
+      color:rgba(255,255,255,0.12);
+      font-weight:bold;
+    }
+
+    .chalk{
+      font-family: "Trebuchet MS", Arial, sans-serif;
+      color:#ecfeff;
+    }
+
+    .chalk h2{
+      font-size:2rem;
+      margin-bottom:12px;
+      color:#e0f2fe;
+    }
+
+    .chalk p, .chalk li{
+      color:#f8fafc;
+      line-height:1.75;
+    }
+
+    .formula{
+      font-size:1.8rem;
+      font-weight:bold;
+      color:#fde68a;
+      margin:10px 0;
+    }
+
+    .formula sub{
+      font-size:0.7em;
+      vertical-align:sub;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit, minmax(240px, 1fr));
+      gap:16px;
+    }
+
+    .mini-card{
+      background:#0f172a;
+      border:1px solid rgba(255,255,255,0.06);
+      border-radius:18px;
+      padding:18px;
+    }
+
+    .mini-card h4{
+      margin-bottom:10px;
+      color:#93c5fd;
+    }
+
+    .badge{
+      display:inline-block;
+      padding:8px 12px;
+      border-radius:999px;
+      font-size:0.85rem;
+      font-weight:bold;
+      margin:6px 6px 0 0;
+    }
+
+    .blue{ background:rgba(59,130,246,0.14); color:#93c5fd; }
+    .green{ background:rgba(34,197,94,0.14); color:#86efac; }
+    .yellow{ background:rgba(245,158,11,0.14); color:#fcd34d; }
+    .red{ background:rgba(239,68,68,0.14); color:#fca5a5; }
+
+    .table-box{
+      overflow-x:auto;
+    }
+
+    table{
+      width:100%;
+      border-collapse:collapse;
+      margin-top:10px;
+    }
+
+    th, td{
+      border:1px solid var(--line);
+      padding:12px;
+      text-align:left;
+      vertical-align:top;
+    }
+
+    th{
+      background:#172033;
+      color:#dbeafe;
+    }
+
+    td{
+      background:#0f172a;
+      color:#e2e8f0;
+      line-height:1.6;
+    }
+
+    .quiz-option{
+      width:100%;
+      text-align:left;
+      padding:12px 14px;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,0.07);
+      background:#0f172a;
+      color:white;
+      margin-top:10px;
+      cursor:pointer;
+      transition:0.2s ease;
+    }
+
+    .quiz-option:hover{
+      background:#172033;
+    }
+
+    .feedback{
+      margin-top:14px;
+      font-weight:bold;
+      min-height:22px;
+    }
+
+    .feedback.ok{ color:#86efac; }
+    .feedback.bad{ color:#fca5a5; }
+
+    @media (max-width: 920px){
+      .layout{
+        grid-template-columns:1fr;
+      }
+
+      .sidebar{
+        position:static;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+
+    <div class="hero">
+      <h1>🎓 Clase de Nomenclatura Química</h1>
+      <p>
+        Esta página está pensada para enseñar. Tiene explicaciones amplias, ejemplos comparados,
+        tips, errores comunes y una especie de pizarrón digital para que puedas explicar
+        la diferencia entre nomenclatura tradicional, Stock y sistemática de una forma más clara.
+      </p>
+      <div class="actions">
+        <a href="../quimica.html" class="btn btn-secondary">← Volver a química</a>
+        <button class="btn btn-primary" onclick="irAPizarron()">Ir al pizarrón</button>
+      </div>
+    </div>
+
+    <div class="layout">
+      <aside class="sidebar">
+        <h2>Tipos de nomenclatura</h2>
+
+        <button class="tab-btn active" onclick="cargarTema('intro', this)">📘 Introducción</button>
+        <button class="tab-btn" onclick="cargarTema('tradicional', this)">🧠 Tradicional</button>
+        <button class="tab-btn" onclick="cargarTema('stock', this)">🔢 Stock</button>
+        <button class="tab-btn" onclick="cargarTema('sistematica', this)">📐 Sistemática</button>
+        <button class="tab-btn" onclick="cargarTema('comparacion', this)">⚖️ Comparación</button>
+        <button class="tab-btn" onclick="cargarTema('ejemplos', this)">🧪 Ejemplos guiados</button>
+        <button class="tab-btn" onclick="cargarTema('errores', this)">🚫 Errores comunes</button>
+        <button class="tab-btn" onclick="cargarTema('mini', this)">✅ Mini evaluación</button>
+
+        <small>
+          La pestaña que abras se queda guardada automáticamente para que cuando vuelvas,
+          siga en donde ibas.
+        </small>
+      </aside>
+
+      <main class="main">
+        <div id="contenido"></div>
+      </main>
+    </div>
+  </div>
+
+  <script>
+    function activarBoton(btn){
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    }
+
+    function irAPizarron(){
+      const board = document.querySelector('.board');
+      if(board){
+        board.scrollIntoView({behavior:'smooth'});
+      }
+    }
+
+    function ponerFormula(texto){
+      return texto
+        .replace(/2/g, '<sub>2</sub>')
+        .replace(/3/g, '<sub>3</sub>')
+        .replace(/4/g, '<sub>4</sub>')
+        .replace(/5/g, '<sub>5</sub>')
+        .replace(/6/g, '<sub>6</sub>')
+        .replace(/7/g, '<sub>7</sub>');
+    }
+
+    function cargarTema(tipo, btn=null){
+      if(btn) activarBoton(btn);
+      localStorage.setItem('temaNomenclatura', tipo);
+
+      let html = '';
+
+      if(tipo === 'intro'){
+        html = `
+          <div class="section-card board chalk">
+            <h2>Introducción general</h2>
+            <p>
+              La nomenclatura química es el sistema que usamos para nombrar compuestos de forma correcta.
+              En muchos cursos y exámenes se trabajan principalmente tres sistemas:
+              <strong>tradicional</strong>, <strong>Stock</strong> y <strong>sistemática</strong>.
+            </p>
+            <p>
+              La clave no es solo memorizar nombres. La clave es saber <strong>qué pista te da cada sistema</strong>.
+            </p>
+            <ul>
+              <li><strong>Tradicional:</strong> usa nombres clásicos como ferroso, férrico, sulfuroso, sulfúrico.</li>
+              <li><strong>Stock:</strong> usa número de oxidación en romano.</li>
+              <li><strong>Sistemática:</strong> usa prefijos como mono, di, tri, tetra.</li>
+            </ul>
+          </div>
+
+          <div class="grid">
+            <div class="mini-card">
+              <h4>Lo que debes identificar rápido</h4>
+              <p>Cuando mires un nombre o una fórmula, pregúntate:</p>
+              <ul>
+                <li>¿Hay número romano?</li>
+                <li>¿Hay prefijos como di o tri?</li>
+                <li>¿Hay terminaciones -oso o -ico?</li>
+              </ul>
+            </div>
+
+            <div class="mini-card">
+              <h4>Orden recomendado para enseñar</h4>
+              <ul>
+                <li>1. Stock</li>
+                <li>2. Sistemática</li>
+                <li>3. Tradicional</li>
+              </ul>
+              <p>Así tus compañeros primero entienden lógica, luego conteo y al final memoria.</p>
+            </div>
+
+            <div class="mini-card">
+              <h4>Pistas rápidas</h4>
+              <span class="badge blue">Romano = Stock</span>
+              <span class="badge green">mono/di/tri = Sistemática</span>
+              <span class="badge yellow">oso/ico = Tradicional</span>
+            </div>
+          </div>
+        `;
+      }
+
+      if(tipo === 'tradicional'){
+        html = `
+          <div class="section-card board chalk">
+            <h2>Tradicional</h2>
+            <p>
+              La nomenclatura tradicional usa nombres clásicos. Se basa mucho en la valencia del elemento
+              y usa terminaciones como <strong>-oso</strong> y <strong>-ico</strong>.
+            </p>
+            <ul>
+              <li><strong>-oso</strong> indica la valencia menor</li>
+              <li><strong>-ico</strong> indica la valencia mayor</li>
+              <li>En algunos casos aparecen <strong>hipo-</strong> y <strong>per-</strong></li>
+            </ul>
+
+            <div class="formula">${ponerFormula('FeO')} → óxido ferroso</div>
+            <div class="formula">${ponerFormula('Fe2O3')} → óxido férrico</div>
+          </div>
+
+          <div class="section-card">
+            <h3>Cómo explicarlo en clase</h3>
+            <p>
+              Puedes decir que este sistema se parece más a un lenguaje clásico. Aquí no se pone número romano,
+              sino que el nombre cambia según la valencia del elemento.
+            </p>
+            <ul>
+              <li>Hierro con valencia menor → ferroso</li>
+              <li>Hierro con valencia mayor → férrico</li>
+              <li>Azufre en menor valencia → sulfuroso</li>
+              <li>Azufre en mayor valencia → sulfúrico</li>
+            </ul>
+          </div>
+
+          <div class="section-card">
+            <h3>Ejemplos importantes</h3>
+            <div class="table-box">
+              <table>
+                <tr>
+                  <th>Fórmula</th>
+                  <th>Nombre tradicional</th>
+                  <th>Idea clave</th>
+                </tr>
+                <tr>
+                  <td>${ponerFormula('FeO')}</td>
+                  <td>óxido ferroso</td>
+                  <td>hierro en menor valencia</td>
+                </tr>
+                <tr>
+                  <td>${ponerFormula('Fe2O3')}</td>
+                  <td>óxido férrico</td>
+                  <td>hierro en mayor valencia</td>
+                </tr>
+                <tr>
+                  <td>${ponerFormula('SO2')}</td>
+                  <td>anhídrido sulfuroso</td>
+                  <td>azufre en menor valencia</td>
+                </tr>
+                <tr>
+                  <td>${ponerFormula('SO3')}</td>
+                  <td>anhídrido sulfúrico</td>
+                  <td>azufre en mayor valencia</td>
+                </tr>
+              </table>
+            </div>
+          </div>
+        `;
+      }
+
+      if(tipo === 'stock'){
+        html = `
+          <div class="section-card board chalk">
+            <h2>Stock</h2>
+            <p>
+              La nomenclatura Stock nombra el compuesto y luego indica el
+              <strong>número de oxidación</strong> del elemento usando números romanos.
+            </p>
+            <p>
+              Este sistema es muy útil porque obliga a pensar la valencia.
+            </p>
+
+            <div class="formula">${ponerFormula('Fe2O3')} → óxido de hierro (III)</div>
+            <div class="formula">${ponerFormula('Cu2O')} → óxido de cobre (I)</div>
+          </div>
+
+          <div class="section-card">
+            <h3>Cómo explicarlo en clase</h3>
+            <ul>
+              <li>Primero identificas la valencia del elemento principal</li>
+              <li>Luego escribes el nombre del compuesto</li>
+              <li>Por último pones la valencia en romano entre paréntesis</li>
+            </ul>
+            <p>
+              Si un elemento tiene una sola valencia, a veces el número romano puede omitirse,
+              pero para enseñar es mejor mostrarlo cuando haya varias posibilidades.
+            </p>
+          </div>
+
+          <div class="section-card">
+            <h3>Ejemplo paso a paso</h3>
+            <p><strong>${ponerFormula('Fe2O3')}</strong></p>
+            <ul>
+              <li>El oxígeno vale -2</li>
+              <li>Hay 3 oxígenos → total -6</li>
+              <li>Los 2 hierros deben sumar +6</li>
+              <li>Cada hierro vale +3</li>
+              <li>Nombre: óxido de hierro (III)</li>
+            </ul>
+          </div>
+        `;
+      }
+
+      if(tipo === 'sistematica'){
+        html = `
+          <div class="section-card board chalk">
+            <h2>Sistemática</h2>
+            <p>
+              La nomenclatura sistemática usa prefijos numéricos para indicar
+              cuántos átomos de cada elemento hay en la fórmula.
+            </p>
+            <ul>
+              <li>mono = 1</li>
+              <li>di = 2</li>
+              <li>tri = 3</li>
+              <li>tetra = 4</li>
+              <li>penta = 5</li>
+            </ul>
+
+            <div class="formula">${ponerFormula('CO2')} → dióxido de carbono</div>
+            <div class="formula">${ponerFormula('Fe2O3')} → trióxido de dihierro</div>
+          </div>
+
+          <div class="section-card">
+            <h3>Cómo explicarlo en clase</h3>
+            <p>
+              Aquí no te concentras en si la valencia es mayor o menor como en la tradicional.
+              Tampoco necesitas poner número romano como en Stock.
+              Lo importante es <strong>contar átomos</strong>.
+            </p>
+          </div>
+
+          <div class="section-card">
+            <h3>Ejemplo paso a paso</h3>
+            <p><strong>${ponerFormula('Fe2O3')}</strong></p>
+            <ul>
+              <li>Hay 3 oxígenos → trióxido</li>
+              <li>Hay 2 hierros → dihierro</li>
+              <li>Nombre completo → trióxido de dihierro</li>
+            </ul>
+          </div>
+        `;
+      }
+
+      if(tipo === 'comparacion'){
+        html = `
+          <div class="section-card">
+            <h3>Comparación entre los tres sistemas</h3>
+            <div class="table-box">
+              <table>
+                <tr>
+                  <th>Fórmula</th>
+                  <th>Tradicional</th>
+                  <th>Stock</th>
+                  <th>Sistemática</th>
+                </tr>
+                <tr>
+                  <td>${ponerFormula('FeO')}</td>
+                  <td>óxido ferroso</td>
+                  <td>óxido de hierro (II)</td>
+                  <td>monóxido de hierro</td>
+                </tr>
+                <tr>
+                  <td>${ponerFormula('Fe2O3')}</td>
+                  <td>óxido férrico</td>
+                  <td>óxido de hierro (III)</td>
+                  <td>trióxido de dihierro</td>
+                </tr>
+                <tr>
+                  <td>${ponerFormula('SO3')}</td>
+                  <td>anhídrido sulfúrico</td>
+                  <td>óxido de azufre (VI)</td>
+                  <td>trióxido de azufre</td>
+                </tr>
+                <tr>
+                  <td>${ponerFormula('Cu2O')}</td>
+                  <td>óxido cuproso</td>
+                  <td>óxido de cobre (I)</td>
+                  <td>monóxido de dicobre</td>
+                </tr>
+              </table>
+            </div>
+          </div>
+
+          <div class="grid">
+            <div class="mini-card">
+              <h4>Tradicional</h4>
+              <p>Se fija mucho en el nombre clásico y en la valencia menor o mayor.</p>
+            </div>
+            <div class="mini-card">
+              <h4>Stock</h4>
+              <p>Se fija en el número de oxidación del elemento.</p>
+            </div>
+            <div class="mini-card">
+              <h4>Sistemática</h4>
+              <p>Se fija en cuántos átomos hay y usa prefijos.</p>
+            </div>
+          </div>
+        `;
+      }
+
+      if(tipo === 'ejemplos'){
+        html = `
+          <div class="section-card board chalk">
+            <h2>Ejemplos guiados para explicar</h2>
+            <p>
+              Este apartado te sirve casi como guion para exponer.
+            </p>
+          </div>
+
+          <div class="section-card">
+            <h3>Ejemplo 1: ${ponerFormula('Fe2O3')}</h3>
+            <ul>
+              <li><strong>Tradicional:</strong> óxido férrico</li>
+              <li><strong>Stock:</strong> óxido de hierro (III)</li>
+              <li><strong>Sistemática:</strong> trióxido de dihierro</li>
+            </ul>
+            <p>
+              Aquí puedes explicar que es el mismo compuesto, pero el nombre cambia según el sistema usado.
+            </p>
+          </div>
+
+          <div class="section-card">
+            <h3>Ejemplo 2: ${ponerFormula('SO2')}</h3>
+            <ul>
+              <li><strong>Tradicional:</strong> anhídrido sulfuroso</li>
+              <li><strong>Stock:</strong> óxido de azufre (IV)</li>
+              <li><strong>Sistemática:</strong> dióxido de azufre</li>
+            </ul>
+          </div>
+
+          <div class="section-card">
+            <h3>Ejemplo 3: ${ponerFormula('CuO')}</h3>
+            <ul>
+              <li><strong>Tradicional:</strong> óxido cúprico</li>
+              <li><strong>Stock:</strong> óxido de cobre (II)</li>
+              <li><strong>Sistemática:</strong> monóxido de cobre</li>
+            </ul>
+          </div>
+        `;
+      }
+
+      if(tipo === 'errores'){
+        html = `
+          <div class="section-card">
+            <h3>Errores comunes</h3>
+            <ul>
+              <li>Confundir <strong>tradicional</strong> con <strong>Stock</strong></li>
+              <li>Olvidar que en <strong>Stock</strong> debe ir el número romano</li>
+              <li>Poner prefijos mal en la <strong>sistemática</strong></li>
+              <li>No contar bien los subíndices</li>
+              <li>Decir “férrico” cuando la valencia corresponde a “ferroso”</li>
+            </ul>
+          </div>
+
+          <div class="grid">
+            <div class="mini-card">
+              <h4>Tip 1</h4>
+              <p>Si ves romano, piensa en Stock.</p>
+            </div>
+            <div class="mini-card">
+              <h4>Tip 2</h4>
+              <p>Si ves mono, di o tri, piensa en sistemática.</p>
+            </div>
+            <div class="mini-card">
+              <h4>Tip 3</h4>
+              <p>Si ves oso o ico, piensa en tradicional.</p>
+            </div>
+          </div>
+        `;
+      }
+
+      if(tipo === 'mini'){
+        html = `
+          <div class="section-card">
+            <h3>Mini evaluación rápida</h3>
+            <p>Esto te sirve para cerrar la clase con una comprobación sencilla.</p>
+
+            <p><strong>1. ¿Cuál de estas opciones está en nomenclatura Stock?</strong></p>
+            <button class="quiz-option" onclick="responder(this, false)">óxido férrico</button>
+            <button class="quiz-option" onclick="responder(this, true)">óxido de hierro (III)</button>
+            <button class="quiz-option" onclick="responder(this, false)">trióxido de dihierro</button>
+
+            <div class="feedback" id="fb1"></div>
+
+            <p style="margin-top:18px;"><strong>2. ¿Cuál de estas opciones está en nomenclatura sistemática?</strong></p>
+            <button class="quiz-option" onclick="responder2(this, false)">anhídrido sulfúrico</button>
+            <button class="quiz-option" onclick="responder2(this, false)">óxido de azufre (VI)</button>
+            <button class="quiz-option" onclick="responder2(this, true)">trióxido de azufre</button>
+
+            <div class="feedback" id="fb2"></div>
+
+            <p style="margin-top:18px;"><strong>3. ¿Cuál de estas opciones está en nomenclatura tradicional?</strong></p>
+            <button class="quiz-option" onclick="responder3(this, true)">óxido cuproso</button>
+            <button class="quiz-option" onclick="responder3(this, false)">óxido de cobre (I)</button>
+            <button class="quiz-option" onclick="responder3(this, false)">monóxido de dicobre</button>
+
+            <div class="feedback" id="fb3"></div>
+          </div>
+        `;
+      }
+
+      document.getElementById('contenido').innerHTML = html;
+    }
+
+    function responder(btn, correcto){
+      const fb = document.getElementById('fb1');
+      if(correcto){
+        btn.style.background = '#14532d';
+        fb.textContent = 'Correcto. El número romano indica que es Stock.';
+        fb.className = 'feedback ok';
+      }else{
+        btn.style.background = '#7f1d1d';
+        fb.textContent = 'No. Recuerda que Stock usa número romano.';
+        fb.className = 'feedback bad';
+      }
+    }
+
+    function responder2(btn, correcto){
+      const fb = document.getElementById('fb2');
+      if(correcto){
+        btn.style.background = '#14532d';
+        fb.textContent = 'Correcto. El prefijo tri- indica sistemática.';
+        fb.className = 'feedback ok';
+      }else{
+        btn.style.background = '#7f1d1d';
+        fb.textContent = 'No. Sistemática usa prefijos como mono, di y tri.';
+        fb.className = 'feedback bad';
+      }
+    }
+
+    function responder3(btn, correcto){
+      const fb = document.getElementById('fb3');
+      if(correcto){
+        btn.style.background = '#14532d';
+        fb.textContent = 'Correcto. Cuproso es una forma tradicional.';
+        fb.className = 'feedback ok';
+      }else{
+        btn.style.background = '#7f1d1d';
+        fb.textContent = 'No. Tradicional suele usar nombres clásicos como -oso o -ico.';
+        fb.className = 'feedback bad';
+      }
+    }
+
+    const guardado = localStorage.getItem('temaNomenclatura') || 'intro';
+    const botones = document.querySelectorAll('.tab-btn');
+    const mapa = {
+      intro: 0,
+      tradicional: 1,
+      stock: 2,
+      sistematica: 3,
+      comparacion: 4,
+      ejemplos: 5,
+      errores: 6,
+      mini: 7
+    };
+
+    const botonInicial = botones[mapa[guardado]] || botones[0];
+    cargarTema(guardado, botonInicial);
+  </script>
+</body>
+</html>
