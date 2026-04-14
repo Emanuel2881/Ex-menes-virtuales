@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Clase de Nomenclatura</title>
+  <title>Clase de Nomenclatura Química</title>
   <style>
     *{
       margin:0;
@@ -12,26 +12,29 @@
     }
 
     :root{
-      --bg1:#0f172a;
-      --bg2:#1e293b;
-      --card:#111827;
-      --card2:#1f2937;
+      --bg1:#0b1220;
+      --bg2:#172033;
+      --panel:#111827;
+      --panel2:#0f172a;
       --line:#334155;
-      --text:#e2e8f0;
-      --muted:#94a3b8;
-      --blue:#3b82f6;
+      --text:#e5eefc;
+      --muted:#9fb0cc;
+      --blue:#2563eb;
       --blue2:#60a5fa;
       --green:#22c55e;
-      --red:#ef4444;
       --yellow:#f59e0b;
-      --cyan:#22d3ee;
+      --red:#ef4444;
+      --cyan:#06b6d4;
     }
 
     body{
       font-family: Arial, Helvetica, sans-serif;
-      background: linear-gradient(135deg, var(--bg1), var(--bg2));
-      color: var(--text);
       min-height:100vh;
+      background:
+        radial-gradient(circle at top left, rgba(37,99,235,0.20), transparent 28%),
+        radial-gradient(circle at bottom right, rgba(6,182,212,0.13), transparent 24%),
+        linear-gradient(135deg, var(--bg1), var(--bg2));
+      color:var(--text);
       padding:24px;
     }
 
@@ -41,31 +44,31 @@
     }
 
     .hero{
-      background: rgba(15, 23, 42, 0.78);
+      background:rgba(17,24,39,0.82);
       border:1px solid rgba(255,255,255,0.08);
-      border-radius:28px;
-      padding:30px;
+      border-radius:30px;
+      padding:32px;
+      box-shadow:0 18px 50px rgba(0,0,0,0.28);
       margin-bottom:22px;
-      box-shadow:0 15px 40px rgba(0,0,0,0.25);
     }
 
     .hero h1{
-      font-size: clamp(2rem, 5vw, 3.2rem);
+      font-size: clamp(2rem, 5vw, 3.3rem);
       margin-bottom:12px;
       color:#dbeafe;
     }
 
     .hero p{
-      color:var(--muted);
       max-width:980px;
-      line-height:1.7;
+      color:var(--muted);
+      line-height:1.75;
       font-size:1.03rem;
     }
 
-    .actions{
+    .hero-actions{
       display:flex;
-      gap:12px;
       flex-wrap:wrap;
+      gap:12px;
       margin-top:20px;
     }
 
@@ -77,7 +80,7 @@
       border:none;
       cursor:pointer;
       font-weight:bold;
-      transition:0.2s ease;
+      transition:.2s ease;
     }
 
     .btn-primary{
@@ -86,8 +89,8 @@
     }
 
     .btn-secondary{
-      background:#1e293b;
-      color:#e2e8f0;
+      background:#0f172a;
+      color:white;
       border:1px solid rgba(255,255,255,0.08);
     }
 
@@ -97,16 +100,16 @@
 
     .layout{
       display:grid;
-      grid-template-columns: 290px 1fr;
+      grid-template-columns:290px 1fr;
       gap:22px;
     }
 
     .sidebar,
     .main{
-      background: rgba(15, 23, 42, 0.8);
+      background:rgba(17,24,39,0.82);
       border:1px solid rgba(255,255,255,0.08);
-      border-radius:24px;
-      box-shadow:0 15px 40px rgba(0,0,0,0.22);
+      border-radius:26px;
+      box-shadow:0 18px 50px rgba(0,0,0,0.24);
     }
 
     .sidebar{
@@ -122,6 +125,13 @@
       color:#bfdbfe;
     }
 
+    .sidebar-note{
+      margin-top:12px;
+      color:var(--muted);
+      font-size:0.94rem;
+      line-height:1.65;
+    }
+
     .tab-btn{
       width:100%;
       text-align:left;
@@ -129,16 +139,15 @@
       color:var(--text);
       border:1px solid rgba(255,255,255,0.06);
       border-radius:16px;
-      padding:14px 14px;
+      padding:14px;
       margin-bottom:10px;
       cursor:pointer;
-      transition:0.2s ease;
+      transition:.2s ease;
       font-weight:bold;
-      line-height:1.4;
     }
 
     .tab-btn:hover{
-      background:#172033;
+      background:#182336;
     }
 
     .tab-btn.active{
@@ -146,47 +155,46 @@
       border-color:transparent;
     }
 
-    .sidebar small{
-      display:block;
-      margin-top:10px;
-      color:var(--muted);
-      line-height:1.6;
-    }
-
     .main{
       padding:24px;
     }
 
     .section-card{
-      background: #111827;
+      background:#111827;
       border:1px solid rgba(255,255,255,0.06);
-      border-radius:22px;
-      padding:22px;
+      border-radius:24px;
+      padding:24px;
       margin-bottom:20px;
     }
 
     .section-card h3{
       color:#bfdbfe;
+      font-size:1.38rem;
       margin-bottom:12px;
-      font-size:1.35rem;
+    }
+
+    .section-card h4{
+      color:#93c5fd;
+      font-size:1.08rem;
+      margin-bottom:10px;
     }
 
     .section-card p{
-      color:#cbd5e1;
-      line-height:1.7;
+      color:#d8e3f6;
+      line-height:1.75;
       margin-bottom:12px;
     }
 
     .section-card ul{
-      margin-left:20px;
-      line-height:1.8;
-      color:#cbd5e1;
+      margin-left:22px;
+      line-height:1.82;
+      color:#d8e3f6;
     }
 
     .board{
       background:
         linear-gradient(rgba(255,255,255,0.03), rgba(255,255,255,0.03)),
-        linear-gradient(180deg, #0b1220, #111827);
+        linear-gradient(180deg, #0b1220, #0f172a);
       border:2px solid #334155;
       border-radius:24px;
       padding:24px;
@@ -205,27 +213,22 @@
       font-weight:bold;
     }
 
-    .chalk{
-      font-family: "Trebuchet MS", Arial, sans-serif;
+    .chalk h2{
+      font-size:2rem;
+      margin-bottom:14px;
       color:#ecfeff;
     }
 
-    .chalk h2{
-      font-size:2rem;
-      margin-bottom:12px;
-      color:#e0f2fe;
-    }
-
-    .chalk p, .chalk li{
+    .chalk p,.chalk li{
       color:#f8fafc;
-      line-height:1.75;
+      line-height:1.8;
     }
 
     .formula{
       font-size:1.8rem;
       font-weight:bold;
       color:#fde68a;
-      margin:10px 0;
+      margin:12px 0;
     }
 
     .formula sub{
@@ -242,21 +245,24 @@
     .mini-card{
       background:#0f172a;
       border:1px solid rgba(255,255,255,0.06);
-      border-radius:18px;
+      border-radius:20px;
       padding:18px;
     }
 
     .mini-card h4{
       margin-bottom:10px;
       color:#93c5fd;
-      font-size:1.05rem;
+    }
+
+    .mini-card p{
+      margin-bottom:10px;
     }
 
     .badge{
       display:inline-block;
       padding:8px 12px;
       border-radius:999px;
-      font-size:0.85rem;
+      font-size:0.84rem;
       font-weight:bold;
       margin:6px 6px 0 0;
     }
@@ -265,16 +271,16 @@
     .green{ background:rgba(34,197,94,0.14); color:#86efac; }
     .yellow{ background:rgba(245,158,11,0.14); color:#fcd34d; }
     .red{ background:rgba(239,68,68,0.14); color:#fca5a5; }
-    .cyan{ background:rgba(34,211,238,0.14); color:#67e8f9; }
+    .cyan{ background:rgba(6,182,212,0.14); color:#67e8f9; }
 
     .table-box{
       overflow-x:auto;
+      margin-top:10px;
     }
 
     table{
       width:100%;
       border-collapse:collapse;
-      margin-top:10px;
     }
 
     th, td{
@@ -282,6 +288,7 @@
       padding:12px;
       text-align:left;
       vertical-align:top;
+      line-height:1.65;
     }
 
     th{
@@ -291,8 +298,7 @@
 
     td{
       background:#0f172a;
-      color:#e2e8f0;
-      line-height:1.6;
+      color:#e5eefc;
     }
 
     .quiz-option{
@@ -315,27 +321,26 @@
     .feedback{
       margin-top:14px;
       font-weight:bold;
-      min-height:22px;
+      min-height:24px;
     }
 
     .feedback.ok{ color:#86efac; }
     .feedback.bad{ color:#fca5a5; }
 
     .note{
-      border-left:4px solid var(--cyan);
       padding:14px 16px;
-      background:rgba(34,211,238,0.08);
-      border-radius:12px;
+      border-radius:16px;
       margin-top:12px;
-      color:#dff7ff;
       line-height:1.7;
+      background:rgba(37,99,235,0.12);
+      border:1px solid rgba(96,165,250,0.18);
+      color:#dbeafe;
     }
 
-    @media (max-width: 920px){
+    @media (max-width: 940px){
       .layout{
         grid-template-columns:1fr;
       }
-
       .sidebar{
         position:static;
       }
@@ -348,12 +353,12 @@
     <div class="hero">
       <h1>🎓 Clase de Nomenclatura Química</h1>
       <p>
-        Esta página está pensada para enseñar y explicar. Tiene un pizarrón digital,
-        apartados por tema, reconocimiento de compuestos, ejemplos comparados,
-        errores comunes y mini evaluación. La idea es que te sirva como apoyo visual
-        para dar la clase y también como guía de estudio.
+        Esta página está hecha para enseñar y exponer. Tiene una estructura por pestañas, explicaciones amplias,
+        reconocimiento de compuestos, radicales frecuentes, ejemplos guiados, errores comunes y una mini evaluación.
+        La pestaña que abras se guarda automáticamente para que cuando vuelvas sigas en donde te quedaste.
       </p>
-      <div class="actions">
+
+      <div class="hero-actions">
         <a href="../quimica.html" class="btn btn-secondary">← Volver a química</a>
         <button class="btn btn-primary" onclick="irAPizarron()">Ir al pizarrón</button>
       </div>
@@ -361,22 +366,21 @@
 
     <div class="layout">
       <aside class="sidebar">
-        <h2>Temas de la clase</h2>
+        <h2>Contenido de la clase</h2>
 
         <button class="tab-btn active" onclick="cargarTema('intro', this)">📘 Introducción</button>
         <button class="tab-btn" onclick="cargarTema('reconocer', this)">🧩 Reconocer compuestos</button>
-        <button class="tab-btn" onclick="cargarTema('tradicional', this)">🧠 Nomenclatura tradicional</button>
-        <button class="tab-btn" onclick="cargarTema('stock', this)">🔢 Nomenclatura Stock</button>
-        <button class="tab-btn" onclick="cargarTema('sistematica', this)">📐 Nomenclatura sistemática</button>
-        <button class="tab-btn" onclick="cargarTema('comparacion', this)">⚖️ Comparación de sistemas</button>
+        <button class="tab-btn" onclick="cargarTema('tradicional', this)">🧠 Tradicional</button>
+        <button class="tab-btn" onclick="cargarTema('stock', this)">🔢 Stock</button>
+        <button class="tab-btn" onclick="cargarTema('sistematica', this)">📐 Sistemática</button>
+        <button class="tab-btn" onclick="cargarTema('comparacion', this)">⚖️ Comparación</button>
         <button class="tab-btn" onclick="cargarTema('ejemplos', this)">🧪 Ejemplos guiados</button>
         <button class="tab-btn" onclick="cargarTema('errores', this)">🚫 Errores comunes</button>
         <button class="tab-btn" onclick="cargarTema('mini', this)">✅ Mini evaluación</button>
 
-        <small>
-          La pestaña que abras queda guardada automáticamente para que al volver
-          siga donde lo dejaste.
-        </small>
+        <div class="sidebar-note">
+          Aquí tienes una clase completa. La pestaña abierta se guarda automáticamente con <strong>localStorage</strong>.
+        </div>
       </aside>
 
       <main class="main">
@@ -398,7 +402,7 @@
       }
     }
 
-    function ponerFormula(texto){
+    function ponerSubindices(texto){
       return texto.replace(/(\d+)/g, '<sub>$1</sub>');
     }
 
@@ -413,18 +417,17 @@
           <div class="section-card board chalk">
             <h2>Introducción general</h2>
             <p>
-              La nomenclatura química es el conjunto de reglas que usamos para nombrar
-              compuestos correctamente. En esta clase trabajaremos principalmente
-              tres sistemas: <strong>tradicional</strong>, <strong>Stock</strong> y <strong>sistemática</strong>.
+              La nomenclatura química es el sistema que usamos para nombrar compuestos de forma correcta.
+              En esta clase nos enfocamos en tres sistemas principales:
+              <strong>tradicional</strong>, <strong>Stock</strong> y <strong>sistemática</strong>.
             </p>
             <p>
-              Pero antes de nombrar un compuesto, conviene identificar <strong>qué tipo de compuesto es</strong>.
-              Eso facilita muchísimo el proceso.
+              Para explicar bien este tema conviene seguir este orden:
             </p>
             <ul>
-              <li><strong>Tradicional:</strong> usa nombres clásicos como ferroso, férrico, cuproso, cúprico.</li>
-              <li><strong>Stock:</strong> usa el número de oxidación en romano.</li>
-              <li><strong>Sistemática:</strong> usa prefijos numéricos como mono, di, tri, tetra.</li>
+              <li>Primero reconocer qué tipo de compuesto tengo</li>
+              <li>Luego decidir qué sistema de nomenclatura me están pidiendo</li>
+              <li>Finalmente aplicar las reglas de ese sistema</li>
             </ul>
           </div>
 
@@ -432,26 +435,26 @@
             <div class="mini-card">
               <h4>Pistas rápidas</h4>
               <span class="badge blue">Romano = Stock</span>
-              <span class="badge green">mono / di / tri = Sistemática</span>
-              <span class="badge yellow">oso / ico = Tradicional</span>
+              <span class="badge green">mono/di/tri = Sistemática</span>
+              <span class="badge yellow">oso/ico = Tradicional</span>
+            </div>
+
+            <div class="mini-card">
+              <h4>Idea clave para decir en clase</h4>
+              <p>
+                No basta con memorizar nombres. También hay que saber leer la fórmula, reconocer grupos como OH, NO₃ o SO₄
+                y entender qué sistema se está usando.
+              </p>
             </div>
 
             <div class="mini-card">
               <h4>Orden recomendado para enseñar</h4>
               <ul>
-                <li>1. Reconocer el tipo de compuesto</li>
+                <li>1. Reconocer compuestos</li>
                 <li>2. Stock</li>
                 <li>3. Sistemática</li>
                 <li>4. Tradicional</li>
               </ul>
-            </div>
-
-            <div class="mini-card">
-              <h4>Idea clave</h4>
-              <p>
-                El mismo compuesto puede tener tres nombres distintos
-                dependiendo del sistema usado.
-              </p>
             </div>
           </div>
         `;
@@ -462,11 +465,11 @@
           <div class="section-card board chalk">
             <h2>Reconocer el tipo de compuesto</h2>
             <p>
-              Antes de nombrar, primero conviene reconocer qué clase de compuesto tenemos.
-              Para hacerlo, observamos la fórmula y buscamos grupos o patrones que nos den una pista.
+              Antes de nombrar un compuesto, primero conviene identificar qué tipo de compuesto es.
+              Eso hace mucho más fácil saber cómo nombrarlo.
             </p>
             <p>
-              Este paso te ayuda mucho a explicar porque ya no nombras “a ciegas”, sino que primero identificas y luego nombras.
+              La idea es mirar la fórmula y buscar <strong>pistas</strong>.
             </p>
           </div>
 
@@ -481,7 +484,7 @@
                   <th>Cómo explicarlo</th>
                 </tr>
                 <tr>
-                  <td>Contiene <strong>OH</strong></td>
+                  <td>Contiene <strong>OH</strong> unido a un metal</td>
                   <td>Hidróxido</td>
                   <td>NaOH, Ca(OH)₂, Fe(OH)₃</td>
                   <td>Si aparece el grupo OH unido a un metal, normalmente es un hidróxido.</td>
@@ -489,7 +492,7 @@
                 <tr>
                   <td>Empieza con <strong>H</strong></td>
                   <td>Ácido</td>
-                  <td>HCl, HNO₃, H₂SO₄</td>
+                  <td>HCl, H₂SO₄, HNO₃</td>
                   <td>Muchos ácidos comienzan con hidrógeno.</td>
                 </tr>
                 <tr>
@@ -502,15 +505,19 @@
                   <td>No metal + oxígeno</td>
                   <td>Anhídrido u óxido ácido</td>
                   <td>CO₂, SO₃, N₂O₅</td>
-                  <td>Si hay oxígeno con un no metal, suele tratarse de un anhídrido.</td>
+                  <td>Si hay oxígeno con un no metal, suele ser un anhídrido.</td>
                 </tr>
                 <tr>
                   <td>Metal + radical</td>
                   <td>Sal</td>
                   <td>NaNO₃, K₂SO₄, CaCO₃</td>
-                  <td>Si hay un metal unido a un grupo como NO₃ o SO₄, generalmente es una sal.</td>
+                  <td>Si aparece un metal unido a un radical como NO₃ o SO₄, es una sal.</td>
                 </tr>
               </table>
+            </div>
+
+            <div class="note">
+              Frase útil para explicar: <strong>primero reconozco el grupo característico y luego nombro el compuesto</strong>.
             </div>
           </div>
 
@@ -518,8 +525,9 @@
             <h3>Radicales que conviene reconocer</h3>
             <p>
               Muchos compuestos se identifican rápido cuando reconoces el radical.
-              Eso facilita mucho el nombre.
+              Esto te ayuda a nombrarlos casi de inmediato.
             </p>
+
             <div class="table-box">
               <table>
                 <tr>
@@ -599,23 +607,7 @@
           </div>
 
           <div class="section-card">
-            <h3>Cómo explicarlo en clase</h3>
-            <ul>
-              <li>Primero observo la fórmula.</li>
-              <li>Busco si hay un grupo conocido como OH, NO₃, SO₄, CO₃ o PO₄.</li>
-              <li>Si encuentro OH, sé que probablemente es un hidróxido.</li>
-              <li>Si encuentro NO₃, reconozco un nitrato.</li>
-              <li>Después nombro el radical y luego digo “de” + el metal.</li>
-            </ul>
-
-            <div class="note">
-              <strong>Ejemplo:</strong> en <strong>NaNO₃</strong>, el Na es sodio y el NO₃ es nitrato,
-              por lo tanto el nombre es <strong>nitrato de sodio</strong>.
-            </div>
-          </div>
-
-          <div class="section-card">
-            <h3>Ejemplos rápidos para usar al explicar</h3>
+            <h3>Cómo explicarlo con ejemplos</h3>
             <div class="grid">
               <div class="mini-card">
                 <h4>NaOH</h4>
@@ -648,6 +640,10 @@
                 <p><strong>Nombre:</strong> ácido nítrico</p>
               </div>
             </div>
+
+            <div class="note">
+              Guion útil: <strong>NaNO₃ tiene Na, que es sodio, y NO₃, que es nitrato. Entonces el compuesto se llama nitrato de sodio.</strong>
+            </div>
           </div>
         `;
       }
@@ -658,28 +654,29 @@
             <h2>Nomenclatura tradicional</h2>
             <p>
               La nomenclatura tradicional usa nombres clásicos y se basa mucho en la valencia del elemento.
+              Aquí aparecen terminaciones como <strong>-oso</strong> y <strong>-ico</strong>.
             </p>
             <ul>
               <li><strong>-oso</strong> indica la valencia menor</li>
               <li><strong>-ico</strong> indica la valencia mayor</li>
-              <li>A veces aparecen <strong>hipo-</strong> y <strong>per-</strong></li>
+              <li>En algunos casos aparecen <strong>hipo-</strong> y <strong>per-</strong></li>
             </ul>
 
-            <div class="formula">${ponerFormula('FeO')} → óxido ferroso</div>
-            <div class="formula">${ponerFormula('Fe2O3')} → óxido férrico</div>
+            <div class="formula">${ponerSubindices('FeO')} → óxido ferroso</div>
+            <div class="formula">${ponerSubindices('Fe2O3')} → óxido férrico</div>
           </div>
 
           <div class="section-card">
-            <h3>Cómo explicarlo</h3>
+            <h3>Cómo explicarlo en clase</h3>
             <p>
-              Puedes decir que este sistema es más clásico y más de memoria.
-              Aquí no se usan números romanos, sino nombres que cambian según la valencia.
+              Este sistema se parece más a un lenguaje clásico. Aquí no se usa número romano.
+              El nombre cambia según la valencia del elemento.
             </p>
             <ul>
-              <li>Hierro en menor valencia → ferroso</li>
-              <li>Hierro en mayor valencia → férrico</li>
-              <li>Cobre en menor valencia → cuproso</li>
-              <li>Cobre en mayor valencia → cúprico</li>
+              <li>hierro con valencia menor → ferroso</li>
+              <li>hierro con valencia mayor → férrico</li>
+              <li>azufre con valencia menor → sulfuroso</li>
+              <li>azufre con valencia mayor → sulfúrico</li>
             </ul>
           </div>
 
@@ -693,24 +690,24 @@
                   <th>Idea clave</th>
                 </tr>
                 <tr>
-                  <td>${ponerFormula('FeO')}</td>
+                  <td>${ponerSubindices('FeO')}</td>
                   <td>óxido ferroso</td>
                   <td>hierro en menor valencia</td>
                 </tr>
                 <tr>
-                  <td>${ponerFormula('Fe2O3')}</td>
+                  <td>${ponerSubindices('Fe2O3')}</td>
                   <td>óxido férrico</td>
                   <td>hierro en mayor valencia</td>
                 </tr>
                 <tr>
-                  <td>${ponerFormula('Cu2O')}</td>
-                  <td>óxido cuproso</td>
-                  <td>cobre en menor valencia</td>
+                  <td>${ponerSubindices('SO2')}</td>
+                  <td>anhídrido sulfuroso</td>
+                  <td>azufre en menor valencia</td>
                 </tr>
                 <tr>
-                  <td>${ponerFormula('CuO')}</td>
-                  <td>óxido cúprico</td>
-                  <td>cobre en mayor valencia</td>
+                  <td>${ponerSubindices('SO3')}</td>
+                  <td>anhídrido sulfúrico</td>
+                  <td>azufre en mayor valencia</td>
                 </tr>
               </table>
             </div>
@@ -723,34 +720,31 @@
           <div class="section-card board chalk">
             <h2>Nomenclatura Stock</h2>
             <p>
-              En la nomenclatura Stock se nombra el compuesto y luego se indica
-              el número de oxidación del elemento con números romanos.
+              La nomenclatura Stock nombra el compuesto y luego indica el número de oxidación
+              usando números romanos.
             </p>
-            <div class="formula">${ponerFormula('Fe2O3')} → óxido de hierro (III)</div>
-            <div class="formula">${ponerFormula('Cu2O')} → óxido de cobre (I)</div>
+            <div class="formula">${ponerSubindices('Fe2O3')} → óxido de hierro (III)</div>
+            <div class="formula">${ponerSubindices('Cu2O')} → óxido de cobre (I)</div>
           </div>
 
           <div class="section-card">
-            <h3>Cómo explicarlo</h3>
+            <h3>Cómo explicarlo en clase</h3>
             <ul>
-              <li>Se identifica la valencia del elemento principal.</li>
-              <li>Se escribe el nombre del compuesto.</li>
-              <li>Se agrega la valencia en número romano.</li>
+              <li>primero identificas la valencia del elemento principal</li>
+              <li>luego escribes el nombre del compuesto</li>
+              <li>al final colocas la valencia en número romano</li>
             </ul>
-            <p>
-              Este sistema es muy útil porque hace pensar y no solo memorizar.
-            </p>
           </div>
 
           <div class="section-card">
             <h3>Ejemplo paso a paso</h3>
-            <p><strong>${ponerFormula('Fe2O3')}</strong></p>
+            <p><strong>${ponerSubindices('Fe2O3')}</strong></p>
             <ul>
-              <li>El oxígeno vale -2.</li>
-              <li>Hay 3 oxígenos, entonces suman -6.</li>
-              <li>Los 2 hierros deben sumar +6.</li>
-              <li>Cada hierro vale +3.</li>
-              <li>Nombre: <strong>óxido de hierro (III)</strong></li>
+              <li>el oxígeno vale -2</li>
+              <li>hay 3 oxígenos → total -6</li>
+              <li>los 2 hierros deben sumar +6</li>
+              <li>cada hierro vale +3</li>
+              <li>nombre: óxido de hierro (III)</li>
             </ul>
           </div>
         `;
@@ -761,7 +755,7 @@
           <div class="section-card board chalk">
             <h2>Nomenclatura sistemática</h2>
             <p>
-              La nomenclatura sistemática usa prefijos para indicar cuántos átomos hay.
+              La sistemática usa prefijos numéricos para indicar cuántos átomos hay.
             </p>
             <ul>
               <li>mono = 1</li>
@@ -771,24 +765,25 @@
               <li>penta = 5</li>
             </ul>
 
-            <div class="formula">${ponerFormula('CO2')} → dióxido de carbono</div>
-            <div class="formula">${ponerFormula('Fe2O3')} → trióxido de dihierro</div>
+            <div class="formula">${ponerSubindices('CO2')} → dióxido de carbono</div>
+            <div class="formula">${ponerSubindices('Fe2O3')} → trióxido de dihierro</div>
           </div>
 
           <div class="section-card">
-            <h3>Cómo explicarlo</h3>
+            <h3>Cómo explicarlo en clase</h3>
             <p>
-              Aquí no se usan romanos ni terminaciones clásicas. Lo importante es contar
-              bien los átomos de la fórmula y aplicar los prefijos correctos.
+              Aquí lo importante es contar átomos. No te concentras tanto en mayor o menor valencia
+              como en la tradicional, ni en números romanos como en Stock.
             </p>
           </div>
 
           <div class="section-card">
             <h3>Ejemplo paso a paso</h3>
+            <p><strong>${ponerSubindices('Fe2O3')}</strong></p>
             <ul>
-              <li>En ${ponerFormula('Fe2O3')} hay 3 oxígenos → <strong>trióxido</strong></li>
-              <li>Hay 2 hierros → <strong>dihierro</strong></li>
-              <li>Nombre completo → <strong>trióxido de dihierro</strong></li>
+              <li>hay 3 oxígenos → trióxido</li>
+              <li>hay 2 hierros → dihierro</li>
+              <li>nombre completo → trióxido de dihierro</li>
             </ul>
           </div>
         `;
@@ -807,45 +802,30 @@
                   <th>Sistemática</th>
                 </tr>
                 <tr>
-                  <td>${ponerFormula('FeO')}</td>
+                  <td>${ponerSubindices('FeO')}</td>
                   <td>óxido ferroso</td>
                   <td>óxido de hierro (II)</td>
                   <td>monóxido de hierro</td>
                 </tr>
                 <tr>
-                  <td>${ponerFormula('Fe2O3')}</td>
+                  <td>${ponerSubindices('Fe2O3')}</td>
                   <td>óxido férrico</td>
                   <td>óxido de hierro (III)</td>
                   <td>trióxido de dihierro</td>
                 </tr>
                 <tr>
-                  <td>${ponerFormula('SO3')}</td>
+                  <td>${ponerSubindices('SO3')}</td>
                   <td>anhídrido sulfúrico</td>
                   <td>óxido de azufre (VI)</td>
                   <td>trióxido de azufre</td>
                 </tr>
                 <tr>
-                  <td>${ponerFormula('Cu2O')}</td>
+                  <td>${ponerSubindices('Cu2O')}</td>
                   <td>óxido cuproso</td>
                   <td>óxido de cobre (I)</td>
                   <td>monóxido de dicobre</td>
                 </tr>
               </table>
-            </div>
-          </div>
-
-          <div class="grid">
-            <div class="mini-card">
-              <h4>Tradicional</h4>
-              <p>Usa nombres clásicos y memoria.</p>
-            </div>
-            <div class="mini-card">
-              <h4>Stock</h4>
-              <p>Usa números romanos y valencias.</p>
-            </div>
-            <div class="mini-card">
-              <h4>Sistemática</h4>
-              <p>Usa prefijos y conteo de átomos.</p>
             </div>
           </div>
         `;
@@ -854,46 +834,46 @@
       if(tipo === 'ejemplos'){
         html = `
           <div class="section-card board chalk">
-            <h2>Ejemplos guiados para exponer</h2>
+            <h2>Ejemplos guiados para explicar</h2>
             <p>
-              Este apartado te sirve casi como guion oral para la clase.
+              Este apartado te sirve casi como guion para exponer.
             </p>
           </div>
 
           <div class="section-card">
-            <h3>Ejemplo 1: ${ponerFormula('Fe2O3')}</h3>
+            <h3>Ejemplo 1: ${ponerSubindices('Fe2O3')}</h3>
             <ul>
               <li><strong>Tradicional:</strong> óxido férrico</li>
               <li><strong>Stock:</strong> óxido de hierro (III)</li>
               <li><strong>Sistemática:</strong> trióxido de dihierro</li>
             </ul>
+            <p>Es el mismo compuesto, pero cambia el nombre según el sistema.</p>
+          </div>
+
+          <div class="section-card">
+            <h3>Ejemplo 2: ${ponerSubindices('NaNO3')}</h3>
+            <ul>
+              <li>Na = sodio</li>
+              <li>NO₃ = nitrato</li>
+              <li><strong>Nombre:</strong> nitrato de sodio</li>
+            </ul>
             <p>
-              Es el mismo compuesto, pero cambia el nombre según el sistema usado.
+              Este ejemplo es bueno para explicar reconocimiento de radicales.
             </p>
           </div>
 
           <div class="section-card">
-            <h3>Ejemplo 2: ${ponerFormula('NaNO3')}</h3>
+            <h3>Ejemplo 3: ${ponerSubindices('Ca(OH)2')}</h3>
             <ul>
-              <li>Primero reconozco el radical NO₃.</li>
-              <li>NO₃ es nitrato.</li>
-              <li>Na es sodio.</li>
-              <li>Nombre: <strong>nitrato de sodio</strong></li>
+              <li>tiene OH</li>
+              <li>OH es hidróxido</li>
+              <li>Ca es calcio</li>
+              <li><strong>Nombre:</strong> hidróxido de calcio</li>
             </ul>
           </div>
 
           <div class="section-card">
-            <h3>Ejemplo 3: ${ponerFormula('Ca(OH)2')}</h3>
-            <ul>
-              <li>Reconozco el grupo OH.</li>
-              <li>OH es hidróxido.</li>
-              <li>Ca es calcio.</li>
-              <li>Nombre: <strong>hidróxido de calcio</strong></li>
-            </ul>
-          </div>
-
-          <div class="section-card">
-            <h3>Ejemplo 4: ${ponerFormula('SO2')}</h3>
+            <h3>Ejemplo 4: ${ponerSubindices('SO2')}</h3>
             <ul>
               <li><strong>Tradicional:</strong> anhídrido sulfuroso</li>
               <li><strong>Stock:</strong> óxido de azufre (IV)</li>
@@ -908,11 +888,13 @@
           <div class="section-card">
             <h3>Errores comunes</h3>
             <ul>
-              <li>Confundir tradicional con Stock.</li>
-              <li>Olvidar el número romano en Stock.</li>
-              <li>Contar mal los subíndices en sistemática.</li>
-              <li>No reconocer radicales como NO₃, SO₄, CO₃ u OH.</li>
-              <li>Pensar que todos los nombres se forman igual.</li>
+              <li>confundir tradicional con Stock</li>
+              <li>olvidar el número romano en Stock</li>
+              <li>poner mal los prefijos en sistemática</li>
+              <li>no contar bien los subíndices</li>
+              <li>confundir nitrato con nitrito</li>
+              <li>confundir sulfato con sulfito</li>
+              <li>no reconocer que OH indica hidróxido</li>
             </ul>
           </div>
 
@@ -927,11 +909,11 @@
             </div>
             <div class="mini-card">
               <h4>Tip 3</h4>
-              <p>Si ves OH, probablemente es un hidróxido.</p>
+              <p>Si ves oso o ico, piensa en tradicional.</p>
             </div>
             <div class="mini-card">
               <h4>Tip 4</h4>
-              <p>Si ves NO₃, normalmente estás frente a un nitrato.</p>
+              <p>Si ves OH, revisa si es hidróxido.</p>
             </div>
           </div>
         `;
@@ -941,28 +923,67 @@
         html = `
           <div class="section-card">
             <h3>Mini evaluación rápida</h3>
-            <p>Esto te sirve para cerrar la clase con una pequeña comprobación.</p>
+            <p>Úsala para cerrar la clase con una comprobación sencilla.</p>
 
             <p><strong>1. ¿Cuál opción está en nomenclatura Stock?</strong></p>
-            <button class="quiz-option" onclick="responder('fb1', this, false, 'No. Esa es tradicional.')">óxido férrico</button>
+            <button class="quiz-option" onclick="responder('fb1', this, false, 'No. Stock usa número romano.')">óxido férrico</button>
             <button class="quiz-option" onclick="responder('fb1', this, true, 'Correcto. El número romano indica que es Stock.')">óxido de hierro (III)</button>
-            <button class="quiz-option" onclick="responder('fb1', this, false, 'No. Esa es sistemática.')">trióxido de dihierro</button>
+            <button class="quiz-option" onclick="responder('fb1', this, false, 'No. Esa sería sistemática.')">trióxido de dihierro</button>
             <div class="feedback" id="fb1"></div>
 
-            <p style="margin-top:18px;"><strong>2. ¿Qué tipo de compuesto es NaOH?</strong></p>
-            <button class="quiz-option" onclick="responder('fb2', this, true, 'Correcto. Tiene OH, así que es un hidróxido.')">Hidróxido</button>
-            <button class="quiz-option" onclick="responder('fb2', this, false, 'No. NaOH no es un ácido.')">Ácido</button>
-            <button class="quiz-option" onclick="responder('fb2', this, false, 'No. Aquí la pista importante es el OH.')">Sal</button>
+            <p style="margin-top:18px;"><strong>2. ¿Cuál opción está en nomenclatura sistemática?</strong></p>
+            <button class="quiz-option" onclick="responder('fb2', this, false, 'No. Esa sería tradicional.')">anhídrido sulfúrico</button>
+            <button class="quiz-option" onclick="responder('fb2', this, false, 'No. Esa sería Stock.')">óxido de azufre (VI)</button>
+            <button class="quiz-option" onclick="responder('fb2', this, true, 'Correcto. El prefijo tri- es una pista de sistemática.')">trióxido de azufre</button>
             <div class="feedback" id="fb2"></div>
 
-            <p style="margin-top:18px;"><strong>3. ¿Cómo se nombra NaNO₃?</strong></p>
-            <button class="quiz-option" onclick="responder('fb3', this, false, 'No. NaNO₃ no es nitrito.')">nitrito de sodio</button>
-            <button class="quiz-option" onclick="responder('fb3', this, true, 'Correcto. NO₃ es nitrato, entonces es nitrato de sodio.')">nitrato de sodio</button>
-            <button class="quiz-option" onclick="responder('fb3', this, false, 'No. Tampoco es un hidróxido.')">hidróxido de sodio</button>
+            <p style="margin-top:18px;"><strong>3. NaNO₃ se llama:</strong></p>
+            <button class="quiz-option" onclick="responder('fb3', this, false, 'No. NO₃ no es nitrito, es nitrato.')">nitrito de sodio</button>
+            <button class="quiz-option" onclick="responder('fb3', this, true, 'Correcto. Na es sodio y NO₃ es nitrato.')">nitrato de sodio</button>
+            <button class="quiz-option" onclick="responder('fb3', this, false, 'No. NaOH sería hidróxido de sodio.')">hidróxido de sodio</button>
             <div class="feedback" id="fb3"></div>
 
-            <p style="margin-top:18px;"><strong>4. ¿Cuál opción está en nomenclatura sistemática?</strong></p>
-            <button class="quiz-option" onclick="responder('fb4', this, false, 'No. Esa es tradicional.')">anhídrido sulfúrico</button>
-            <button class="quiz-option" onclick="responder('fb4', this, false, 'No. Esa es Stock.')">óxido de azufre (VI)</button>
-            <button class="quiz-option" onclick="responder('fb4', this, true, 'Correcto. El prefijo tri- indica sistemática.')">trióxido de azufre</button>
-            <div class="feedback" id="fb4"></div
+            <p style="margin-top:18px;"><strong>4. Si un compuesto tiene OH unido a un metal, normalmente es un:</strong></p>
+            <button class="quiz-option" onclick="responder('fb4', this, true, 'Correcto. El grupo OH es una pista de hidróxido.')">hidróxido</button>
+            <button class="quiz-option" onclick="responder('fb4', this, false, 'No. Revisa el grupo OH.')">anhídrido</button>
+            <button class="quiz-option" onclick="responder('fb4', this, false, 'No. No siempre será una sal.')">sal</button>
+            <div class="feedback" id="fb4"></div>
+          </div>
+        `;
+      }
+
+      document.getElementById('contenido').innerHTML = html;
+    }
+
+    function responder(id, btn, correcto, mensaje){
+      const fb = document.getElementById(id);
+      if(correcto){
+        btn.style.background = '#14532d';
+        fb.textContent = mensaje;
+        fb.className = 'feedback ok';
+      }else{
+        btn.style.background = '#7f1d1d';
+        fb.textContent = mensaje;
+        fb.className = 'feedback bad';
+      }
+    }
+
+    const guardado = localStorage.getItem('temaNomenclatura') || 'intro';
+    const botones = document.querySelectorAll('.tab-btn');
+    const mapa = {
+      intro: 0,
+      reconocer: 1,
+      tradicional: 2,
+      stock: 3,
+      sistematica: 4,
+      comparacion: 5,
+      ejemplos: 6,
+      errores: 7,
+      mini: 8
+    };
+
+    const botonInicial = botones[mapa[guardado]] || botones[0];
+    cargarTema(guardado, botonInicial);
+  </script>
+</body>
+</html>
