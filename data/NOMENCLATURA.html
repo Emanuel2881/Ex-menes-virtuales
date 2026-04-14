@@ -1,0 +1,1145 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Nomenclatura Pro</title>
+  <style>
+    :root{
+      --bg-1:#07111f;
+      --bg-2:#0b1730;
+      --panel:rgba(14,24,46,.78);
+      --panel-2:rgba(20,34,63,.88);
+      --stroke:rgba(255,255,255,.09);
+      --text:#ecf3ff;
+      --muted:#9fb0d0;
+      --blue:#64b5ff;
+      --blue-2:#3d8dff;
+      --cyan:#71e7ff;
+      --green:#2dcc8a;
+      --red:#ff6d7a;
+      --gold:#ffd166;
+      --shadow:0 18px 60px rgba(0,0,0,.35);
+      --radius:26px;
+    }
+
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      font-family:Inter,Segoe UI,Arial,sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(circle at 20% 20%, rgba(61,141,255,.18), transparent 26%),
+        radial-gradient(circle at 80% 0%, rgba(113,231,255,.12), transparent 28%),
+        radial-gradient(circle at 80% 80%, rgba(45,204,138,.09), transparent 22%),
+        linear-gradient(135deg,var(--bg-1),var(--bg-2));
+      min-height:100vh;
+    }
+
+    .shell{
+      width:min(1180px, calc(100% - 32px));
+      margin:0 auto;
+      padding:24px 0 48px;
+    }
+
+    .topbar{
+      position:sticky;
+      top:12px;
+      z-index:20;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:16px;
+      padding:14px 16px;
+      border:1px solid var(--stroke);
+      background:rgba(7,17,31,.65);
+      backdrop-filter:blur(14px);
+      border-radius:22px;
+      box-shadow:var(--shadow);
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:14px;
+      min-width:0;
+    }
+
+    .brandIcon{
+      width:46px;
+      height:46px;
+      border-radius:16px;
+      display:grid;
+      place-items:center;
+      background:linear-gradient(135deg,var(--blue-2),var(--cyan));
+      color:#04111f;
+      font-weight:900;
+      box-shadow:0 10px 30px rgba(61,141,255,.35);
+      flex-shrink:0;
+    }
+
+    .brand h1{
+      margin:0;
+      font-size:1rem;
+      letter-spacing:.4px;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+
+    .brand p{
+      margin:2px 0 0;
+      color:var(--muted);
+      font-size:.86rem;
+    }
+
+    .nav{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      justify-content:flex-end;
+    }
+
+    .nav button,.btn{
+      border:none;
+      border-radius:14px;
+      padding:11px 16px;
+      color:var(--text);
+      cursor:pointer;
+      background:rgba(255,255,255,.06);
+      border:1px solid rgba(255,255,255,.07);
+      transition:.2s ease;
+      font-weight:700;
+    }
+
+    .nav button:hover,.btn:hover{
+      transform:translateY(-1px);
+      background:rgba(255,255,255,.1);
+    }
+
+    .btnPrimary{
+      background:linear-gradient(135deg,var(--blue-2),var(--blue));
+      color:white;
+      box-shadow:0 10px 30px rgba(61,141,255,.25);
+    }
+
+    .hero{
+      margin-top:22px;
+      display:grid;
+      grid-template-columns:1.4fr .9fr;
+      gap:18px;
+    }
+
+    .glass{
+      background:var(--panel);
+      border:1px solid var(--stroke);
+      border-radius:var(--radius);
+      backdrop-filter:blur(14px);
+      box-shadow:var(--shadow);
+    }
+
+    .heroMain{
+      padding:34px;
+      min-height:340px;
+      position:relative;
+      overflow:hidden;
+    }
+
+    .heroMain::after{
+      content:"";
+      position:absolute;
+      inset:auto -40px -40px auto;
+      width:220px;
+      height:220px;
+      background:radial-gradient(circle, rgba(113,231,255,.25), transparent 62%);
+      filter:blur(10px);
+      pointer-events:none;
+    }
+
+    .eyebrow{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      font-size:.8rem;
+      color:#d8e7ff;
+      background:rgba(255,255,255,.06);
+      border:1px solid rgba(255,255,255,.08);
+      padding:8px 12px;
+      border-radius:999px;
+      margin-bottom:18px;
+    }
+
+    .hero h2{
+      font-size:clamp(2rem,4vw,3.4rem);
+      line-height:1.03;
+      margin:0 0 14px;
+      max-width:12ch;
+    }
+
+    .hero p{
+      color:var(--muted);
+      font-size:1rem;
+      line-height:1.65;
+      margin:0;
+      max-width:60ch;
+    }
+
+    .heroActions{
+      display:flex;
+      gap:12px;
+      margin-top:24px;
+      flex-wrap:wrap;
+    }
+
+    .stats{
+      display:grid;
+      grid-template-columns:repeat(2,1fr);
+      gap:16px;
+      padding:18px;
+    }
+
+    .statCard{
+      padding:20px;
+      border-radius:22px;
+      background:var(--panel-2);
+      border:1px solid var(--stroke);
+    }
+
+    .statCard h3{
+      margin:0;
+      font-size:2rem;
+    }
+
+    .statCard p{
+      margin:8px 0 0;
+      color:var(--muted);
+      line-height:1.45;
+    }
+
+    .section{
+      margin-top:22px;
+      padding:24px;
+    }
+
+    .sectionHead{
+      display:flex;
+      align-items:end;
+      justify-content:space-between;
+      gap:16px;
+      margin-bottom:18px;
+      flex-wrap:wrap;
+    }
+
+    .sectionHead h3{
+      margin:0;
+      font-size:1.45rem;
+    }
+
+    .sectionHead p{
+      margin:8px 0 0;
+      color:var(--muted);
+      max-width:700px;
+      line-height:1.6;
+    }
+
+    .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+    .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+
+    .tile{
+      padding:20px;
+      border-radius:22px;
+      background:var(--panel-2);
+      border:1px solid var(--stroke);
+      min-height:190px;
+    }
+
+    .tile h4,.cardTitle{margin:0 0 10px;font-size:1.07rem}
+    .tile p,.smallMuted{margin:0;color:var(--muted);line-height:1.6}
+
+    .chipRow{display:flex;gap:10px;flex-wrap:wrap;margin-top:15px}
+    .chip{
+      padding:8px 12px;
+      border-radius:999px;
+      background:rgba(255,255,255,.06);
+      border:1px solid rgba(255,255,255,.08);
+      color:#dce9ff;
+      font-size:.84rem;
+    }
+
+    .controls{
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:14px;
+      margin-top:16px;
+    }
+
+    .control{
+      background:var(--panel-2);
+      border:1px solid var(--stroke);
+      border-radius:18px;
+      padding:14px;
+    }
+
+    .control label{
+      display:block;
+      font-size:.84rem;
+      color:var(--muted);
+      margin-bottom:8px;
+    }
+
+    select,input{
+      width:100%;
+      padding:12px 13px;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,.09);
+      background:rgba(255,255,255,.06);
+      color:var(--text);
+      outline:none;
+    }
+
+    option{color:black}
+
+    .examWrap{
+      display:none;
+      grid-template-columns:1.15fr .85fr;
+      gap:18px;
+      margin-top:22px;
+    }
+
+    .questionCard,.sideCard{
+      padding:24px;
+    }
+
+    .metaTop{
+      display:flex;
+      justify-content:space-between;
+      gap:12px;
+      align-items:center;
+      flex-wrap:wrap;
+      margin-bottom:18px;
+    }
+
+    .progress{
+      width:100%;
+      height:12px;
+      background:rgba(255,255,255,.07);
+      border-radius:999px;
+      overflow:hidden;
+      margin:16px 0 24px;
+      border:1px solid rgba(255,255,255,.05);
+    }
+
+    .progressFill{
+      height:100%;
+      width:0%;
+      background:linear-gradient(90deg,var(--cyan),var(--blue-2));
+      transition:.28s ease;
+    }
+
+    .formulaBox{
+      display:grid;
+      place-items:center;
+      min-height:160px;
+      border-radius:24px;
+      background:linear-gradient(135deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
+      border:1px solid rgba(255,255,255,.08);
+      margin-bottom:20px;
+      padding:18px;
+      text-align:center;
+    }
+
+    .formulaBig{
+      font-size:clamp(2.2rem,5vw,3.3rem);
+      font-weight:900;
+      letter-spacing:.8px;
+    }
+
+    .prompt{
+      color:#dfeaff;
+      margin-bottom:16px;
+      line-height:1.6;
+      font-size:1rem;
+    }
+
+    .options{display:grid;gap:12px}
+
+    .optionBtn{
+      text-align:left;
+      padding:16px 18px;
+      border-radius:18px;
+      border:1px solid rgba(255,255,255,.08);
+      background:rgba(255,255,255,.05);
+      color:var(--text);
+      cursor:pointer;
+      transition:.2s ease;
+      font-size:.98rem;
+      line-height:1.45;
+    }
+
+    .optionBtn:hover{transform:translateY(-1px);background:rgba(255,255,255,.085)}
+    .optionBtn.correct{background:rgba(45,204,138,.16);border-color:rgba(45,204,138,.55)}
+    .optionBtn.wrong{background:rgba(255,109,122,.15);border-color:rgba(255,109,122,.55)}
+    .optionBtn.disabled{pointer-events:none;opacity:.96}
+
+    .metric{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:12px;
+      padding:14px 0;
+      border-bottom:1px solid rgba(255,255,255,.06);
+    }
+
+    .metric:last-child{border-bottom:none}
+    .metric span:first-child{color:var(--muted)}
+    .metric strong{font-size:1.06rem}
+
+    .flashcard{
+      padding:20px;
+      border-radius:22px;
+      background:var(--panel-2);
+      border:1px solid var(--stroke);
+      min-height:260px;
+    }
+
+    .flashFormula{
+      font-size:2rem;
+      font-weight:900;
+      margin-bottom:12px;
+    }
+
+    .flashcard ul{margin:12px 0 0 18px;color:var(--muted);line-height:1.7}
+    .flashcard li strong{color:var(--text)}
+
+    .tableLike{display:grid;gap:12px;margin-top:16px}
+    .tableRow{
+      display:grid;
+      grid-template-columns:1fr 2fr 2fr 2fr;
+      gap:10px;
+      padding:14px;
+      border-radius:16px;
+      background:rgba(255,255,255,.04);
+      border:1px solid rgba(255,255,255,.06);
+      align-items:center;
+    }
+    .tableHead{font-weight:800;color:#d7e8ff}
+    .tableRow div{line-height:1.5}
+
+    .results{
+      display:none;
+      margin-top:22px;
+      padding:28px;
+      text-align:center;
+    }
+
+    .scoreBig{
+      font-size:clamp(2.3rem,5vw,4rem);
+      font-weight:900;
+      margin:12px 0 8px;
+    }
+
+    .accentBlue{color:var(--blue)}
+    .accentGold{color:var(--gold)}
+    .accentGreen{color:var(--green)}
+    .accentRed{color:var(--red)}
+
+    .footerNote{
+      margin-top:18px;
+      color:var(--muted);
+      text-align:center;
+      line-height:1.6;
+      font-size:.92rem;
+    }
+
+    @media (max-width: 980px){
+      .hero,.examWrap,.grid3,.grid2,.controls{grid-template-columns:1fr}
+      .tableRow{grid-template-columns:1fr}
+      .topbar{position:static}
+      .heroMain{min-height:auto}
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <div class="topbar glass">
+      <div class="brand">
+        <div class="brandIcon">⚗</div>
+        <div>
+          <h1>Nomenclatura Pro</h1>
+          <p>Repaso premium + práctica inteligente + simulador grande</p>
+        </div>
+      </div>
+      <div class="nav">
+        <button onclick="goTo('inicio')">Inicio</button>
+        <button onclick="goTo('repaso')">Repaso</button>
+        <button onclick="goTo('biblioteca')">Biblioteca</button>
+        <button onclick="goTo('simulador')">Simulador</button>
+      </div>
+    </div>
+
+    <section id="inicio" class="hero">
+      <div class="heroMain glass">
+        <div class="eyebrow">✨ Diseño premium · preparado para estudio serio</div>
+        <h2>Aprende nomenclatura sin memorizar a ciegas</h2>
+        <p>
+          Estudia los tres sistemas que sí debes manejar para tu examen: <strong>tradicional</strong>, <strong>Stock</strong> y <strong>sistemática</strong>. Aquí tienes repaso completo, ejemplos claros, biblioteca de compuestos y un simulador grande con modos, tiempo, dificultad y estadísticas.
+        </p>
+        <div class="heroActions">
+          <button class="btn btnPrimary" onclick="goTo('simulador')">Empezar simulador</button>
+          <button class="btn" onclick="goTo('repaso')">Ver repaso</button>
+        </div>
+      </div>
+
+      <div class="stats glass">
+        <div class="statCard">
+          <h3>3</h3>
+          <p>Sistemas de nomenclatura integrados en un mismo entrenamiento.</p>
+        </div>
+        <div class="statCard">
+          <h3>60</h3>
+          <p>Compuestos base para generar muchas preguntas sin sentirse repetitivo.</p>
+        </div>
+        <div class="statCard">
+          <h3>4</h3>
+          <p>Tipos de práctica: fórmula → nombre, nombre → fórmula, tipo y sistema.</p>
+        </div>
+        <div class="statCard">
+          <h3>∞</h3>
+          <p>Sesiones de práctica y repaso continuo para estudiar varias veces.</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="repaso" class="section glass">
+      <div class="sectionHead">
+        <div>
+          <h3>Repaso completo</h3>
+          <p>Antes del simulador, aquí tienes un resumen fuerte y útil. No solo te dice qué nombre va, también te recuerda la lógica detrás de cada sistema.</p>
+        </div>
+      </div>
+
+      <div class="grid3">
+        <div class="tile">
+          <h4>Tradicional</h4>
+          <p>Usa terminaciones <strong>-oso</strong> y <strong>-ico</strong> para diferenciar valencias menor y mayor. A veces aparecen prefijos como <strong>hipo-</strong> y <strong>per-</strong> en algunos oxoácidos y oxisales.</p>
+          <div class="chipRow">
+            <div class="chip">ferroso</div>
+            <div class="chip">férrico</div>
+            <div class="chip">sulfuroso</div>
+            <div class="chip">sulfúrico</div>
+          </div>
+        </div>
+        <div class="tile">
+          <h4>Stock</h4>
+          <p>Se nombra el compuesto y luego se coloca el <strong>número de oxidación en romano</strong>. Es el sistema más lógico cuando dominas valencias.</p>
+          <div class="chipRow">
+            <div class="chip">hierro (II)</div>
+            <div class="chip">hierro (III)</div>
+            <div class="chip">cobre (I)</div>
+            <div class="chip">cobre (II)</div>
+          </div>
+        </div>
+        <div class="tile">
+          <h4>Sistemática</h4>
+          <p>Usa prefijos numéricos para indicar cuántos átomos hay: <strong>mono</strong>, <strong>di</strong>, <strong>tri</strong>, <strong>tetra</strong>, <strong>penta</strong>. Aquí importa mucho contar bien.</p>
+          <div class="chipRow">
+            <div class="chip">monóxido</div>
+            <div class="chip">dióxido</div>
+            <div class="chip">trióxido</div>
+            <div class="chip">dihierro</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid2" style="margin-top:16px;">
+        <div class="tile">
+          <h4>Atajos útiles para reconocer el sistema</h4>
+          <p>
+            Si ves <strong>números romanos</strong>, casi seguro es <strong>Stock</strong>.<br><br>
+            Si ves <strong>prefijos</strong> como di o tri, es <strong>sistemática</strong>.<br><br>
+            Si ves <strong>oso / ico</strong>, es <strong>tradicional</strong>.
+          </p>
+        </div>
+        <div class="tile">
+          <h4>Consejo real para estudiar mejor</h4>
+          <p>
+            Primero domina <strong>Stock</strong> porque te obliga a pensar en valencias. Después estudia <strong>sistemática</strong> porque solo requiere contar. Al final refuerza <strong>tradicional</strong>, que suele depender más de memoria.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section id="biblioteca" class="section glass">
+      <div class="sectionHead">
+        <div>
+          <h3>Biblioteca rápida de ejemplos</h3>
+          <p>Este apartado sirve como mini atlas de estudio. Selecciona un compuesto y mira sus tres nombres para reforzar memoria y comparación entre sistemas.</p>
+        </div>
+      </div>
+
+      <div class="controls" style="grid-template-columns: 1fr auto; align-items:end;">
+        <div class="control">
+          <label>Elige un compuesto</label>
+          <select id="flashSelect"></select>
+        </div>
+        <button class="btn btnPrimary" onclick="mostrarFlashcard()">Mostrar</button>
+      </div>
+
+      <div id="flashcard" class="flashcard" style="margin-top:16px;"></div>
+
+      <div class="tableLike" id="tablaEjemplos"></div>
+    </section>
+
+    <section id="simulador" class="section glass">
+      <div class="sectionHead">
+        <div>
+          <h3>Simulador premium</h3>
+          <p>Configura la sesión como quieras. Puedes hacer práctica libre o modo examen con muchas preguntas. El sistema mezcla contenido para que estudies de verdad y no solo memorices una lista.</p>
+        </div>
+      </div>
+
+      <div class="controls">
+        <div class="control">
+          <label>Modo</label>
+          <select id="modoSelect">
+            <option value="exam">Examen</option>
+            <option value="practice">Práctica</option>
+          </select>
+        </div>
+        <div class="control">
+          <label>Preguntas</label>
+          <select id="countSelect">
+            <option value="10">10</option>
+            <option value="20">20</option>
+            <option value="30" selected>30</option>
+            <option value="40">40</option>
+            <option value="50">50</option>
+            <option value="60">60</option>
+          </select>
+        </div>
+        <div class="control">
+          <label>Tiempo</label>
+          <select id="timeSelect">
+            <option value="0">Sin límite</option>
+            <option value="5">5 min</option>
+            <option value="10" selected>10 min</option>
+            <option value="15">15 min</option>
+            <option value="20">20 min</option>
+            <option value="30">30 min</option>
+          </select>
+        </div>
+        <div class="control">
+          <label>Tipo de contenido</label>
+          <select id="categorySelect">
+            <option value="all">Todo mezclado</option>
+            <option value="óxido">Óxidos</option>
+            <option value="anhídrido">Anhídridos</option>
+            <option value="hidróxido">Hidróxidos</option>
+            <option value="ácido">Ácidos</option>
+            <option value="sal">Sales</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="controls" style="margin-top:14px; grid-template-columns:repeat(3,1fr)">
+        <div class="control">
+          <label>Enfoque</label>
+          <select id="questionTypeSelect">
+            <option value="mixed">Mezclado</option>
+            <option value="formula_to_name">Fórmula → nombre</option>
+            <option value="name_to_formula">Nombre → fórmula</option>
+            <option value="identify_type">Identificar tipo</option>
+            <option value="identify_system">Identificar sistema</option>
+          </select>
+        </div>
+        <div class="control">
+          <label>Dificultad</label>
+          <select id="difficultySelect">
+            <option value="all">Todas</option>
+            <option value="easy">Fácil</option>
+            <option value="medium">Media</option>
+            <option value="hard">Difícil</option>
+          </select>
+        </div>
+        <div class="control" style="display:flex;align-items:end;">
+          <button class="btn btnPrimary" style="width:100%;padding:14px 18px" onclick="iniciarSesion()">Iniciar sesión</button>
+        </div>
+      </div>
+
+      <div id="examWrap" class="examWrap">
+        <div class="questionCard glass">
+          <div class="metaTop">
+            <div>
+              <div class="smallMuted">Progreso</div>
+              <div id="questionCounter" class="cardTitle">Pregunta 1 de 30</div>
+            </div>
+            <div>
+              <div class="smallMuted">Tiempo</div>
+              <div id="timerDisplay" class="cardTitle">10:00</div>
+            </div>
+          </div>
+
+          <div class="progress">
+            <div id="progressFill" class="progressFill"></div>
+          </div>
+
+          <div class="formulaBox">
+            <div id="mainDisplay" class="formulaBig">Fe₂O₃</div>
+          </div>
+
+          <div id="promptText" class="prompt"></div>
+          <div id="optionsBox" class="options"></div>
+        </div>
+
+        <div class="sideCard glass">
+          <div class="metric"><span>Aciertos</span><strong id="correctCount">0</strong></div>
+          <div class="metric"><span>Errores</span><strong id="wrongCount">0</strong></div>
+          <div class="metric"><span>Precisión</span><strong id="accuracyText">0%</strong></div>
+          <div class="metric"><span>Modo</span><strong id="modeText">Examen</strong></div>
+          <div class="metric"><span>Enfoque</span><strong id="focusText">Mezclado</strong></div>
+          <div class="metric"><span>Categoría</span><strong id="catText">Todo mezclado</strong></div>
+          <div class="metric"><span>Dificultad</span><strong id="diffText">Todas</strong></div>
+          <div style="margin-top:18px;display:grid;gap:10px;">
+            <button class="btn" onclick="saltarPregunta()">Saltar</button>
+            <button class="btn" onclick="terminarSesion()">Terminar sesión</button>
+          </div>
+          <p class="footerNote">Tip: si te trabas en tradicional, compara con Stock y luego vuelve. Muchas veces la valencia te da la pista.</p>
+        </div>
+      </div>
+
+      <div id="results" class="results glass">
+        <div class="eyebrow">Resultado final</div>
+        <div id="finalLabel" class="smallMuted">Tu desempeño</div>
+        <div id="finalScore" class="scoreBig">27 / 30</div>
+        <p id="finalSummary" class="smallMuted" style="max-width:760px;margin:0 auto;line-height:1.7"></p>
+        <div class="heroActions" style="justify-content:center;margin-top:22px;">
+          <button class="btn btnPrimary" onclick="reiniciarTodo()">Volver a empezar</button>
+          <button class="btn" onclick="goTo('repaso')">Repasar otra vez</button>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    const BANK = [
+      {formula:'Fe2O3', tipo:'óxido', difficulty:'easy', tradicional:'óxido férrico', stock:'óxido de hierro (III)', sistematica:'trióxido de dihierro'},
+      {formula:'FeO', tipo:'óxido', difficulty:'easy', tradicional:'óxido ferroso', stock:'óxido de hierro (II)', sistematica:'monóxido de hierro'},
+      {formula:'Cu2O', tipo:'óxido', difficulty:'easy', tradicional:'óxido cuproso', stock:'óxido de cobre (I)', sistematica:'monóxido de dicobre'},
+      {formula:'CuO', tipo:'óxido', difficulty:'easy', tradicional:'óxido cúprico', stock:'óxido de cobre (II)', sistematica:'monóxido de cobre'},
+      {formula:'CO2', tipo:'anhídrido', difficulty:'easy', tradicional:'anhídrido carbónico', stock:'óxido de carbono (IV)', sistematica:'dióxido de carbono'},
+      {formula:'SO2', tipo:'anhídrido', difficulty:'easy', tradicional:'anhídrido sulfuroso', stock:'óxido de azufre (IV)', sistematica:'dióxido de azufre'},
+      {formula:'SO3', tipo:'anhídrido', difficulty:'easy', tradicional:'anhídrido sulfúrico', stock:'óxido de azufre (VI)', sistematica:'trióxido de azufre'},
+      {formula:'N2O3', tipo:'anhídrido', difficulty:'medium', tradicional:'anhídrido nitroso', stock:'óxido de nitrógeno (III)', sistematica:'trióxido de dinitrógeno'},
+      {formula:'N2O5', tipo:'anhídrido', difficulty:'medium', tradicional:'anhídrido nítrico', stock:'óxido de nitrógeno (V)', sistematica:'pentóxido de dinitrógeno'},
+      {formula:'Cl2O', tipo:'anhídrido', difficulty:'hard', tradicional:'anhídrido hipocloroso', stock:'óxido de cloro (I)', sistematica:'monóxido de dicloro'},
+      {formula:'Cl2O3', tipo:'anhídrido', difficulty:'hard', tradicional:'anhídrido cloroso', stock:'óxido de cloro (III)', sistematica:'trióxido de dicloro'},
+      {formula:'Cl2O5', tipo:'anhídrido', difficulty:'hard', tradicional:'anhídrido clórico', stock:'óxido de cloro (V)', sistematica:'pentóxido de dicloro'},
+      {formula:'Cl2O7', tipo:'anhídrido', difficulty:'hard', tradicional:'anhídrido perclórico', stock:'óxido de cloro (VII)', sistematica:'heptóxido de dicloro'},
+      {formula:'NaOH', tipo:'hidróxido', difficulty:'easy', tradicional:'hidróxido sódico', stock:'hidróxido de sodio', sistematica:'monohidróxido de sodio'},
+      {formula:'KOH', tipo:'hidróxido', difficulty:'easy', tradicional:'hidróxido potásico', stock:'hidróxido de potasio', sistematica:'monohidróxido de potasio'},
+      {formula:'Ca(OH)2', tipo:'hidróxido', difficulty:'easy', tradicional:'hidróxido cálcico', stock:'hidróxido de calcio', sistematica:'dihidróxido de calcio'},
+      {formula:'Mg(OH)2', tipo:'hidróxido', difficulty:'easy', tradicional:'hidróxido magnésico', stock:'hidróxido de magnesio', sistematica:'dihidróxido de magnesio'},
+      {formula:'Fe(OH)2', tipo:'hidróxido', difficulty:'medium', tradicional:'hidróxido ferroso', stock:'hidróxido de hierro (II)', sistematica:'dihidróxido de hierro'},
+      {formula:'Fe(OH)3', tipo:'hidróxido', difficulty:'medium', tradicional:'hidróxido férrico', stock:'hidróxido de hierro (III)', sistematica:'trihidróxido de hierro'},
+      {formula:'CuOH', tipo:'hidróxido', difficulty:'medium', tradicional:'hidróxido cuproso', stock:'hidróxido de cobre (I)', sistematica:'monohidróxido de cobre'},
+      {formula:'Cu(OH)2', tipo:'hidróxido', difficulty:'medium', tradicional:'hidróxido cúprico', stock:'hidróxido de cobre (II)', sistematica:'dihidróxido de cobre'},
+      {formula:'HCl', tipo:'ácido', difficulty:'easy', tradicional:'ácido clorhídrico', stock:'cloruro de hidrógeno', sistematica:'monocloruro de hidrógeno'},
+      {formula:'HBr', tipo:'ácido', difficulty:'easy', tradicional:'ácido bromhídrico', stock:'bromuro de hidrógeno', sistematica:'monobromuro de hidrógeno'},
+      {formula:'HI', tipo:'ácido', difficulty:'easy', tradicional:'ácido yodhídrico', stock:'yoduro de hidrógeno', sistematica:'monoyoduro de hidrógeno'},
+      {formula:'HF', tipo:'ácido', difficulty:'easy', tradicional:'ácido fluorhídrico', stock:'fluoruro de hidrógeno', sistematica:'monofluoruro de hidrógeno'},
+      {formula:'H2S', tipo:'ácido', difficulty:'medium', tradicional:'ácido sulfhídrico', stock:'sulfuro de hidrógeno', sistematica:'sulfuro de dihidrógeno'},
+      {formula:'H2SO4', tipo:'ácido', difficulty:'easy', tradicional:'ácido sulfúrico', stock:'ácido tetraoxosulfúrico (VI)', sistematica:'tetraoxosulfato de dihidrógeno'},
+      {formula:'H2SO3', tipo:'ácido', difficulty:'easy', tradicional:'ácido sulfuroso', stock:'ácido trioxosulfúrico (IV)', sistematica:'trioxosulfato de dihidrógeno'},
+      {formula:'HNO3', tipo:'ácido', difficulty:'easy', tradicional:'ácido nítrico', stock:'ácido trioxonítrico (V)', sistematica:'trioxonitrato de hidrógeno'},
+      {formula:'HNO2', tipo:'ácido', difficulty:'medium', tradicional:'ácido nitroso', stock:'ácido dioxonítrico (III)', sistematica:'dioxonitrato de hidrógeno'},
+      {formula:'HClO', tipo:'ácido', difficulty:'hard', tradicional:'ácido hipocloroso', stock:'ácido oxocloroso (I)', sistematica:'oxoclorato de hidrógeno'},
+      {formula:'HClO2', tipo:'ácido', difficulty:'hard', tradicional:'ácido cloroso', stock:'ácido dioxocloroso (III)', sistematica:'dioxoclorato de hidrógeno'},
+      {formula:'HClO3', tipo:'ácido', difficulty:'hard', tradicional:'ácido clórico', stock:'ácido trioxoclorico (V)', sistematica:'trioxoclorato de hidrógeno'},
+      {formula:'HClO4', tipo:'ácido', difficulty:'hard', tradicional:'ácido perclórico', stock:'ácido tetraoxoclorico (VII)', sistematica:'tetraoxoclorato de hidrógeno'},
+      {formula:'NaCl', tipo:'sal', difficulty:'easy', tradicional:'cloruro sódico', stock:'cloruro de sodio', sistematica:'monocloruro de sodio'},
+      {formula:'KBr', tipo:'sal', difficulty:'easy', tradicional:'bromuro potásico', stock:'bromuro de potasio', sistematica:'monobromuro de potasio'},
+      {formula:'CaS', tipo:'sal', difficulty:'medium', tradicional:'sulfuro cálcico', stock:'sulfuro de calcio', sistematica:'monosulfuro de calcio'},
+      {formula:'FeCl2', tipo:'sal', difficulty:'medium', tradicional:'cloruro ferroso', stock:'cloruro de hierro (II)', sistematica:'dicloruro de hierro'},
+      {formula:'FeCl3', tipo:'sal', difficulty:'medium', tradicional:'cloruro férrico', stock:'cloruro de hierro (III)', sistematica:'tricloruro de hierro'},
+      {formula:'CuCl', tipo:'sal', difficulty:'medium', tradicional:'cloruro cuproso', stock:'cloruro de cobre (I)', sistematica:'monocloruro de cobre'},
+      {formula:'CuCl2', tipo:'sal', difficulty:'medium', tradicional:'cloruro cúprico', stock:'cloruro de cobre (II)', sistematica:'dicloruro de cobre'},
+      {formula:'Na2SO4', tipo:'sal', difficulty:'easy', tradicional:'sulfato sódico', stock:'tetraoxosulfato (VI) de sodio', sistematica:'tetraoxosulfato de disodio'},
+      {formula:'Na2SO3', tipo:'sal', difficulty:'medium', tradicional:'sulfito sódico', stock:'trioxosulfato (IV) de sodio', sistematica:'trioxosulfato de disodio'},
+      {formula:'KNO3', tipo:'sal', difficulty:'easy', tradicional:'nitrato potásico', stock:'trioxonitrato (V) de potasio', sistematica:'trioxonitrato de potasio'},
+      {formula:'NaNO2', tipo:'sal', difficulty:'medium', tradicional:'nitrito sódico', stock:'dioxonitrato (III) de sodio', sistematica:'dioxonitrato de sodio'},
+      {formula:'CaCO3', tipo:'sal', difficulty:'easy', tradicional:'carbonato cálcico', stock:'trioxocarbonato (IV) de calcio', sistematica:'trioxocarbonato de calcio'},
+      {formula:'Na2CO3', tipo:'sal', difficulty:'easy', tradicional:'carbonato sódico', stock:'trioxocarbonato (IV) de sodio', sistematica:'trioxocarbonato de disodio'},
+      {formula:'KMnO4', tipo:'sal', difficulty:'hard', tradicional:'permanganato potásico', stock:'tetraoxomanganato (VII) de potasio', sistematica:'tetraoxomanganato de potasio'},
+      {formula:'K2Cr2O7', tipo:'sal', difficulty:'hard', tradicional:'dicromato potásico', stock:'heptaoxodicromato (VI) de potasio', sistematica:'heptaoxodicromato de dipotasio'},
+      {formula:'NaClO', tipo:'sal', difficulty:'hard', tradicional:'hipoclorito sódico', stock:'oxoclorato (I) de sodio', sistematica:'oxoclorato de sodio'},
+      {formula:'NaClO2', tipo:'sal', difficulty:'hard', tradicional:'clorito sódico', stock:'dioxoclorato (III) de sodio', sistematica:'dioxoclorato de sodio'},
+      {formula:'NaClO3', tipo:'sal', difficulty:'hard', tradicional:'clorato sódico', stock:'trioxoclorato (V) de sodio', sistematica:'trioxoclorato de sodio'},
+      {formula:'NaClO4', tipo:'sal', difficulty:'hard', tradicional:'perclorato sódico', stock:'tetraoxoclorato (VII) de sodio', sistematica:'tetraoxoclorato de sodio'},
+      {formula:'Al2O3', tipo:'óxido', difficulty:'medium', tradicional:'óxido alumínico', stock:'óxido de aluminio', sistematica:'trióxido de dialuminio'},
+      {formula:'PbO', tipo:'óxido', difficulty:'hard', tradicional:'óxido plumboso', stock:'óxido de plomo (II)', sistematica:'monóxido de plomo'},
+      {formula:'PbO2', tipo:'óxido', difficulty:'hard', tradicional:'óxido plúmbico', stock:'óxido de plomo (IV)', sistematica:'dióxido de plomo'},
+      {formula:'SnO', tipo:'óxido', difficulty:'hard', tradicional:'óxido estañoso', stock:'óxido de estaño (II)', sistematica:'monóxido de estaño'},
+      {formula:'SnO2', tipo:'óxido', difficulty:'hard', tradicional:'óxido estánico', stock:'óxido de estaño (IV)', sistematica:'dióxido de estaño'},
+      {formula:'Ag2O', tipo:'óxido', difficulty:'medium', tradicional:'óxido argentoso', stock:'óxido de plata (I)', sistematica:'monóxido de diplata'},
+      {formula:'ZnO', tipo:'óxido', difficulty:'easy', tradicional:'óxido zincoso', stock:'óxido de zinc', sistematica:'monóxido de zinc'}
+    ];
+
+    const SYSTEMS = ['tradicional','stock','sistematica'];
+    const QUESTION_TYPES = ['formula_to_name','name_to_formula','identify_type','identify_system'];
+
+    let session = {
+      items: [],
+      current: 0,
+      score: 0,
+      wrong: 0,
+      timerId: null,
+      remaining: 0,
+      config: null,
+      answered: false
+    };
+
+    function goTo(id){
+      document.getElementById(id).scrollIntoView({behavior:'smooth', block:'start'});
+    }
+
+    function prettifyFormula(text){
+      return text.replace(/(\d+)/g, '<sub>$1</sub>');
+    }
+
+    function shuffle(arr){
+      const copy = [...arr];
+      for(let i = copy.length - 1; i > 0; i--){
+        const j = Math.floor(Math.random() * (i + 1));
+        [copy[i], copy[j]] = [copy[j], copy[i]];
+      }
+      return copy;
+    }
+
+    function choice(arr){
+      return arr[Math.floor(Math.random() * arr.length)];
+    }
+
+    function unique(arr){
+      return [...new Set(arr)];
+    }
+
+    function byConfig(){
+      const cat = document.getElementById('categorySelect').value;
+      const diff = document.getElementById('difficultySelect').value;
+      return BANK.filter(item => {
+        const catOk = cat === 'all' || item.tipo === cat;
+        const diffOk = diff === 'all' || item.difficulty === diff;
+        return catOk && diffOk;
+      });
+    }
+
+    function initFlashSelect(){
+      const sel = document.getElementById('flashSelect');
+      sel.innerHTML = BANK.map((item, i) => `<option value="${i}">${item.formula} · ${item.tipo}</option>`).join('');
+      mostrarFlashcard();
+    }
+
+    function mostrarFlashcard(){
+      const idx = Number(document.getElementById('flashSelect').value || 0);
+      const item = BANK[idx];
+      document.getElementById('flashcard').innerHTML = `
+        <div class="flashFormula">${prettifyFormula(item.formula)}</div>
+        <div class="chipRow">
+          <div class="chip">${item.tipo}</div>
+          <div class="chip">${labelDifficulty(item.difficulty)}</div>
+        </div>
+        <ul>
+          <li><strong>Tradicional:</strong> ${item.tradicional}</li>
+          <li><strong>Stock:</strong> ${item.stock}</li>
+          <li><strong>Sistemática:</strong> ${item.sistematica}</li>
+        </ul>
+      `;
+    }
+
+    function renderExampleTable(){
+      const sample = BANK.slice(0, 10);
+      const wrap = document.getElementById('tablaEjemplos');
+      wrap.innerHTML = `
+        <div class="tableRow tableHead">
+          <div>Fórmula</div>
+          <div>Tradicional</div>
+          <div>Stock</div>
+          <div>Sistemática</div>
+        </div>
+        ${sample.map(item => `
+          <div class="tableRow">
+            <div>${prettifyFormula(item.formula)}</div>
+            <div>${item.tradicional}</div>
+            <div>${item.stock}</div>
+            <div>${item.sistematica}</div>
+          </div>
+        `).join('')}
+      `;
+    }
+
+    function labelDifficulty(d){
+      if(d === 'easy') return 'Fácil';
+      if(d === 'medium') return 'Media';
+      return 'Difícil';
+    }
+
+    function makeQuestion(item, type){
+      if(type === 'formula_to_name'){
+        const system = choice(SYSTEMS);
+        const answer = item[system];
+        const pool = unique(BANK.filter(x => x.formula !== item.formula).map(x => x[system])).filter(Boolean);
+        const options = shuffle([answer, ...shuffle(pool).slice(0,3)]);
+        return {
+          display: prettifyFormula(item.formula),
+          prompt: `Selecciona el nombre correcto en <strong>${systemLabel(system)}</strong>.`,
+          answer,
+          options,
+          kind: type
+        };
+      }
+
+      if(type === 'name_to_formula'){
+        const system = choice(SYSTEMS);
+        const answer = item.formula;
+        const options = shuffle([answer, ...shuffle(BANK.filter(x => x.formula !== item.formula).map(x => x.formula)).slice(0,3)]);
+        return {
+          display: item[system],
+          prompt: `Selecciona la fórmula correcta para este nombre en <strong>${systemLabel(system)}</strong>.`,
+          answer,
+          options: options.map(prettifyFormula),
+          rawOptions: options,
+          kind: type,
+          rawAnswer: answer
+        };
+      }
+
+      if(type === 'identify_type'){
+        const answer = item.tipo;
+        const options = shuffle([answer, ...shuffle(unique(BANK.map(x => x.tipo).filter(x => x !== answer))).slice(0,3)]);
+        return {
+          display: prettifyFormula(item.formula),
+          prompt: 'Identifica a qué tipo de compuesto pertenece.',
+          answer,
+          options,
+          kind: type
+        };
+      }
+
+      const system = choice(SYSTEMS);
+      const display = item[system];
+      const answer = systemLabel(system);
+      const options = shuffle(['Tradicional','Stock','Sistemática']);
+      return {
+        display,
+        prompt: '¿A qué sistema de nomenclatura pertenece este nombre?',
+        answer,
+        options,
+        kind: type
+      };
+    }
+
+    function systemLabel(key){
+      return key === 'tradicional' ? 'Tradicional' : key === 'stock' ? 'Stock' : 'Sistemática';
+    }
+
+    function iniciarSesion(){
+      const filtered = byConfig();
+      if(filtered.length < 4){
+        alert('No hay suficientes compuestos para esa combinación de filtros. Prueba con otra categoría o dificultad.');
+        return;
+      }
+
+      const config = {
+        mode: document.getElementById('modoSelect').value,
+        count: Number(document.getElementById('countSelect').value),
+        time: Number(document.getElementById('timeSelect').value),
+        category: document.getElementById('categorySelect').value,
+        qtype: document.getElementById('questionTypeSelect').value,
+        diff: document.getElementById('difficultySelect').value
+      };
+
+      const sourceItems = [];
+      while(sourceItems.length < config.count){
+        const pick = filtered[sourceItems.length % filtered.length];
+        sourceItems.push(pick);
+      }
+
+      const arranged = shuffle(sourceItems).map(item => {
+        const type = config.qtype === 'mixed' ? choice(QUESTION_TYPES) : config.qtype;
+        return { item, ...makeQuestion(item, type) };
+      });
+
+      session = {
+        items: arranged,
+        current: 0,
+        score: 0,
+        wrong: 0,
+        timerId: null,
+        remaining: config.time * 60,
+        config,
+        answered: false
+      };
+
+      document.getElementById('examWrap').style.display = 'grid';
+      document.getElementById('results').style.display = 'none';
+      document.getElementById('modeText').textContent = config.mode === 'exam' ? 'Examen' : 'Práctica';
+      document.getElementById('focusText').textContent = focusLabel(config.qtype);
+      document.getElementById('catText').textContent = config.category === 'all' ? 'Todo mezclado' : capitalize(config.category);
+      document.getElementById('diffText').textContent = config.diff === 'all' ? 'Todas' : labelDifficulty(config.diff);
+
+      if(session.timerId) clearInterval(session.timerId);
+      if(config.time > 0){
+        updateTimer();
+        session.timerId = setInterval(() => {
+          session.remaining--;
+          updateTimer();
+          if(session.remaining <= 0){
+            terminarSesion();
+          }
+        }, 1000);
+      }else{
+        document.getElementById('timerDisplay').textContent = 'Sin límite';
+      }
+
+      renderQuestion();
+      goTo('simulador');
+    }
+
+    function renderQuestion(){
+      const q = session.items[session.current];
+      if(!q){
+        terminarSesion();
+        return;
+      }
+
+      session.answered = false;
+      document.getElementById('questionCounter').textContent = `Pregunta ${session.current + 1} de ${session.items.length}`;
+      document.getElementById('mainDisplay').innerHTML = q.display;
+      document.getElementById('promptText').innerHTML = q.prompt;
+      document.getElementById('progressFill').style.width = `${(session.current / session.items.length) * 100}%`;
+      updateStats();
+
+      const box = document.getElementById('optionsBox');
+      box.innerHTML = '';
+
+      q.options.forEach((opt, idx) => {
+        const btn = document.createElement('button');
+        btn.className = 'optionBtn';
+        btn.innerHTML = `<strong>${String.fromCharCode(65 + idx)}.</strong> ${opt}`;
+        btn.onclick = () => responder(opt, btn);
+        box.appendChild(btn);
+      });
+    }
+
+    function responder(selected, btnEl){
+      if(session.answered) return;
+      session.answered = true;
+
+      const q = session.items[session.current];
+      const correctAnswer = q.kind === 'name_to_formula' ? prettifyFormula(q.rawAnswer) : q.answer;
+      const buttons = [...document.querySelectorAll('.optionBtn')];
+
+      buttons.forEach(btn => {
+        btn.classList.add('disabled');
+        const plain = btn.innerHTML.replace(/^<strong>.*?<\/strong>\s*/, '');
+        if(plain === correctAnswer) btn.classList.add('correct');
+      });
+
+      if(selected === correctAnswer || selected === q.answer){
+        session.score++;
+      }else{
+        session.wrong++;
+        btnEl.classList.add('wrong');
+      }
+
+      updateStats();
+
+      const autoNext = session.config.mode === 'practice' ? 850 : 1100;
+      setTimeout(() => {
+        session.current++;
+        if(session.current >= session.items.length){
+          terminarSesion();
+        }else{
+          renderQuestion();
+        }
+      }, autoNext);
+    }
+
+    function saltarPregunta(){
+      if(session.current < session.items.length - 1){
+        session.current++;
+        renderQuestion();
+      }else{
+        terminarSesion();
+      }
+    }
+
+    function updateStats(){
+      document.getElementById('correctCount').textContent = session.score;
+      document.getElementById('wrongCount').textContent = session.wrong;
+      const answered = session.score + session.wrong;
+      const acc = answered ? Math.round((session.score / answered) * 100) : 0;
+      document.getElementById('accuracyText').textContent = `${acc}%`;
+    }
+
+    function updateTimer(){
+      const m = Math.floor(session.remaining / 60);
+      const s = session.remaining % 60;
+      document.getElementById('timerDisplay').textContent = `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+    }
+
+    function terminarSesion(){
+      if(session.timerId) clearInterval(session.timerId);
+      document.getElementById('examWrap').style.display = 'none';
+      document.getElementById('results').style.display = 'block';
+
+      const total = session.items.length;
+      const score = session.score;
+      const percent = total ? Math.round((score / total) * 100) : 0;
+      document.getElementById('finalScore').textContent = `${score} / ${total}`;
+      document.getElementById('finalLabel').textContent = `Precisión final: ${percent}%`;
+      document.getElementById('finalSummary').innerHTML = buildSummary(percent, session.config);
+      goTo('simulador');
+    }
+
+    function buildSummary(percent, config){
+      let tone = '';
+      if(percent >= 90){
+        tone = `<span class="accentGreen">Muy buen nivel.</span> Ya estás bastante sólido en esta combinación de contenido.`;
+      }else if(percent >= 75){
+        tone = `<span class="accentBlue">Vas bien.</span> Hay base, pero todavía conviene reforzar los nombres que cambian por valencia.`;
+      }else if(percent >= 60){
+        tone = `<span class="accentGold">Nivel intermedio.</span> Ya reconoces parte del patrón, aunque aún hay confusión entre sistemas o tipos.`;
+      }else{
+        tone = `<span class="accentRed">Toca repasar con calma.</span> Te conviene volver al apartado de repaso y practicar primero por bloques.`;
+      }
+
+      return `${tone} En esta sesión trabajaste en modo <strong>${config.mode === 'exam' ? 'Examen' : 'Práctica'}</strong>, con enfoque <strong>${focusLabel(config.qtype)}</strong>, categoría <strong>${config.category === 'all' ? 'Todo mezclado' : capitalize(config.category)}</strong> y dificultad <strong>${config.diff === 'all' ? 'Todas' : labelDifficulty(config.diff)}</strong>.`;
+    }
+
+    function focusLabel(v){
+      return ({
+        mixed:'Mezclado',
+        formula_to_name:'Fórmula → nombre',
+        name_to_formula:'Nombre → fórmula',
+        identify_type:'Identificar tipo',
+        identify_system:'Identificar sistema'
+      })[v] || 'Mezclado';
+    }
+
+    function capitalize(t){
+      return t.charAt(0).toUpperCase() + t.slice(1);
+    }
+
+    function reiniciarTodo(){
+      document.getElementById('results').style.display = 'none';
+      document.getElementById('examWrap').style.display = 'none';
+      goTo('inicio');
+    }
+
+    initFlashSelect();
+    renderExampleTable();
+  </script>
+</body>
+</html>
