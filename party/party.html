@@ -130,12 +130,20 @@
 
     <div class="mensaje" id="mensaje"></div>
 
+    <div class="section" id="infoSala" style="display:none;">
+  <h2>Sala actual</h2>
+  <p><strong>Código:</strong> <span id="salaCodigo">-</span></p>
+  <p><strong>Estado:</strong> <span id="salaEstado">-</span></p>
+  <p><strong>Jugador 1:</strong> <span id="jugador1Nombre">-</span></p>
+  <p><strong>Jugador 2:</strong> <span id="jugador2Nombre">-</span></p>
+</div>
+
     <a class="back" href="../index.html">⬅ Volver al inicio</a>
   </div>
-
-  <script type="module">
+  
+<script type="module">
   import { db } from "./firebase-config.js";
-  import { ref, set, get, update } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+  import { ref, set, get, update, onValue } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
 
   console.log("Firebase conectado:", db);
 
@@ -152,6 +160,25 @@
     const mensaje = document.getElementById("mensaje");
     mensaje.style.display = "block";
     mensaje.innerHTML = texto;
+  }
+
+  function mostrarSala(datosSala) {
+    document.getElementById("infoSala").style.display = "block";
+    document.getElementById("salaCodigo").textContent = datosSala.codigo || "-";
+    document.getElementById("salaEstado").textContent = datosSala.estado || "-";
+    document.getElementById("jugador1Nombre").textContent = datosSala.jugadores?.jugador1?.nombre || "-";
+    document.getElementById("jugador2Nombre").textContent = datosSala.jugadores?.jugador2?.nombre || "Esperando jugador...";
+  }
+
+  function escucharSala(codigo) {
+    const salaRef = ref(db, "salas/" + codigo);
+
+    onValue(salaRef, (snapshot) => {
+      if (snapshot.exists()) {
+        const datosSala = snapshot.val();
+        mostrarSala(datosSala);
+      }
+    });
   }
 
   window.crearSala = async function() {
@@ -181,6 +208,7 @@
       console.log("Sala guardada en Firebase:", codigo);
       mostrarMensaje(`Sala creada con éxito 🎉<br>Código: <strong>${codigo}</strong>`);
       document.getElementById("codigo").value = codigo;
+      escucharSala(codigo);
     } catch (error) {
       console.error("Error al crear sala:", error);
       alert("No se pudo crear la sala. Revisa la consola.");
@@ -221,6 +249,7 @@
 
       console.log("Jugador 2 unido a sala:", codigo);
       mostrarMensaje(`Te uniste a la sala <strong>${codigo}</strong> 🎉`);
+      escucharSala(codigo);
     } catch (error) {
       console.error("Error al unirse:", error);
       alert("No se pudo unir a la sala.");
