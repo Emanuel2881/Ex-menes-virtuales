@@ -214,26 +214,27 @@
         mostrarSala(datosSala);
 
         if (datosSala.estado === "iniciando" && datosSala.startTime) {
-          const ahora = Date.now();
-          const tiempoRestante = datosSala.startTime - ahora;
 
-          if (tiempoRestante > 0) {
-            mostrarMensaje(`El examen inicia en ${Math.ceil(tiempoRestante / 1000)} segundos...`);
-            yaInicioMensaje = false;
-          } else {
-            if (!yaInicioMensaje) {
-              mostrarMensaje("¡El examen comenzó! 🚀");
-              yaInicioMensaje = true;
+  if (!window.contadorActivo) {
+    window.contadorActivo = true;
 
-              // aquí luego podemos redirigir al examen real
-              // ejemplo:
-              // window.location.href = "../data/quimica-examen1.html";
-            }
-          }
-        }
+    const intervalo = setInterval(() => {
+      const ahora = Date.now();
+      const tiempoRestante = datosSala.startTime - ahora;
+
+      if (tiempoRestante > 0) {
+        mostrarMensaje(`El examen inicia en ${Math.ceil(tiempoRestante / 1000)} segundos...`);
+      } else {
+        clearInterval(intervalo);
+        mostrarMensaje("¡El examen comenzó! 🚀");
+
+        // aquí luego puedes redirigir al examen
+        // window.location.href = "../data/quimica-examen1.html";
       }
-    });
+    }, 1000);
   }
+
+}
 
   window.crearSala = async function() {
     const nombre = document.getElementById("nombre").value.trim();
