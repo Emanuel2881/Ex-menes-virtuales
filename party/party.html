@@ -214,27 +214,29 @@
         mostrarSala(datosSala);
 
         if (datosSala.estado === "iniciando" && datosSala.startTime) {
+          if (!window.contadorActivo) {
+            window.contadorActivo = true;
 
-  if (!window.contadorActivo) {
-    window.contadorActivo = true;
+            const intervalo = setInterval(() => {
+              const ahora = Date.now();
+              const tiempoRestante = datosSala.startTime - ahora;
 
-    const intervalo = setInterval(() => {
-      const ahora = Date.now();
-      const tiempoRestante = datosSala.startTime - ahora;
+              if (tiempoRestante > 0) {
+                mostrarMensaje(`El examen inicia en ${Math.ceil(tiempoRestante / 1000)} segundos...`);
+              } else {
+                clearInterval(intervalo);
+                window.contadorActivo = false;
+                mostrarMensaje("¡El examen comenzó! 🚀");
 
-      if (tiempoRestante > 0) {
-        mostrarMensaje(`El examen inicia en ${Math.ceil(tiempoRestante / 1000)} segundos...`);
-      } else {
-        clearInterval(intervalo);
-        mostrarMensaje("¡El examen comenzó! 🚀");
-
-        // aquí luego puedes redirigir al examen
-        // window.location.href = "../data/quimica-examen1.html";
+                // aquí luego puedes redirigir al examen
+                // window.location.href = "../data/quimica-examen1.html";
+              }
+            }, 1000);
+          }
+        }
       }
-    }, 1000);
+    });
   }
-
-}
 
   window.crearSala = async function() {
     const nombre = document.getElementById("nombre").value.trim();
@@ -264,6 +266,7 @@
       nombreActual = nombre;
       jugadorActual = "jugador1";
       yaInicioMensaje = false;
+      window.contadorActivo = false;
 
       console.log("Sala guardada en Firebase:", codigo);
       mostrarMensaje(`Sala creada con éxito 🎉<br>Código: <strong>${codigo}</strong>`);
@@ -311,6 +314,7 @@
       nombreActual = nombre;
       jugadorActual = "jugador2";
       yaInicioMensaje = false;
+      window.contadorActivo = false;
 
       console.log("Jugador 2 unido a sala:", codigo);
       mostrarMensaje(`Te uniste a la sala <strong>${codigo}</strong> 🎉`);
