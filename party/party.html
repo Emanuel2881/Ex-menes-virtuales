@@ -2,68 +2,214 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Modo Party</title>
+  <style>
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+    }
+
+    body{
+      font-family: Arial, Helvetica, sans-serif;
+      min-height:100vh;
+      background: linear-gradient(135deg, #e0f2fe, #f8fafc, #dbeafe);
+      color:#1e293b;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      padding:20px;
+    }
+
+    .box{
+      width:min(700px, 95%);
+      background: rgba(255,255,255,0.88);
+      border-radius:24px;
+      padding:30px;
+      box-shadow:0 10px 30px rgba(0,0,0,0.08);
+      border:1px solid rgba(255,255,255,0.7);
+    }
+
+    h1{
+      text-align:center;
+      color:#1e3a8a;
+      margin-bottom:10px;
+    }
+
+    p{
+      text-align:center;
+      color:#475569;
+      margin-bottom:25px;
+      line-height:1.6;
+    }
+
+    .section{
+      background:#f8fafc;
+      border:1px solid #dbeafe;
+      border-radius:18px;
+      padding:20px;
+      margin-bottom:20px;
+    }
+
+    .section h2{
+      color:#1d4ed8;
+      margin-bottom:14px;
+      font-size:1.2rem;
+    }
+
+    input{
+      width:100%;
+      padding:12px 14px;
+      border-radius:12px;
+      border:1px solid #cbd5e1;
+      margin-bottom:12px;
+      font-size:1rem;
+    }
+
+    input:focus{
+      outline:none;
+      border-color:#2563eb;
+      box-shadow:0 0 0 3px rgba(37,99,235,0.12);
+    }
+
+    button{
+      border:none;
+      background:#2563eb;
+      color:white;
+      padding:12px 18px;
+      border-radius:12px;
+      font-weight:bold;
+      cursor:pointer;
+      transition:0.2s ease;
+    }
+
+    button:hover{
+      background:#1d4ed8;
+    }
+
+    .back{
+      display:inline-block;
+      margin-top:10px;
+      text-decoration:none;
+      color:#1d4ed8;
+      font-weight:bold;
+    }
+
+    .mensaje{
+      margin-top:18px;
+      padding:14px;
+      border-radius:14px;
+      background:#eff6ff;
+      color:#1e40af;
+      text-align:center;
+      font-weight:bold;
+      display:none;
+      line-height:1.6;
+    }
+  </style>
 </head>
 <body>
+  <div class="box">
+    <h1>Modo Party 🎉</h1>
+    <p>
+      Crea una sala o únete con un código para hacer el mismo examen con otra persona.
+    </p>
 
-<h2>Modo Party 🎉</h2>
+    <div class="section">
+      <h2>Crear sala</h2>
+      <input type="text" id="nombre" placeholder="Escribe tu nombre">
+      <button onclick="crearSala()">Crear sala</button>
+    </div>
 
-<input type="text" placeholder="Tu nombre" id="nombre">
-<br><br>
+    <div class="section">
+      <h2>Unirse a sala</h2>
+      <input type="text" id="codigo" placeholder="Código de sala">
+      <button onclick="unirseSala()">Unirse</button>
+    </div>
 
-<button onclick="crearSala()">Crear sala</button>
+    <div class="mensaje" id="mensaje"></div>
 
-<hr>
+    <a class="back" href="../index.html">⬅ Volver al inicio</a>
+  </div>
 
-<input type="text" placeholder="Código de sala" id="codigo">
-<button onclick="unirseSala()">Unirse</button>
+  <script type="module">
+    import { db } from "./firebase-config.js";
+    import { ref, set, get } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
 
-<script type="module">
-  import { db } from "./firebase-config.js";
+    console.log("Firebase conectado:", db);
 
-  console.log("Firebase conectado:", db);
-
-  // 🔥 función para crear código aleatorio
-  function generarCodigo() {
-    const letras = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-    let codigo = "";
-    for (let i = 0; i < 4; i++) {
-      codigo += letras.charAt(Math.floor(Math.random() * letras.length));
-    }
-    return codigo;
-  }
-
-  // 🔥 crear sala
-  window.crearSala = function() {
-    const nombre = document.getElementById("nombre").value;
-
-    if (!nombre) {
-      alert("Escribe tu nombre");
-      return;
-    }
-
-    const codigo = generarCodigo();
-
-    console.log("Sala creada:", codigo);
-
-    // aquí luego guardaremos en Firebase
-  };
-
-  // 🔥 unirse a sala
-  window.unirseSala = function() {
-    const nombre = document.getElementById("nombre").value;
-    const codigo = document.getElementById("codigo").value;
-
-    if (!nombre || !codigo) {
-      alert("Completa los campos");
-      return;
+    function generarCodigo() {
+      const letras = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+      let codigo = "";
+      for (let i = 0; i < 4; i++) {
+        codigo += letras.charAt(Math.floor(Math.random() * letras.length));
+      }
+      return codigo;
     }
 
-    console.log("Unirse a sala:", codigo);
+    function mostrarMensaje(texto) {
+      const mensaje = document.getElementById("mensaje");
+      mensaje.style.display = "block";
+      mensaje.innerHTML = texto;
+    }
 
-    // aquí luego conectamos Firebase
-  };
-</script>
+    window.crearSala = async function() {
+      const nombre = document.getElementById("nombre").value.trim();
 
+      if (!nombre) {
+        alert("Escribe tu nombre");
+        return;
+      }
+
+      const codigo = generarCodigo();
+      const salaRef = ref(db, "salas/" + codigo);
+
+      try {
+        await set(salaRef, {
+          codigo: codigo,
+          host: nombre,
+          estado: "esperando",
+          jugadores: {
+            jugador1: {
+              nombre: nombre,
+              listo: false
+            }
+          }
+        });
+
+        console.log("Sala guardada en Firebase:", codigo);
+        mostrarMensaje(`Sala creada con éxito 🎉<br>Código: <strong>${codigo}</strong>`);
+      } catch (error) {
+        console.error("Error al crear sala:", error);
+        alert("No se pudo crear la sala. Revisa la consola.");
+      }
+    };
+
+    window.unirseSala = async function() {
+      const nombre = document.getElementById("nombre").value.trim();
+      const codigo = document.getElementById("codigo").value.trim().toUpperCase();
+
+      if (!nombre || !codigo) {
+        alert("Escribe tu nombre y el código de sala");
+        return;
+      }
+
+      try {
+        const salaRef = ref(db, "salas/" + codigo);
+        const snapshot = await get(salaRef);
+
+        if (snapshot.exists()) {
+          mostrarMensaje(`Te uniste a la sala <strong>${codigo}</strong>`);
+          console.log("Unido a sala:", codigo);
+        } else {
+          alert("La sala no existe");
+        }
+      } catch (error) {
+        console.error("Error al unirse:", error);
+        alert("No se pudo unir a la sala.");
+      }
+    };
+  </script>
 </body>
 </html>
