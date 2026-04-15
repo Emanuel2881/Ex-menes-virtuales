@@ -413,111 +413,175 @@
   </div>
 
   <script>
-    const respuestasCorrectas = {
-      q1:"c",
-      q2:"b",
-      q3:"a",
-      q4:"b",
-      q5:"c",
-      q6:"c",
-      q7:"c",
-      q8:"b",
-      q9:"b",
-      q10:"b",
-      q11:"b",
-      q12:"b",
-      q13:"c",
-      q14:"d",
-      q15:"a",
-      q16:"c",
-      q17:"b",
-      q18:"c",
-      q19:"b",
-      q20:"c"
-    };
+  const respuestasCorrectas = {
+    q1:"b",
+    q2:"b",
+    q3:"a",
+    q4:"b",
+    q5:"c",
+    q6:"c",
+    q7:"c",
+    q8:"b",
+    q9:"b",
+    q10:"b",
+    q11:"b",
+    q12:"b",
+    q13:"c",
+    q14:"d",
+    q15:"a",
+    q16:"c",
+    q17:"b",
+    q18:"c",
+    q19:"b",
+    q20:"c"
+  };
 
-    const textosCorrectos = {
-      q1:"C. 1.5055 × 10²⁵ átomos",
-      q2:"B. 2 mol",
-      q3:"A. 3.011 × 10²³ iones",
-      q4:"B. 0.5 mol",
-      q5:"C. 132.03 g",
-      q6:"C. 750 mg",
-      q7:"C. 1500 mL",
-      q8:"B. 200 g",
-      q9:"B. 0.5 g",
-      q10:"B. 1 mol",
-      q11:"B. Falsa",
-      q12:"B. Reversible",
-      q13:"C. Gas",
-      q14:"D. Gaseoso",
-      q15:"A. Que el cloro es un gas",
-      q16:"C. La reacción produce gas hidrógeno",
-      q17:"B. 1s² 2s¹",
-      q18:"C. Azufre (S)",
-      q19:"B. Cobalto (Co)",
-      q20:"C. 12"
-    };
+  const textosCorrectos = {
+    q1:"B. 1.5055 × 10²⁴ átomos",
+    q2:"B. 2 mol",
+    q3:"A. 3.011 × 10²³ iones",
+    q4:"B. 0.5 mol",
+    q5:"C. 132.03 g",
+    q6:"C. 750 mg",
+    q7:"C. 1500 mL",
+    q8:"B. 200 g",
+    q9:"B. 0.5 g",
+    q10:"B. 1 mol",
+    q11:"B. Falsa",
+    q12:"B. Reversible",
+    q13:"C. Gas",
+    q14:"D. Gaseoso",
+    q15:"A. Que el cloro es un gas",
+    q16:"C. La reacción produce gas hidrógeno",
+    q17:"B. 1s² 2s¹",
+    q18:"C. Azufre (S)",
+    q19:"B. Cobalto (Co)",
+    q20:"C. 12"
+  };
 
-    function calificarExamen() {
-      let total = Object.keys(respuestasCorrectas).length;
-      let correctas = 0;
-      let respondidas = 0;
-      let revisionHTML = "";
+  const explicaciones = {
+    q1:"Para pasar de moles a átomos se multiplica por el número de Avogadro: 2.5 × 6.022 × 10²³ = 1.5055 × 10²⁴.",
+    q2:"Para pasar de moléculas a moles se divide entre 6.022 × 10²³. El resultado es 2 moles.",
+    q3:"Cada unidad de NaCl aporta un ion Na⁺. Entonces 0.5 mol de NaCl produce 0.5 mol de Na⁺, que equivale a 3.011 × 10²³ iones.",
+    q4:"3.011 × 10²³ es la mitad de 6.022 × 10²³, por eso corresponde a 0.5 mol.",
+    q5:"Gramos = moles × masa molar. 3 × 44.01 = 132.03 g.",
+    q6:"1 gramo = 1000 mg. Entonces 0.75 g = 750 mg.",
+    q7:"1 litro = 1000 mL. Entonces 1.5 L = 1500 mL.",
+    q8:"1 kg = 1000 g. Entonces 0.2 kg = 200 g.",
+    q9:"1000 mg = 1 g. Entonces 500 mg = 0.5 g.",
+    q10:"Moles = gramos ÷ masa molar. 98 ÷ 98.09 ≈ 1 mol.",
+    q11:"En los reactivos aparece Zn(s) y HCl(ac). No hay gas en los reactivos, así que es falsa.",
+    q12:"La doble flecha ⇌ indica que la reacción es reversible.",
+    q13:"Uno de los productos es H₂(g), y la g indica que está en estado gaseoso.",
+    q14:"El símbolo H₂(g) indica que el hidrógeno producido está en estado gaseoso.",
+    q15:"El subíndice o símbolo (g) indica estado gaseoso.",
+    q16:"La ecuación muestra que se forma H₂(g), por eso la afirmación correcta es que produce gas hidrógeno.",
+    q17:"El litio tiene 3 electrones: 1s² 2s¹.",
+    q18:"2 + 2 + 6 + 2 + 4 = 16 electrones, así que corresponde al azufre.",
+    q19:"2 + 2 + 6 + 2 + 6 + 2 + 7 = 27 electrones, que corresponde al cobalto.",
+    q20:"La ecuación balanceada es 2FeCl₃ + 3Na₂CO₃ → Fe₂(CO₃)₃ + 6NaCl. La suma es 2 + 3 + 1 + 6 = 12."
+  };
 
-      for (let pregunta in respuestasCorrectas) {
-        const seleccionada = document.querySelector(`input[name="${pregunta}"]:checked`);
+  function limpiarEstadosVisuales() {
+    document.querySelectorAll(".question").forEach(q => {
+      q.classList.remove("correcta", "incorrecta", "sin-responder");
+    });
+  }
 
-        if (seleccionada) {
-          respondidas++;
+  function calificarExamen() {
+    let total = Object.keys(respuestasCorrectas).length;
+    let correctas = 0;
+    let incorrectas = 0;
+    let sinResponder = 0;
+    let respondidas = 0;
+    let revisionHTML = "";
 
-          if (seleccionada.value === respuestasCorrectas[pregunta]) {
-            correctas++;
-            revisionHTML += `
-              <div class="review-item">
-                <span class="correct">${pregunta.toUpperCase()}: Correcta</span><br>
-                Respuesta: ${textosCorrectos[pregunta]}
-              </div>
-            `;
-          } else {
-            const textoMarcado = seleccionada.parentElement.textContent.trim();
-            revisionHTML += `
-              <div class="review-item">
-                <span class="incorrect">${pregunta.toUpperCase()}: Incorrecta</span><br>
-                Tu respuesta: ${textoMarcado}<br>
-                Correcta: ${textosCorrectos[pregunta]}
-              </div>
-            `;
-          }
-        } else {
+    limpiarEstadosVisuales();
+
+    for (let pregunta in respuestasCorrectas) {
+      const seleccionada = document.querySelector(`input[name="${pregunta}"]:checked`);
+      const bloquePregunta = document.querySelector(`input[name="${pregunta}"]`).closest(".question");
+      const numero = pregunta.replace("q", "");
+
+      if (seleccionada) {
+        respondidas++;
+        const textoMarcado = seleccionada.parentElement.textContent.trim();
+
+        if (seleccionada.value === respuestasCorrectas[pregunta]) {
+          correctas++;
+          bloquePregunta.classList.add("correcta");
+
           revisionHTML += `
-            <div class="review-item">
-              <span class="incorrect">${pregunta.toUpperCase()}: Sin responder</span><br>
-              Correcta: ${textosCorrectos[pregunta]}
+            <div class="review-item correcta">
+              <h4>Pregunta ${numero}: ✅ Correcta</h4>
+              <p><strong>Tu respuesta:</strong> ${textoMarcado}</p>
+              <div class="explicacion"><strong>Retroalimentación:</strong> ${explicaciones[pregunta]}</div>
+            </div>
+          `;
+        } else {
+          incorrectas++;
+          bloquePregunta.classList.add("incorrecta");
+
+          revisionHTML += `
+            <div class="review-item incorrecta">
+              <h4>Pregunta ${numero}: ❌ Incorrecta</h4>
+              <p><strong>Tu respuesta:</strong> ${textoMarcado}</p>
+              <p><strong>Respuesta correcta:</strong> ${textosCorrectos[pregunta]}</p>
+              <div class="explicacion"><strong>Retroalimentación:</strong> ${explicaciones[pregunta]}</div>
             </div>
           `;
         }
+      } else {
+        sinResponder++;
+        bloquePregunta.classList.add("sin-responder");
+
+        revisionHTML += `
+          <div class="review-item sin-responder">
+            <h4>Pregunta ${numero}: ⚠️ Sin responder</h4>
+            <p><strong>Respuesta correcta:</strong> ${textosCorrectos[pregunta]}</p>
+            <div class="explicacion"><strong>Retroalimentación:</strong> ${explicaciones[pregunta]}</div>
+          </div>
+        `;
       }
-
-      const porcentaje = ((correctas / total) * 100).toFixed(1);
-
-      document.getElementById("puntajeTexto").innerHTML = `
-        Respondiste <strong>${respondidas}</strong> de <strong>${total}</strong> preguntas.<br>
-        Obtuviste <strong>${correctas}</strong> correctas de <strong>${total}</strong>.<br>
-        Tu nota fue: <strong>${porcentaje}%</strong>
-      `;
-
-      document.getElementById("revision").innerHTML = revisionHTML;
-      document.getElementById("resultado").style.display = "block";
-      document.getElementById("resultado").scrollIntoView({ behavior: "smooth" });
     }
 
-    function reiniciarExamen() {
-      document.getElementById("resultado").style.display = "none";
-      document.getElementById("revision").innerHTML = "";
-      document.getElementById("puntajeTexto").innerHTML = "";
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    }
-  </script>
+    const porcentaje = ((correctas / total) * 100).toFixed(1);
+
+    document.getElementById("puntajeTexto").innerHTML = `
+      Respondiste <strong>${respondidas}</strong> de <strong>${total}</strong> preguntas.<br>
+      Obtuviste <strong>${correctas}</strong> correctas de <strong>${total}</strong>.<br>
+      Tu nota fue: <strong>${porcentaje}%</strong>
+    `;
+
+    document.getElementById("revision").innerHTML = `
+      <div class="review-summary">
+        <div class="summary-box">
+          <h4>Correctas</h4>
+          <p>${correctas}</p>
+        </div>
+        <div class="summary-box">
+          <h4>Incorrectas</h4>
+          <p>${incorrectas}</p>
+        </div>
+        <div class="summary-box">
+          <h4>Sin responder</h4>
+          <p>${sinResponder}</p>
+        </div>
+      </div>
+      ${revisionHTML}
+    `;
+
+    document.getElementById("resultado").style.display = "block";
+    document.getElementById("resultado").scrollIntoView({ behavior: "smooth" });
+  }
+
+  function reiniciarExamen() {
+    document.getElementById("resultado").style.display = "none";
+    document.getElementById("revision").innerHTML = "";
+    document.getElementById("puntajeTexto").innerHTML = "";
+    limpiarEstadosVisuales();
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+</script>
 </body>
 </html>
