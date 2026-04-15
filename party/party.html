@@ -134,82 +134,98 @@
   </div>
 
   <script type="module">
-    import { db } from "./firebase-config.js";
-    import { ref, set, get } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+  import { db } from "./firebase-config.js";
+  import { ref, set, get, update } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
 
-    console.log("Firebase conectado:", db);
+  console.log("Firebase conectado:", db);
 
-    function generarCodigo() {
-      const letras = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-      let codigo = "";
-      for (let i = 0; i < 4; i++) {
-        codigo += letras.charAt(Math.floor(Math.random() * letras.length));
-      }
-      return codigo;
+  function generarCodigo() {
+    const letras = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+    let codigo = "";
+    for (let i = 0; i < 4; i++) {
+      codigo += letras.charAt(Math.floor(Math.random() * letras.length));
+    }
+    return codigo;
+  }
+
+  function mostrarMensaje(texto) {
+    const mensaje = document.getElementById("mensaje");
+    mensaje.style.display = "block";
+    mensaje.innerHTML = texto;
+  }
+
+  window.crearSala = async function() {
+    const nombre = document.getElementById("nombre").value.trim();
+
+    if (!nombre) {
+      alert("Escribe tu nombre");
+      return;
     }
 
-    function mostrarMensaje(texto) {
-      const mensaje = document.getElementById("mensaje");
-      mensaje.style.display = "block";
-      mensaje.innerHTML = texto;
-    }
+    const codigo = generarCodigo();
+    const salaRef = ref(db, "salas/" + codigo);
 
-    window.crearSala = async function() {
-      const nombre = document.getElementById("nombre").value.trim();
-
-      if (!nombre) {
-        alert("Escribe tu nombre");
-        return;
-      }
-
-      const codigo = generarCodigo();
-      const salaRef = ref(db, "salas/" + codigo);
-
-      try {
-        await set(salaRef, {
-          codigo: codigo,
-          host: nombre,
-          estado: "esperando",
-          jugadores: {
-            jugador1: {
-              nombre: nombre,
-              listo: false
-            }
+    try {
+      await set(salaRef, {
+        codigo: codigo,
+        host: nombre,
+        estado: "esperando",
+        jugadores: {
+          jugador1: {
+            nombre: nombre,
+            listo: false
           }
-        });
+        }
+      });
 
-        console.log("Sala guardada en Firebase:", codigo);
-        mostrarMensaje(`Sala creada con éxito 🎉<br>Código: <strong>${codigo}</strong>`);
-      } catch (error) {
-        console.error("Error al crear sala:", error);
-        alert("No se pudo crear la sala. Revisa la consola.");
-      }
-    };
+      console.log("Sala guardada en Firebase:", codigo);
+      mostrarMensaje(`Sala creada con éxito 🎉<br>Código: <strong>${codigo}</strong>`);
+      document.getElementById("codigo").value = codigo;
+    } catch (error) {
+      console.error("Error al crear sala:", error);
+      alert("No se pudo crear la sala. Revisa la consola.");
+    }
+  };
 
-    window.unirseSala = async function() {
-      const nombre = document.getElementById("nombre").value.trim();
-      const codigo = document.getElementById("codigo").value.trim().toUpperCase();
+  window.unirseSala = async function() {
+    const nombre = document.getElementById("nombre").value.trim();
+    const codigo = document.getElementById("codigo").value.trim().toUpperCase();
 
-      if (!nombre || !codigo) {
-        alert("Escribe tu nombre y el código de sala");
+    if (!nombre || !codigo) {
+      alert("Escribe tu nombre y el código de sala");
+      return;
+    }
+
+    try {
+      const salaRef = ref(db, "salas/" + codigo);
+      const snapshot = await get(salaRef);
+
+      if (!snapshot.exists()) {
+        alert("La sala no existe");
         return;
       }
 
-      try {
-        const salaRef = ref(db, "salas/" + codigo);
-        const snapshot = await get(salaRef);
+      const datosSala = snapshot.val();
 
-        if (snapshot.exists()) {
-          mostrarMensaje(`Te uniste a la sala <strong>${codigo}</strong>`);
-          console.log("Unido a sala:", codigo);
-        } else {
-          alert("La sala no existe");
-        }
-      } catch (error) {
-        console.error("Error al unirse:", error);
-        alert("No se pudo unir a la sala.");
+      if (datosSala.jugadores && datosSala.jugadores.jugador2) {
+        alert("La sala ya tiene 2 jugadores");
+        return;
       }
-    };
-  </script>
+
+      await update(salaRef, {
+        "jugadores/jugador2": {
+          nombre: nombre,
+          listo: false
+        }
+      });
+
+      console.log("Jugador 2 unido a sala:", codigo);
+      mostrarMensaje(`Te uniste a la sala <strong>${codigo}</strong> 🎉`);
+    } catch (error) {
+      console.error("Error al unirse:", error);
+      alert("No se pudo unir a la sala.");
+    }
+  };
+</script>
 </body>
 </html>
