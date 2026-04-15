@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Modo Party</title>
+</head>
+<body>
+
+<h2>Modo Party 🎉</h2>
+
+<input type="text" placeholder="Tu nombre" id="nombre">
+<br><br>
+
+<button onclick="crearSala()">Crear sala</button>
+
+<hr>
+
+<input type="text" placeholder="Código de sala" id="codigo">
+<button onclick="unirseSala()">Unirse</button>
+
+<script type="module">
+  import { db } from "./firebase-config.js";
+
+  console.log("Firebase conectado:", db);
+
+  // 🔥 función para crear código aleatorio
+  function generarCodigo() {
+    const letras = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+    let codigo = "";
+    for (let i = 0; i < 4; i++) {
+      codigo += letras.charAt(Math.floor(Math.random() * letras.length));
+    }
+    return codigo;
+  }
+
+  // 🔥 crear sala
+  window.crearSala = function() {
+    const nombre = document.getElementById("nombre").value;
+
+    if (!nombre) {
+      alert("Escribe tu nombre");
+      return;
+    }
+
+    const codigo = generarCodigo();
+
+    console.log("Sala creada:", codigo);
+
+    // aquí luego guardaremos en Firebase
+  };
+
+  // 🔥 unirse a sala
+  window.unirseSala = function() {
+    const nombre = document.getElementById("nombre").value;
+    const codigo = document.getElementById("codigo").value;
+
+    if (!nombre || !codigo) {
+      alert("Completa los campos");
+      return;
+    }
+
+    console.log("Unirse a sala:", codigo);
+
+    // aquí luego conectamos Firebase
+  };
+</script>
+
+</body>
+</html>
