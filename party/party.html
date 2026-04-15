@@ -159,6 +159,7 @@
   let codigoSalaActual = "";
   let nombreActual = "";
   let jugadorActual = "";
+  let yaInicioMensaje = false;
 
   function generarCodigo() {
     const letras = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
@@ -191,42 +192,48 @@
     document.getElementById("jugador2Nombre").textContent =
       jugador2 ? `${jugador2.nombre} ${jugador2.listo ? "✅" : "⏳"}` : "Esperando jugador...";
 
-   const ambosListos = jugador1?.listo && jugador2?.listo;
+    const ambosListos = jugador1?.listo && jugador2?.listo;
 
-if (ambosListos) {
-  document.getElementById("estadoListos").textContent =
-    "Los dos jugadores ya están listos. Ya pueden iniciar el examen.";
-
-  document.getElementById("btnIniciar").style.display = "inline-block";
-} else {
-  document.getElementById("estadoListos").textContent =
-    "Esperando a que ambos jugadores estén listos.";
-
-  document.getElementById("btnIniciar").style.display = "none";
-}
+    if (ambosListos) {
+      document.getElementById("estadoListos").textContent =
+        "Los dos jugadores ya están listos. Ya pueden iniciar el examen.";
+      document.getElementById("btnIniciar").style.display = "inline-block";
+    } else {
+      document.getElementById("estadoListos").textContent =
+        "Esperando a que ambos jugadores estén listos.";
+      document.getElementById("btnIniciar").style.display = "none";
+    }
+  }
 
   function escucharSala(codigo) {
-  const salaRef = ref(db, "salas/" + codigo);
+    const salaRef = ref(db, "salas/" + codigo);
 
-  onValue(salaRef, (snapshot) => {
-    if (snapshot.exists()) {
-      const datosSala = snapshot.val();
-      mostrarSala(datosSala);
+    onValue(salaRef, (snapshot) => {
+      if (snapshot.exists()) {
+        const datosSala = snapshot.val();
+        mostrarSala(datosSala);
 
-      if (datosSala.estado === "iniciando" && datosSala.startTime) {
-        const ahora = Date.now();
-        const tiempoRestante = datosSala.startTime - ahora;
+        if (datosSala.estado === "iniciando" && datosSala.startTime) {
+          const ahora = Date.now();
+          const tiempoRestante = datosSala.startTime - ahora;
 
-        if (tiempoRestante > 0) {
-          mostrarMensaje(`El examen inicia en ${Math.ceil(tiempoRestante / 1000)} segundos...`);
-        } else {
-          mostrarMensaje("¡El examen comenzó! 🚀");
-          // aquí luego redirigimos al examen real
+          if (tiempoRestante > 0) {
+            mostrarMensaje(`El examen inicia en ${Math.ceil(tiempoRestante / 1000)} segundos...`);
+            yaInicioMensaje = false;
+          } else {
+            if (!yaInicioMensaje) {
+              mostrarMensaje("¡El examen comenzó! 🚀");
+              yaInicioMensaje = true;
+
+              // aquí luego podemos redirigir al examen real
+              // ejemplo:
+              // window.location.href = "../data/quimica-examen1.html";
+            }
+          }
         }
       }
-    }
-  });
-}
+    });
+  }
 
   window.crearSala = async function() {
     const nombre = document.getElementById("nombre").value.trim();
@@ -255,6 +262,7 @@ if (ambosListos) {
       codigoSalaActual = codigo;
       nombreActual = nombre;
       jugadorActual = "jugador1";
+      yaInicioMensaje = false;
 
       console.log("Sala guardada en Firebase:", codigo);
       mostrarMensaje(`Sala creada con éxito 🎉<br>Código: <strong>${codigo}</strong>`);
@@ -301,6 +309,7 @@ if (ambosListos) {
       codigoSalaActual = codigo;
       nombreActual = nombre;
       jugadorActual = "jugador2";
+      yaInicioMensaje = false;
 
       console.log("Jugador 2 unido a sala:", codigo);
       mostrarMensaje(`Te uniste a la sala <strong>${codigo}</strong> 🎉`);
@@ -324,35 +333,35 @@ if (ambosListos) {
         [`jugadores/${jugadorActual}/listo`]: true
       });
 
-      mostrarMensaje(`Te marcaste como listo ✅`);
+      mostrarMensaje("Te marcaste como listo ✅");
       console.log(`${jugadorActual} está listo en sala ${codigoSalaActual}`);
     } catch (error) {
       console.error("Error al marcar listo:", error);
       alert("No se pudo marcar como listo.");
     }
   };
-    window.iniciarExamen = async function() {
-  if (!codigoSalaActual) {
-    alert("No hay sala activa.");
-    return;
-  }
 
-  const salaRef = ref(db, "salas/" + codigoSalaActual);
+  window.iniciarExamen = async function() {
+    if (!codigoSalaActual) {
+      alert("No hay sala activa.");
+      return;
+    }
 
-  try {
-    const tiempoInicio = Date.now() + 5000; // inicia en 5 segundos
+    try {
+      const salaRef = ref(db, "salas/" + codigoSalaActual);
+      const tiempoInicio = Date.now() + 5000;
 
-    await update(salaRef, {
-      estado: "iniciando",
-      startTime: tiempoInicio
-    });
+      await update(salaRef, {
+        estado: "iniciando",
+        startTime: tiempoInicio
+      });
 
-    console.log("Examen iniciando en:", tiempoInicio);
-  } catch (error) {
-    console.error("Error al iniciar examen:", error);
-    alert("No se pudo iniciar el examen.");
-  }
-};
+      console.log("Examen iniciando en:", tiempoInicio);
+    } catch (error) {
+      console.error("Error al iniciar examen:", error);
+      alert("No se pudo iniciar el examen.");
+    }
+  };
 </script>
 </body>
 </html>
