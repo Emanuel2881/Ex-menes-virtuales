@@ -143,6 +143,9 @@
   <button onclick="marcarListo()">Estoy listo</button>
   <p id="estadoListos" style="margin-top:14px; color:#475569; font-weight:bold;"></p>
 </div>    
+<button id="btnIniciar" onclick="iniciarExamen()" style="display:none; margin-top:10px;">
+  Iniciar examen 🚀
+</button>    
 
     <a class="back" href="../index.html">⬅ Volver al inicio</a>
   </div>
@@ -188,25 +191,42 @@
     document.getElementById("jugador2Nombre").textContent =
       jugador2 ? `${jugador2.nombre} ${jugador2.listo ? "✅" : "⏳"}` : "Esperando jugador...";
 
-    const ambosListos = jugador1?.listo && jugador2?.listo;
+   const ambosListos = jugador1?.listo && jugador2?.listo;
 
-    if (ambosListos) {
-      document.getElementById("estadoListos").textContent = "Los dos jugadores ya están listos. Ya pueden iniciar el examen.";
-    } else {
-      document.getElementById("estadoListos").textContent = "Esperando a que ambos jugadores estén listos.";
-    }
-  }
+if (ambosListos) {
+  document.getElementById("estadoListos").textContent =
+    "Los dos jugadores ya están listos. Ya pueden iniciar el examen.";
+
+  document.getElementById("btnIniciar").style.display = "inline-block";
+} else {
+  document.getElementById("estadoListos").textContent =
+    "Esperando a que ambos jugadores estén listos.";
+
+  document.getElementById("btnIniciar").style.display = "none";
+}
 
   function escucharSala(codigo) {
-    const salaRef = ref(db, "salas/" + codigo);
+  const salaRef = ref(db, "salas/" + codigo);
 
-    onValue(salaRef, (snapshot) => {
-      if (snapshot.exists()) {
-        const datosSala = snapshot.val();
-        mostrarSala(datosSala);
+  onValue(salaRef, (snapshot) => {
+    if (snapshot.exists()) {
+      const datosSala = snapshot.val();
+      mostrarSala(datosSala);
+
+      if (datosSala.estado === "iniciando" && datosSala.startTime) {
+        const ahora = Date.now();
+        const tiempoRestante = datosSala.startTime - ahora;
+
+        if (tiempoRestante > 0) {
+          mostrarMensaje(`El examen inicia en ${Math.ceil(tiempoRestante / 1000)} segundos...`);
+        } else {
+          mostrarMensaje("¡El examen comenzó! 🚀");
+          // aquí luego redirigimos al examen real
+        }
       }
-    });
-  }
+    }
+  });
+}
 
   window.crearSala = async function() {
     const nombre = document.getElementById("nombre").value.trim();
@@ -311,6 +331,28 @@
       alert("No se pudo marcar como listo.");
     }
   };
+    window.iniciarExamen = async function() {
+  if (!codigoSalaActual) {
+    alert("No hay sala activa.");
+    return;
+  }
+
+  const salaRef = ref(db, "salas/" + codigoSalaActual);
+
+  try {
+    const tiempoInicio = Date.now() + 5000; // inicia en 5 segundos
+
+    await update(salaRef, {
+      estado: "iniciando",
+      startTime: tiempoInicio
+    });
+
+    console.log("Examen iniciando en:", tiempoInicio);
+  } catch (error) {
+    console.error("Error al iniciar examen:", error);
+    alert("No se pudo iniciar el examen.");
+  }
+};
 </script>
 </body>
 </html>
