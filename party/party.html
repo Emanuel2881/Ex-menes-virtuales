@@ -137,6 +137,12 @@
   <p><strong>Jugador 1:</strong> <span id="jugador1Nombre">-</span></p>
   <p><strong>Jugador 2:</strong> <span id="jugador2Nombre">-</span></p>
 </div>
+    
+<div class="section" id="accionesSala" style="display:none;">
+  <h2>Acciones</h2>
+  <button onclick="marcarListo()">Estoy listo</button>
+  <p id="estadoListos" style="margin-top:14px; color:#475569; font-weight:bold;"></p>
+</div>    
 
     <a class="back" href="../index.html">⬅ Volver al inicio</a>
   </div>
@@ -146,6 +152,10 @@
   import { ref, set, get, update, onValue } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
 
   console.log("Firebase conectado:", db);
+
+  let codigoSalaActual = "";
+  let nombreActual = "";
+  let jugadorActual = "";
 
   function generarCodigo() {
     const letras = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
@@ -164,10 +174,27 @@
 
   function mostrarSala(datosSala) {
     document.getElementById("infoSala").style.display = "block";
+    document.getElementById("accionesSala").style.display = "block";
+
+    const jugador1 = datosSala.jugadores?.jugador1 || null;
+    const jugador2 = datosSala.jugadores?.jugador2 || null;
+
     document.getElementById("salaCodigo").textContent = datosSala.codigo || "-";
     document.getElementById("salaEstado").textContent = datosSala.estado || "-";
-    document.getElementById("jugador1Nombre").textContent = datosSala.jugadores?.jugador1?.nombre || "-";
-    document.getElementById("jugador2Nombre").textContent = datosSala.jugadores?.jugador2?.nombre || "Esperando jugador...";
+
+    document.getElementById("jugador1Nombre").textContent =
+      jugador1 ? `${jugador1.nombre} ${jugador1.listo ? "✅" : "⏳"}` : "-";
+
+    document.getElementById("jugador2Nombre").textContent =
+      jugador2 ? `${jugador2.nombre} ${jugador2.listo ? "✅" : "⏳"}` : "Esperando jugador...";
+
+    const ambosListos = jugador1?.listo && jugador2?.listo;
+
+    if (ambosListos) {
+      document.getElementById("estadoListos").textContent = "Los dos jugadores ya están listos. Ya pueden iniciar el examen.";
+    } else {
+      document.getElementById("estadoListos").textContent = "Esperando a que ambos jugadores estén listos.";
+    }
   }
 
   function escucharSala(codigo) {
@@ -204,6 +231,10 @@
           }
         }
       });
+
+      codigoSalaActual = codigo;
+      nombreActual = nombre;
+      jugadorActual = "jugador1";
 
       console.log("Sala guardada en Firebase:", codigo);
       mostrarMensaje(`Sala creada con éxito 🎉<br>Código: <strong>${codigo}</strong>`);
@@ -247,12 +278,37 @@
         }
       });
 
+      codigoSalaActual = codigo;
+      nombreActual = nombre;
+      jugadorActual = "jugador2";
+
       console.log("Jugador 2 unido a sala:", codigo);
       mostrarMensaje(`Te uniste a la sala <strong>${codigo}</strong> 🎉`);
       escucharSala(codigo);
     } catch (error) {
       console.error("Error al unirse:", error);
       alert("No se pudo unir a la sala.");
+    }
+  };
+
+  window.marcarListo = async function() {
+    if (!codigoSalaActual || !jugadorActual) {
+      alert("Primero debes crear o unirte a una sala.");
+      return;
+    }
+
+    try {
+      const salaRef = ref(db, "salas/" + codigoSalaActual);
+
+      await update(salaRef, {
+        [`jugadores/${jugadorActual}/listo`]: true
+      });
+
+      mostrarMensaje(`Te marcaste como listo ✅`);
+      console.log(`${jugadorActual} está listo en sala ${codigoSalaActual}`);
+    } catch (error) {
+      console.error("Error al marcar listo:", error);
+      alert("No se pudo marcar como listo.");
     }
   };
 </script>
