@@ -6,70 +6,110 @@
 <title>Examen Verbal 2</title>
 
 <style>
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+}
+
 body{
-  font-family: Arial;
+  font-family: Arial, Helvetica, sans-serif;
   background: linear-gradient(135deg,#fff1f2,#ffe4e6,#fecdd3);
   color:#7f1d1d;
-  padding:20px;
+  min-height:100vh;
+  padding:30px 15px;
 }
+
 .container{
-  max-width:900px;
+  max-width:950px;
   margin:auto;
-  background:rgba(255,255,255,0.92);
+  background:rgba(255,255,255,0.95);
   padding:25px;
-  border-radius:20px;
-  box-shadow:0 10px 25px rgba(0,0,0,0.08);
+  border-radius:24px;
+  box-shadow:0 12px 35px rgba(0,0,0,0.08);
+}
+
+.header{
+  text-align:center;
+  margin-bottom:20px;
+}
+
+.header h1{
+  font-size: clamp(1.9rem, 4vw, 2.7rem);
+  margin-bottom:10px;
+  color:#9f1239;
+}
+
+.header p{
+  color:#881337;
+  opacity:0.9;
+  line-height:1.5;
+}
+
+.top-link{
+  display:inline-block;
+  margin-top:12px;
+  color:#be123c;
+  text-decoration:none;
+  font-weight:bold;
+}
+
+.top-link:hover{
+  text-decoration:underline;
+}
+
+.stats-bar{
+  display:flex;
+  flex-wrap:wrap;
+  gap:12px;
+  justify-content:center;
+  align-items:center;
+  margin-bottom:20px;
+}
+
+.stat-box{
+  background:#fff;
+  border:1px solid #fecdd3;
+  border-radius:14px;
+  padding:12px 18px;
+  min-width:150px;
+  text-align:center;
+  box-shadow:0 4px 12px rgba(0,0,0,0.05);
+}
+
+.stat-label{
+  display:block;
+  font-size:0.9rem;
+  color:#be123c;
+  margin-bottom:4px;
+  font-weight:bold;
+}
+
+.stat-value{
+  display:block;
+  font-size:1.15rem;
+  color:#7f1d1d;
+  font-weight:bold;
 }
 
 .question{
   display:none;
+  background:#fff7f8;
+  border:1px solid #fecdd3;
+  border-radius:20px;
+  padding:20px;
+  margin-bottom:18px;
 }
 
 .question.active{
   display:block;
 }
 
-.option{
-  background:#ffe4e6;
-  padding:10px;
-  margin:8px 0;
-  border-radius:10px;
-  cursor:pointer;
-  transition:0.2s ease;
-}
-
-.option:hover{
-  background:#fecdd3;
-}
-
-.option.selected{
-  background:#f43f5e;
-  color:white;
-}
-
-button{
-  margin-top:10px;
-  padding:10px 15px;
-  border:none;
-  border-radius:10px;
-  cursor:pointer;
-  font-weight:bold;
-}
-
-.next{background:#fb7185;color:white;}
-.prev{background:#fda4af;color:#881337;}
-.finish{background:#dc2626;color:white;}
-
-.top{
-  display:flex;
-  justify-content:space-between;
-  gap:10px;
-  margin-bottom:15px;
-  flex-wrap:wrap;
-}
-
-h1{
-  margin-bottom:18px;
+.question h3{
+  font-size:1.08rem;
+  line-height:1.6;
+  color:#9f1239;
+  margin-bottom:14px;
 }
 
 .mini{
@@ -77,20 +117,278 @@ h1{
   margin-bottom:12px;
   line-height:1.5;
 }
+
+.option{
+  display:block;
+  background:#ffe4e6;
+  padding:12px 14px;
+  margin:10px 0;
+  border-radius:12px;
+  cursor:pointer;
+  border:1px solid transparent;
+  transition:0.2s ease;
+  color:#881337;
+}
+
+.option:hover{
+  background:#fecdd3;
+  border-color:#fb7185;
+}
+
+.option.selected{
+  background:#f43f5e;
+  color:white;
+  border-color:#e11d48;
+}
+
+.option.correct-answer{
+  background:#dcfce7 !important;
+  color:#166534 !important;
+  border-color:#86efac !important;
+}
+
+.option.wrong-answer{
+  background:#fee2e2 !important;
+  color:#991b1b !important;
+  border-color:#fca5a5 !important;
+}
+
+.navigation{
+  display:flex;
+  flex-wrap:wrap;
+  gap:12px;
+  justify-content:center;
+  margin-top:18px;
+}
+
+button{
+  border:none;
+  border-radius:14px;
+  padding:12px 20px;
+  font-size:1rem;
+  font-weight:bold;
+  cursor:pointer;
+  transition:0.2s ease;
+}
+
+button:hover{
+  transform:translateY(-1px);
+}
+
+.prev{
+  background:#fda4af;
+  color:#881337;
+}
+
+.prev:hover{
+  background:#fb7185;
+  color:white;
+}
+
+.next{
+  background:#fb7185;
+  color:white;
+}
+
+.next:hover{
+  background:#f43f5e;
+}
+
+.finish{
+  background:#dc2626;
+  color:white;
+}
+
+.finish:hover{
+  background:#b91c1c;
+}
+
+.actions{
+  display:flex;
+  flex-wrap:wrap;
+  gap:12px;
+  justify-content:center;
+  margin-top:25px;
+}
+
+.btn-primary{
+  background:#e11d48;
+  color:white;
+}
+
+.btn-primary:hover{
+  background:#be123c;
+}
+
+.btn-secondary{
+  background:#fecdd3;
+  color:#9f1239;
+}
+
+.btn-secondary:hover{
+  background:#fda4af;
+}
+
+.result{
+  margin-top:25px;
+  padding:20px;
+  border-radius:18px;
+  background:#fff7f8;
+  border:1px solid #fecdd3;
+  text-align:center;
+  display:none;
+}
+
+.result h2{
+  margin-bottom:10px;
+  color:#9f1239;
+}
+
+.result p{
+  font-size:1.08rem;
+  line-height:1.6;
+  color:#881337;
+}
+
+.review{
+  margin-top:18px;
+  text-align:left;
+  color:#1f2937;
+}
+
+.review-summary{
+  display:grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap:12px;
+  margin:18px 0 14px;
+}
+
+.summary-box{
+  background:#ffffff;
+  border:1px solid #fecdd3;
+  border-radius:14px;
+  padding:14px;
+  text-align:center;
+  box-shadow:0 4px 12px rgba(0,0,0,0.05);
+}
+
+.summary-box h4{
+  margin-bottom:6px;
+  font-size:0.95rem;
+  color:#be123c;
+}
+
+.summary-box p{
+  font-size:1.2rem;
+  font-weight:bold;
+  color:#7f1d1d;
+}
+
+.review-item{
+  background:#ffffff;
+  border-radius:14px;
+  padding:14px;
+  margin-bottom:12px;
+  border-left:6px solid #cbd5e1;
+  box-shadow:0 4px 14px rgba(0,0,0,0.05);
+}
+
+.review-item.correcta{
+  border-left-color:#22c55e;
+  background:#f0fdf4;
+}
+
+.review-item.incorrecta{
+  border-left-color:#ef4444;
+  background:#fef2f2;
+}
+
+.review-item.sin-responder{
+  border-left-color:#f59e0b;
+  background:#fffbeb;
+}
+
+.review-item h4{
+  margin-bottom:8px;
+  font-size:1rem;
+}
+
+.explicacion{
+  margin-top:8px;
+  padding:10px 12px;
+  background:#f8fafc;
+  border-radius:10px;
+  color:#334155;
+  line-height:1.5;
+  font-size:0.95rem;
+}
+
+.party-grid{
+  display:grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap:14px;
+  margin-top:18px;
+}
+
+.party-card{
+  background:#ffffff;
+  border:1px solid #fecdd3;
+  border-radius:16px;
+  padding:16px;
+  text-align:center;
+}
+
+.party-winner{
+  margin-top:16px;
+  padding:14px;
+  border-radius:14px;
+  background:#fff1f2;
+  border:1px solid #fb7185;
+  font-weight:bold;
+  text-align:center;
+  color:#9f1239;
+}
 </style>
 </head>
 
 <body>
 
 <div class="container">
-  <h1>📖 Examen Verbal 2</h1>
+  <div class="header">
+    <h1>📖 Examen Verbal 2</h1>
+    <p>Versión digital interactiva</p>
+    <a class="top-link" href="../verbal.html">← Volver a Verbal</a>
+  </div>
 
-  <div class="top">
-    <div>Pregunta <span id="qNum">1</span>/15</div>
-    
+  <div class="stats-bar">
+    <div class="stat-box">
+      <span class="stat-label">Pregunta actual</span>
+      <span class="stat-value"><span id="qNum">1</span> / 15</span>
+    </div>
+
+    <div class="stat-box">
+      <span class="stat-label">Progreso</span>
+      <span class="stat-value" id="progress">0 / 15</span>
+    </div>
   </div>
 
   <div id="quiz"></div>
+
+  <div class="actions">
+    <button type="button" class="btn-primary" onclick="finishQuiz()">Calificar examen</button>
+    <button type="button" class="btn-secondary" onclick="reiniciarExamen()">Reiniciar</button>
+  </div>
+
+  <div class="result" id="resultado">
+    <h2>Resultado</h2>
+    <p id="puntajeTexto"></p>
+    <div class="review" id="revision"></div>
+  </div>
+
+  <div class="result" id="resultadoParty" style="display:none;">
+    <h2>Resultado final de la sala</h2>
+    <div id="partyResultadoContenido"></div>
+  </div>
 </div>
 
 <script>
@@ -98,89 +396,111 @@ const questions = [
   {
     q:"La _________ sobresalía ________",
     o:["Jarra – del vaso","Bebida – del agua","Arena – del recipiente","Cazuela – de la sopa"],
-    a:0
+    a:0,
+    exp:"La relación correcta es de objeto y elemento del que sobresale. Una jarra puede sobresalir del vaso por comparación de tamaño o presencia."
   },
   {
     q:"A menudo es conveniente ser ___________ con lo que se __________ delante de los demás.",
     o:["Sincero – hace","Modesto – opina","Conforme – pacta","Cauteloso – dice"],
-    a:3
+    a:3,
+    exp:"La expresión más lógica es 'ser cauteloso con lo que se dice', porque habla de prudencia al hablar."
   },
   {
     q:"Su postura era _________, no tenía una opinión ___________ acerca de las ideas propuestas por su equipo.",
     o:["Positiva – adecuada","Neutral – definida","Ambigua – incierta","Subjetiva – personal"],
-    a:1
+    a:1,
+    exp:"Si su postura era neutral, entonces no tenía una opinión definida."
   },
   {
     q:"RESPETO",
     mini:"Selecciona la palabra contraria.",
     o:["Deferencia","Displicencia","Desprecio","Estima"],
-    a:2
+    a:2,
+    exp:"'Desprecio' es el antónimo más claro de respeto."
   },
   {
     q:"SOCIEGO",
     mini:"Selecciona la palabra contraria.",
     o:["Intranquilidad","Salazón","Escarnio","Ocurrencia"],
-    a:0
+    a:0,
+    exp:"'Sosiego' significa calma o tranquilidad; su contrario es intranquilidad."
   },
   {
     q:"SUEÑO",
     mini:"Selecciona la palabra contraria.",
     o:["Sopor","Modorra","Letargo","Vigilia"],
-    a:3
+    a:3,
+    exp:"La vigilia es el estado opuesto al sueño."
   },
   {
     q:"__________ es a DEMOCRACIA como REY es a ___________",
     o:["Demócrata – reina","Oligarquía – dictadura","Pueblo – monarquía","Voto – presidente"],
-    a:2
+    a:2,
+    exp:"El pueblo se relaciona con democracia así como el rey con monarquía."
   },
   {
     q:"__________ es a ABETO como SANGRE es a ____________",
     o:["Savia – hombre","Clorofila – arteria","Verde – rojo","Hoja – célula"],
-    a:0
+    a:0,
+    exp:"La savia circula en el abeto como la sangre en el hombre."
   },
   {
     q:"¿Cuál de estas palabras no pertenece al mismo grupo?",
     o:["Arpa","Trompeta","Saxofón","Flauta"],
-    a:0
+    a:0,
+    exp:"Trompeta, saxofón y flauta son instrumentos de viento; arpa es de cuerda."
   },
   {
     q:"¿Cuál de estas palabras no pertenece al mismo grupo?",
     o:["Soluble","Rollizo","Fornido","Enjuto"],
-    a:0
+    a:0,
+    exp:"Rollizo, fornido y enjuto describen características físicas de una persona; soluble no pertenece a ese grupo."
   },
   {
     q:"EBRIO",
     mini:"Selecciona la palabra contraria.",
     o:["Embriagado","Sobrio","Alegre","Confuso"],
-    a:1
+    a:1,
+    exp:"'Sobrio' es el antónimo directo de ebrio."
   },
   {
     q:"Era un _________ que por su peligrosidad ____________ la intervención policial.",
     o:["Caso – controlaba","Dilema – erigía","Asunto – demandaba","Hecho – completaría"],
-    a:2
+    a:2,
+    exp:"La frase correcta es 'era un asunto que demandaba la intervención policial'."
   },
   {
     q:"La _________ de la tragedia fue de ridículas dimensiones en comparación con su _________.",
     o:["Trama – predecesor","Consecuencia – final","Película – largometraje","Causa – efecto"],
-    a:3
+    a:3,
+    exp:"La causa y el efecto forman una relación lógica de origen y resultado."
   },
   {
     q:"El joven ________ a la cita antes de tiempo y tuvo que ________ la llegada de sus amigos.",
     o:["Llegaba – demorar","Acudió – aguardar","Asiste – esperar","Venía – atender"],
-    a:1
+    a:1,
+    exp:"La oración correcta es 'acudió a la cita... y tuvo que aguardar'."
   },
   {
     q:"PARQUEDAD",
     mini:"Selecciona la palabra contraria.",
     o:["Templanza","Educación","Humedad","Derroche"],
-    a:3
+    a:3,
+    exp:"Parquedad es moderación o escasez; derroche es exceso, por eso es el contrario."
   }
 ];
 
 let current = 0;
 let answers = new Array(questions.length).fill(null);
+let examenFinalizado = false;
 
 const quiz = document.getElementById("quiz");
+
+function actualizarProgreso(){
+  const respondidas = answers.filter(a => a !== null).length;
+  document.getElementById("progress").textContent = `${respondidas} / ${questions.length}`;
+  document.getElementById("qNum").textContent = current + 1;
+}
 
 function render(){
   quiz.innerHTML = "";
@@ -193,26 +513,37 @@ function render(){
 
     let opts = "";
     q.o.forEach((op,j)=>{
-      opts += `<div class="option ${answers[i]===j ? "selected" : ""}" onclick="selectOption(${i},${j})">${String.fromCharCode(65+j)}. ${op}</div>`;
+      let extraClass = "";
+      if (answers[i] === j) extraClass += " selected";
+
+      if (examenFinalizado) {
+        if (j === q.a) extraClass += " correct-answer";
+        if (answers[i] === j && j !== q.a) extraClass += " wrong-answer";
+      }
+
+      opts += `<div class="option${extraClass}" onclick="selectOption(${i},${j})">${String.fromCharCode(65+j)}. ${op}</div>`;
     });
 
     div.innerHTML = `
       <h3>${q.q}</h3>
       ${extra}
       ${opts}
-      <button class="prev" onclick="prevQuestion()" ${i===0 ? "disabled" : ""}>Anterior</button>
-      ${i===questions.length-1
-        ? `<button class="finish" onclick="finishQuiz()">Finalizar</button>`
-        : `<button class="next" onclick="nextQuestion()">Siguiente</button>`}
+      <div class="navigation">
+        <button class="prev" onclick="prevQuestion()" ${i===0 ? "disabled" : ""}>Anterior</button>
+        ${i===questions.length-1
+          ? `<button class="finish" onclick="finishQuiz()">Finalizar</button>`
+          : `<button class="next" onclick="nextQuestion()">Siguiente</button>`}
+      </div>
     `;
 
     quiz.appendChild(div);
   });
 
-  updateTop();
+  actualizarProgreso();
 }
 
 function selectOption(i,j){
+  if (examenFinalizado) return;
   answers[i] = j;
   render();
 }
@@ -231,19 +562,115 @@ function prevQuestion(){
   }
 }
 
-function updateTop(){
-  document.getElementById("qNum").innerText = current + 1;
-  let score = answers.reduce((acc,a,i)=> a===questions[i].a ? acc+1 : acc, 0);
-  document.getElementById("score").innerText = score;
+function finishQuiz(){
+  if (examenFinalizado) return;
+  examenFinalizado = true;
+
+  let total = questions.length;
+  let correctas = 0;
+  let incorrectas = 0;
+  let sinResponder = 0;
+  let respondidas = 0;
+  let revisionHTML = "";
+
+  questions.forEach((q, i) => {
+    const respuestaUsuario = answers[i];
+    const numero = i + 1;
+
+    if (respuestaUsuario !== null) {
+      respondidas++;
+
+      if (respuestaUsuario === q.a) {
+        correctas++;
+        revisionHTML += `
+          <div class="review-item correcta">
+            <h4>Pregunta ${numero}: ✅ Correcta</h4>
+            <p><strong>Tu respuesta:</strong> ${String.fromCharCode(65 + respuestaUsuario)}. ${q.o[respuestaUsuario]}</p>
+            <div class="explicacion"><strong>Retroalimentación:</strong> ${q.exp}</div>
+          </div>
+        `;
+      } else {
+        incorrectas++;
+        revisionHTML += `
+          <div class="review-item incorrecta">
+            <h4>Pregunta ${numero}: ❌ Incorrecta</h4>
+            <p><strong>Tu respuesta:</strong> ${String.fromCharCode(65 + respuestaUsuario)}. ${q.o[respuestaUsuario]}</p>
+            <p><strong>Respuesta correcta:</strong> ${String.fromCharCode(65 + q.a)}. ${q.o[q.a]}</p>
+            <div class="explicacion"><strong>Retroalimentación:</strong> ${q.exp}</div>
+          </div>
+        `;
+      }
+    } else {
+      sinResponder++;
+      revisionHTML += `
+        <div class="review-item sin-responder">
+          <h4>Pregunta ${numero}: ⚠️ Sin responder</h4>
+          <p><strong>Respuesta correcta:</strong> ${String.fromCharCode(65 + q.a)}. ${q.o[q.a]}</p>
+          <div class="explicacion"><strong>Retroalimentación:</strong> ${q.exp}</div>
+        </div>
+      `;
+    }
+  });
+
+  const porcentaje = ((correctas / total) * 100).toFixed(1);
+
+  if (typeof window.enviarResultadoFinal === "function") {
+    window.enviarResultadoFinal({
+      correctas,
+      incorrectas,
+      sinResponder,
+      total,
+      porcentaje: Number(porcentaje)
+    });
+  }
+
+  document.getElementById("puntajeTexto").innerHTML = `
+    Respondiste <strong>${respondidas}</strong> de <strong>${total}</strong> preguntas.<br>
+    Obtuviste <strong>${correctas}</strong> correctas de <strong>${total}</strong>.<br>
+    Tu nota fue: <strong>${porcentaje}%</strong>
+  `;
+
+  document.getElementById("revision").innerHTML = `
+    <div class="review-summary">
+      <div class="summary-box">
+        <h4>Correctas</h4>
+        <p>${correctas}</p>
+      </div>
+      <div class="summary-box">
+        <h4>Incorrectas</h4>
+        <p>${incorrectas}</p>
+      </div>
+      <div class="summary-box">
+        <h4>Sin responder</h4>
+        <p>${sinResponder}</p>
+      </div>
+    </div>
+    ${revisionHTML}
+  `;
+
+  document.getElementById("resultado").style.display = "block";
+  document.getElementById("resultado").scrollIntoView({ behavior: "smooth" });
+
+  render();
 }
 
-function finishQuiz(){
-  let score = answers.reduce((acc,a,i)=> a===questions[i].a ? acc+1 : acc, 0);
-  alert("Tu puntaje: " + score + "/" + questions.length);
+function reiniciarExamen(){
+  current = 0;
+  answers = new Array(questions.length).fill(null);
+  examenFinalizado = false;
+
+  document.getElementById("resultado").style.display = "none";
+  document.getElementById("resultadoParty").style.display = "none";
+  document.getElementById("revision").innerHTML = "";
+  document.getElementById("puntajeTexto").innerHTML = "";
+
+  window.scrollTo({ top: 0, behavior: "smooth" });
+  render();
 }
 
 render();
 </script>
 <script type="module" src="../party/party-timer.js"></script>
+<script type="module" src="../party/party-resultados.js"></script>
 </body>
 </html>
