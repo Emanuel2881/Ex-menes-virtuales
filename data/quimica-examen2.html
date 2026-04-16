@@ -313,6 +313,30 @@
       pointer-events:none;
       user-select:none;
     }
+    .party-grid{
+  display:grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap:14px;
+  margin-top:18px;
+}
+
+.party-card{
+  background:#ffffff;
+  border:1px solid #bae6fd;
+  border-radius:16px;
+  padding:16px;
+  text-align:center;
+}
+
+.party-winner{
+  margin-top:16px;
+  padding:14px;
+  border-radius:14px;
+  background:#ecfeff;
+  border:1px solid #7dd3fc;
+  font-weight:bold;
+  text-align:center;
+}
   </style>
 </head>
 <body>
@@ -588,6 +612,10 @@
           <p id="puntajeTexto"></p>
           <div class="review" id="revision"></div>
         </div>
+        <div class="result" id="resultadoParty" style="display:none;">
+  <h2>Resultado final de la sala</h2>
+  <div id="partyResultadoContenido"></div>
+</div>
 
       </form>
     </div>
@@ -819,6 +847,13 @@
         Tu nota fue: <strong>${porcentaje}%</strong>
       `;
 
+      window.enviarResultadoFinal({
+  correctas,
+  incorrectas,
+  sinResponder,
+  total,
+  porcentaje: Number(porcentaje)
+});
       document.getElementById("revision").innerHTML = `
         <div class="review-summary">
           <div class="summary-box">
@@ -875,5 +910,6 @@
     });
   </script>
   <script type="module" src="../party/party-timer.js"></script>
+  <script type="module" src="../party/party-resultados.js"></script>
 </body>
 </html>
