@@ -1,652 +1,220 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Modo Party</title>
-  <style>
-    *{
-      margin:0;
-      padding:0;
-      box-sizing:border-box;
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyBjbbNf2xNl6LG0cIdMYRDb3SWWe4Mx9RE",
+  authDomain: "exam-party.firebaseapp.com",
+  projectId: "exam-party",
+  storageBucket: "exam-party.firebasestorage.app",
+  messagingSenderId: "1020166508098",
+  appId: "1:1020166508098:web:73a056e8989f46928a67db"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
+
+const params = new URLSearchParams(window.location.search);
+const salaCodigo = params.get("sala");
+
+if (!salaCodigo) {
+  console.log("Modo normal: sin cronómetro party.");
+} else {
+  iniciarTimerParty(salaCodigo);
+}
+
+function iniciarTimerParty(codigo) {
+  crearUI();
+
+  const salaRef = ref(db, `salas/${codigo}`);
+  let intervalo = null;
+  let examenFinalizado = false;
+
+  onValue(salaRef, (snapshot) => {
+    if (!snapshot.exists()) {
+      actualizarEstado("La sala ya no existe.");
+      detenerTimer();
+      bloquearExamen();
+      return;
     }
 
-    body{
-      font-family: Arial, Helvetica, sans-serif;
-      min-height:100vh;
-      background: linear-gradient(135deg, #e0f2fe, #f8fafc, #dbeafe);
-      color:#1e293b;
+    const sala = snapshot.val();
+    const timer = sala.timer;
+
+    if (!timer || !timer.startTime || !timer.duracion) {
+      actualizarEstado("Esperando configuración del cronómetro...");
+      return;
+    }
+
+    actualizarEstado(`Modo party • Sala ${codigo}`);
+
+    if (intervalo) return;
+
+    intervalo = setInterval(() => {
+      const ahora = Date.now();
+      const transcurrido = Math.floor((ahora - timer.startTime) / 1000);
+      const restante = Math.max(0, timer.duracion - transcurrido);
+
+      actualizarTimer(restante, timer.duracion);
+
+      if (restante <= 0 && !examenFinalizado) {
+        examenFinalizado = true;
+        detenerTimer();
+        actualizarEstado("Tiempo terminado");
+        bloquearExamen();
+        lanzarCalificacionAutomatica();
+      }
+    }, 250);
+  });
+
+  function detenerTimer() {
+    if (intervalo) {
+      clearInterval(intervalo);
+      intervalo = null;
+    }
+  }
+}
+
+function crearUI() {
+  if (document.getElementById("partyTimerWrap")) return;
+
+  const wrap = document.createElement("div");
+  wrap.id = "partyTimerWrap";
+  wrap.innerHTML = `
+    <div id="partyTimerBox">
+      <div id="partyTimerTop">
+        <span id="partyTimerLabel">Tiempo party</span>
+        <span id="partyTimerEstado">Conectando...</span>
+      </div>
+      <div id="partyTimerValue">--:--</div>
+      <div id="partyTimerBarBg">
+        <div id="partyTimerBar"></div>
+      </div>
+    </div>
+  `;
+
+  const style = document.createElement("style");
+  style.textContent = `
+    #partyTimerWrap{
+      position: sticky;
+      top: 10px;
+      z-index: 9999;
+      width: min(900px, calc(100% - 20px));
+      margin: 10px auto 18px;
+    }
+
+    #partyTimerBox{
+      background: rgba(255,255,255,0.95);
+      border: 1px solid #bfdbfe;
+      border-radius: 18px;
+      box-shadow: 0 10px 24px rgba(37,99,235,0.12);
+      padding: 14px 16px;
+      backdrop-filter: blur(8px);
+    }
+
+    #partyTimerTop{
       display:flex;
-      justify-content:center;
+      justify-content:space-between;
       align-items:center;
-      padding:20px;
+      gap:10px;
+      margin-bottom:8px;
+      flex-wrap:wrap;
     }
 
-    .box{
-      width:min(700px, 95%);
-      background: rgba(255,255,255,0.88);
-      border-radius:24px;
-      padding:30px;
-      box-shadow:0 10px 30px rgba(0,0,0,0.08);
-      border:1px solid rgba(255,255,255,0.7);
+    #partyTimerLabel{
+      font-weight:bold;
+      color:#1d4ed8;
     }
 
-    h1{
+    #partyTimerEstado{
+      color:#64748b;
+      font-size:0.95rem;
+    }
+
+    #partyTimerValue{
+      font-size: clamp(1.6rem, 4vw, 2.4rem);
+      font-weight: bold;
+      color:#0f172a;
       text-align:center;
-      color:#1e3a8a;
       margin-bottom:10px;
     }
 
-    p{
-      text-align:center;
-      color:#475569;
-      margin-bottom:25px;
-      line-height:1.6;
-    }
-
-    .section{
-      background:#f8fafc;
-      border:1px solid #dbeafe;
-      border-radius:18px;
-      padding:20px;
-      margin-bottom:20px;
-    }
-
-    .section h2{
-      color:#1d4ed8;
-      margin-bottom:14px;
-      font-size:1.2rem;
-    }
-
-    input,
-    select{
+    #partyTimerBarBg{
       width:100%;
-      padding:12px 14px;
-      border-radius:12px;
-      border:1px solid #cbd5e1;
-      margin-bottom:12px;
-      font-size:1rem;
-      background:white;
+      height:12px;
+      background:#dbeafe;
+      border-radius:999px;
+      overflow:hidden;
     }
 
-    input:focus,
-    select:focus{
-      outline:none;
-      border-color:#2563eb;
-      box-shadow:0 0 0 3px rgba(37,99,235,0.12);
+    #partyTimerBar{
+      width:100%;
+      height:100%;
+      background: linear-gradient(90deg, #2563eb, #60a5fa);
+      transition: width 0.25s linear;
     }
 
-    button{
-      border:none;
-      background:#2563eb;
-      color:white;
-      padding:12px 18px;
-      border-radius:12px;
-      font-weight:bold;
-      cursor:pointer;
-      transition:0.2s ease;
-      margin-right:8px;
-      margin-bottom:8px;
+    #partyTimerValue.party-alert{
+      color:#dc2626;
+      animation: partyBlink 1s infinite;
     }
 
-    button:hover{
-      background:#1d4ed8;
+    @keyframes partyBlink{
+      0%{opacity:1;}
+      50%{opacity:0.45;}
+      100%{opacity:1;}
     }
+  `;
 
-    .btn-danger{
-      background:#dc2626;
+  document.head.appendChild(style);
+
+  const body = document.body;
+  if (body.firstChild) {
+    body.insertBefore(wrap, body.firstChild);
+  } else {
+    body.appendChild(wrap);
+  }
+}
+
+function actualizarEstado(texto) {
+  const el = document.getElementById("partyTimerEstado");
+  if (el) el.textContent = texto;
+}
+
+function actualizarTimer(segundosRestantes, duracionTotal) {
+  const value = document.getElementById("partyTimerValue");
+  const bar = document.getElementById("partyTimerBar");
+
+  if (!value || !bar) return;
+
+  const min = String(Math.floor(segundosRestantes / 60)).padStart(2, "0");
+  const sec = String(segundosRestantes % 60).padStart(2, "0");
+  value.textContent = `${min}:${sec}`;
+
+  const porcentaje = duracionTotal > 0 ? (segundosRestantes / duracionTotal) * 100 : 0;
+  bar.style.width = `${Math.max(0, Math.min(100, porcentaje))}%`;
+
+  if (segundosRestantes <= 60) {
+    value.classList.add("party-alert");
+  } else {
+    value.classList.remove("party-alert");
+  }
+}
+
+function bloquearExamen() {
+  document.querySelectorAll("input, button, select, textarea").forEach((el) => {
+    el.disabled = true;
+  });
+}
+
+function lanzarCalificacionAutomatica() {
+  if (typeof window.calificarExamen === "function") {
+    try {
+      window.calificarExamen(true);
+      return;
+    } catch (error) {
+      console.error("No se pudo calificar automáticamente:", error);
     }
+  }
 
-    .btn-danger:hover{
-      background:#b91c1c;
-    }
-
-    .back{
-      display:inline-block;
-      margin-top:10px;
-      text-decoration:none;
-      color:#1d4ed8;
-      font-weight:bold;
-    }
-
-    .mensaje{
-      margin-top:18px;
-      padding:14px;
-      border-radius:14px;
-      background:#eff6ff;
-      color:#1e40af;
-      text-align:center;
-      font-weight:bold;
-      display:none;
-      line-height:1.6;
-    }
-
-    .mini-note{
-      text-align:left;
-      margin:10px 0 0;
-      font-size:0.95rem;
-      color:#64748b;
-    }
-  </style>
-</head>
-<body>
-  <div class="box">
-    <h1>Modo Party 🎉</h1>
-    <p>
-      Crea una sala o únete con un código para hacer el mismo examen con otra persona.
-    </p>
-
-    <div class="section">
-      <h2>Crear sala</h2>
-      <input type="text" id="nombre" placeholder="Escribe tu nombre">
-      <button onclick="crearSala()">Crear sala</button>
-    </div>
-
-    <div class="section">
-      <h2>Unirse a sala</h2>
-      <input type="text" id="codigo" placeholder="Código de sala">
-      <button onclick="unirseSala()">Unirse</button>
-    </div>
-
-    <div class="mensaje" id="mensaje"></div>
-
-    <div class="section" id="infoSala" style="display:none;">
-      <h2>Sala actual</h2>
-      <p><strong>Código:</strong> <span id="salaCodigo">-</span></p>
-      <p><strong>Estado:</strong> <span id="salaEstado">-</span></p>
-      <p><strong>Jugador 1:</strong> <span id="jugador1Nombre">-</span></p>
-      <p><strong>Jugador 2:</strong> <span id="jugador2Nombre">-</span></p>
-    </div>
-
-    <div class="section" id="seleccionExamen" style="display:none;">
-      <h2>Seleccionar examen</h2>
-
-      <select id="materiaSelect">
-        <option value="">Selecciona una materia</option>
-        <option value="biologia">Biología</option>
-        <option value="quimica">Química</option>
-        <option value="numerica">Numérica</option>
-        <option value="verbal">Verbal</option>
-      </select>
-
-      <select id="examenSelect">
-        <option value="">Selecciona un examen</option>
-      </select>
-
-      <input type="number" id="duracionInput" min="1" max="300" placeholder="Tiempo en minutos (ej. 20)">
-
-      <button onclick="guardarSeleccion()">Guardar selección</button>
-
-      <p id="seleccionActual" style="margin-top:14px; color:#475569; font-weight:bold;"></p>
-      <p class="mini-note">Este tiempo será el cronómetro universal del modo party para ambos jugadores.</p>
-    </div>
-
-    <div class="section" id="accionesSala" style="display:none;">
-      <h2>Acciones</h2>
-      <button onclick="marcarListo()">Estoy listo</button>
-      <button id="btnIniciar" onclick="iniciarExamen()" style="display:none;">Iniciar examen 🚀</button>
-      <button class="btn-danger" onclick="salirSala()">Salir de sala</button>
-      <p id="estadoListos" style="margin-top:14px; color:#475569; font-weight:bold;"></p>
-    </div>
-
-    <a class="back" href="../index.html">⬅ Volver al inicio</a>
-  </div>
-
-  <script type="module">
-    import { db } from "./firebase-config.js";
-    import { ref, set, get, update, onValue, remove } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
-
-    console.log("Firebase conectado:", db);
-
-    let codigoSalaActual = "";
-    let jugadorActual = "";
-    let contadorIntervalo = null;
-    let redirigido = false;
-    let desuscribirSala = null;
-
-    const examenesPorMateria = {
-      biologia: [
-        { nombre: "Examen 1", ruta: "../data/bio-examen1.html" },
-        { nombre: "Examen 2", ruta: "../data/bio-examen2.html" },
-        { nombre: "Examen 3", ruta: "../data/bio-examen3.html" },
-        { nombre: "Examen 4", ruta: "../data/bio-examen4.html" }
-      ],
-      quimica: [
-        { nombre: "Examen 1", ruta: "../data/quimica-examen1.html" },
-        { nombre: "Examen 2", ruta: "../data/quimica-examen2.html" },
-        { nombre: "Examen 3", ruta: "../data/quimica-examen3.html" }
-      ],
-      numerica: [
-        { nombre: "Examen 1", ruta: "../data/numerica-examen1.html" },
-        { nombre: "Examen 2", ruta: "../data/numerica-examen2.html" },
-        { nombre: "Examen 3", ruta: "../data/numerica-examen3.html" },
-        { nombre: "Examen 4", ruta: "../data/numerica-examen4.html" },
-        { nombre: "Examen 5", ruta: "../data/numerica-examen5.html" },
-        { nombre: "Examen 6", ruta: "../data/numerica-examen6.html" },
-        { nombre: "Factor N", ruta: "../data/numerica-factorN.html" }
-      ],
-      verbal: [
-        { nombre: "Examen 1", ruta: "../data/verbal-examen1.html" },
-        { nombre: "Examen 2", ruta: "../data/verbal-examen2.html" },
-        { nombre: "Examen 3", ruta: "../data/verbal-examen3.html" }
-      ]
-    };
-
-    function generarCodigo() {
-      const letras = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-      let codigo = "";
-      for (let i = 0; i < 4; i++) {
-        codigo += letras.charAt(Math.floor(Math.random() * letras.length));
-      }
-      return codigo;
-    }
-
-    function mostrarMensaje(texto) {
-      const mensaje = document.getElementById("mensaje");
-      mensaje.style.display = "block";
-      mensaje.innerHTML = texto;
-    }
-
-    function limpiarEstadoLocal() {
-      codigoSalaActual = "";
-      jugadorActual = "";
-      redirigido = false;
-
-      if (contadorIntervalo) {
-        clearInterval(contadorIntervalo);
-        contadorIntervalo = null;
-      }
-
-      if (desuscribirSala) {
-        desuscribirSala();
-        desuscribirSala = null;
-      }
-
-      document.getElementById("infoSala").style.display = "none";
-      document.getElementById("seleccionExamen").style.display = "none";
-      document.getElementById("accionesSala").style.display = "none";
-      document.getElementById("btnIniciar").style.display = "none";
-      document.getElementById("estadoListos").textContent = "";
-      document.getElementById("seleccionActual").textContent = "";
-      document.getElementById("materiaSelect").value = "";
-      document.getElementById("duracionInput").value = "";
-      document.getElementById("examenSelect").innerHTML = '<option value="">Selecciona un examen</option>';
-    }
-
-    function cargarExamenes() {
-      const materia = document.getElementById("materiaSelect").value;
-      const examenSelect = document.getElementById("examenSelect");
-
-      examenSelect.innerHTML = '<option value="">Selecciona un examen</option>';
-
-      if (!materia || !examenesPorMateria[materia]) return;
-
-      examenesPorMateria[materia].forEach((examen, index) => {
-        const option = document.createElement("option");
-        option.value = index;
-        option.textContent = examen.nombre;
-        examenSelect.appendChild(option);
-      });
-    }
-
-    function mostrarSala(datosSala) {
-      document.getElementById("infoSala").style.display = "block";
-      document.getElementById("accionesSala").style.display = "block";
-      document.getElementById("seleccionExamen").style.display = "block";
-
-      const jugador1 = datosSala.jugadores?.jugador1 || null;
-      const jugador2 = datosSala.jugadores?.jugador2 || null;
-
-      document.getElementById("salaCodigo").textContent = datosSala.codigo || "-";
-      document.getElementById("salaEstado").textContent = datosSala.estado || "-";
-
-      document.getElementById("jugador1Nombre").textContent =
-        jugador1 ? `${jugador1.nombre} ${jugador1.listo ? "✅" : "⏳"}` : "-";
-
-      document.getElementById("jugador2Nombre").textContent =
-        jugador2 ? `${jugador2.nombre} ${jugador2.listo ? "✅" : "⏳"}` : "Esperando jugador...";
-
-      if (datosSala.seleccion) {
-        const minutos = datosSala.timer?.duracion ? Math.floor(datosSala.timer.duracion / 60) : "-";
-        document.getElementById("seleccionActual").textContent =
-          `Materia: ${datosSala.seleccion.materia} | Examen: ${datosSala.seleccion.examen} | Tiempo: ${minutos} min`;
-      } else {
-        document.getElementById("seleccionActual").textContent =
-          "Todavía no se ha seleccionado ningún examen.";
-      }
-
-      const ambosListos = jugador1?.listo && jugador2?.listo;
-      const haySeleccion = !!datosSala.seleccion;
-      const hayTimer = !!datosSala.timer?.duracion;
-
-      if (ambosListos && haySeleccion && hayTimer) {
-        document.getElementById("estadoListos").textContent =
-          "Los dos jugadores ya están listos, ya hay examen y tiempo definido. Ya pueden iniciar.";
-        document.getElementById("btnIniciar").style.display = "inline-block";
-      } else if (ambosListos && (!haySeleccion || !hayTimer)) {
-        document.getElementById("estadoListos").textContent =
-          "Los dos jugadores están listos, pero falta seleccionar examen o tiempo.";
-        document.getElementById("btnIniciar").style.display = "none";
-      } else {
-        document.getElementById("estadoListos").textContent =
-          "Esperando a que ambos jugadores estén listos.";
-        document.getElementById("btnIniciar").style.display = "none";
-      }
-    }
-
-    function iniciarCuentaRegresiva(datosSala) {
-      if (!datosSala.startTime) return;
-      if (contadorIntervalo) return;
-
-      contadorIntervalo = setInterval(() => {
-        const ahora = Date.now();
-        const tiempoRestante = datosSala.startTime - ahora;
-
-        if (tiempoRestante > 0) {
-          mostrarMensaje(`El examen inicia en ${Math.ceil(tiempoRestante / 1000)} segundos...`);
-        } else {
-          clearInterval(contadorIntervalo);
-          contadorIntervalo = null;
-          mostrarMensaje("¡El examen comenzó! 🚀");
-
-          if (!redirigido && datosSala.seleccion?.ruta) {
-            redirigido = true;
-            const separador = datosSala.seleccion.ruta.includes("?") ? "&" : "?";
-            const destino = `${datosSala.seleccion.ruta}${separador}sala=${encodeURIComponent(codigoSalaActual)}`;
-            setTimeout(() => {
-              window.location.href = destino;
-            }, 700);
-          }
-        }
-      }, 250);
-    }
-
-    function escucharSala(codigo) {
-      const salaRef = ref(db, "salas/" + codigo);
-
-      if (desuscribirSala) {
-        desuscribirSala();
-      }
-
-      desuscribirSala = onValue(salaRef, (snapshot) => {
-        if (!snapshot.exists()) {
-          mostrarMensaje("La sala ya no existe o fue eliminada.");
-          limpiarEstadoLocal();
-          return;
-        }
-
-        const datosSala = snapshot.val();
-        mostrarSala(datosSala);
-
-        if (datosSala.estado === "iniciando" && datosSala.startTime) {
-          iniciarCuentaRegresiva(datosSala);
-        }
-      });
-    }
-
-    window.crearSala = async function() {
-      const nombre = document.getElementById("nombre").value.trim();
-
-      if (!nombre) {
-        alert("Escribe tu nombre");
-        return;
-      }
-
-      const codigo = generarCodigo();
-      const salaRef = ref(db, "salas/" + codigo);
-
-      try {
-        await set(salaRef, {
-          codigo: codigo,
-          host: nombre,
-          estado: "esperando",
-          jugadores: {
-            jugador1: {
-              nombre: nombre,
-              listo: false
-            }
-          }
-        });
-
-        codigoSalaActual = codigo;
-        jugadorActual = "jugador1";
-        redirigido = false;
-
-        if (contadorIntervalo) {
-          clearInterval(contadorIntervalo);
-          contadorIntervalo = null;
-        }
-
-        console.log("Sala guardada en Firebase:", codigo);
-        mostrarMensaje(`Sala creada con éxito 🎉<br>Código: <strong>${codigo}</strong>`);
-        document.getElementById("codigo").value = codigo;
-        escucharSala(codigo);
-      } catch (error) {
-        console.error("Error al crear sala:", error);
-        alert("No se pudo crear la sala. Revisa la consola.");
-      }
-    };
-
-    window.unirseSala = async function() {
-      const nombre = document.getElementById("nombre").value.trim();
-      const codigo = document.getElementById("codigo").value.trim().toUpperCase();
-
-      if (!nombre || !codigo) {
-        alert("Escribe tu nombre y el código de sala");
-        return;
-      }
-
-      try {
-        const salaRef = ref(db, "salas/" + codigo);
-        const snapshot = await get(salaRef);
-
-        if (!snapshot.exists()) {
-          alert("La sala no existe");
-          return;
-        }
-
-        const datosSala = snapshot.val();
-
-        if (datosSala.jugadores && datosSala.jugadores.jugador2) {
-          alert("La sala ya tiene 2 jugadores");
-          return;
-        }
-
-        await update(salaRef, {
-          "jugadores/jugador2": {
-            nombre: nombre,
-            listo: false
-          }
-        });
-
-        codigoSalaActual = codigo;
-        jugadorActual = "jugador2";
-        redirigido = false;
-
-        if (contadorIntervalo) {
-          clearInterval(contadorIntervalo);
-          contadorIntervalo = null;
-        }
-
-        console.log("Jugador 2 unido a sala:", codigo);
-        mostrarMensaje(`Te uniste a la sala <strong>${codigo}</strong> 🎉`);
-        escucharSala(codigo);
-      } catch (error) {
-        console.error("Error al unirse:", error);
-        alert("No se pudo unir a la sala.");
-      }
-    };
-
-    window.marcarListo = async function() {
-      if (!codigoSalaActual || !jugadorActual) {
-        alert("Primero debes crear o unirte a una sala.");
-        return;
-      }
-
-      try {
-        const salaRef = ref(db, "salas/" + codigoSalaActual);
-
-        await update(salaRef, {
-          [`jugadores/${jugadorActual}/listo`]: true
-        });
-
-        mostrarMensaje("Te marcaste como listo ✅");
-        console.log(`${jugadorActual} está listo en sala ${codigoSalaActual}`);
-      } catch (error) {
-        console.error("Error al marcar listo:", error);
-        alert("No se pudo marcar como listo.");
-      }
-    };
-
-    window.guardarSeleccion = async function() {
-      if (!codigoSalaActual) {
-        alert("Primero debes crear o unirte a una sala.");
-        return;
-      }
-
-      const materia = document.getElementById("materiaSelect").value;
-      const examenIndex = document.getElementById("examenSelect").value;
-      const minutos = parseInt(document.getElementById("duracionInput").value, 10);
-
-      if (!materia || examenIndex === "") {
-        alert("Selecciona una materia y un examen.");
-        return;
-      }
-
-      if (Number.isNaN(minutos) || minutos < 1) {
-        alert("Ingresa un tiempo válido en minutos.");
-        return;
-      }
-
-      const examen = examenesPorMateria[materia][examenIndex];
-
-      try {
-        const salaRef = ref(db, "salas/" + codigoSalaActual);
-
-        await update(salaRef, {
-          seleccion: {
-            materia: materia,
-            examen: examen.nombre,
-            ruta: examen.ruta
-          },
-          timer: {
-            duracion: minutos * 60
-          }
-        });
-
-        mostrarMensaje(`Examen seleccionado: ${examen.nombre} de ${materia} • ${minutos} min ✅`);
-      } catch (error) {
-        console.error("Error al guardar selección:", error);
-        alert("No se pudo guardar la selección.");
-      }
-    };
-
-    window.iniciarExamen = async function() {
-      if (!codigoSalaActual) {
-        alert("No hay sala activa.");
-        return;
-      }
-
-      try {
-        const salaRef = ref(db, "salas/" + codigoSalaActual);
-        const snapshot = await get(salaRef);
-
-        if (!snapshot.exists()) {
-          alert("La sala ya no existe.");
-          return;
-        }
-
-        const datosSala = snapshot.val();
-        const jugador1 = datosSala.jugadores?.jugador1;
-        const jugador2 = datosSala.jugadores?.jugador2;
-
-        if (!jugador1?.listo || !jugador2?.listo) {
-          alert("Ambos jugadores deben estar listos.");
-          return;
-        }
-
-        if (!datosSala.seleccion?.ruta) {
-          alert("Primero deben seleccionar materia y examen.");
-          return;
-        }
-
-        if (!datosSala.timer?.duracion) {
-          alert("Primero deben definir el tiempo del cronómetro.");
-          return;
-        }
-
-        const tiempoInicio = Date.now() + 5000;
-
-        redirigido = false;
-        if (contadorIntervalo) {
-          clearInterval(contadorIntervalo);
-          contadorIntervalo = null;
-        }
-
-        await update(salaRef, {
-          estado: "iniciando",
-          startTime: tiempoInicio,
-          timer: {
-            ...datosSala.timer,
-            startTime: tiempoInicio
-          }
-        });
-
-        console.log("Examen iniciando en:", tiempoInicio);
-      } catch (error) {
-        console.error("Error al iniciar examen:", error);
-        alert("No se pudo iniciar el examen.");
-      }
-    };
-
-    window.salirSala = async function() {
-      if (!codigoSalaActual || !jugadorActual) {
-        alert("No estás dentro de una sala.");
-        return;
-      }
-
-      try {
-        const salaRef = ref(db, "salas/" + codigoSalaActual);
-        const snapshot = await get(salaRef);
-
-        if (!snapshot.exists()) {
-          limpiarEstadoLocal();
-          mostrarMensaje("La sala ya no existía.");
-          return;
-        }
-
-        const datosSala = snapshot.val();
-        const esHost = jugadorActual === "jugador1";
-
-        if (esHost) {
-          await remove(salaRef);
-          limpiarEstadoLocal();
-          mostrarMensaje("Saliste de la sala y la sala fue eliminada.");
-          return;
-        }
-
-        await remove(ref(db, `salas/${codigoSalaActual}/jugadores/${jugadorActual}`));
-
-        const snapshotActualizado = await get(salaRef);
-        if (snapshotActualizado.exists()) {
-          const nuevaSala = snapshotActualizado.val();
-          const quedaJugador1 = !!nuevaSala.jugadores?.jugador1;
-          const quedaJugador2 = !!nuevaSala.jugadores?.jugador2;
-
-          if (!quedaJugador1 && !quedaJugador2) {
-            await remove(salaRef);
-          }
-        }
-
-        limpiarEstadoLocal();
-        mostrarMensaje("Saliste de la sala.");
-      } catch (error) {
-        console.error("Error al salir de la sala:", error);
-        alert("No se pudo salir de la sala.");
-      }
-    };
-
-    document.getElementById("materiaSelect").addEventListener("change", cargarExamenes);
-  </script>
-</body>
-</html>
+  alert("Se terminó el tiempo del modo party.");
+}
