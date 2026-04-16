@@ -2,16 +2,16 @@ import { initializeApp, getApps, getApp } from "https://www.gstatic.com/firebase
 import { getDatabase } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
 
 const firebaseConfig = {
-  apiKey: "TU_API_KEY",
-  authDomain: "TU_AUTH_DOMAIN",
-  databaseURL: "TU_DATABASE_URL",
-  projectId: "TU_PROJECT_ID",
-  storageBucket: "TU_STORAGE_BUCKET",
-  messagingSenderId: "TU_MESSAGING_SENDER_ID",
-  appId: "TU_APP_ID"
+  apiKey: "AIzaSyBjbbNf2xNl6LG0cIdMYRDb3SWWe4Mx9RE",
+  authDomain: "exam-party.firebaseapp.com",
+  databaseURL: "https://exam-party-default-rtdb.firebaseio.com",
+  projectId: "exam-party",
+  storageBucket: "exam-party.firebasestorage.app",
+  messagingSenderId: "1020166508098",
+  appId: "1:1020166508098:web:73a056e8989f46928a67db"
 };
 
-// 🔥 clave del fix
+// 🔥 evita reinicializar (esto lo hiciste bien)
 const app = getApps().length === 0 
   ? initializeApp(firebaseConfig)
   : getApp();
