@@ -92,17 +92,6 @@
       font-weight:bold;
     }
 
-    .timer-value.alerta{
-      color:#dc2626;
-      animation: parpadeo 1s infinite;
-    }
-
-    @keyframes parpadeo{
-      0%{opacity:1;}
-      50%{opacity:0.45;}
-      100%{opacity:1;}
-    }
-
     .setup-box{
       margin:20px 25px 0;
       padding:18px;
@@ -354,11 +343,6 @@
     </div>
 
     <div class="stats-bar">
-      <div class="stat-box">
-        <span class="stat-label">Tiempo restante</span>
-        <span class="stat-value timer-value" id="timer">00:00</span>
-      </div>
-
       <div class="stat-box">
         <span class="stat-label">Progreso</span>
         <span class="stat-value" id="progress">0 / 30</span>
@@ -730,8 +714,6 @@
       q30:"El elemento con 13 protones es el aluminio, símbolo Al."
     };
 
-    let tiempoRestante = 0;
-    let intervalo = null;
     let examenIniciado = false;
     let examenFinalizado = false;
 
@@ -739,20 +721,6 @@
       const total = Object.keys(respuestasCorrectas).length;
       const respondidas = document.querySelectorAll('input[type="radio"]:checked').length;
       document.getElementById("progress").textContent = `${respondidas} / ${total}`;
-    }
-
-    function actualizarTimer() {
-      const min = String(Math.floor(tiempoRestante / 60)).padStart(2, "0");
-      const sec = String(tiempoRestante % 60).padStart(2, "0");
-      const timer = document.getElementById("timer");
-
-      timer.textContent = `${min}:${sec}`;
-
-      if (tiempoRestante <= 60) {
-        timer.classList.add("alerta");
-      } else {
-        timer.classList.remove("alerta");
-      }
     }
 
     function bloquearExamen(estado) {
@@ -787,7 +755,6 @@
         return;
       }
 
-      tiempoRestante = minutos * 60;
       examenIniciado = true;
 
       document.getElementById("setupMsg").textContent = `Examen iniciado con ${minutos} minuto(s).`;
@@ -798,20 +765,7 @@
       botonInicio.textContent = "Examen en curso";
 
       bloquearExamen(false);
-      actualizarTimer();
       actualizarProgreso();
-
-      clearInterval(intervalo);
-      intervalo = setInterval(() => {
-        tiempoRestante--;
-        actualizarTimer();
-
-        if (tiempoRestante <= 0) {
-          clearInterval(intervalo);
-          document.getElementById("setupMsg").textContent = "Se terminó el tiempo. El examen fue calificado automáticamente.";
-          calificarExamen(true);
-        }
-      }, 1000);
     }
 
     function limpiarEstadosVisuales() {
@@ -820,8 +774,8 @@
       });
     }
 
-    function calificarExamen(automatico = false) {
-      if (!examenIniciado && !automatico) {
+    function calificarExamen() {
+      if (!examenIniciado) {
         document.getElementById("setupMsg").textContent = "Primero debes escribir el tiempo y luego iniciar el examen.";
         return;
       }
@@ -829,7 +783,6 @@
       if (examenFinalizado) return;
 
       examenFinalizado = true;
-      clearInterval(intervalo);
 
       let total = Object.keys(respuestasCorrectas).length;
       let correctas = 0;
@@ -922,8 +875,6 @@
     }
 
     function reiniciarExamen() {
-      clearInterval(intervalo);
-
       document.getElementById("quizForm").reset();
       document.getElementById("resultado").style.display = "none";
       document.getElementById("revision").innerHTML = "";
@@ -936,11 +887,9 @@
       botonInicio.disabled = false;
       botonInicio.textContent = "Iniciar examen";
 
-      tiempoRestante = 0;
       examenIniciado = false;
       examenFinalizado = false;
 
-      actualizarTimer();
       actualizarProgreso();
       limpiarEstadosVisuales();
       bloquearExamen(true);
@@ -953,7 +902,6 @@
     });
 
     window.addEventListener("load", () => {
-      actualizarTimer();
       actualizarProgreso();
       bloquearExamen(true);
     });
