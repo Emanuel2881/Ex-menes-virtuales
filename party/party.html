@@ -173,10 +173,12 @@
         <option value="">Selecciona un examen</option>
       </select>
 
+      <input type="number" id="duracionInput" min="1" max="300" placeholder="Tiempo en minutos (ej. 20)">
+
       <button onclick="guardarSeleccion()">Guardar selección</button>
 
       <p id="seleccionActual" style="margin-top:14px; color:#475569; font-weight:bold;"></p>
-      <p class="mini-note">Ahorita cualquiera de los dos puede elegir examen. Luego se puede limitar solo al host.</p>
+      <p class="mini-note">Este tiempo será el cronómetro universal del modo party para ambos jugadores.</p>
     </div>
 
     <div class="section" id="accionesSala" style="display:none;">
@@ -267,6 +269,7 @@
       document.getElementById("estadoListos").textContent = "";
       document.getElementById("seleccionActual").textContent = "";
       document.getElementById("materiaSelect").value = "";
+      document.getElementById("duracionInput").value = "";
       document.getElementById("examenSelect").innerHTML = '<option value="">Selecciona un examen</option>';
     }
 
@@ -304,8 +307,9 @@
         jugador2 ? `${jugador2.nombre} ${jugador2.listo ? "✅" : "⏳"}` : "Esperando jugador...";
 
       if (datosSala.seleccion) {
+        const minutos = datosSala.timer?.duracion ? Math.floor(datosSala.timer.duracion / 60) : "-";
         document.getElementById("seleccionActual").textContent =
-          `Materia: ${datosSala.seleccion.materia} | Examen: ${datosSala.seleccion.examen}`;
+          `Materia: ${datosSala.seleccion.materia} | Examen: ${datosSala.seleccion.examen} | Tiempo: ${minutos} min`;
       } else {
         document.getElementById("seleccionActual").textContent =
           "Todavía no se ha seleccionado ningún examen.";
@@ -313,14 +317,15 @@
 
       const ambosListos = jugador1?.listo && jugador2?.listo;
       const haySeleccion = !!datosSala.seleccion;
+      const hayTimer = !!datosSala.timer?.duracion;
 
-      if (ambosListos && haySeleccion) {
+      if (ambosListos && haySeleccion && hayTimer) {
         document.getElementById("estadoListos").textContent =
-          "Los dos jugadores ya están listos y ya hay examen seleccionado. Ya pueden iniciar.";
+          "Los dos jugadores ya están listos, ya hay examen y tiempo definido. Ya pueden iniciar.";
         document.getElementById("btnIniciar").style.display = "inline-block";
-      } else if (ambosListos && !haySeleccion) {
+      } else if (ambosListos && (!haySeleccion || !hayTimer)) {
         document.getElementById("estadoListos").textContent =
-          "Los dos jugadores están listos, pero falta seleccionar el examen.";
+          "Los dos jugadores están listos, pero falta seleccionar examen o tiempo.";
         document.getElementById("btnIniciar").style.display = "none";
       } else {
         document.getElementById("estadoListos").textContent =
@@ -346,8 +351,11 @@
 
           if (!redirigido && datosSala.seleccion?.ruta) {
             redirigido = true;
+            const separador = datosSala.seleccion.ruta.includes("?") ? "&" : "?";
+            const destino = `${datosSala.seleccion.ruta}${separador}sala=${encodeURIComponent(datosSala.codigo)}`;
+            console.log("Destino final:", destino);
             setTimeout(() => {
-              const ruta = datosSala.seleccion.ruta; const separador = ruta.includes("?") ? "&" : "?"; const destino = `${ruta}${separador}sala=${codigoSalaActual}`; window.location.href = destino;
+              window.location.href = destino;
             }, 700);
           }
         }
@@ -499,9 +507,15 @@
 
       const materia = document.getElementById("materiaSelect").value;
       const examenIndex = document.getElementById("examenSelect").value;
+      const minutos = parseInt(document.getElementById("duracionInput").value, 10);
 
       if (!materia || examenIndex === "") {
         alert("Selecciona una materia y un examen.");
+        return;
+      }
+
+      if (Number.isNaN(minutos) || minutos < 1) {
+        alert("Ingresa un tiempo válido en minutos.");
         return;
       }
 
@@ -515,10 +529,13 @@
             materia: materia,
             examen: examen.nombre,
             ruta: examen.ruta
+          },
+          timer: {
+            duracion: minutos * 60
           }
         });
 
-        mostrarMensaje(`Examen seleccionado: ${examen.nombre} de ${materia} ✅`);
+        mostrarMensaje(`Examen seleccionado: ${examen.nombre} de ${materia} • ${minutos} min ✅`);
       } catch (error) {
         console.error("Error al guardar selección:", error);
         alert("No se pudo guardar la selección.");
@@ -554,6 +571,11 @@
           return;
         }
 
+        if (!datosSala.timer?.duracion) {
+          alert("Primero deben definir el tiempo del cronómetro.");
+          return;
+        }
+
         const tiempoInicio = Date.now() + 5000;
 
         redirigido = false;
@@ -564,7 +586,11 @@
 
         await update(salaRef, {
           estado: "iniciando",
-          startTime: tiempoInicio
+          startTime: tiempoInicio,
+          timer: {
+            ...datosSala.timer,
+            startTime: tiempoInicio
+          }
         });
 
         console.log("Examen iniciando en:", tiempoInicio);
@@ -590,9 +616,7 @@
           return;
         }
 
-        const datosSala = snapshot.val();
         const esHost = jugadorActual === "jugador1";
-        const existeJugador2 = !!datosSala.jugadores?.jugador2;
 
         if (esHost) {
           await remove(salaRef);
