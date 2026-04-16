@@ -178,6 +178,30 @@
       color:#b91c1c;
       font-weight:bold;
     }
+    .party-grid{
+  display:grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap:14px;
+  margin-top:18px;
+}
+
+.party-card{
+  background:#ffffff;
+  border:1px solid #fde68a;
+  border-radius:16px;
+  padding:16px;
+  text-align:center;
+}
+
+.party-winner{
+  margin-top:16px;
+  padding:14px;
+  border-radius:14px;
+  background:#fffbeb;
+  border:1px solid #fcd34d;
+  font-weight:bold;
+  text-align:center;
+}
   </style>
 </head>
 <body>
@@ -377,121 +401,143 @@
           <p id="puntajeTexto"></p>
           <div class="review" id="revision"></div>
         </div>
+        <div class="result" id="resultadoParty" style="display:none;">
+  <h2>Resultado final de la sala</h2>
+  <div id="partyResultadoContenido"></div>
+</div>
 
       </form>
     </div>
   </div>
 
   <script>
-    const respuestasCorrectas = {
-      q1:"c",
-      q2:"a",
-      q3:"b",
-      q4:"c",
-      q5:"a",
-      q6:"c",
-      q7:"b",
-      q8:"d",
-      q9:"b",
-      q10:"a",
-      q11:"d",
-      q12:"c",
-      q13:"b",
-      q14:"a",
-      q15:"c",
-      q16:"b",
-      q17:"a",
-      q18:"d",
-      q19:"c",
-      q20:"c",
-      q21:"c",
-      q22:"a"
-    };
+  const respuestasCorrectas = {
+    q1:"c",
+    q2:"a",
+    q3:"b",
+    q4:"c",
+    q5:"a",
+    q6:"c",
+    q7:"b",
+    q8:"d",
+    q9:"b",
+    q10:"a",
+    q11:"d",
+    q12:"c",
+    q13:"b",
+    q14:"a",
+    q15:"c",
+    q16:"b",
+    q17:"a",
+    q18:"d",
+    q19:"c",
+    q20:"c",
+    q21:"c",
+    q22:"a"
+  };
 
-    const textosCorrectos = {
-      q1:"C. Metaloides",
-      q2:"A. 1s² 2s² 2p⁶ 3s² 3p⁶ 4s¹",
-      q3:"B. Es una partícula subatómica con carga negativa y masa diminuta",
-      q4:"C. 3.011 × 10²³",
-      q5:"A. Na < Mg < Si < P < S < Cl",
-      q6:"C. 1.40 g",
-      q7:"B. +4",
-      q8:"D. Flúor",
-      q9:"B. Apolar",
-      q10:"A. Átomos de carbono e hidrógeno",
-      q11:"D. Anhídrido perclórico",
-      q12:"C. Ácido telurhídrico",
-      q13:"B. Cromo (Cr)",
-      q14:"A. (CH₂O)n",
-      q15:"C. Isómeros",
-      q16:"B. Cruzado y difícil de romper",
-      q17:"A. Glucosídicos",
-      q18:"D. Glucógeno",
-      q19:"C. Puentes de hidrógeno",
-      q20:"C. Desnaturalización",
-      q21:"C. Enzimas",
-      q22:"A. Átomos, moléculas, células, tejidos, órganos, sistemas"
-    };
+  const textosCorrectos = {
+    q1:"C. Metaloides",
+    q2:"A. 1s² 2s² 2p⁶ 3s² 3p⁶ 4s¹",
+    q3:"B. Es una partícula subatómica con carga negativa y masa diminuta",
+    q4:"C. 3.011 × 10²³",
+    q5:"A. Na < Mg < Si < P < S < Cl",
+    q6:"C. 1.40 g",
+    q7:"B. +4",
+    q8:"D. Flúor",
+    q9:"B. Apolar",
+    q10:"A. Átomos de carbono e hidrógeno",
+    q11:"D. Anhídrido perclórico",
+    q12:"C. Ácido telurhídrico",
+    q13:"B. Cromo (Cr)",
+    q14:"A. (CH₂O)n",
+    q15:"C. Isómeros",
+    q16:"B. Cruzado y difícil de romper",
+    q17:"A. Glucosídicos",
+    q18:"D. Glucógeno",
+    q19:"C. Puentes de hidrógeno",
+    q20:"C. Desnaturalización",
+    q21:"C. Enzimas",
+    q22:"A. Átomos, moléculas, células, tejidos, órganos, sistemas"
+  };
 
-    function calificarExamen() {
-      let total = Object.keys(respuestasCorrectas).length;
-      let correctas = 0;
-      let respondidas = 0;
-      let revisionHTML = "";
+  function calificarExamen() {
+    let total = Object.keys(respuestasCorrectas).length;
+    let correctas = 0;
+    let incorrectas = 0;
+    let sinResponder = 0;
+    let respondidas = 0;
+    let revisionHTML = "";
 
-      for (let pregunta in respuestasCorrectas) {
-        const seleccionada = document.querySelector(`input[name="${pregunta}"]:checked`);
+    for (let pregunta in respuestasCorrectas) {
+      const seleccionada = document.querySelector(`input[name="${pregunta}"]:checked`);
 
-        if (seleccionada) {
-          respondidas++;
-          if (seleccionada.value === respuestasCorrectas[pregunta]) {
-            correctas++;
-            revisionHTML += `
-              <div class="review-item">
-                <span class="correct">${pregunta.toUpperCase()}: Correcta</span><br>
-                Respuesta: ${textosCorrectos[pregunta]}
-              </div>
-            `;
-          } else {
-            const textoMarcado = seleccionada.parentElement.textContent.trim();
-            revisionHTML += `
-              <div class="review-item">
-                <span class="incorrect">${pregunta.toUpperCase()}: Incorrecta</span><br>
-                Tu respuesta: ${textoMarcado}<br>
-                Correcta: ${textosCorrectos[pregunta]}
-              </div>
-            `;
-          }
-        } else {
+      if (seleccionada) {
+        respondidas++;
+
+        if (seleccionada.value === respuestasCorrectas[pregunta]) {
+          correctas++;
           revisionHTML += `
             <div class="review-item">
-              <span class="incorrect">${pregunta.toUpperCase()}: Sin responder</span><br>
+              <span class="correct">${pregunta.toUpperCase()}: Correcta</span><br>
+              Respuesta: ${textosCorrectos[pregunta]}
+            </div>
+          `;
+        } else {
+          incorrectas++;
+          const textoMarcado = seleccionada.parentElement.textContent.trim();
+          revisionHTML += `
+            <div class="review-item">
+              <span class="incorrect">${pregunta.toUpperCase()}: Incorrecta</span><br>
+              Tu respuesta: ${textoMarcado}<br>
               Correcta: ${textosCorrectos[pregunta]}
             </div>
           `;
         }
+      } else {
+        sinResponder++;
+        revisionHTML += `
+          <div class="review-item">
+            <span class="incorrect">${pregunta.toUpperCase()}: Sin responder</span><br>
+            Correcta: ${textosCorrectos[pregunta]}
+          </div>
+        `;
       }
-
-      const porcentaje = ((correctas / total) * 100).toFixed(1);
-
-      document.getElementById("puntajeTexto").innerHTML = `
-        Respondiste <strong>${respondidas}</strong> de <strong>${total}</strong> preguntas.<br>
-        Obtuviste <strong>${correctas}</strong> correctas de <strong>${total}</strong>.<br>
-        Tu nota fue: <strong>${porcentaje}%</strong>
-      `;
-
-      document.getElementById("revision").innerHTML = revisionHTML;
-      document.getElementById("resultado").style.display = "block";
-      document.getElementById("resultado").scrollIntoView({ behavior: "smooth" });
     }
 
-    function reiniciarExamen() {
-      document.getElementById("resultado").style.display = "none";
-      document.getElementById("revision").innerHTML = "";
-      document.getElementById("puntajeTexto").innerHTML = "";
-      window.scrollTo({ top: 0, behavior: "smooth" });
+    const porcentaje = ((correctas / total) * 100).toFixed(1);
+
+    if (typeof window.enviarResultadoFinal === "function") {
+      window.enviarResultadoFinal({
+        correctas,
+        incorrectas,
+        sinResponder,
+        total,
+        porcentaje: Number(porcentaje)
+      });
     }
-  </script>
+
+    document.getElementById("puntajeTexto").innerHTML = `
+      Respondiste <strong>${respondidas}</strong> de <strong>${total}</strong> preguntas.<br>
+      Obtuviste <strong>${correctas}</strong> correctas de <strong>${total}</strong>.<br>
+      Tu nota fue: <strong>${porcentaje}%</strong>
+    `;
+
+    document.getElementById("revision").innerHTML = revisionHTML;
+    document.getElementById("resultado").style.display = "block";
+    document.getElementById("resultado").scrollIntoView({ behavior: "smooth" });
+  }
+
+  function reiniciarExamen() {
+    document.getElementById("quizForm").reset();
+    document.getElementById("resultado").style.display = "none";
+    document.getElementById("resultadoParty").style.display = "none";
+    document.getElementById("revision").innerHTML = "";
+    document.getElementById("puntajeTexto").innerHTML = "";
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+</script>
   <script type="module" src="../party/party-timer.js"></script>
+<script type="module" src="../party/party-resultados.js"></script>
 </body>
 </html>
