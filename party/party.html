@@ -347,7 +347,7 @@
           if (!redirigido && datosSala.seleccion?.ruta) {
             redirigido = true;
             setTimeout(() => {
-              window.location.href = datosSala.seleccion.ruta;
+              const ruta = datosSala.seleccion.ruta; const separador = ruta.includes("?") ? "&" : "?"; const destino = `${ruta}${separador}sala=${codigoSalaActual}`; window.location.href = destino;
             }, 700);
           }
         }
