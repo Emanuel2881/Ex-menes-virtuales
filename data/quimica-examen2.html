@@ -103,26 +103,7 @@
       gap:12px;
       justify-content:center;
       align-items:center;
-    }
-
-    .setup-box label{
-      font-weight:bold;
-      color:#0369a1;
-    }
-
-    .setup-box input{
-      width:110px;
-      padding:10px 12px;
-      border-radius:12px;
-      border:1px solid #93c5fd;
-      font-size:1rem;
-      text-align:center;
-    }
-
-    .setup-box input:focus{
-      outline:none;
-      border-color:#0284c7;
-      box-shadow:0 0 0 3px rgba(14,165,233,0.15);
+      flex-direction:column;
     }
 
     .setup-msg{
@@ -350,10 +331,8 @@
     </div>
 
     <div class="setup-box">
-      <label for="minutosInput">Tiempo límite en minutos:</label>
-      <input type="number" id="minutosInput" min="1" max="300" placeholder="Ej. 20">
       <button type="button" class="btn-start" onclick="iniciarExamen()">Iniciar examen</button>
-      <div class="setup-msg" id="setupMsg">Escribe el tiempo que quieras y luego presiona “Iniciar examen”.</div>
+      <div class="setup-msg" id="setupMsg">Presiona “Iniciar examen” para comenzar.</div>
     </div>
 
     <div class="content">
@@ -748,18 +727,9 @@
     function iniciarExamen() {
       if (examenFinalizado) return;
 
-      const minutos = parseInt(document.getElementById("minutosInput").value);
-
-      if (isNaN(minutos) || minutos < 1) {
-        document.getElementById("setupMsg").textContent = "Ingresa un número válido de minutos mayor que 0.";
-        return;
-      }
-
       examenIniciado = true;
 
-      document.getElementById("setupMsg").textContent = `Examen iniciado con ${minutos} minuto(s).`;
-      document.getElementById("minutosInput").disabled = true;
-
+      document.getElementById("setupMsg").textContent = "Examen en curso.";
       const botonInicio = document.querySelector(".btn-start");
       botonInicio.disabled = true;
       botonInicio.textContent = "Examen en curso";
@@ -776,7 +746,7 @@
 
     function calificarExamen() {
       if (!examenIniciado) {
-        document.getElementById("setupMsg").textContent = "Primero debes escribir el tiempo y luego iniciar el examen.";
+        document.getElementById("setupMsg").textContent = "Primero debes presionar “Iniciar examen”.";
         return;
       }
 
@@ -879,9 +849,7 @@
       document.getElementById("resultado").style.display = "none";
       document.getElementById("revision").innerHTML = "";
       document.getElementById("puntajeTexto").innerHTML = "";
-      document.getElementById("setupMsg").textContent = "Escribe el tiempo que quieras y luego presiona “Iniciar examen”.";
-      document.getElementById("minutosInput").disabled = false;
-      document.getElementById("minutosInput").value = "";
+      document.getElementById("setupMsg").textContent = "Presiona “Iniciar examen” para comenzar.";
 
       const botonInicio = document.querySelector(".btn-start");
       botonInicio.disabled = false;
