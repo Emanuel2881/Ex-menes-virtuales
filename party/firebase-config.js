@@ -1,24 +1,21 @@
-// firebase-config.js
-
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { initializeApp, getApps, getApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getDatabase } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
 
-// configuración de tu proyecto
 const firebaseConfig = {
-  apiKey: "AIzaSyBjbbNf2xNl6LG0cIdMYRDb3SWWe4Mx9RE",
-  authDomain: "exam-party.firebaseapp.com",
-  projectId: "exam-party",
-  storageBucket: "exam-party.firebasestorage.app",
-  messagingSenderId: "1020166508098",
-  appId: "1:1020166508098:web:73a056e8989f46928a67db",
-  measurementId: "G-PVQMLWK794"
+  apiKey: "TU_API_KEY",
+  authDomain: "TU_AUTH_DOMAIN",
+  databaseURL: "TU_DATABASE_URL",
+  projectId: "TU_PROJECT_ID",
+  storageBucket: "TU_STORAGE_BUCKET",
+  messagingSenderId: "TU_MESSAGING_SENDER_ID",
+  appId: "TU_APP_ID"
 };
 
-// iniciar firebase
-const app = initializeApp(firebaseConfig);
+// 🔥 clave del fix
+const app = getApps().length === 0 
+  ? initializeApp(firebaseConfig)
+  : getApp();
 
-// base de datos (esto es lo que usaremos para salas)
 const db = getDatabase(app);
 
-// exportamos para usarlo en otros archivos
 export { db };
