@@ -525,14 +525,6 @@
     let respondidas = 0;
     let revisionHTML = "";
 
-    window.enviarResultadoFinal({
-  correctas,
-  incorrectas,
-  sinResponder,
-  total,
-  porcentaje: Number(porcentaje)
-});
-
     limpiarEstadosVisuales();
 
     for (let pregunta in respuestasCorrectas) {
@@ -584,6 +576,16 @@
 
     const porcentaje = ((correctas / total) * 100).toFixed(1);
 
+    if (typeof window.enviarResultadoFinal === "function") {
+      window.enviarResultadoFinal({
+        correctas,
+        incorrectas,
+        sinResponder,
+        total,
+        porcentaje: Number(porcentaje)
+      });
+    }
+
     document.getElementById("puntajeTexto").innerHTML = `
       Respondiste <strong>${respondidas}</strong> de <strong>${total}</strong> preguntas.<br>
       Obtuviste <strong>${correctas}</strong> correctas de <strong>${total}</strong>.<br>
@@ -616,6 +618,7 @@
     document.getElementById("resultado").style.display = "none";
     document.getElementById("revision").innerHTML = "";
     document.getElementById("puntajeTexto").innerHTML = "";
+    document.getElementById("resultadoParty").style.display = "none";
     limpiarEstadosVisuales();
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
