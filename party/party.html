@@ -14,66 +14,106 @@
     body{
       font-family: Arial, Helvetica, sans-serif;
       min-height:100vh;
-      background: linear-gradient(135deg, #e0f2fe, #f8fafc, #dbeafe);
+      background:
+        radial-gradient(circle at top left, #dbeafe 0%, transparent 30%),
+        radial-gradient(circle at bottom right, #bfdbfe 0%, transparent 28%),
+        linear-gradient(135deg, #e0f2fe, #f8fafc, #dbeafe);
       color:#1e293b;
       display:flex;
       justify-content:center;
       align-items:center;
-      padding:20px;
+      padding:24px;
     }
 
     .box{
-      width:min(700px, 95%);
-      background: rgba(255,255,255,0.88);
-      border-radius:24px;
+      width:min(860px, 100%);
+      background: rgba(255,255,255,0.92);
+      border-radius:28px;
       padding:30px;
-      box-shadow:0 10px 30px rgba(0,0,0,0.08);
-      border:1px solid rgba(255,255,255,0.7);
+      box-shadow:0 18px 45px rgba(30,41,59,0.12);
+      border:1px solid rgba(255,255,255,0.85);
+      backdrop-filter: blur(10px);
     }
 
-    h1{
+    .hero{
       text-align:center;
+      margin-bottom:24px;
+    }
+
+    .hero h1{
       color:#1e3a8a;
       margin-bottom:10px;
+      font-size: clamp(2rem, 4vw, 2.8rem);
     }
 
-    p{
-      text-align:center;
+    .hero p{
       color:#475569;
-      margin-bottom:25px;
-      line-height:1.6;
+      line-height:1.7;
+      max-width:650px;
+      margin:0 auto;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap:18px;
+      margin-bottom:18px;
     }
 
     .section{
       background:#f8fafc;
       border:1px solid #dbeafe;
-      border-radius:18px;
+      border-radius:20px;
       padding:20px;
-      margin-bottom:20px;
+      box-shadow:0 8px 24px rgba(37,99,235,0.05);
+    }
+
+    .section.full{
+      grid-column:1 / -1;
     }
 
     .section h2{
       color:#1d4ed8;
       margin-bottom:14px;
-      font-size:1.2rem;
+      font-size:1.15rem;
+    }
+
+    .field{
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+      margin-bottom:12px;
+    }
+
+    .field label{
+      font-size:0.95rem;
+      color:#334155;
+      font-weight:bold;
     }
 
     input,
     select{
       width:100%;
       padding:12px 14px;
-      border-radius:12px;
+      border-radius:14px;
       border:1px solid #cbd5e1;
-      margin-bottom:12px;
       font-size:1rem;
       background:white;
+      transition:0.2s ease;
     }
 
     input:focus,
     select:focus{
       outline:none;
       border-color:#2563eb;
-      box-shadow:0 0 0 3px rgba(37,99,235,0.12);
+      box-shadow:0 0 0 4px rgba(37,99,235,0.12);
+    }
+
+    .btn-row{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      margin-top:8px;
     }
 
     button{
@@ -81,16 +121,23 @@
       background:#2563eb;
       color:white;
       padding:12px 18px;
-      border-radius:12px;
+      border-radius:14px;
       font-weight:bold;
       cursor:pointer;
       transition:0.2s ease;
-      margin-right:8px;
-      margin-bottom:8px;
     }
 
     button:hover{
       background:#1d4ed8;
+      transform: translateY(-1px);
+    }
+
+    .btn-secondary{
+      background:#0ea5e9;
+    }
+
+    .btn-secondary:hover{
+      background:#0284c7;
     }
 
     .btn-danger{
@@ -101,92 +148,204 @@
       background:#b91c1c;
     }
 
-    .back{
-      display:inline-block;
-      margin-top:10px;
-      text-decoration:none;
-      color:#1d4ed8;
-      font-weight:bold;
-    }
-
     .mensaje{
-      margin-top:18px;
-      padding:14px;
-      border-radius:14px;
+      margin:18px 0;
+      padding:14px 16px;
+      border-radius:16px;
       background:#eff6ff;
       color:#1e40af;
       text-align:center;
       font-weight:bold;
       display:none;
-      line-height:1.6;
+      line-height:1.7;
+      border:1px solid #bfdbfe;
+    }
+
+    .info-grid{
+      display:grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap:12px;
+      margin-top:10px;
+    }
+
+    .info-card{
+      background:white;
+      border:1px solid #dbeafe;
+      border-radius:16px;
+      padding:14px;
+      box-shadow:0 4px 14px rgba(30,64,175,0.05);
+    }
+
+    .info-card span{
+      display:block;
+      font-size:0.9rem;
+      color:#64748b;
+      margin-bottom:6px;
+      font-weight:bold;
+    }
+
+    .info-card strong{
+      color:#0f172a;
+      font-size:1rem;
+      line-height:1.5;
+      word-break:break-word;
     }
 
     .mini-note{
-      text-align:left;
-      margin:10px 0 0;
-      font-size:0.95rem;
+      margin-top:10px;
+      font-size:0.93rem;
       color:#64748b;
+      line-height:1.6;
+    }
+
+    .back{
+      display:inline-block;
+      margin-top:8px;
+      text-decoration:none;
+      color:#1d4ed8;
+      font-weight:bold;
+    }
+
+    .back:hover{
+      text-decoration:underline;
+    }
+
+    @media (max-width: 640px){
+      .box{
+        padding:20px;
+      }
+
+      button{
+        width:100%;
+      }
     }
   </style>
 </head>
 <body>
   <div class="box">
-    <h1>Modo Party 🎉</h1>
-    <p>
-      Crea una sala o únete con un código para hacer el mismo examen con otra persona.
-    </p>
-
-    <div class="section">
-      <h2>Crear sala</h2>
-      <input type="text" id="nombre" placeholder="Escribe tu nombre">
-      <button onclick="crearSala()">Crear sala</button>
+    <div class="hero">
+      <h1>Modo Party 🎉</h1>
+      <p>
+        Crea una sala o únete con un código para hacer el mismo examen con otra persona,
+        con inicio sincronizado y cronómetro universal.
+      </p>
     </div>
 
-    <div class="section">
-      <h2>Unirse a sala</h2>
-      <input type="text" id="codigo" placeholder="Código de sala">
-      <button onclick="unirseSala()">Unirse</button>
+    <div class="grid">
+      <div class="section">
+        <h2>Tu perfil</h2>
+
+        <div class="field">
+          <label for="nombre">Tu nombre</label>
+          <input type="text" id="nombre" placeholder="Ej. Pepito">
+        </div>
+
+        <p class="mini-note">
+          Tu nombre se guarda automáticamente. Si refrescas la página, seguirá apareciendo.
+        </p>
+      </div>
+
+      <div class="section">
+        <h2>Unirse a sala</h2>
+
+        <div class="field">
+          <label for="codigo">Código de sala</label>
+          <input type="text" id="codigo" placeholder="Ej. ABCD" maxlength="10">
+        </div>
+
+        <div class="btn-row">
+          <button class="btn-secondary" onclick="unirseSala()">Unirse</button>
+        </div>
+      </div>
+
+      <div class="section full">
+        <h2>Crear sala</h2>
+        <div class="btn-row">
+          <button onclick="crearSala()">Crear sala</button>
+        </div>
+      </div>
     </div>
 
     <div class="mensaje" id="mensaje"></div>
 
     <div class="section" id="infoSala" style="display:none;">
       <h2>Sala actual</h2>
-      <p><strong>Código:</strong> <span id="salaCodigo">-</span></p>
-      <p><strong>Estado:</strong> <span id="salaEstado">-</span></p>
-      <p><strong>Jugador 1:</strong> <span id="jugador1Nombre">-</span></p>
-      <p><strong>Jugador 2:</strong> <span id="jugador2Nombre">-</span></p>
+
+      <div class="info-grid">
+        <div class="info-card">
+          <span>Código</span>
+          <strong id="salaCodigo">-</strong>
+        </div>
+
+        <div class="info-card">
+          <span>Estado</span>
+          <strong id="salaEstado">-</strong>
+        </div>
+
+        <div class="info-card">
+          <span>Jugador 1</span>
+          <strong id="jugador1Nombre">-</strong>
+        </div>
+
+        <div class="info-card">
+          <span>Jugador 2</span>
+          <strong id="jugador2Nombre">-</strong>
+        </div>
+      </div>
     </div>
 
     <div class="section" id="seleccionExamen" style="display:none;">
       <h2>Seleccionar examen</h2>
 
-      <select id="materiaSelect">
-        <option value="">Selecciona una materia</option>
-        <option value="biologia">Biología</option>
-        <option value="quimica">Química</option>
-        <option value="numerica">Numérica</option>
-        <option value="verbal">Verbal</option>
-      </select>
+      <div class="grid" style="margin-bottom:0;">
+        <div>
+          <div class="field">
+            <label for="materiaSelect">Materia</label>
+            <select id="materiaSelect">
+              <option value="">Selecciona una materia</option>
+              <option value="biologia">Biología</option>
+              <option value="quimica">Química</option>
+              <option value="numerica">Numérica</option>
+              <option value="verbal">Verbal</option>
+            </select>
+          </div>
+        </div>
 
-      <select id="examenSelect">
-        <option value="">Selecciona un examen</option>
-      </select>
+        <div>
+          <div class="field">
+            <label for="examenSelect">Examen</label>
+            <select id="examenSelect">
+              <option value="">Selecciona un examen</option>
+            </select>
+          </div>
+        </div>
+      </div>
 
-      <input type="number" id="duracionInput" min="1" max="300" placeholder="Tiempo en minutos (ej. 20)">
+      <div class="field">
+        <label for="duracionInput">Tiempo universal en minutos</label>
+        <input type="number" id="duracionInput" min="1" max="300" placeholder="Ej. 20">
+      </div>
 
-      <button onclick="guardarSeleccion()">Guardar selección</button>
+      <div class="btn-row">
+        <button onclick="guardarSeleccion()">Guardar selección</button>
+      </div>
 
       <p id="seleccionActual" style="margin-top:14px; color:#475569; font-weight:bold;"></p>
-      <p class="mini-note">Este tiempo será el cronómetro universal del modo party para ambos jugadores.</p>
+      <p class="mini-note">
+        Este tiempo será el cronómetro universal del modo party para ambos jugadores.
+      </p>
     </div>
 
     <div class="section" id="accionesSala" style="display:none;">
       <h2>Acciones</h2>
-      <button onclick="marcarListo()">Estoy listo</button>
-      <button id="btnIniciar" onclick="iniciarExamen()" style="display:none;">Iniciar examen 🚀</button>
-      <button class="btn-danger" onclick="salirSala()">Salir de sala</button>
-      <p id="estadoListos" style="margin-top:14px; color:#475569; font-weight:bold;"></p>
+
+      <div class="btn-row">
+        <button onclick="marcarListo()">Estoy listo</button>
+        <button id="btnIniciar" onclick="iniciarExamen()" style="display:none;">Iniciar examen 🚀</button>
+        <button class="btn-danger" onclick="salirSala()">Salir de sala</button>
+      </div>
+
+      <p id="estadoListos" style="margin-top:14px; color:#475569; font-weight:bold; line-height:1.6;"></p>
     </div>
 
     <a class="back" href="../index.html">⬅ Volver al inicio</a>
@@ -196,13 +355,14 @@
     import { db } from "./firebase-config.js";
     import { ref, set, get, update, onValue, remove } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
 
-    console.log("Firebase conectado:", db);
-
     let codigoSalaActual = "";
     let jugadorActual = "";
     let contadorIntervalo = null;
     let redirigido = false;
-    let desuscribirSala = null;
+
+    const LS_NOMBRE = "partyNombre";
+    const LS_CODIGO = "partyCodigoSala";
+    const LS_JUGADOR = "partyJugador";
 
     const examenesPorMateria = {
       biologia: [
@@ -247,21 +407,30 @@
       mensaje.innerHTML = texto;
     }
 
-    function limpiarEstadoLocal() {
-      codigoSalaActual = "";
-      jugadorActual = "";
-      redirigido = false;
+    function guardarNombreLocal() {
+      const nombre = document.getElementById("nombre").value.trim();
+      localStorage.setItem(LS_NOMBRE, nombre);
+    }
 
-      if (contadorIntervalo) {
-        clearInterval(contadorIntervalo);
-        contadorIntervalo = null;
-      }
+    function guardarSesionLocal() {
+      localStorage.setItem(LS_CODIGO, codigoSalaActual || "");
+      localStorage.setItem(LS_JUGADOR, jugadorActual || "");
+    }
 
-      if (desuscribirSala) {
-        desuscribirSala();
-        desuscribirSala = null;
-      }
+    function limpiarSesionLocal() {
+      localStorage.removeItem(LS_CODIGO);
+      localStorage.removeItem(LS_JUGADOR);
+    }
 
+    function cargarDatosLocales() {
+      const nombreGuardado = localStorage.getItem(LS_NOMBRE) || "";
+      const codigoGuardado = localStorage.getItem(LS_CODIGO) || "";
+
+      document.getElementById("nombre").value = nombreGuardado;
+      document.getElementById("codigo").value = codigoGuardado;
+    }
+
+    function limpiarEstadoLocalUI() {
       document.getElementById("infoSala").style.display = "none";
       document.getElementById("seleccionExamen").style.display = "none";
       document.getElementById("accionesSala").style.display = "none";
@@ -271,6 +440,20 @@
       document.getElementById("materiaSelect").value = "";
       document.getElementById("duracionInput").value = "";
       document.getElementById("examenSelect").innerHTML = '<option value="">Selecciona un examen</option>';
+    }
+
+    function limpiarEstadoSalaCompleto() {
+      codigoSalaActual = "";
+      jugadorActual = "";
+      redirigido = false;
+
+      if (contadorIntervalo) {
+        clearInterval(contadorIntervalo);
+        contadorIntervalo = null;
+      }
+
+      limpiarSesionLocal();
+      limpiarEstadoLocalUI();
     }
 
     function cargarExamenes() {
@@ -353,7 +536,6 @@
             redirigido = true;
             const separador = datosSala.seleccion.ruta.includes("?") ? "&" : "?";
             const destino = `${datosSala.seleccion.ruta}${separador}sala=${encodeURIComponent(datosSala.codigo)}`;
-            console.log("Destino final:", destino);
             setTimeout(() => {
               window.location.href = destino;
             }, 700);
@@ -365,14 +547,10 @@
     function escucharSala(codigo) {
       const salaRef = ref(db, "salas/" + codigo);
 
-      if (desuscribirSala) {
-        desuscribirSala();
-      }
-
-      desuscribirSala = onValue(salaRef, (snapshot) => {
+      onValue(salaRef, (snapshot) => {
         if (!snapshot.exists()) {
           mostrarMensaje("La sala ya no existe o fue eliminada.");
-          limpiarEstadoLocal();
+          limpiarEstadoSalaCompleto();
           return;
         }
 
@@ -385,6 +563,40 @@
       });
     }
 
+    async function restaurarSesionSiExiste() {
+      const codigoGuardado = localStorage.getItem(LS_CODIGO);
+      const jugadorGuardado = localStorage.getItem(LS_JUGADOR);
+
+      if (!codigoGuardado || !jugadorGuardado) return;
+
+      try {
+        const salaRef = ref(db, "salas/" + codigoGuardado);
+        const snapshot = await get(salaRef);
+
+        if (!snapshot.exists()) {
+          limpiarSesionLocal();
+          return;
+        }
+
+        const datosSala = snapshot.val();
+
+        if (!datosSala.jugadores?.[jugadorGuardado]) {
+          limpiarSesionLocal();
+          return;
+        }
+
+        codigoSalaActual = codigoGuardado;
+        jugadorActual = jugadorGuardado;
+        redirigido = false;
+
+        document.getElementById("codigo").value = codigoGuardado;
+        escucharSala(codigoGuardado);
+        mostrarMensaje(`Reconectado a la sala <strong>${codigoGuardado}</strong> ✅`);
+      } catch (error) {
+        console.error("No se pudo restaurar la sesión:", error);
+      }
+    }
+
     window.crearSala = async function() {
       const nombre = document.getElementById("nombre").value.trim();
 
@@ -392,6 +604,8 @@
         alert("Escribe tu nombre");
         return;
       }
+
+      localStorage.setItem(LS_NOMBRE, nombre);
 
       const codigo = generarCodigo();
       const salaRef = ref(db, "salas/" + codigo);
@@ -412,15 +626,17 @@
         codigoSalaActual = codigo;
         jugadorActual = "jugador1";
         redirigido = false;
+        guardarSesionLocal();
 
         if (contadorIntervalo) {
           clearInterval(contadorIntervalo);
           contadorIntervalo = null;
         }
 
-        console.log("Sala guardada en Firebase:", codigo);
-        mostrarMensaje(`Sala creada con éxito 🎉<br>Código: <strong>${codigo}</strong>`);
         document.getElementById("codigo").value = codigo;
+        localStorage.setItem(LS_CODIGO, codigo);
+
+        mostrarMensaje(`Sala creada con éxito 🎉<br>Código: <strong>${codigo}</strong>`);
         escucharSala(codigo);
       } catch (error) {
         console.error("Error al crear sala:", error);
@@ -436,6 +652,9 @@
         alert("Escribe tu nombre y el código de sala");
         return;
       }
+
+      localStorage.setItem(LS_NOMBRE, nombre);
+      localStorage.setItem(LS_CODIGO, codigo);
 
       try {
         const salaRef = ref(db, "salas/" + codigo);
@@ -463,13 +682,13 @@
         codigoSalaActual = codigo;
         jugadorActual = "jugador2";
         redirigido = false;
+        guardarSesionLocal();
 
         if (contadorIntervalo) {
           clearInterval(contadorIntervalo);
           contadorIntervalo = null;
         }
 
-        console.log("Jugador 2 unido a sala:", codigo);
         mostrarMensaje(`Te uniste a la sala <strong>${codigo}</strong> 🎉`);
         escucharSala(codigo);
       } catch (error) {
@@ -492,7 +711,6 @@
         });
 
         mostrarMensaje("Te marcaste como listo ✅");
-        console.log(`${jugadorActual} está listo en sala ${codigoSalaActual}`);
       } catch (error) {
         console.error("Error al marcar listo:", error);
         alert("No se pudo marcar como listo.");
@@ -579,6 +797,7 @@
         const tiempoInicio = Date.now() + 5000;
 
         redirigido = false;
+
         if (contadorIntervalo) {
           clearInterval(contadorIntervalo);
           contadorIntervalo = null;
@@ -592,8 +811,6 @@
             startTime: tiempoInicio
           }
         });
-
-        console.log("Examen iniciando en:", tiempoInicio);
       } catch (error) {
         console.error("Error al iniciar examen:", error);
         alert("No se pudo iniciar el examen.");
@@ -611,7 +828,7 @@
         const snapshot = await get(salaRef);
 
         if (!snapshot.exists()) {
-          limpiarEstadoLocal();
+          limpiarEstadoSalaCompleto();
           mostrarMensaje("La sala ya no existía.");
           return;
         }
@@ -620,7 +837,7 @@
 
         if (esHost) {
           await remove(salaRef);
-          limpiarEstadoLocal();
+          limpiarEstadoSalaCompleto();
           mostrarMensaje("Saliste de la sala y la sala fue eliminada.");
           return;
         }
@@ -638,7 +855,7 @@
           }
         }
 
-        limpiarEstadoLocal();
+        limpiarEstadoSalaCompleto();
         mostrarMensaje("Saliste de la sala.");
       } catch (error) {
         console.error("Error al salir de la sala:", error);
@@ -647,6 +864,18 @@
     };
 
     document.getElementById("materiaSelect").addEventListener("change", cargarExamenes);
+
+    document.getElementById("nombre").addEventListener("input", guardarNombreLocal);
+
+    document.getElementById("codigo").addEventListener("input", (e) => {
+      e.target.value = e.target.value.toUpperCase();
+      localStorage.setItem(LS_CODIGO, e.target.value.trim().toUpperCase());
+    });
+
+    window.addEventListener("load", async () => {
+      cargarDatosLocales();
+      await restaurarSesionSiExiste();
+    });
   </script>
 </body>
 </html>
