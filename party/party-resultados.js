@@ -1,24 +1,39 @@
 import { db } from "./firebase-config.js";
 import { ref, set, onValue } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
 
+// ===============================
+// 🔍 detectar sala
+// ===============================
 const params = new URLSearchParams(window.location.search);
 const codigoSala = params.get("sala");
 
+// si no hay sala, no hace nada
 if (!codigoSala) {
-  // No está en modo party
+  console.log("Modo normal (sin party)");
 } else {
-  window.guardarResultadoParty = guardarResultadoParty;
+  console.log("Modo party activo:", codigoSala);
+
+  // exponer función global para exámenes
+  window.enviarResultadoFinal = enviarResultadoFinal;
+
+  // escuchar resultados en tiempo real
   escucharResultadosParty();
 }
 
+// ===============================
+// 👤 helpers de jugador
+// ===============================
 function obtenerJugadorActual() {
-  return localStorage.getItem("partyJugador") || sessionStorage.getItem("partyJugador") || "jugador1";
+  return localStorage.getItem("partyJugador") || "jugador1";
 }
 
 function obtenerNombreJugador() {
-  return localStorage.getItem("partyNombre") || sessionStorage.getItem("partyNombre") || obtenerJugadorActual();
+  return localStorage.getItem("partyNombre") || obtenerJugadorActual();
 }
 
+// ===============================
+// 💾 guardar resultado
+// ===============================
 async function guardarResultadoParty(data) {
   const jugadorId = obtenerJugadorActual();
   const nombre = obtenerNombreJugador();
@@ -31,8 +46,22 @@ async function guardarResultadoParty(data) {
     terminado: true,
     timestamp: Date.now()
   });
+
+  console.log("Resultado guardado:", jugadorId);
 }
 
+// ===============================
+// 🌍 función global simple
+// ===============================
+function enviarResultadoFinal(data) {
+  if (!codigoSala) return;
+
+  guardarResultadoParty(data);
+}
+
+// ===============================
+// 👀 escuchar resultados
+// ===============================
 function escucharResultadosParty() {
   const resultadosRef = ref(db, `salas/${codigoSala}/resultados`);
 
@@ -48,6 +77,9 @@ function escucharResultadosParty() {
   });
 }
 
+// ===============================
+// 🏆 mostrar comparativa
+// ===============================
 function mostrarComparacion(j1, j2) {
   const contenedor = document.getElementById("partyResultadoContenido");
   const caja = document.getElementById("resultadoParty");
