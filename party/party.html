@@ -359,6 +359,7 @@
     let jugadorActual = "";
     let contadorIntervalo = null;
     let redirigido = false;
+    let ultimaSalaEscuchada = "";
 
     const LS_NOMBRE = "partyNombre";
     const LS_CODIGO = "partyCodigoSala";
@@ -446,6 +447,7 @@
       codigoSalaActual = "";
       jugadorActual = "";
       redirigido = false;
+      ultimaSalaEscuchada = "";
 
       if (contadorIntervalo) {
         clearInterval(contadorIntervalo);
@@ -498,6 +500,13 @@
           "Todavía no se ha seleccionado ningún examen.";
       }
 
+      if (datosSala.estado === "finalizado") {
+        document.getElementById("estadoListos").textContent =
+          "Esta sala ya terminó. Puedes salir o crear otra.";
+        document.getElementById("btnIniciar").style.display = "none";
+        return;
+      }
+
       const ambosListos = jugador1?.listo && jugador2?.listo;
       const haySeleccion = !!datosSala.seleccion;
       const hayTimer = !!datosSala.timer?.duracion;
@@ -520,6 +529,7 @@
     function iniciarCuentaRegresiva(datosSala) {
       if (!datosSala.startTime) return;
       if (contadorIntervalo) return;
+      if (datosSala.estado !== "iniciando") return;
 
       contadorIntervalo = setInterval(() => {
         const ahora = Date.now();
@@ -527,24 +537,36 @@
 
         if (tiempoRestante > 0) {
           mostrarMensaje(`El examen inicia en ${Math.ceil(tiempoRestante / 1000)} segundos...`);
-        } else {
-          clearInterval(contadorIntervalo);
-          contadorIntervalo = null;
-          mostrarMensaje("¡El examen comenzó! 🚀");
+          return;
+        }
 
-          if (!redirigido && datosSala.seleccion?.ruta) {
-            redirigido = true;
-            const separador = datosSala.seleccion.ruta.includes("?") ? "&" : "?";
-            const destino = `${datosSala.seleccion.ruta}${separador}sala=${encodeURIComponent(datosSala.codigo)}`;
-            setTimeout(() => {
-              window.location.href = destino;
-            }, 700);
-          }
+        clearInterval(contadorIntervalo);
+        contadorIntervalo = null;
+
+        const segundosDesdeInicio = Math.floor((ahora - datosSala.startTime) / 1000);
+
+        if (segundosDesdeInicio > 15) {
+          mostrarMensaje("El examen de esta sala ya había iniciado. No se volverá a abrir para evitar bucles.");
+          return;
+        }
+
+        mostrarMensaje("¡El examen comenzó! 🚀");
+
+        if (!redirigido && datosSala.seleccion?.ruta) {
+          redirigido = true;
+          const separador = datosSala.seleccion.ruta.includes("?") ? "&" : "?";
+          const destino = `${datosSala.seleccion.ruta}${separador}sala=${encodeURIComponent(datosSala.codigo)}`;
+          setTimeout(() => {
+            window.location.href = destino;
+          }, 700);
         }
       }, 250);
     }
 
     function escucharSala(codigo) {
+      if (ultimaSalaEscuchada === codigo) return;
+      ultimaSalaEscuchada = codigo;
+
       const salaRef = ref(db, "salas/" + codigo);
 
       onValue(salaRef, (snapshot) => {
@@ -556,6 +578,13 @@
 
         const datosSala = snapshot.val();
         mostrarSala(datosSala);
+
+        if (datosSala.estado === "finalizado") {
+          mostrarMensaje("La sala ya terminó. Puedes crear una nueva o salir de esta.");
+          limpiarSesionLocal();
+          redirigido = true;
+          return;
+        }
 
         if (datosSala.estado === "iniciando" && datosSala.startTime) {
           iniciarCuentaRegresiva(datosSala);
@@ -582,6 +611,12 @@
 
         if (!datosSala.jugadores?.[jugadorGuardado]) {
           limpiarSesionLocal();
+          return;
+        }
+
+        if (datosSala.estado === "finalizado") {
+          limpiarSesionLocal();
+          mostrarMensaje("Tu sala anterior ya terminó. Crea una nueva para volver a jugar.");
           return;
         }
 
@@ -615,11 +650,18 @@
           codigo: codigo,
           host: nombre,
           estado: "esperando",
+          startTime: null,
+          seleccion: null,
+          resultados: null,
           jugadores: {
             jugador1: {
               nombre: nombre,
               listo: false
             }
+          },
+          timer: {
+            duracion: 0,
+            startTime: null
           }
         });
 
@@ -666,6 +708,12 @@
         }
 
         const datosSala = snapshot.val();
+
+        if (datosSala.estado === "finalizado") {
+          alert("Esa sala ya terminó. Crea una nueva.");
+          limpiarSesionLocal();
+          return;
+        }
 
         if (datosSala.jugadores && datosSala.jugadores.jugador2) {
           alert("La sala ya tiene 2 jugadores");
@@ -743,16 +791,21 @@
         const salaRef = ref(db, "salas/" + codigoSalaActual);
 
         await update(salaRef, {
+          estado: "esperando",
+          startTime: null,
+          resultados: null,
           seleccion: {
             materia: materia,
             examen: examen.nombre,
             ruta: examen.ruta
           },
           timer: {
-            duracion: minutos * 60
+            duracion: minutos * 60,
+            startTime: null
           }
         });
 
+        redirigido = false;
         mostrarMensaje(`Examen seleccionado: ${examen.nombre} de ${materia} • ${minutos} min ✅`);
       } catch (error) {
         console.error("Error al guardar selección:", error);
@@ -806,6 +859,7 @@
         await update(salaRef, {
           estado: "iniciando",
           startTime: tiempoInicio,
+          resultados: null,
           timer: {
             ...datosSala.timer,
             startTime: tiempoInicio
@@ -864,7 +918,6 @@
     };
 
     document.getElementById("materiaSelect").addEventListener("change", cargarExamenes);
-
     document.getElementById("nombre").addEventListener("input", guardarNombreLocal);
 
     document.getElementById("codigo").addEventListener("input", (e) => {
