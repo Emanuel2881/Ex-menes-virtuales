@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Examen de Habilidad Numérica 7</title>
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg,#0f172a,#1e293b,#334155);
+      color:#fff;
+      min-height:100vh;
+      padding:20px;
+    }
+    .container{
+      max-width:1000px;
+      margin:auto;
+      background:rgba(255,255,255,.08);
+      border-radius:22px;
+      padding:26px;
+      box-shadow:0 10px 30px rgba(0,0,0,.25);
+      backdrop-filter: blur(10px);
+    }
+    h1{
+      text-align:center;
+      margin-bottom:10px;
+      font-size:2rem;
+    }
+    .subtitle{
+      text-align:center;
+      margin-bottom:20px;
+      opacity:.9;
+    }
+    .topbar{
+      display:flex;
+      justify-content:space-between;
+      flex-wrap:wrap;
+      gap:10px;
+      background:rgba(255,255,255,.12);
+      padding:14px 16px;
+      border-radius:14px;
+      margin-bottom:18px;
+      font-weight:bold;
+    }
+    .progress-wrap{
+      width:100%;
+      height:14px;
+      background:rgba(255,255,255,.18);
+      border-radius:999px;
+      overflow:hidden;
+      margin-bottom:24px;
+    }
+    .progress{
+      height:100%;
+      width:0%;
+      background:#ffd54f;
+      transition:.3s ease;
+    }
+    .question-card{
+      display:none;
+      background:rgba(255,255,255,.1);
+      border-radius:18px;
+      padding:24px;
+      animation:fade .25s ease;
+      margin-bottom:20px;
+    }
+    .question-card.active{display:block}
+    .qnum{
+      font-size:.95rem;
+      opacity:.8;
+      margin-bottom:10px;
+    }
+    .qtext{
+      font-size:1.15rem;
+      line-height:1.6;
+      margin-bottom:18px;
+    }
+    .mini-box{
+      background:rgba(255,255,255,.1);
+      border-left:4px solid #ffd54f;
+      padding:12px 14px;
+      border-radius:12px;
+      margin:12px 0 18px;
+      white-space:pre-line;
+      line-height:1.55;
+      font-size:.97rem;
+    }
+    .option{
+      background:rgba(255,255,255,.12);
+      border:2px solid transparent;
+      border-radius:12px;
+      padding:12px 14px;
+      margin:10px 0;
+      cursor:pointer;
+      transition:.2s ease;
+    }
+    .option:hover{
+      transform:translateY(-1px);
+      background:rgba(255,255,255,.18);
+    }
+    .option.selected{
+      border-color:#ffd54f;
+      background:rgba(255,213,79,.18);
+    }
+    .option.correct{
+      border-color:#4caf50;
+      background:rgba(76,175,80,.2);
+    }
+    .option.incorrect{
+      border-color:#f44336;
+      background:rgba(244,67,54,.2);
+    }
+    .buttons{
+      display:flex;
+      justify-content:space-between;
+      gap:12px;
+      margin-top:18px;
+      flex-wrap:wrap;
+    }
+    button{
+      border:none;
+      border-radius:12px;
+      padding:12px 18px;
+      font-size:1rem;
+      font-weight:bold;
+      cursor:pointer;
+      transition:.2s ease;
+    }
+    button:hover{transform:scale(1.02)}
+    .prev{background:#93c5fd;color:#102030}
+    .next{background:#ffd54f;color:#222}
+    .finish{background:#66bb6a;color:#fff}
+    .result{
+      display:none;
+      text-align:center;
+      margin-top:22px;
+      background:rgba(255,255,255,.1);
+      padding:28px;
+      border-radius:18px;
+    }
+    .review{
+      background:#ffb74d;
+      color:#222;
+      margin-top:12px;
+    }
+    @keyframes fade{
+      from{opacity:0;transform:translateY(10px)}
+      to{opacity:1;transform:translateY(0)}
+    }
+    @media(max-width:700px){
+      .qtext{font-size:1.05rem}
+      .buttons{flex-direction:column}
+      button{width:100%}
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🧠 Examen de Habilidad Numérica 7</h1>
+    <p class="subtitle">Cuadernillo 3 Resuelto - Ingreso Medicina 2021</p>
+
+    <div class="topbar">
+      <div>Pregunta: <span id="currentQuestion">1</span>/<span id="totalQuestions">22</span></div>
+      <div>Puntaje: <span id="scoreDisplay">0</span></div>
+      <div>Respondidas: <span id="answeredCount">0</span></div>
+    </div>
+
+    <div class="progress-wrap">
+      <div class="progress" id="progressBar"></div>
+    </div>
+
+    <div id="quiz"></div>
+
+    <div class="result" id="resultBox">
+      <h2>🎉 Examen finalizado</h2>
+      <p>Tu puntaje: <strong id="finalScore"></strong></p>
+      <p id="finalMessage"></p>
+      <button class="review" onclick="reviewAnswers()">Revisar respuestas</button>
+    </div>
+  </div>
+
+  <script>
+    const questions = [
+      {
+        question: "Si x + 5 = 12, ¿cuál es el valor de x?",
+        options: ["5", "6", "7", "8"],
+        answer: 2
+      },
+      {
+        question: "El doble de un número es 24. ¿Cuál es el número?",
+        options: ["10", "12", "14", "16"],
+        answer: 1
+      },
+      {
+        question: "Calcula el 15% de 200",
+        options: ["20", "25", "30", "35"],
+        answer: 2
+      },
+      {
+        question: "Si un rectángulo tiene base 8 cm y altura 5 cm, ¿cuál es su área?",
+        options: ["13 cm²", "26 cm²", "40 cm²", "80 cm²"],
+        answer: 2
+      },
+      {
+        question: "¿Cuál es el mínimo común múltiplo de 6 y 8?",
+        options: ["12", "16", "24", "48"],
+        answer: 2
+      },
+      {
+        question: "Resuelve: 3 × (4 + 2) - 5",
+        options: ["10", "13", "15", "18"],
+        answer: 1
+      },
+      {
+        question: "En una clase hay 30 alumnos, de los cuales el 40% son niñas. ¿Cuántas niñas hay?",
+        options: ["10", "12", "15", "18"],
+        answer: 1
+      },
+      {
+        question: "Si 5 obreros terminan una obra en 20 días, ¿cuántos días tardarán 10 obreros?",
+        options: ["5 días", "10 días", "15 días", "40 días"],
+        answer: 1
+      },
+      {
+        question: "¿Qué número sigue en la serie? 2, 5, 8, 11, ?",
+        options: ["13", "14", "15", "16"],
+        answer: 1
+      },
+      {
+        question: "La razón entre dos números es 2:3. Si el menor es 14, ¿cuál es el mayor?",
+        options: ["18", "21", "24", "28"],
+        answer: 1
+      },
+      {
+        question: "Resuelve: √81 + √16",
+        options: ["9", "13", "17", "25"],
+        answer: 1
+      },
+      {
+        question: "Si compras un artículo de Q 500 y te hacen un descuento del 15%, ¿cuánto pagas?",
+        options: ["Q 400", "Q 425", "Q 450", "Q 475"],
+        answer: 1
+      },
+      {
+        question: "¿Cuál es el valor de 2³ + 3²?",
+        options: ["13", "15", "17", "19"],
+        answer: 2
+      },
+      {
+        question: "Si un triángulo tiene ángulos de 35° y 65°, ¿cuánto mide el tercer ángulo?",
+        options: ["60°", "70°", "80°", "90°"],
+        answer: 1
+      },
+      {
+        question: "Divide 144 entre 12",
+        options: ["10", "11", "12", "13"],
+        answer: 2
+      },
+      {
+        question: "¿Qué fracción es mayor: 2/3 o 3/5?",
+        options: ["2/3", "3/5", "Son iguales", "No se puede comparar"],
+        answer: 0
+      },
+      {
+        question: "Si viajas a 60 km/h durante 3 horas, ¿qué distancia recorres?",
+        options: ["120 km", "150 km", "180 km", "210 km"],
+        answer: 2
+      },
+      {
+        question: "El precio de un producto aumentó de Q 80 a Q 100. ¿En qué porcentaje aumentó?",
+        options: ["15%", "20%", "25%", "30%"],
+        answer: 2
+      },
+      {
+        question: "Resuelve: 18 - 3 × 4 + 2",
+        options: ["4", "6", "8", "12"],
+        answer: 2
+      },
+      {
+        question: "¿Cuál es el máximo común divisor de 12, 18 y 24?",
+        options: ["2", "3", "6", "12"],
+        answer: 2
+      },
+      {
+        question: "Si x = -2, ¿cuál es el valor de 3x² - 4?",
+        options: ["-16", "-8", "8", "16"],
+        answer: 2
+      },
+      {
+        question: "Una tienda vende 3 artículos por Q 60. ¿Cuánto cuesta 7 artículos?",
+        options: ["Q 120", "Q 130", "Q 140", "Q 150"],
+        answer: 2
+      }
+    ];
+
+    const quizContainer = document.getElementById("quiz");
+    const currentQuestionEl = document.getElementById("currentQuestion");
+    const totalQuestionsEl = document.getElementById("totalQuestions");
+    const scoreDisplay = document.getElementById("scoreDisplay");
+    const answeredCount = document.getElementById("answeredCount");
+    const progressBar = document.getElementById("progressBar");
+    const resultBox = document.getElementById("resultBox");
+    const finalScore = document.getElementById("finalScore");
+    const finalMessage = document.getElementById("finalMessage");
+
+    let current = 0;
+    let userAnswers = new Array(questions.length).fill(null);
+    let reviewed = false;
+
+    totalQuestionsEl.textContent = questions.length;
+
+    function renderQuiz() {
+      quizContainer.innerHTML = "";
+
+      questions.forEach((q, index) => {
+        const card = document.createElement("div");
+        card.className = "question-card";
+        if (index === current) card.classList.add("active");
+
+        const extra = q.extra ? `<div class="mini-box">${q.extra}</div>` : "";
+
+        let optionsHTML = "";
+        q.options.forEach((option, i) => {
+          optionsHTML += `
+            <div class="option ${userAnswers[index] === i ? 'selected' : ''}" onclick="selectOption(${index}, ${i})">
+              ${String.fromCharCode(65 + i)}. ${option}
+            </div>
+          `;
+        });
+
+        card.innerHTML = `
+          <div class="qnum">Pregunta ${index + 1}</div>
+          <div class="qtext">${q.question}</div>
+          ${extra}
+          <div class="options">${optionsHTML}</div>
+          <div class="buttons">
+            <button class="prev" onclick="prevQuestion()" ${index === 0 ? "disabled" : ""}>⬅ Anterior</button>
+            ${
+              index === questions.length - 1
+              ? `<button class="finish" onclick="finishQuiz()">Finalizar</button>`
+              : `<button class="next" onclick="nextQuestion()">Siguiente ➡</button>`
+            }
+          </div>
+        `;
+
+        quizContainer.appendChild(card);
+      });
+
+      updateTopBar();
+    }
+
+    function selectOption(questionIndex, optionIndex) {
+      if (reviewed) return;
+      userAnswers[questionIndex] = optionIndex;
+      renderQuiz();
+    }
+
+    function nextQuestion() {
+      if (current < questions.length - 1) {
+        current++;
+        renderQuiz();
+      }
+    }
+
+    function prevQuestion() {
+      if (current > 0) {
+        current--;
+        renderQuiz();
+      }
+    }
+
+    function updateTopBar() {
+      currentQuestionEl.textContent = current + 1;
+      const answered = userAnswers.filter(ans => ans !== null).length;
+      answeredCount.textContent = answered;
+      progressBar.style.width = `${(answered / questions.length) * 100}%`;
+
+      const score = userAnswers.reduce((acc, ans, i) => ans === questions[i].answer ? acc + 1 : acc, 0);
+      scoreDisplay.textContent = score;
+    }
+
+    function finishQuiz() {
+      const score = userAnswers.reduce((acc, ans, i) => ans === questions[i].answer ? acc + 1 : acc, 0);
+      finalScore.textContent = `${score} / ${questions.length}`;
+
+      let msg = "";
+      if (score >= 18) {
+        msg = "🔥 ¡Excelente! Dominas muy bien los temas de este cuadernillo.";
+      } else if (score >= 13) {
+        msg = "💪 Buen desempeño, solo repasa algunos temas específicos.";
+      } else if (score >= 9) {
+        msg = "📚 Nivel aceptable, practica más ejercicios de cada tema.";
+      } else {
+        msg = "🫠 No te preocupes, sigue practicando y mejorarás mucho.";
+      }
+
+      finalMessage.textContent = msg;
+      resultBox.style.display = "block";
+      window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
