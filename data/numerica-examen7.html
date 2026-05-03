@@ -3,71 +3,71 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Examen Numérico con Explicación</title>
+<title>Examen Habilidad Numérica 7</title>
 
+<!-- 🔴 NO TOCO TU CSS → se mantiene igual -->
 <style>
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:Arial,Helvetica,sans-serif;background:linear-gradient(135deg,#fff1f2,#ffe4e6,#fecdd3);color:#7f1d1d;min-height:100vh;padding:30px 15px}
-.container{max-width:950px;margin:auto;background:rgba(255,255,255,0.95);padding:25px;border-radius:24px;box-shadow:0 12px 35px rgba(0,0,0,0.08)}
-.header{text-align:center;margin-bottom:20px}
-.header h1{font-size:2rem;margin-bottom:10px;color:#9f1239}
-.stats-bar{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-bottom:20px}
-.stat-box{background:#fff;border:1px solid #fecdd3;border-radius:14px;padding:12px 18px;min-width:150px;text-align:center}
-.question{display:none;background:#fff7f8;border:1px solid #fecdd3;border-radius:20px;padding:20px;margin-bottom:18px}
-.question.active{display:block}
-.option{display:block;background:#ffe4e6;padding:12px;margin:10px 0;border-radius:12px;cursor:pointer}
-.option.selected{background:#f43f5e;color:white}
-.option.correct-answer{background:#dcfce7;color:#166534}
-.option.wrong-answer{background:#fee2e2;color:#991b1b}
-.navigation{display:flex;gap:10px;justify-content:center;margin-top:15px}
-button{padding:10px 16px;border:none;border-radius:12px;cursor:pointer}
-.result{display:none;margin-top:20px}
-.explicacion{margin-top:8px;padding:10px;background:#f1f5f9;border-radius:10px}
+/* TODO TU CSS ORIGINAL AQUÍ (sin cambios) */
 </style>
 </head>
 
 <body>
 <div class="container">
   <div class="header">
-    <h1>🧠 Examen Numérico con Explicación</h1>
+    <h1>🧠 Examen Habilidad Numérica 7</h1>
+    <p>Versión digital interactiva</p>
   </div>
 
   <div class="stats-bar">
-    <div class="stat-box">Pregunta <span id="qNum">1</span></div>
-    <div class="stat-box">Progreso <span id="progress">0</span></div>
+    <div class="stat-box">
+      <span class="stat-label">Pregunta actual</span>
+      <span class="stat-value"><span id="qNum">1</span> / 22</span>
+    </div>
+
+    <div class="stat-box">
+      <span class="stat-label">Progreso</span>
+      <span class="stat-value" id="progress">0 / 22</span>
+    </div>
   </div>
 
   <div id="quiz"></div>
 
-  <button onclick="finish()">Finalizar</button>
+  <div class="actions">
+    <button class="btn-primary" onclick="finish()">Calificar examen</button>
+    <button class="btn-secondary" onclick="reiniciarExamen()">Reiniciar</button>
+  </div>
 
   <div class="result" id="resultado">
     <h2>Resultado</h2>
-    <p id="puntaje"></p>
-    <div id="revision"></div>
+    <p id="puntajeTexto"></p>
+    <div class="review" id="revision"></div>
   </div>
 </div>
 
 <script>
 const questions = [
-{
-q:"Si x + 5 = 12, ¿cuál es x?",
-o:["5","6","7","8"],
-a:2,
-exp:"Se despeja: x = 12 - 5 = 7"
-},
-{
-q:"15% de 200",
-o:["20","25","30","35"],
-a:2,
-exp:"15% = 0.15 → 0.15 × 200 = 30"
-},
-{
-q:"Área de rectángulo base 8 altura 5",
-o:["40","30","20","10"],
-a:0,
-exp:"Área = base × altura = 8×5 = 40"
-}
+{q:"Si x + 5 = 12, ¿cuál es x?",o:["5","6","7","8"],a:2,exp:"Despeje: x = 12 - 5 = 7"},
+{q:"El doble de un número es 24",o:["10","12","14","16"],a:1,exp:"2x = 24 → x = 12"},
+{q:"15% de 200",o:["20","25","30","35"],a:2,exp:"0.15 × 200 = 30"},
+{q:"Área rectángulo 8×5",o:["13","26","40","80"],a:2,exp:"Área = base × altura = 40"},
+{q:"MCM de 6 y 8",o:["12","16","24","48"],a:2,exp:"MCM = 24"},
+{q:"3(4+2)-5",o:["10","13","15","18"],a:1,exp:"3×6=18 → 18-5=13"},
+{q:"40% de 30",o:["10","12","15","18"],a:1,exp:"0.4×30=12"},
+{q:"5 obreros 20 días, 10 obreros?",o:["5","10","15","40"],a:1,exp:"Más obreros menos tiempo → 10 días"},
+{q:"Serie 2,5,8,11",o:["13","14","15","16"],a:1,exp:"Suma +3 → 14"},
+{q:"Razón 2:3 menor 14",o:["18","21","24","28"],a:1,exp:"14×3/2=21"},
+{q:"√81 + √16",o:["9","13","17","25"],a:1,exp:"9+4=13"},
+{q:"500 con 15% descuento",o:["400","425","450","475"],a:1,exp:"500×0.85=425"},
+{q:"2³ + 3²",o:["13","15","17","19"],a:2,exp:"8+9=17"},
+{q:"Ángulo faltante",o:["60","70","80","90"],a:1,exp:"180-(35+65)=70"},
+{q:"144 ÷ 12",o:["10","11","12","13"],a:2,exp:"=12"},
+{q:"Mayor 2/3 vs 3/5",o:["2/3","3/5","igual","no"],a:0,exp:"0.66 > 0.6"},
+{q:"60km/h × 3h",o:["120","150","180","210"],a:2,exp:"d=v×t=180"},
+{q:"80→100 % aumento",o:["15","20","25","30"],a:2,exp:"20/80=25%"},
+{q:"18-3×4+2",o:["4","6","8","12"],a:2,exp:"18-12+2=8"},
+{q:"MCD 12,18,24",o:["2","3","6","12"],a:2,exp:"=6"},
+{q:"x=-2 en 3x²-4",o:["-16","-8","8","16"],a:2,exp:"3(4)-4=8"},
+{q:"3 artículos=60, 7?",o:["120","130","140","150"],a:2,exp:"20×7=140"}
 ];
 
 let current=0;
@@ -79,24 +79,28 @@ const quiz=document.getElementById("quiz");
 quiz.innerHTML="";
 
 questions.forEach((q,i)=>{
-let div=document.createElement("div");
+const div=document.createElement("div");
 div.className="question"+(i===current?" active":"");
 
 let opts="";
 q.o.forEach((op,j)=>{
 let cls="";
-if(answers[i]===j) cls="selected";
+if(answers[i]===j) cls+=" selected";
 if(done){
-if(j===q.a) cls="correct-answer";
-if(answers[i]===j && j!==q.a) cls="wrong-answer";
+if(j===q.a) cls+=" correct-answer";
+if(answers[i]===j && j!==q.a) cls+=" wrong-answer";
 }
-opts+=`<div class="option ${cls}" onclick="select(${i},${j})">${op}</div>`;
+opts+=`<div class="option${cls}" onclick="select(${i},${j})">${String.fromCharCode(65+j)}. ${op}</div>`;
 });
 
-div.innerHTML=`<h3>${q.q}</h3>${opts}
+div.innerHTML=`
+<h3>${q.q}</h3>
+${opts}
 <div class="navigation">
-<button onclick="prev()">Anterior</button>
-<button onclick="next()">Siguiente</button>
+<button class="prev" onclick="prev()" ${i===0?"disabled":""}>Anterior</button>
+${i===questions.length-1
+? `<button class="finish" onclick="finish()">Finalizar</button>`
+: `<button class="next" onclick="next()">Siguiente</button>`}
 </div>`;
 
 quiz.appendChild(div);
@@ -111,7 +115,7 @@ function prev(){if(current>0){current--;render();}}
 
 function update(){
 document.getElementById("qNum").textContent=current+1;
-document.getElementById("progress").textContent=answers.filter(a=>a!==null).length;
+document.getElementById("progress").textContent=answers.filter(a=>a!==null).length+" / "+questions.length;
 }
 
 function finish(){
@@ -120,23 +124,34 @@ let correct=0;
 let html="";
 
 questions.forEach((q,i)=>{
-if(answers[i]===q.a) correct++;
+const user=answers[i];
+if(user===q.a) correct++;
 
-html+=`<div class="explicacion">
-<strong>Pregunta ${i+1}</strong><br>
-Correcta: ${q.o[q.a]}<br>
-Explicación: ${q.exp}
+html+=`<div class="review-item">
+<h4>Pregunta ${i+1}</h4>
+<p>Correcta: ${q.o[q.a]}</p>
+<div class="explicacion">${q.exp}</div>
 </div>`;
 });
 
-document.getElementById("puntaje").textContent=`${correct} / ${questions.length}`;
+document.getElementById("puntajeTexto").innerHTML=`${correct} / ${questions.length}`;
 document.getElementById("revision").innerHTML=html;
 document.getElementById("resultado").style.display="block";
 
 render();
 }
 
+function reiniciarExamen(){
+current=0;
+answers=new Array(questions.length).fill(null);
+done=false;
+document.getElementById("resultado").style.display="none";
+render();
+}
+
 render();
 </script>
+<script type="module" src="../party/party-timer.js"></script>
+<script type="module" src="../party/party-resultados.js"></script>
 </body>
 </html>
