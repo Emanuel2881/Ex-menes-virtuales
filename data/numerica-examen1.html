@@ -1,501 +1,193 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Examen de Habilidad Numérica 1</title>
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-    body {
-      font-family: Arial, sans-serif;
-      background: linear-gradient(135deg, #1e3c72, #2a5298);
-      color: #fff;
-      min-height: 100vh;
-      padding: 20px;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Habilidad Numérica 1</title>
 
-    .container {
-      max-width: 1000px;
-      margin: auto;
-      background: rgba(255, 255, 255, 0.08);
-      border-radius: 20px;
-      padding: 25px;
-      backdrop-filter: blur(10px);
-      box-shadow: 0 10px 30px rgba(0,0,0,0.25);
-    }
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
 
-    h1 {
-      text-align: center;
-      margin-bottom: 10px;
-      font-size: 2rem;
-    }
- 
-    .subtitle {
-      text-align: center;
-      margin-bottom: 20px;
-      opacity: 0.9;
-    }
+body{
+  font-family: Arial;
+  background: linear-gradient(135deg,#eff6ff,#dbeafe,#bfdbfe);
+  color:#1e3a8a;
+  padding:30px;
+}
 
-    .top-bar {
-      display: flex;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-bottom: 20px;
-      background: rgba(255,255,255,0.12);
-      padding: 15px;
-      border-radius: 15px;
-    }
+.container{
+  max-width:950px;
+  margin:auto;
+  background:white;
+  padding:25px;
+  border-radius:20px;
+}
 
-    .top-bar div {
-      font-size: 1rem;
-      font-weight: bold;
-    }
+.question{display:none;}
+.question.active{display:block;}
 
-    .progress-container {
-      width: 100%;
-      background: rgba(255,255,255,0.2);
-      border-radius: 999px;
-      overflow: hidden;
-      height: 14px;
-      margin-bottom: 25px;
-    }
+.option{
+  background:#dbeafe;
+  padding:10px;
+  margin:8px 0;
+  border-radius:10px;
+  cursor:pointer;
+}
 
-    .progress-bar {
-      height: 100%;
-      width: 0%;
-      background: #ffd54f;
-      transition: width 0.3s ease;
-    }
+.option.selected{background:#2563eb;color:white;}
+.option.correct-answer{background:#bbf7d0;}
+.option.wrong-answer{background:#fecaca;}
 
-    .question-card {
-      display: none;
-      background: rgba(255,255,255,0.12);
-      padding: 25px;
-      border-radius: 20px;
-      margin-bottom: 20px;
-      animation: fadeIn 0.3s ease;
-    }
+button{
+  margin-top:10px;
+  padding:10px;
+  border:none;
+  border-radius:8px;
+  cursor:pointer;
+}
 
-    .question-card.active {
-      display: block;
-    }
-
-    .question-number {
-      font-size: 0.95rem;
-      opacity: 0.8;
-      margin-bottom: 10px;
-    }
-
-    .question-text {
-      font-size: 1.2rem;
-      margin-bottom: 20px;
-      line-height: 1.6;
-    }
-
-    .options {
-      display: grid;
-      gap: 12px;
-    }
-
-    .option {
-      background: rgba(255,255,255,0.15);
-      border: 2px solid transparent;
-      padding: 14px 16px;
-      border-radius: 14px;
-      cursor: pointer;
-      transition: 0.25s ease;
-    }
-
-    .option:hover {
-      background: rgba(255,255,255,0.22);
-      transform: translateY(-2px);
-    }
-
-    .option.selected {
-      border-color: #ffd54f;
-      background: rgba(255, 213, 79, 0.2);
-    }
-
-    .option.correct {
-      background: rgba(76, 175, 80, 0.25);
-      border-color: #4caf50;
-    }
-
-    .option.incorrect {
-      background: rgba(244, 67, 54, 0.25);
-      border-color: #f44336;
-    }
-
-    .buttons {
-      display: flex;
-      justify-content: space-between;
-      gap: 12px;
-      margin-top: 20px;
-      flex-wrap: wrap;
-    }
-
-    button {
-      border: none;
-      padding: 12px 20px;
-      border-radius: 12px;
-      font-size: 1rem;
-      font-weight: bold;
-      cursor: pointer;
-      transition: 0.25s ease;
-    }
-
-    .btn-secondary {
-      background: #90caf9;
-      color: #0d1b2a;
-    }
-
-    .btn-primary {
-      background: #ffd54f;
-      color: #222;
-    }
-
-    .btn-finish {
-      background: #66bb6a;
-      color: white;
-    }
-
-    button:hover {
-      transform: scale(1.03);
-    }
-
-    .result-box {
-      display: none;
-      text-align: center;
-      background: rgba(255,255,255,0.12);
-      padding: 30px;
-      border-radius: 20px;
-      margin-top: 20px;
-    }
-
-    .result-box h2 {
-      font-size: 2rem;
-      margin-bottom: 15px;
-    }
-
-    .score {
-      font-size: 1.4rem;
-      margin-bottom: 10px;
-    }
-
-    .review-btn {
-      margin-top: 15px;
-      background: #ffb74d;
-      color: #222;
-    }
-
-    .hidden {
-      display: none;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px);}
-      to { opacity: 1; transform: translateY(0);}
-    }
-
-    @media (max-width: 700px) {
-      .question-text {
-        font-size: 1.05rem;
-      }
-
-      .buttons {
-        flex-direction: column;
-      }
-
-      button {
-        width: 100%;
-      }
-    }
-  </style>
+.result{display:none;margin-top:20px;}
+.review-item{margin:10px 0;padding:10px;background:#f1f5f9;border-left:5px solid gray;}
+.correcta{border-left-color:green;}
+.incorrecta{border-left-color:red;}
+.sin-responder{border-left-color:orange;}
+</style>
 </head>
+
 <body>
 
-  <div class="container">
-    <h1>🧠 Examen de Habilidad Numérica 1</h1>
-    <p class="subtitle">Practica tipo admisión • MediGuía</p>
+<div class="container">
+<h1>🧠 Habilidad Numérica 1</h1>
 
-    <div class="top-bar">
-      <div>Pregunta: <span id="currentQuestion">1</span>/<span id="totalQuestions">24</span></div>
-      <div>Puntaje: <span id="scoreDisplay">0</span></div>
-      <div>Respondidas: <span id="answeredCount">0</span></div>
-    </div>
+<div id="quiz"></div>
 
-    <div class="progress-container">
-      <div class="progress-bar" id="progressBar"></div>
-    </div>
+<button onclick="finish()">Calificar</button>
+<button onclick="resetExam()">Reiniciar</button>
 
-    <div id="quiz"></div>
+<div class="result" id="resultado">
+<h2>Resultado</h2>
+<p id="score"></p>
+<div id="review"></div>
+</div>
+</div>
 
-    <div class="result-box" id="resultBox">
-      <h2>🎉 Examen finalizado</h2>
-      <p class="score">Tu puntaje: <span id="finalScore"></span></p>
-      <p id="finalMessage"></p>
-      <button class="review-btn" onclick="reviewAnswers()">Revisar respuestas</button>
-    </div>
-  </div>
+<script>
+const questions = [
 
-  <script>
-    const questions = [
-      {
-        question: "¿Qué cifra debería reemplazar a la F en esta división cuyo resultado es correcto? F73 ÷ F3 = 11",
-        options: ["9", "8", "6", "4", "Ninguna de ellas"],
-        answer: 3
-      },
-      {
-        question: "Simplifica: 3x² + 7x − 9x + 10 =",
-        options: ["−60x² + 10", "3x² − 63x + 10", "3x² − 2x + 10", "3x² − 16x + 10", "Ninguna de ellas"],
-        answer: 2
-      },
-      {
-        question: "¿Cuál es el resultado de: 5 − 12 =",
-        options: ["−12 + 5", "12 − 5", "−(5 − 12)", "−(12 + 5)", "Ninguna de ellas"],
-        answer: 0
-      },
-      {
-        question: "¿Qué cifra debería ir en lugar de la P en esta suma cuyo resultado es correcto? 4PP4 + 4PP7 = 47671",
-        options: ["9", "8", "3", "2", "Ninguna de ellas"],
-        answer: 2
-      },
-      {
-        question: "¿Cuál es el resto de dividir 2,480,739 entre 20?",
-        options: ["1", "9", "29", "39", "Ninguna de ellas"],
-        answer: 4
-      },
-      {
-        question: "¿Qué número puede sustituir a la L para que la proporción sea correcta? 4/L = L/36",
-        options: ["3", "9", "12", "18", "Ninguna de ellas"],
-        answer: 2
-      },
-      {
-        question: "Resuelve la operación de fracciones mostrada en el examen.",
-        options: ["1/2", "3/4", "4/3", "3/2", "Ninguna de ellas"],
-        answer: 0
-      },
-      {
-        question: "El 30% del 50% de 300 es:",
-        options: ["150", "90", "50", "45", "Ninguna de ellas"],
-        answer: 3
-      },
-      {
-        question: "¿Qué número debería sustituir a la K en esta división cuyo resultado es correcto? 11K8 ÷ 47 = K4",
-        options: ["2", "3", "5", "6", "Ninguna de ellas"],
-        answer: 0
-      },
-      {
-        question: "4 = 10% de ____",
-        options: ["0.4", "4", "40", "400", "Ninguna de ellas"],
-        answer: 2
-      },
-      {
-        question: "Simplifica: 16x² + 4y² + 3x² =",
-        options: ["19x² + 4y²", "19x + 4y²", "23x²y²", "23xy", "Ninguna de ellas"],
-        answer: 0
-      },
-      {
-        question: "¿Qué número debe sustituir a la N para que la proporción sea correcta? 8/12 = N/6",
-        options: ["16", "5", "4", "2", "Ninguna de ellas"],
-        answer: 2
-      },
-      {
-        question: "Si 2x² + 6x = 2x² + 3x + 5, entonces x =",
-        options: ["−2.5", "−5/4", "−1", "0.6", "Ninguna de ellas"],
-        answer: 4
-      },
-      {
-        question: "¿Qué suma es MAYOR que uno?",
-        options: ["1/5 + 3/4", "2/3 + 3/8", "8/12 + 1/3", "5/8 + 1/4", "Ninguna de ellas"],
-        answer: 1
-      },
-      {
-        question: "¿Qué cifra debe sustituir a la J en esta suma cuyo resultado es correcto? 24J4 + 2JJ7 = 54J1",
-        options: ["0", "6", "8", "9", "Ninguna de ellas"],
-        answer: 3
-      },
-      {
-        question: "¿Qué número debería continuar la serie? 100, 9, 64, 7, ?",
-        options: ["5", "36", "49", "8", "Ninguna de ellas"],
-        answer: 2
-      },
-      {
-        question: "¿Cuál es el número MÁS PEQUEÑO que es divisible exactamente entre 2, 4, 7 y 21?",
-        options: ["1176", "168", "84", "42", "Ninguna de ellas"],
-        answer: 2
-      },
-      {
-        question: "¿Qué cifra debería sustituir a la N en esta resta cuyo resultado es correcto? 3N3N3 − 3NNN3 = 32700",
-        options: ["1", "4", "5", "6", "Ninguna de ellas"],
-        answer: 3
-      },
-      {
-        question: "Resuelve: (15/21) ÷ (7/3)",
-        options: ["15/49", "5/3", "15/7", "15", "Ninguna de ellas"],
-        answer: 0
-      },
-      {
-        question: "¿Cuál es el resultado de (84.189 × 1.99) ÷ 6.889 redondeado al entero más próximo?",
-        options: ["28", "24", "20", "16", "Ninguna de ellas"],
-        answer: 1
-      },
-      {
-        question: "¿Qué cifra debe sustituir a la R en esta resta cuyo resultado es correcto? 3R33 − 9R9 = 2R54",
-        options: ["0", "1", "6", "8", "Ninguna de ellas"],
-        answer: 4
-      },
-      {
-        question: "¿Qué número es divisible exactamente entre 3?",
-        options: ["766", "768", "769", "976", "Ninguna de ellas"],
-        answer: 1
-      },
-      {
-        question: "Simplifica: y + x + 7x − 6y =",
-        options: ["8x + 5y", "7x − 6y", "7x² − 6y²", "5y − 8x", "Ninguna de ellas"],
-        answer: 4
-      },
-      {
-        question: "¿Qué número continuaría la serie? 2400, 1200, 600, 300, ?",
-        options: ["0", "100", "150", "200", "Ninguna de ellas"],
-        answer: 2
-      }
-    ];
+{q:"F73 ÷ F3 = 11 ¿F?",o:["2","4","6","8","Ninguna"],a:1,exp:"F=4"},
+{q:"3x−9x+10+9y+2x",o:["−6x+9y+10","−4x+9y+10","4x+9y+10","14xy+10","Ninguna"],a:1,exp:"Combina términos"},
+{q:"3x²−8x+10",o:["Ya está simplificada","−5x+10","−5x²+10","−24x³+10","Ninguna"],a:0,exp:"No hay términos semejantes"},
+{q:"5−12",o:["−12+5","12−5","−(5−12)","−(12+5)","Ninguna"],a:0,exp:"Equivalente"},
+{q:"12−5",o:["−5+12","−(12−5)","−(5+12)","5−12","Ninguna"],a:0,exp:"7"},
+{q:"−12−5",o:["−(12+5)","12−5","−12+5","5−12","Ninguna"],a:0,exp:"-17"},
+{q:"P+P+1=7",o:["2","3","4","5","Ninguna"],a:1,exp:"2P+1=7 → P=3"},
+{q:"2P+1=7",o:["2","3","4","6","Ninguna"],a:1,exp:"P=3"},
+{q:"2P+1−1=7−1",o:["2","3","4","6","Ninguna"],a:1,exp:"P=3"},
+{q:"2480739 ÷ 20",o:["124036.95","124036.5","248073.9","12403.695","Ninguna"],a:0,exp:"Dividir entre 20"},
+{q:"2.48 a fracción",o:["248/100","248/10","248/1000","8/24","Ninguna"],a:0,exp:"Mover decimal"},
+{q:"248×10",o:["248","2480","24.8","2.48","Ninguna"],a:1,exp:"Multiplicar por 10"},
+{q:"2480739 ÷ 20",o:["124036.9","124036.95","248073.9","12403.69","Ninguna"],a:1,exp:"Correcto"},
+{q:"2480734 ÷ 2",o:["124036","...","...","124037","Ninguna"],a:4,exp:"Error original"},
+{q:"124036 + 20/9 decimal",o:["124036.09","124036.9","124036.95","124036.5","Ninguna"],a:2,exp:"≈124036.95"},
+{q:"√36 × √4",o:["10","24","12","144","Ninguna"],a:2,exp:"6×2=12"},
+{q:"(1/2−1/4)/(1/2+1/3)",o:["6/5","1/4","3/10","10/3","Ninguna"],a:2,exp:"Operar"},
+{q:"2/3 + 2/7",o:["4/10","5","4/21","5/4","Ninguna"],a:1,exp:"≈1.04"},
+{q:"1/2 × 1/3",o:["5/2","1/6","6/5","2/3","Ninguna"],a:1,exp:"Multiplicar"},
+{q:"1/2 − 1/4",o:["1/4","1/2","2/6","1/8","Ninguna"],a:0,exp:"=1/4"},
+{q:"3/4 + 2/5",o:["6/8","4/13","8/15","4/23","Ninguna"],a:1,exp:"=23/20"},
+{q:"(1/3+1/4)-(1/3+3/2)",o:["1/25","-1/25","4/13","3/11","Ninguna"],a:1,exp:"Negativo"},
+{q:"30% de 50% de 300",o:["150","90","45","30","Ninguna"],a:2,exp:"=45"},
+{q:"500→30%→70%→10%",o:["10.5","15","105","150","Ninguna"],a:0,exp:"Paso a paso"},
+{q:"523 ÷ 10",o:["5.23","52.3","5230","0.523","Ninguna"],a:1,exp:"Mover decimal"},
+{q:"520 ÷ 20",o:["260","26","2.6","0.26","Ninguna"],a:1,exp:"=26"},
+{q:"53.4 × 100",o:["53.400","534","5340","0.534","Ninguna"],a:2,exp:"Mover decimal"},
+{q:"11K8 ÷ 47 = K4",o:["1","2","3","4","Ninguna"],a:1,exp:"K=2"},
+{q:"−47K+110+K=18",o:["1","2","3","4","Ninguna"],a:1,exp:"K=2"},
+{q:"4 es 10% de",o:["0.4","4","40","400","Ninguna"],a:2,exp:"=40"},
+{q:"10x²+4y²+3x²−14y²",o:["13x²−10y²","13x²+18y²","7x²−10y²","17x²y²","Ninguna"],a:0,exp:"Combinar"},
+{q:"6/8 = 6/N",o:["4","6","8","12","Ninguna"],a:2,exp:"N=8"},
+{q:"2x²+6x=2x²+3x+5",o:["3/5","-3/5","5","0","Ninguna"],a:0,exp:"x=3/5"},
+{q:"Mayor a 1",o:["1/5+3/4","3/2+3/8","1/8+1/3","9/5+1/4","Ninguna"],a:1,exp:"=1.875"},
+{q:"2x+8=24",o:["6","8","12","16","Ninguna"],a:1,exp:"x=8"}
 
-    const quizContainer = document.getElementById("quiz");
-    const currentQuestionEl = document.getElementById("currentQuestion");
-    const totalQuestionsEl = document.getElementById("totalQuestions");
-    const scoreDisplay = document.getElementById("scoreDisplay");
-    const answeredCount = document.getElementById("answeredCount");
-    const progressBar = document.getElementById("progressBar");
-    const resultBox = document.getElementById("resultBox");
-    const finalScore = document.getElementById("finalScore");
-    const finalMessage = document.getElementById("finalMessage");
+];
 
-    let current = 0;
-    let userAnswers = new Array(questions.length).fill(null);
-    let reviewed = false;
+let current=0;
+let answers=new Array(questions.length).fill(null);
+let done=false;
 
-    totalQuestionsEl.textContent = questions.length;
+function render(){
+const quiz=document.getElementById("quiz");
+quiz.innerHTML="";
 
-    function renderQuiz() {
-      quizContainer.innerHTML = "";
+questions.forEach((q,i)=>{
+const div=document.createElement("div");
+div.className="question"+(i===current?" active":"");
 
-      questions.forEach((q, index) => {
-        const card = document.createElement("div");
-        card.className = "question-card";
-        if (index === current) card.classList.add("active");
+let opts="";
+q.o.forEach((op,j)=>{
+let cls="";
+if(answers[i]===j) cls+=" selected";
+if(done){
+if(j===q.a) cls+=" correct-answer";
+if(answers[i]===j && j!==q.a) cls+=" wrong-answer";
+}
+opts+=`<div class="option${cls}" onclick="select(${i},${j})">${op}</div>`;
+});
 
-        let optionsHTML = "";
-        q.options.forEach((option, i) => {
-          optionsHTML += `
-            <div class="option ${userAnswers[index] === i ? 'selected' : ''}" onclick="selectOption(${index}, ${i})">
-              ${String.fromCharCode(65 + i)}. ${option}
-            </div>
-          `;
-        });
+div.innerHTML=`
+<h3>${q.q}</h3>
+${opts}
+<button onclick="prev()">Anterior</button>
+<button onclick="next()">Siguiente</button>
+`;
 
-        card.innerHTML = `
-          <div class="question-number">Pregunta ${index + 1}</div>
-          <div class="question-text">${q.question}</div>
-          <div class="options">${optionsHTML}</div>
-          <div class="buttons">
-            <button class="btn-secondary" onclick="prevQuestion()" ${index === 0 ? "disabled" : ""}>⬅ Anterior</button>
-            ${
-              index === questions.length - 1
-                ? `<button class="btn-finish" onclick="finishQuiz()">Finalizar</button>`
-                : `<button class="btn-primary" onclick="nextQuestion()">Siguiente ➡</button>`
-            }
-          </div>
-        `;
+quiz.appendChild(div);
+});
+}
 
-        quizContainer.appendChild(card);
-      });
+function select(i,j){if(done)return;answers[i]=j;render();}
+function next(){if(current<questions.length-1){current++;render();}}
+function prev(){if(current>0){current--;render();}}
 
-      updateTopBar();
-    }
+function finish(){
+done=true;
+let correct=0;
+let html="";
 
-    function selectOption(questionIndex, optionIndex) {
-      if (reviewed) return;
-      userAnswers[questionIndex] = optionIndex;
-      renderQuiz();
-    }
+questions.forEach((q,i)=>{
+const user=answers[i];
 
-    function nextQuestion() {
-      if (current < questions.length - 1) {
-        current++;
-        renderQuiz();
-      }
-    }
+let estado="sin-responder";
+if(user===q.a){correct++;estado="correcta";}
+else if(user!==null){estado="incorrecta";}
 
-    function prevQuestion() {
-      if (current > 0) {
-        current--;
-        renderQuiz();
-      }
-    }
+html+=`<div class="review-item ${estado}">
+<h4>Pregunta ${i+1}</h4>
+<p>Correcta: ${q.o[q.a]}</p>
+<div>${q.exp}</div>
+</div>`;
+});
 
-    function updateTopBar() {
-      currentQuestionEl.textContent = current + 1;
-      const answered = userAnswers.filter(ans => ans !== null).length;
-      answeredCount.textContent = answered;
-      progressBar.style.width = `${(answered / questions.length) * 100}%`;
+document.getElementById("score").innerHTML=`${correct}/${questions.length}`;
+document.getElementById("review").innerHTML=html;
+document.getElementById("resultado").style.display="block";
 
-      const score = userAnswers.reduce((acc, ans, i) => ans === questions[i].answer ? acc + 1 : acc, 0);
-      scoreDisplay.textContent = score;
-    }
+render();
+}
 
-    function finishQuiz() {
-      const score = userAnswers.reduce((acc, ans, i) => ans === questions[i].answer ? acc + 1 : acc, 0);
-      finalScore.textContent = `${score} / ${questions.length}`;
+function resetExam(){
+current=0;
+answers=new Array(questions.length).fill(null);
+done=false;
+document.getElementById("resultado").style.display="none";
+render();
+}
 
-      let msg = "";
-      if (score >= 20) {
-        msg = "🔥 Muy buen nivel. Vas fuerte en habilidad numérica.";
-      } else if (score >= 15) {
-        msg = "💪 Vas bien, pero todavía hay espacio para subir más.";
-      } else if (score >= 10) {
-        msg = "📚 Nivel aceptable, pero toca reforzar bastante.";
-      } else {
-        msg = "🫠 Hay que practicar más, pero para eso estamos.";
-      }
+render();
+</script>
 
-      finalMessage.textContent = msg;
-      resultBox.style.display = "block";
-      window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" });
-    }
-
-    function reviewAnswers() {
-      reviewed = true;
-      const cards = document.querySelectorAll(".question-card");
-
-      cards.forEach((card, qIndex) => {
-        const options = card.querySelectorAll(".option");
-        options.forEach((option, oIndex) => {
-          option.onclick = null;
-          option.classList.remove("selected");
-
-          if (oIndex === questions[qIndex].answer) {
-            option.classList.add("correct");
-          }
-
-          if (userAnswers[qIndex] === oIndex && oIndex !== questions[qIndex].answer) {
-            option.classList.add("incorrect");
-          }
-        });
-      });
-
-      alert("Ahora puedes revisar cuáles correctas e incorrectas tuviste.");
-      resultBox.scrollIntoView({ behavior: "smooth" });
-    }
-
-    renderQuiz();
-  </script>
-  <script type="module" src="../party/party-timer.js"></script>
+<script type="module" src="../party/party-timer.js"></script>
+<script type="module" src="../party/party-resultados.js"></script>
 </body>
 </html>
