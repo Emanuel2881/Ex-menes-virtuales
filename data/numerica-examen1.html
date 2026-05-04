@@ -250,10 +250,16 @@ current=0;
 answers=new Array(questions.length).fill(null);
 done=false;
 document.getElementById("resultado").style.display="none";
-render();
+
+ document.getElementById("resultado").style.display = "none";
+  document.getElementById("resultadoParty").style.display = "none";
+  document.getElementById("revision").innerHTML = "";
+  document.getElementById("puntajeTexto").innerHTML = "";
+
+  window.scrollTo({ top: 0, behavior: "smooth" });
+  render();
 }
 
-render();
 </script>
 
 <script type="module" src="../party/party-timer.js"></script>
