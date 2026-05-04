@@ -146,28 +146,7 @@ button{
 const questions = [
 {q:"Si 4x + 12 = 28, ¿cuál es el valor de x?",o:["2","3","4","5","Ninguna"],a:2,exp:"4x=16 → x=4"},
 {q:"Serie: 3, 6, 12, 24, 48, ?",o:["72","84","96","100","Ninguna"],a:2,exp:"Se multiplica por 2 → 96"},
-{q:"25% de 200",o:["25","40","50","60","Ninguna"],a:2,exp:"0.25×200=50"},
-{q:"Si 7y - 5 = 30, ¿y?",o:["3","4","5","6","Ninguna"],a:2,exp:"7y=35 → y=5"},
-{q:"Resto de 100 ÷ 9",o:["1","2","3","4","Ninguna"],a:0,exp:"9×11=99 → sobra 1"},
-{q:"8/N = N/2",o:["2","3","4","5","Ninguna"],a:2,exp:"N²=16 → N=4"},
-{q:"(3/4)+(5/8)",o:["1 1/8","1/2","7/8","9/8","Ninguna"],a:3,exp:"=9/8"},
-{q:"15% de 80",o:["10","12","14","16","Ninguna"],a:1,exp:"0.15×80=12"},
-{q:"Serie: 5, 10, 20, 40, ?",o:["60","70","80","90","Ninguna"],a:2,exp:"×2 → 80"},
-{q:"9 es el 30% de",o:["20","25","30","35","Ninguna"],a:2,exp:"9/0.3=30"},
-{q:"2a + 3a + 5 = ?",o:["5a+5","6a+5","7a+5","8a","Ninguna"],a:0,exp:"5a+5"},
-{q:"12/18 simplificado",o:["2/3","3/4","4/5","6/9","Ninguna"],a:0,exp:"÷6 → 2/3"},
-{q:"x/5 = 9",o:["35","40","45","50","Ninguna"],a:2,exp:"x=45"},
-{q:"¿Cuál es mayor?",o:["2/3","3/5","4/7","5/8","Ninguna"],a:0,exp:"2/3 ≈ 0.66 mayor"},
-{q:"7×(5+3)",o:["40","48","56","64","Ninguna"],a:2,exp:"7×8=56"},
-{q:"Serie: 1, 4, 9, 16, ?",o:["20","25","30","36","Ninguna"],a:1,exp:"Cuadrados → 25"},
-{q:"Número divisible entre 2 y 5",o:["12","15","20","25","Ninguna"],a:2,exp:"20"},
-{q:"6x = 42, ¿x?",o:["5","6","7","8","Ninguna"],a:2,exp:"x=7"},
-{q:"(2/5)*(10/3)",o:["4/3","5/3","2","3","Ninguna"],a:0,exp:"=4/3"},
-{q:"50% de 120",o:["40","50","60","70","Ninguna"],a:2,exp:"=60"},
-{q:"Serie: 2, 6, 18, 54, ?",o:["72","96","162","180","Ninguna"],a:2,exp:"×3"},
-{q:"x + 8 = 20",o:["10","11","12","13","Ninguna"],a:2,exp:"x=12"},
-{q:"No divisible entre 3",o:["123","456","789","100","Ninguna"],a:3,exp:"100 no cumple"},
-{q:"4m + 6m - 3m",o:["5m","6m","7m","8m","Ninguna"],a:2,exp:"=7m"}
+{q:"25% de 200",o:["25","40","50","60","Ninguna"],a:2,exp:"0.25×200=50"}
 ];
 
 let current=0;
@@ -249,62 +228,15 @@ function resetExam(){
 current=0;
 answers=new Array(questions.length).fill(null);
 done=false;
+
 document.getElementById("resultado").style.display="none";
 
- document.getElementById("resultado").style.display = "none";
-  document.getElementById("resultadoParty").style.display = "none";
-  document.getElementById("revision").innerHTML = "";
-  document.getElementById("puntajeTexto").innerHTML = "";
+window.scrollTo({ top: 0, behavior: "smooth" });
 
-  window.scrollTo({ top: 0, behavior: "smooth" });
-  render();
+render();
 }
-</script>
 
-<script // ===============================
-// 🎮 MODO PARTY - COMPARADOR
-// ===============================
-
-window.mostrarResultadosParty = function(data){
-
-  const contenedor = document.getElementById("partyResultadoContenido");
-  if(!contenedor) return;
-
-  // ordenar por porcentaje (mayor a menor)
-  data.sort((a,b)=> b.porcentaje - a.porcentaje);
-
-  let html = `<div class="party-grid">`;
-
-  data.forEach((jugador,i)=>{
-    let medalla = "";
-
-    if(i === 0) medalla = "🥇";
-    else if(i === 1) medalla = "🥈";
-    else if(i === 2) medalla = "🥉";
-
-    html += `
-      <div class="party-card">
-        <h3>${medalla} Jugador ${i+1}</h3>
-        <p><strong>Puntaje:</strong> ${jugador.correctas}/${jugador.total}</p>
-        <p><strong>Porcentaje:</strong> ${jugador.porcentaje}%</p>
-      </div>
-    `;
-  });
-
-  html += `</div>`;
-
-  const ganador = data[0];
-
-  html += `
-    <div class="party-winner">
-      🏆 Ganador: ${ganador.porcentaje}% de aciertos
-    </div>
-  `;
-
-  contenedor.innerHTML = html;
-
-  document.getElementById("resultadoParty").style.display = "block";
-};
+render();
 </script>
 <script type="module" src="../party/party-timer.js"></script>
 <script type="module" src="../party/party-resultados.js"></script>
