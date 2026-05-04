@@ -144,9 +144,18 @@ button{
 
 <script>
 const questions = [
-{q:"Si 4x + 12 = 28, ¿cuál es el valor de x?",o:["2","3","4","5","Ninguna"],a:2,exp:"4x=16 → x=4"},
-{q:"Serie: 3, 6, 12, 24, 48, ?",o:["72","84","96","100","Ninguna"],a:2,exp:"Se multiplica por 2 → 96"},
-{q:"25% de 200",o:["25","40","50","60","Ninguna"],a:2,exp:"0.25×200=50"}
+
+{q:"2 es a 4 como 3 es a ?",o:["5","6","7","8"],a:1,exp:"Se multiplica por 2 → 3×2=6"},
+{q:"10 es a 5 como 20 es a ?",o:["5","10","15","20"],a:1,exp:"Se divide entre 2 → 20÷2=10"},
+{q:"5 es a 25 como 6 es a ?",o:["30","31","36","40"],a:2,exp:"Se eleva al cuadrado → 6²=36"},
+{q:"Serie: 2, 5, 11, 23, ?",o:["35","45","47","49"],a:2,exp:"×2+1 → 23×2+1=47"},
+{q:"Serie: 3, 6, 12, 24, ?",o:["36","42","48","54"],a:2,exp:"×2 → 48"},
+{q:"20% de 150",o:["20","25","30","35"],a:2,exp:"0.2×150=30"},
+{q:"Si 2x+4=14, ¿x?",o:["4","5","6","7"],a:1,exp:"2x=10 → x=5"},
+{q:"(8×3)+(12÷4)",o:["24","26","27","30"],a:2,exp:"24+3=27"},
+{q:"Promedio de 10, 20, 30",o:["15","20","25","30"],a:1,exp:"60/3=20"},
+{q:"Área rectángulo 5×8",o:["30","35","40","45"],a:2,exp:"5×8=40"}
+
 ];
 
 let current=0;
@@ -176,12 +185,11 @@ div.innerHTML=`
 <h3>${q.q}</h3>
 ${opts}
 <div class="navigation">
-<button onclick="prev()" ${i===0?"disabled":""}>Anterior</button>
+<button class="prev" onclick="prev()" ${i===0?"disabled":""}>Anterior</button>
 ${i===questions.length-1
-? `<button onclick="finish()">Finalizar</button>`
-: `<button onclick="next()">Siguiente</button>`}
+? `<button class="finish" onclick="finish()">Finalizar</button>`
+: `<button class="next" onclick="next()">Siguiente</button>`}
 </div>`;
-
 quiz.appendChild(div);
 });
 
@@ -189,12 +197,20 @@ update();
 }
 
 function select(i,j){if(done)return;answers[i]=j;render();}
-function next(){if(current<questions.length-1){current++;render();}}
-function prev(){if(current>0){current--;render();}}
+
+function next(){
+if(answers[current]===null){alert("Responde primero");return;}
+current++;
+render();
+window.scrollTo({top:0,behavior:"smooth"});
+}
+
+function prev(){current--;render();}
 
 function update(){
 document.getElementById("qNum").textContent=current+1;
-document.getElementById("progress").textContent=answers.filter(a=>a!==null).length+" / "+questions.length;
+document.getElementById("progress").textContent=
+answers.filter(a=>a!==null).length+" / "+questions.length;
 }
 
 function finish(){
@@ -203,41 +219,61 @@ let correct=0;
 let html="";
 
 questions.forEach((q,i)=>{
-const user=answers[i];
+if(answers[i]===q.a) correct++;
 
-let estado="sin-responder";
-if(user===q.a){correct++;estado="correcta";}
-else if(user!==null){estado="incorrecta";}
-
-html+=`
-<div class="review-item ${estado}">
-<h4>Pregunta ${i+1}</h4>
-<p><b>Correcta:</b> ${q.o[q.a]}</p>
+html+=`<div class="review-item">
+<p>Correcta: ${q.o[q.a]}</p>
 <div class="explicacion">${q.exp}</div>
 </div>`;
 });
 
-document.getElementById("score").innerHTML=`${correct} / ${questions.length}`;
+let porcentaje=Math.round((correct/questions.length)*100);
+
+document.getElementById("score").innerHTML=
+`${correct}/${questions.length} (${porcentaje}%)`;
+
 document.getElementById("review").innerHTML=html;
 document.getElementById("resultado").style.display="block";
 
+if(window.enviarResultadoFinal){
+window.enviarResultadoFinal({
+correctas:correct,
+total:questions.length,
+porcentaje
+});
+}
+
 render();
 }
 
-function resetExam(){
-current=0;
-answers=new Array(questions.length).fill(null);
-done=false;
+// PARTY
+window.mostrarResultadosParty = function(data){
 
-document.getElementById("resultado").style.display="none";
+const ranking=[...data].sort((a,b)=>b.porcentaje-a.porcentaje);
 
-window.scrollTo({ top: 0, behavior: "smooth" });
+let html=`<div class="party-grid">`;
 
-render();
-}
+ranking.forEach((j,i)=>{
+let medal=i===0?"🥇":i===1?"🥈":i===2?"🥉":"";
+
+html+=`
+<div class="party-card">
+<h3>${medal} Jugador ${i+1}</h3>
+<p>${j.correctas}/${j.total}</p>
+<p>${j.porcentaje}%</p>
+</div>`;
+});
+
+html+=`</div>`;
+html+=`<div class="party-winner">🏆 Mejor: ${ranking[0].porcentaje}%</div>`;
+
+document.getElementById("partyResultadoContenido").innerHTML=html;
+document.getElementById("resultadoParty").style.display="block";
+};
 
 render();
 </script>
+
 <script type="module" src="../party/party-timer.js"></script>
 <script type="module" src="../party/party-resultados.js"></script>
 
