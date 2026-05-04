@@ -242,9 +242,55 @@ render();
 
 render();
 </script>
+  
+<script // ===============================
+// 🎮 MODO PARTY - COMPARADOR
+// ===============================
 
+window.mostrarResultadosParty = function(data){
+
+  const contenedor = document.getElementById("partyResultadoContenido");
+  if(!contenedor) return;
+
+  // ordenar por porcentaje (mayor a menor)
+  data.sort((a,b)=> b.porcentaje - a.porcentaje);
+
+  let html = `<div class="party-grid">`;
+
+  data.forEach((jugador,i)=>{
+    let medalla = "";
+
+    if(i === 0) medalla = "🥇";
+    else if(i === 1) medalla = "🥈";
+    else if(i === 2) medalla = "🥉";
+
+    html += `
+      <div class="party-card">
+        <h3>${medalla} Jugador ${i+1}</h3>
+        <p><strong>Puntaje:</strong> ${jugador.correctas}/${jugador.total}</p>
+        <p><strong>Porcentaje:</strong> ${jugador.porcentaje}%</p>
+      </div>
+    `;
+  });
+
+  html += `</div>`;
+
+  const ganador = data[0];
+
+  html += `
+    <div class="party-winner">
+      🏆 Ganador: ${ganador.porcentaje}% de aciertos
+    </div>
+  `;
+
+  contenedor.innerHTML = html;
+
+  document.getElementById("resultadoParty").style.display = "block";
+};
+</script>
 <script type="module" src="../party/party-timer.js"></script>
 <script type="module" src="../party/party-resultados.js"></script>
 
 </body>
 </html>
+
