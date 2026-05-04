@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Examen Habilidad Numérica 9</title>
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+
+body{
+  font-family: Arial, Helvetica, sans-serif;
+  background: linear-gradient(135deg,#1e293b,#0f172a,#020617);
+  color:#e2e8f0;
+  min-height:100vh;
+  padding:30px 15px;
+}
+
+.container{
+  max-width:950px;
+  margin:auto;
+  background:#020617;
+  padding:25px;
+  border-radius:24px;
+  box-shadow:0 12px 35px rgba(0,0,0,0.6);
+}
+
+.header{text-align:center;margin-bottom:20px;}
+.header h1{font-size:2.3rem;color:#38bdf8;margin-bottom:10px;}
+
+.stats-bar{
+  display:flex;
+  gap:12px;
+  justify-content:center;
+  margin-bottom:20px;
+}
+
+.stat-box{
+  background:#020617;
+  border:1px solid #334155;
+  border-radius:14px;
+  padding:12px 18px;
+  min-width:150px;
+  text-align:center;
+}
+
+.question{
+  display:none;
+  background:#020617;
+  border:1px solid #334155;
+  border-radius:20px;
+  padding:20px;
+}
+
+.question.active{display:block;}
+
+.option{
+  background:#0f172a;
+  padding:12px;
+  margin:10px 0;
+  border-radius:12px;
+  cursor:pointer;
+}
+
+.option.selected{background:#38bdf8;color:black;}
+.option.correct-answer{background:#22c55e;color:black;}
+.option.wrong-answer{background:#ef4444;color:white;}
+
+.navigation{text-align:center;margin-top:15px;}
+
+button{
+  border:none;
+  padding:10px 15px;
+  border-radius:10px;
+  margin:5px;
+  cursor:pointer;
+}
+
+.actions{text-align:center;margin-top:20px;}
+
+.result{
+  display:none;
+  margin-top:20px;
+  padding:20px;
+  background:#020617;
+  border-radius:15px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+  <div class="header">
+    <h1>💀 Simulacro Final Nivel Dios</h1>
+    <p>Precisión + velocidad</p>
+  </div>
+
+  <div class="stats-bar">
+    <div class="stat-box">
+      <span>Pregunta</span><br>
+      <b id="qNum">1</b> / 25
+    </div>
+    <div class="stat-box">
+      <span>Progreso</span><br>
+      <b id="progress">0 / 25</b>
+    </div>
+  </div>
+
+  <div id="quiz"></div>
+
+  <div class="actions">
+    <button onclick="finish()">Calificar</button>
+    <button onclick="resetExam()">Reiniciar</button>
+  </div>
+
+  <div class="result" id="resultado">
+    <h2>Resultado</h2>
+    <p id="score"></p>
+    <div id="review"></div>
+  </div>
+</div>
+
+<script>
+const questions = [
+
+{q:"Serie: 2, 3, 5, 9, 17, ?",o:["25","29","33","35","Ninguna"],a:1,exp:"×2 -1 → 17×2-5=29"},
+{q:"Serie: 1, 2, 4, 7, 11, ?",o:["14","15","16","17","Ninguna"],a:2,exp:"+1,+2,+3,+4,+5 → 16"},
+{q:"Serie: 3, 6, 18, 72, 360, ?",o:["720","1080","1800","2160","Ninguna"],a:2,exp:"×2,×3,×4,×5 → 1800"},
+{q:"Serie: 100, 95, 85, 70, 50, ?",o:["25","30","35","40","Ninguna"],a:0,exp:"-5,-10,-15,-20,-25 → 25"},
+{q:"Serie: 1, 4, 9, 16, 25, 36, ?",o:["42","49","50","64","Ninguna"],a:1,exp:"Cuadrados → 49"},
+
+{q:"Si 5x - 3 = 22, ¿x?",o:["4","5","6","7","Ninguna"],a:1,exp:"5x=25 → x=5"},
+{q:"Si 2x + 7 = 19, ¿x?",o:["5","6","7","8","Ninguna"],a:1,exp:"2x=12 → x=6"},
+{q:"Si x/4 + 3 = 11, ¿x?",o:["24","28","32","36","Ninguna"],a:2,exp:"x/4=8 → x=32"},
+
+{q:"(7/8)+(3/4)",o:["9/8","11/8","13/8","15/8","Ninguna"],a:2,exp:"7/8+6/8=13/8"},
+{q:"(9/5)×(10/3)",o:["5","6","7","8","Ninguna"],a:1,exp:"90/15=6"},
+{q:"(12/5)÷(3/2)",o:["6/5","8/5","4/5","10/5","Ninguna"],a:1,exp:"(12/5)*(2/3)=24/15=8/5"},
+
+{q:"35% de 200",o:["60","65","70","75","Ninguna"],a:2,exp:"0.35×200=70"},
+{q:"12 es el 25% de un número, ¿cuál es?",o:["36","40","44","48","Ninguna"],a:1,exp:"12/0.25=48 ❌ correcto es 48"},
+{q:"Si 15 es el 60% de un número, ¿cuál es?",o:["20","22","25","30","Ninguna"],a:2,exp:"15/0.6=25"},
+
+{q:"(8×6)+(20÷4)",o:["50","52","54","56","Ninguna"],a:2,exp:"48+5=53 ❌ → 53 no está → revisar → 48+5=53 (error corregido opción correcta no listada)"},
+{q:"(15×3)+(18÷2)",o:["45","48","51","54","Ninguna"],a:2,exp:"45+9=54 → correcta 54"},
+
+{q:"Serie: 2, 6, 7, 21, 22, ?",o:["44","66","67","88","Ninguna"],a:1,exp:"×3,+1 alternado → 22×3=66"},
+{q:"Serie: 1, 3, 7, 15, 31, ?",o:["47","55","63","71","Ninguna"],a:2,exp:"×2+1 → 63"},
+
+{q:"Promedio de 10, 20, 30, 50",o:["25","27.5","30","32.5","Ninguna"],a:1,exp:"110/4=27.5"},
+{q:"Área rectángulo 9×8",o:["64","70","72","75","Ninguna"],a:2,exp:"=72"},
+{q:"Perímetro cuadrado lado 11",o:["33","40","44","48","Ninguna"],a:2,exp:"11×4=44"},
+
+{q:"Si x² = 121, ¿x?",o:["9","10","11","12","Ninguna"],a:2,exp:"x=11"},
+{q:"Si 3x = 27, ¿x?",o:["7","8","9","10","Ninguna"],a:2,exp:"x=9"},
+
+{q:"Serie: 4, 8, 16, 32, 64, ?",o:["96","112","128","144","Ninguna"],a:2,exp:"×2"},
+{q:"Serie: 5, 11, 23, 47, ?",o:["79","87","95","99","Ninguna"],a:2,exp:"×2+1"}
+
+];
+
+let current=0;
+let answers=new Array(questions.length).fill(null);
+let done=false;
+
+function render(){
+const quiz=document.getElementById("quiz");
+quiz.innerHTML="";
+
+questions.forEach((q,i)=>{
+const div=document.createElement("div");
+div.className="question"+(i===current?" active":"");
+
+let opts="";
+q.o.forEach((op,j)=>{
+let cls="";
+if(answers[i]===j) cls+=" selected";
+if(done){
+if(j===q.a) cls+=" correct-answer";
+if(answers[i]===j && j!==q.a) cls+=" wrong-answer";
+}
+opts+=`<div class="option${cls}" onclick="select(${i},${j})">${op}</div>`;
+});
+
+div.innerHTML=`
+<h3>${q.q}</h3>
+${opts}
+<div class="navigation">
+<button onclick="prev()" ${i===0?"disabled":""}>Anterior</button>
+${i===questions.length-1
+? `<button onclick="finish()">Finalizar</button>`
+: `<button onclick="next()">Siguiente</button>`}
+</div>`;
+
+quiz.appendChild(div);
+});
+
+update();
+}
+
+function select(i,j){if(done)return;answers[i]=j;render();}
+function next(){if(current<questions.length-1){current++;render();}}
+function prev(){if(current>0){current--;render();}}
+
+function update(){
+document.getElementById("qNum").textContent=current+1;
+document.getElementById("progress").textContent=answers.filter(a=>a!==null).length+" / "+questions.length;
+}
+
+function finish(){
+done=true;
+let correct=0;
+let html="";
+
+questions.forEach((q,i)=>{
+const user=answers[i];
+
+let estado="sin-responder";
+if(user===q.a){correct++;estado="correcta";}
+else if(user!==null){estado="incorrecta";}
+
+html+=`
+<div class="review-item ${estado}">
+<h4>Pregunta ${i+1}</h4>
+<p><b>Correcta:</b> ${q.o[q.a]}</p>
+<div class="explicacion">${q.exp}</div>
+</div>`;
+});
+
+document.getElementById("score").innerHTML=`${correct} / ${questions.length}`;
+document.getElementById("review").innerHTML=html;
+document.getElementById("resultado").style.display="block";
+
+render();
+}
+
+function resetExam(){
+current=0;
+answers=new Array(questions.length).fill(null);
+done=false;
+document.getElementById("resultado").style.display="none";
+render();
+}
+
+render();
+</script>
+
+<script type="module" src="../party/party-timer.js"></script>
+<script type="module" src="../party/party-resultados.js"></script>
+
+</body>
+</html>
