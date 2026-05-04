@@ -6,59 +6,50 @@
 <title>Examen Habilidad Numérica 7</title>
 
 <style>
-style>
 *{ box-sizing:border-box; margin:0; padding:0; }
-body{ font-family: Arial, Helvetica, sans-serif; background: linear-gradient(135deg,#fff1f2,#ffe4e6,#fecdd3); color:#7f1d1d; min-height:100vh; padding:30px 15px; }
+body{ font-family: Arial, Helvetica, sans-serif; background: linear-gradient(135deg,#e0f2fe,#dbeafe,#bfdbfe); color:#1e3a8a; min-height:100vh; padding:30px 15px; }
 .container{ max-width:950px; margin:auto; background:rgba(255,255,255,0.95); padding:25px; border-radius:24px; box-shadow:0 12px 35px rgba(0,0,0,0.08); }
 .header{ text-align:center; margin-bottom:20px; }
-.header h1{ font-size: clamp(1.9rem, 4vw, 2.7rem); margin-bottom:10px; color:#9f1239; }
-.header p{ color:#881337; opacity:0.9; line-height:1.5; }
-.top-link{ display:inline-block; margin-top:12px; color:#be123c; text-decoration:none; font-weight:bold; }
-.top-link:hover{ text-decoration:underline; }
-.stats-bar{ display:flex; flex-wrap:wrap; gap:12px; justify-content:center; align-items:center; margin-bottom:20px; }
-.stat-box{ background:#fff; border:1px solid #fecdd3; border-radius:14px; padding:12px 18px; min-width:150px; text-align:center; box-shadow:0 4px 12px rgba(0,0,0,0.05); }
-.stat-label{ display:block; font-size:0.9rem; color:#be123c; margin-bottom:4px; font-weight:bold; }
-.stat-value{ display:block; font-size:1.15rem; color:#7f1d1d; font-weight:bold; }
-.question{ display:none; background:#fff7f8; border:1px solid #fecdd3; border-radius:20px; padding:20px; margin-bottom:18px; }
+.header h1{ font-size: clamp(1.9rem, 4vw, 2.7rem); margin-bottom:10px; color:#1d4ed8; }
+.header p{ color:#1e40af; opacity:0.9; }
+
+.stats-bar{ display:flex; flex-wrap:wrap; gap:12px; justify-content:center; margin-bottom:20px; }
+.stat-box{ background:#fff; border:1px solid #bfdbfe; border-radius:14px; padding:12px 18px; min-width:150px; text-align:center; }
+.stat-label{ display:block; font-size:0.9rem; color:#2563eb; margin-bottom:4px; font-weight:bold; }
+.stat-value{ font-size:1.15rem; font-weight:bold; }
+
+.question{ display:none; background:#eff6ff; border:1px solid #bfdbfe; border-radius:20px; padding:20px; margin-bottom:18px; }
 .question.active{ display:block; }
-.question h3{ font-size:1.08rem; line-height:1.6; color:#9f1239; margin-bottom:14px; }
-.option{ display:block; background:#ffe4e6; padding:12px 14px; margin:10px 0; border-radius:12px; cursor:pointer; border:1px solid transparent; transition:0.2s ease; color:#881337; }
-.option:hover{ background:#fecdd3; border-color:#fb7185; }
-.option.selected{ background:#f43f5e; color:white; border-color:#e11d48; }
-.option.correct-answer{ background:#dcfce7 !important; color:#166534 !important; border-color:#86efac !important; }
-.option.wrong-answer{ background:#fee2e2 !important; color:#991b1b !important; border-color:#fca5a5 !important; }
-.navigation{ display:flex; flex-wrap:wrap; gap:12px; justify-content:center; margin-top:18px; }
-button{ border:none; border-radius:14px; padding:12px 20px; font-size:1rem; font-weight:bold; cursor:pointer; transition:0.2s ease; }
-button:hover{ transform:translateY(-1px); }
-.prev{ background:#fda4af; color:#881337; }
-.prev:hover{ background:#fb7185; color:white; }
-.next{ background:#fb7185; color:white; }
-.next:hover{ background:#f43f5e; }
-.finish{ background:#dc2626; color:white; }
-.finish:hover{ background:#b91c1c; }
-.actions{ display:flex; flex-wrap:wrap; gap:12px; justify-content:center; margin-top:25px; }
-.btn-primary{ background:#e11d48; color:white; }
-.btn-primary:hover{ background:#be123c; }
-.btn-secondary{ background:#fecdd3; color:#9f1239; }
-.btn-secondary:hover{ background:#fda4af; }
-.result{ margin-top:25px; padding:20px; border-radius:18px; background:#fff7f8; border:1px solid #fecdd3; text-align:center; display:none; }
-.result h2{ margin-bottom:10px; color:#9f1239; }
-.result p{ font-size:1.08rem; line-height:1.6; color:#881337; }
-.review{ margin-top:18px; text-align:left; color:#1f2937; }
-.review-summary{ display:grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap:12px; margin:18px 0 14px; }
-.summary-box{ background:#ffffff; border:1px solid #fecdd3; border-radius:14px; padding:14px; text-align:center; box-shadow:0 4px 12px rgba(0,0,0,0.05); }
-.summary-box h4{ margin-bottom:6px; font-size:0.95rem; color:#be123c; }
-.summary-box p{ font-size:1.2rem; font-weight:bold; color:#7f1d1d; }
-.review-item{ background:#ffffff; border-radius:14px; padding:14px; margin-bottom:12px; border-left:6px solid #cbd5e1; box-shadow:0 4px 14px rgba(0,0,0,0.05); }
+.question h3{ color:#1d4ed8; margin-bottom:14px; }
+
+.option{ background:#dbeafe; padding:12px; margin:10px 0; border-radius:12px; cursor:pointer; }
+.option:hover{ background:#bfdbfe; }
+.option.selected{ background:#3b82f6; color:white; }
+.option.correct-answer{ background:#dcfce7; color:#166534; }
+.option.wrong-answer{ background:#fee2e2; color:#991b1b; }
+
+.navigation{ display:flex; gap:12px; justify-content:center; margin-top:18px; }
+button{ border:none; border-radius:14px; padding:12px 20px; font-weight:bold; cursor:pointer; }
+.prev{ background:#93c5fd; }
+.next{ background:#3b82f6; color:white; }
+.finish{ background:#1d4ed8; color:white; }
+
+.actions{ display:flex; gap:12px; justify-content:center; margin-top:25px; }
+.btn-primary{ background:#2563eb; color:white; }
+.btn-secondary{ background:#bfdbfe; }
+
+.result{ margin-top:25px; padding:20px; border-radius:18px; background:#eff6ff; border:1px solid #bfdbfe; display:none; }
+
+.review-summary{ display:grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap:12px; margin:18px 0; }
+.summary-box{ background:#fff; border:1px solid #bfdbfe; border-radius:14px; padding:14px; text-align:center; }
+.summary-box h4{ color:#2563eb; }
+
+.review-item{ background:#fff; border-radius:14px; padding:14px; margin-bottom:12px; border-left:6px solid #cbd5e1; }
 .review-item.correcta{ border-left-color:#22c55e; background:#f0fdf4; }
 .review-item.incorrecta{ border-left-color:#ef4444; background:#fef2f2; }
 .review-item.sin-responder{ border-left-color:#f59e0b; background:#fffbeb; }
-.review-item h4{ margin-bottom:8px; font-size:1rem; }
-.explicacion{ margin-top:8px; padding:10px 12px; background:#f8fafc; border-radius:10px; color:#334155; line-height:1.5; font-size:0.95rem; }
-.party-grid{ display:grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap:14px; margin-top:18px; }
-.party-card{ background:#ffffff; border:1px solid #fecdd3; border-radius:16px; padding:16px; text-align:center; }
-.party-winner{ margin-top:16px; padding:14px; border-radius:14px; background:#fff1f2; border:1px solid #fb7185; font-weight:bold; text-align:center; color:#9f1239; }
-</style>
+
+.explicacion{ margin-top:8px; padding:10px; background:#f1f5f9; border-radius:10px; }
 </style>
 </head>
 
@@ -66,12 +57,12 @@ button:hover{ transform:translateY(-1px); }
 <div class="container">
   <div class="header">
     <h1>🧠 Examen Habilidad Numérica 7</h1>
-    <p>Versión digital interactiva</p>
+    <p>Versión interactiva</p>
   </div>
 
   <div class="stats-bar">
     <div class="stat-box">
-      <span class="stat-label">Pregunta actual</span>
+      <span class="stat-label">Pregunta</span>
       <span class="stat-value"><span id="qNum">1</span> / 22</span>
     </div>
 
@@ -84,41 +75,41 @@ button:hover{ transform:translateY(-1px); }
   <div id="quiz"></div>
 
   <div class="actions">
-    <button class="btn-primary" onclick="finish()">Calificar examen</button>
+    <button class="btn-primary" onclick="finish()">Calificar</button>
     <button class="btn-secondary" onclick="reiniciarExamen()">Reiniciar</button>
   </div>
 
   <div class="result" id="resultado">
     <h2>Resultado</h2>
     <p id="puntajeTexto"></p>
-    <div class="review" id="revision"></div>
+    <div id="revision"></div>
   </div>
 </div>
 
 <script>
 const questions = [
-{q:"Si x + 5 = 12, ¿cuál es x?",o:["5","6","7","8"],a:2,exp:"Despeje: x = 12 - 5 = 7"},
-{q:"El doble de un número es 24",o:["10","12","14","16"],a:1,exp:"2x = 24 → x = 12"},
-{q:"15% de 200",o:["20","25","30","35"],a:2,exp:"0.15 × 200 = 30"},
-{q:"Área rectángulo 8×5",o:["13","26","40","80"],a:2,exp:"Área = base × altura = 40"},
-{q:"MCM de 6 y 8",o:["12","16","24","48"],a:2,exp:"MCM = 24"},
-{q:"3(4+2)-5",o:["10","13","15","18"],a:1,exp:"3×6=18 → 18-5=13"},
-{q:"40% de 30",o:["10","12","15","18"],a:1,exp:"0.4×30=12"},
-{q:"5 obreros 20 días, 10 obreros?",o:["5","10","15","40"],a:1,exp:"Más obreros menos tiempo → 10 días"},
-{q:"Serie 2,5,8,11",o:["13","14","15","16"],a:1,exp:"Suma +3 → 14"},
-{q:"Razón 2:3 menor 14",o:["18","21","24","28"],a:1,exp:"14×3/2=21"},
-{q:"√81 + √16",o:["9","13","17","25"],a:1,exp:"9+4=13"},
-{q:"500 con 15% descuento",o:["400","425","450","475"],a:1,exp:"500×0.85=425"},
-{q:"2³ + 3²",o:["13","15","17","19"],a:2,exp:"8+9=17"},
-{q:"Ángulo faltante",o:["60","70","80","90"],a:1,exp:"180-(35+65)=70"},
-{q:"144 ÷ 12",o:["10","11","12","13"],a:2,exp:"=12"},
-{q:"Mayor 2/3 vs 3/5",o:["2/3","3/5","igual","no"],a:0,exp:"0.66 > 0.6"},
-{q:"60km/h × 3h",o:["120","150","180","210"],a:2,exp:"d=v×t=180"},
-{q:"80→100 % aumento",o:["15","20","25","30"],a:2,exp:"20/80=25%"},
-{q:"18-3×4+2",o:["4","6","8","12"],a:2,exp:"18-12+2=8"},
-{q:"MCD 12,18,24",o:["2","3","6","12"],a:2,exp:"=6"},
-{q:"x=-2 en 3x²-4",o:["-16","-8","8","16"],a:2,exp:"3(4)-4=8"},
-{q:"3 artículos=60, 7?",o:["120","130","140","150"],a:2,exp:"20×7=140"}
+{q:"Si x + 5 = 12, ¿cuál es x?",o:["5","6","7","8"],a:2,exp:"x = 12 - 5 = 7"},
+{q:"El doble de un número es 24",o:["10","12","14","16"],a:1,exp:"x = 12"},
+{q:"15% de 200",o:["20","25","30","35"],a:2,exp:"0.15×200=30"},
+{q:"Área 8×5",o:["13","26","40","80"],a:2,exp:"40"},
+{q:"MCM 6 y 8",o:["12","16","24","48"],a:2,exp:"24"},
+{q:"3(4+2)-5",o:["10","13","15","18"],a:1,exp:"13"},
+{q:"40% de 30",o:["10","12","15","18"],a:1,exp:"12"},
+{q:"Obreros",o:["5","10","15","40"],a:1,exp:"10 días"},
+{q:"Serie",o:["13","14","15","16"],a:1,exp:"14"},
+{q:"Razón",o:["18","21","24","28"],a:1,exp:"21"},
+{q:"Raíces",o:["9","13","17","25"],a:1,exp:"13"},
+{q:"Descuento",o:["400","425","450","475"],a:1,exp:"425"},
+{q:"Potencias",o:["13","15","17","19"],a:2,exp:"17"},
+{q:"Ángulo",o:["60","70","80","90"],a:1,exp:"70"},
+{q:"División",o:["10","11","12","13"],a:2,exp:"12"},
+{q:"Fracciones",o:["2/3","3/5","igual","no"],a:0,exp:"2/3 mayor"},
+{q:"Velocidad",o:["120","150","180","210"],a:2,exp:"180"},
+{q:"Porcentaje",o:["15","20","25","30"],a:2,exp:"25%"},
+{q:"Operación",o:["4","6","8","12"],a:2,exp:"8"},
+{q:"MCD",o:["2","3","6","12"],a:2,exp:"6"},
+{q:"Sustitución",o:["-16","-8","8","16"],a:2,exp:"8"},
+{q:"Proporción",o:["120","130","140","150"],a:2,exp:"140"}
 ];
 
 let current=0;
@@ -144,9 +135,7 @@ if(answers[i]===j && j!==q.a) cls+=" wrong-answer";
 opts+=`<div class="option${cls}" onclick="select(${i},${j})">${String.fromCharCode(65+j)}. ${op}</div>`;
 });
 
-div.innerHTML=`
-<h3>${q.q}</h3>
-${opts}
+div.innerHTML=`<h3>${q.q}</h3>${opts}
 <div class="navigation">
 <button class="prev" onclick="prev()" ${i===0?"disabled":""}>Anterior</button>
 ${i===questions.length-1
@@ -171,31 +160,53 @@ document.getElementById("progress").textContent=answers.filter(a=>a!==null).leng
 
 function finish(){
 done=true;
-let correct=0;
+let correctas=0,incorrectas=0,sinResponder=0;
 let html="";
 
 questions.forEach((q,i)=>{
 const user=answers[i];
-if(user===q.a) correct++;
 
-html+=`<div class="review-item">
+if(user===null){
+sinResponder++;
+html+=`<div class="review-item sin-responder">
 <h4>Pregunta ${i+1}</h4>
 <p>Correcta: ${q.o[q.a]}</p>
-<div class="explicacion">${q.exp}</div>
-</div>`;
+<div class="explicacion">${q.exp}</div></div>`;
+}else if(user===q.a){
+correctas++;
+html+=`<div class="review-item correcta">
+<h4>Pregunta ${i+1} ✅</h4>
+<p>Tu respuesta: ${q.o[user]}</p>
+<div class="explicacion">${q.exp}</div></div>`;
+}else{
+incorrectas++;
+html+=`<div class="review-item incorrecta">
+<h4>Pregunta ${i+1} ❌</h4>
+<p>Tu respuesta: ${q.o[user]}</p>
+<p>Correcta: ${q.o[q.a]}</p>
+<div class="explicacion">${q.exp}</div></div>`;
+}
 });
 
-document.getElementById("puntajeTexto").innerHTML=`${correct} / ${questions.length}`;
-document.getElementById("revision").innerHTML=html;
-document.getElementById("resultado").style.display="block";
+const total=questions.length;
+const porcentaje=((correctas/total)*100).toFixed(1);
 
+document.getElementById("puntajeTexto").innerHTML=`Obtuviste ${correctas} de ${total} (${porcentaje}%)`;
+
+document.getElementById("revision").innerHTML=`
+<div class="review-summary">
+<div class="summary-box"><h4>Correctas</h4><p>${correctas}</p></div>
+<div class="summary-box"><h4>Incorrectas</h4><p>${incorrectas}</p></div>
+<div class="summary-box"><h4>Sin responder</h4><p>${sinResponder}</p></div>
+</div>
+${html}`;
+
+document.getElementById("resultado").style.display="block";
 render();
 }
 
 function reiniciarExamen(){
-current=0;
-answers=new Array(questions.length).fill(null);
-done=false;
+current=0;answers=new Array(questions.length).fill(null);done=false;
 document.getElementById("resultado").style.display="none";
 render();
 }
