@@ -7,7 +7,43 @@
       "pregunta": "¿Cuántas moléculas hay en 1 mol de H2O?",
       "opciones": ["6.022×10^23","3.011×10^23","1×10^23","9×10^23"],
       "correcta": 0,
-      "explicacion": "1 mol siempre equivale a 6.022×10^23 partículas."
+      "explicacion": "1 mol equivale a 6.022×10^23 partículas."
+    },
+    {
+      "id": 2,
+      "tipo": "mol_moleculas",
+      "dificultad": "facil",
+      "pregunta": "¿Cuántas moléculas hay en 2 mol de O2?",
+      "opciones": ["1.204×10^24","6.022×10^23","2×10^23","9×10^23"],
+      "correcta": 0,
+      "explicacion": "Se multiplica 2×6.022×10^23."
+    },
+    {
+      "id": 3,
+      "tipo": "moleculas_mol",
+      "dificultad": "facil",
+      "pregunta": "¿Cuántos moles hay en 6.022×10^23 moléculas de CO2?",
+      "opciones": ["1","2","0.5","3"],
+      "correcta": 0,
+      "explicacion": "Es exactamente 1 mol."
+    },
+    {
+      "id": 4,
+      "tipo": "g_mol",
+      "dificultad": "media",
+      "pregunta": "¿Cuántos moles hay en 18 g de H2O?",
+      "opciones": ["1","2","0.5","3"],
+      "correcta": 0,
+      "explicacion": "Masa molar del H2O es 18 g/mol."
+    },
+    {
+      "id": 5,
+      "tipo": "mol_g",
+      "dificultad": "media",
+      "pregunta": "¿Cuántos gramos hay en 2 mol de CO2?",
+      "opciones": ["88 g","44 g","22 g","66 g"],
+      "correcta": 0,
+      "explicacion": "44 g/mol × 2 = 88 g."
     }
   ]
 }
