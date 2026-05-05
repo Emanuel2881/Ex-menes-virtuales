@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Simulador Estequiometría PRO</title>
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+
+body{
+  font-family: Arial, Helvetica, sans-serif;
+  background: linear-gradient(135deg,#fee2e2,#fecaca,#fca5a5);
+  color:#7f1d1d;
+  min-height:100vh;
+  padding:30px 15px;
+}
+
+.container{
+  max-width:1000px;
+  margin:auto;
+  background:white;
+  padding:25px;
+  border-radius:24px;
+  box-shadow:0 12px 35px rgba(0,0,0,0.1);
+}
+
+.header{text-align:center;margin-bottom:20px;}
+.header h1{color:#b91c1c;}
+
+.grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:20px;
+}
+
+.card{
+  background:#fee2e2;
+  padding:20px;
+  border-radius:18px;
+}
+
+input, select{
+  width:100%;
+  padding:10px;
+  margin:10px 0;
+  border-radius:10px;
+  border:1px solid #fca5a5;
+}
+
+button{
+  width:100%;
+  padding:12px;
+  background:#dc2626;
+  color:white;
+  border:none;
+  border-radius:10px;
+  cursor:pointer;
+}
+
+button:hover{background:#b91c1c;}
+
+.result{
+  margin-top:15px;
+  font-weight:bold;
+}
+
+.steps{
+  margin-top:10px;
+  font-size:0.9rem;
+  background:#fff;
+  padding:10px;
+  border-radius:10px;
+}
+
+.history{
+  margin-top:20px;
+  background:#fff;
+  padding:15px;
+  border-radius:15px;
+}
+
+.history-item{
+  border-left:4px solid #dc2626;
+  padding:8px;
+  margin:5px 0;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="header">
+<h1>🧪 Simulador Estequiometría PRO</h1>
+<p>Conversión avanzada con pasos explicados</p>
+</div>
+
+<div class="grid">
+
+<div class="card">
+
+<select id="tipo">
+<option value="mol_moleculas">Mol → Moléculas</option>
+<option value="moleculas_mol">Moléculas → Mol</option>
+<option value="g_mol">Gramos → Mol</option>
+<option value="mol_g">Mol → Gramos</option>
+<option value="g_moleculas">Gramos → Moléculas</option>
+<option value="moleculas_g">Moléculas → Gramos</option>
+</select>
+
+<input type="number" id="valor" placeholder="Valor">
+<input type="number" id="masa" placeholder="Masa molar (si aplica)">
+
+<button onclick="calcular()">Calcular</button>
+
+<div class="result" id="resultado"></div>
+<div class="steps" id="pasos"></div>
+
+</div>
+
+<div class="card">
+<h3>📜 Historial</h3>
+<div id="historial" class="history"></div>
+</div>
+
+</div>
+
+</div>
+
+<script>
+
+const NA = 6.022e23;
+
+function format(num){
+  return num.toExponential(4);
+}
+
+function calcular(){
+
+  let tipo = document.getElementById("tipo").value;
+  let valor = parseFloat(document.getElementById("valor").value);
+  let masa = parseFloat(document.getElementById("masa").value);
+
+  if(isNaN(valor)) return alert("Ingresa un valor");
+
+  let resultado = 0;
+  let pasos = "";
+
+  switch(tipo){
+
+    case "mol_moleculas":
+      resultado = valor * NA;
+      pasos = `Paso único:<br>${valor} × 6.022×10²³`;
+      break;
+
+    case "moleculas_mol":
+      resultado = valor / NA;
+      pasos = `Paso único:<br>${valor} ÷ 6.022×10²³`;
+      break;
+
+    case "g_mol":
+      if(isNaN(masa)) return alert("Falta masa molar");
+      resultado = valor / masa;
+      pasos = `Paso:<br>${valor} ÷ ${masa}`;
+      break;
+
+    case "mol_g":
+      if(isNaN(masa)) return alert("Falta masa molar");
+      resultado = valor * masa;
+      pasos = `Paso:<br>${valor} × ${masa}`;
+      break;
+
+    case "g_moleculas":
+      if(isNaN(masa)) return alert("Falta masa molar");
+      let mol = valor / masa;
+      resultado = mol * NA;
+      pasos = `
+      Paso 1: ${valor} ÷ ${masa} = ${mol}<br>
+      Paso 2: ${mol} × 6.022×10²³
+      `;
+      break;
+
+    case "moleculas_g":
+      if(isNaN(masa)) return alert("Falta masa molar");
+      let mol2 = valor / NA;
+      resultado = mol2 * masa;
+      pasos = `
+      Paso 1: ${valor} ÷ 6.022×10²³ = ${mol2}<br>
+      Paso 2: ${mol2} × ${masa}
+      `;
+      break;
+  }
+
+  document.getElementById("resultado").innerText =
+    "Resultado: " + format(resultado);
+
+  document.getElementById("pasos").innerHTML = pasos;
+
+  guardarHistorial(tipo, valor, resultado);
+}
+
+function guardarHistorial(tipo, valor, resultado){
+
+  let div = document.createElement("div");
+  div.className = "history-item";
+  div.innerText = `${tipo} | ${valor} → ${format(resultado)}`;
+
+  document.getElementById("historial").prepend(div);
+}
+
+</script>
+
+</body>
+</html>
