@@ -1,1 +1,13 @@
-
+{
+  "estequiometria": [
+    {
+      "id": 1,
+      "tipo": "mol_moleculas",
+      "dificultad": "facil",
+      "pregunta": "¿Cuántas moléculas hay en 1 mol de H2O?",
+      "opciones": ["6.022×10^23","3.011×10^23","1×10^23","9×10^23"],
+      "correcta": 0,
+      "explicacion": "1 mol siempre equivale a 6.022×10^23 partículas."
+    }
+  ]
+}
