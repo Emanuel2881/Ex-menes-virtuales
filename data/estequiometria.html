@@ -84,6 +84,13 @@ button:hover{background:#b91c1c;}
   padding:8px;
   margin:5px 0;
 }
+
+.exam{
+  margin-top:30px;
+  padding:20px;
+  background:#fee2e2;
+  border-radius:18px;
+}
 </style>
 </head>
 
@@ -126,6 +133,14 @@ button:hover{background:#b91c1c;}
 
 </div>
 
+<!-- 🔥 MODO EXAMEN -->
+<div class="exam">
+<h2>📝 Modo Examen</h2>
+<h3 id="pregunta"></h3>
+<div id="opciones"></div>
+<p id="score"></p>
+</div>
+
 </div>
 
 <script>
@@ -133,7 +148,7 @@ button:hover{background:#b91c1c;}
 const NA = 6.022e23;
 
 function format(num){
-  return num.toExponential(4);
+  return num.toExponential(3).replace("e+", "×10^");
 }
 
 function calcular(){
@@ -151,44 +166,38 @@ function calcular(){
 
     case "mol_moleculas":
       resultado = valor * NA;
-      pasos = `Paso único:<br>${valor} × 6.022×10²³`;
+      pasos = `${valor} × 6.022×10^23`;
       break;
 
     case "moleculas_mol":
       resultado = valor / NA;
-      pasos = `Paso único:<br>${valor} ÷ 6.022×10²³`;
+      pasos = `${valor} ÷ 6.022×10^23`;
       break;
 
     case "g_mol":
       if(isNaN(masa)) return alert("Falta masa molar");
       resultado = valor / masa;
-      pasos = `Paso:<br>${valor} ÷ ${masa}`;
+      pasos = `${valor} ÷ ${masa}`;
       break;
 
     case "mol_g":
       if(isNaN(masa)) return alert("Falta masa molar");
       resultado = valor * masa;
-      pasos = `Paso:<br>${valor} × ${masa}`;
+      pasos = `${valor} × ${masa}`;
       break;
 
     case "g_moleculas":
       if(isNaN(masa)) return alert("Falta masa molar");
       let mol = valor / masa;
       resultado = mol * NA;
-      pasos = `
-      Paso 1: ${valor} ÷ ${masa} = ${mol}<br>
-      Paso 2: ${mol} × 6.022×10²³
-      `;
+      pasos = `Paso 1: ${valor}/${masa} = ${mol}<br>Paso 2: ${mol}×6.022×10^23`;
       break;
 
     case "moleculas_g":
       if(isNaN(masa)) return alert("Falta masa molar");
       let mol2 = valor / NA;
       resultado = mol2 * masa;
-      pasos = `
-      Paso 1: ${valor} ÷ 6.022×10²³ = ${mol2}<br>
-      Paso 2: ${mol2} × ${masa}
-      `;
+      pasos = `Paso 1: ${valor}/6.022×10^23 = ${mol2}<br>Paso 2: ${mol2}×${masa}`;
       break;
   }
 
@@ -201,13 +210,64 @@ function calcular(){
 }
 
 function guardarHistorial(tipo, valor, resultado){
-
   let div = document.createElement("div");
   div.className = "history-item";
   div.innerText = `${tipo} | ${valor} → ${format(resultado)}`;
-
   document.getElementById("historial").prepend(div);
 }
+
+//// 🔥 EXAMEN
+
+let preguntas = [];
+let indice = 0;
+let puntos = 0;
+
+async function cargarExamen(){
+  try{
+    const res = await fetch("../banco/quimica.json");
+    const data = await res.json();
+
+    preguntas = data.estequiometria;
+    preguntas.sort(()=>Math.random()-0.5);
+
+    mostrarPregunta();
+  }catch(e){
+    document.getElementById("pregunta").innerText = "Error cargando preguntas";
+  }
+}
+
+function mostrarPregunta(){
+  if(indice >= preguntas.length){
+    document.getElementById("pregunta").innerText = "Examen terminado";
+    document.getElementById("opciones").innerHTML = "";
+    document.getElementById("score").innerText =
+      `Puntaje: ${puntos}/${preguntas.length}`;
+    return;
+  }
+
+  const p = preguntas[indice];
+  document.getElementById("pregunta").innerText = p.pregunta;
+
+  const cont = document.getElementById("opciones");
+  cont.innerHTML = "";
+
+  p.opciones.forEach((op,i)=>{
+    const btn = document.createElement("button");
+    btn.innerText = op;
+    btn.onclick = ()=>responder(i);
+    cont.appendChild(btn);
+  });
+}
+
+function responder(i){
+  if(i === preguntas[indice].correcta){
+    puntos++;
+  }
+  indice++;
+  mostrarPregunta();
+}
+
+cargarExamen();
 
 </script>
 
