@@ -19,8 +19,62 @@
 <div class="result" id="resultado"><h2>Resultado</h2><p id="score"></p><div id="review"></div></div>
 </div>
 <script>
-const bancoConversiones=[{q:"¿Cuántos moles hay en 3.01×10^23 moléculas?",o:["0.5 mol","1 mol","2 mol","0.25 mol"],a:0,exp:"÷6.02e23"},{q:"¿Cuántas moléculas hay en 2 mol?",o:["1.20×10^24","6.02×10^23","3.01×10^23","2×10^23"],a:0,exp:"2×6.02e23"},{q:"¿Cuántos gramos hay en 1 mol de CO2?",o:["44 g","22 g","28 g","12 g"],a:0,exp:"44 g/mol"},{q:"¿Cuántos moles hay en 88 g de CO2?",o:["2 mol","1 mol","0.5 mol","4 mol"],a:0,exp:"88/44"},{q:"¿Cuántas partículas hay en 0.25 mol?",o:["1.51×10^23","6.02×10^23","3×10^23","2×10^23"],a:0,exp:"×NA"}];
-const bancoEcuaciones=[{q:"2H2 + O2 → 2H2O, ¿mol H2O con 4 mol H2?",o:["4 mol","2 mol","6 mol","1 mol"],a:0,exp:"2:2"},{q:"N2 + 3H2 → 2NH3, ¿mol NH3 con 3 mol H2?",o:["2 mol","3 mol","1 mol","4 mol"],a:0,exp:"3→2"},{q:"C + O2 → CO2, ¿mol CO2 con 5 mol O2?",o:["5 mol","2 mol","3 mol","4 mol"],a:0,exp:"1:1"}];
+const bancoConversiones=[
+{q:"¿Cuántos moles hay en 3.01×10^23 moléculas?",o:["0.5 mol","1 mol","2 mol","0.25 mol"],a:0,exp:"÷6.02e23"},
+{q:"¿Cuántas moléculas hay en 1 mol?",o:["6.02×10^23","3×10^23","1×10^23","2×10^23"],a:0,exp:"×NA"},
+{q:"¿Cuántos gramos hay en 2 mol de CO2?",o:["88 g","44 g","22 g","66 g"],a:0,exp:"2×44"},
+{q:"¿Cuántos moles hay en 44 g de CO2?",o:["1 mol","2 mol","0.5 mol","4 mol"],a:0,exp:"44/44"},
+{q:"¿Cuántas partículas hay en 0.5 mol?",o:["3.01×10^23","6×10^23","1×10^23","2×10^23"],a:0,exp:"0.5×NA"},
+{q:"¿Cuántos gramos hay en 3 mol de H2O?",o:["54 g","18 g","36 g","72 g"],a:0,exp:"3×18"},
+{q:"¿Cuántos moles hay en 18 g de H2O?",o:["1 mol","2 mol","0.5 mol","3 mol"],a:0,exp:"18/18"},
+{q:"¿Cuántas moléculas hay en 0.25 mol?",o:["1.51×10^23","6×10^23","3×10^23","2×10^23"],a:0,exp:"0.25×NA"},
+{q:"¿Cuántos gramos hay en 1 mol de O2?",o:["32 g","16 g","64 g","8 g"],a:0,exp:"32"},
+{q:"¿Cuántos moles hay en 32 g de O2?",o:["1 mol","2 mol","0.5 mol","4 mol"],a:0,exp:"32/32"},
+{q:"¿Cuántas partículas hay en 2 mol?",o:["1.20×10^24","6×10^23","2×10^23","3×10^23"],a:0,exp:"2×NA"},
+{q:"¿Cuántos gramos hay en 0.5 mol de CO2?",o:["22 g","44 g","11 g","33 g"],a:0,exp:"0.5×44"},
+{q:"¿Cuántos moles hay en 22 g de CO2?",o:["0.5 mol","1 mol","2 mol","0.25 mol"],a:0,exp:"22/44"},
+{q:"¿Cuántas moléculas hay en 3 mol?",o:["1.81×10^24","6×10^23","9×10^23","3×10^23"],a:0,exp:"3×NA"},
+{q:"¿Cuántos gramos hay en 4 mol de H2O?",o:["72 g","18 g","36 g","90 g"],a:0,exp:"4×18"},
+{q:"¿Cuántos moles hay en 72 g de H2O?",o:["4 mol","1 mol","2 mol","3 mol"],a:0,exp:"72/18"},
+{q:"¿Cuántas partículas hay en 0.1 mol?",o:["6.02×10^22","6×10^23","1×10^23","2×10^22"],a:0,exp:"0.1×NA"},
+{q:"¿Cuántos gramos hay en 0.1 mol de O2?",o:["3.2 g","1.6 g","6.4 g","32 g"],a:0,exp:"0.1×32"},
+{q:"¿Cuántos moles hay en 3.2 g de O2?",o:["0.1 mol","1 mol","0.5 mol","2 mol"],a:0,exp:"3.2/32"},
+{q:"¿Cuántas moléculas hay en 4 mol?",o:["2.41×10^24","6×10^23","1×10^24","3×10^23"],a:0,exp:"4×NA"},
+{q:"¿Cuántos gramos hay en 5 mol de CO2?",o:["220 g","44 g","110 g","55 g"],a:0,exp:"5×44"},
+{q:"¿Cuántos moles hay en 220 g de CO2?",o:["5 mol","1 mol","2 mol","10 mol"],a:0,exp:"220/44"},
+{q:"¿Cuántas partículas hay en 0.05 mol?",o:["3.01×10^22","6×10^22","1×10^22","2×10^22"],a:0,exp:"0.05×NA"},
+{q:"¿Cuántos gramos hay en 0.05 mol de H2O?",o:["0.9 g","1.8 g","3.6 g","0.45 g"],a:0,exp:"0.05×18"},
+{q:"¿Cuántos moles hay en 0.9 g de H2O?",o:["0.05 mol","0.1 mol","1 mol","0.5 mol"],a:0,exp:"0.9/18"},
+{q:"¿Cuántas moléculas hay en 6 mol?",o:["3.61×10^24","6×10^23","1×10^24","2×10^24"],a:0,exp:"6×NA"},
+{q:"¿Cuántos gramos hay en 6 mol de O2?",o:["192 g","32 g","96 g","64 g"],a:0,exp:"6×32"},
+{q:"¿Cuántos moles hay en 192 g de O2?",o:["6 mol","2 mol","3 mol","1 mol"],a:0,exp:"192/32"},
+{q:"¿Cuántas partículas hay en 0.3 mol?",o:["1.81×10^23","6×10^22","3×10^23","2×10^23"],a:0,exp:"0.3×NA"},
+{q:"¿Cuántos gramos hay en 0.3 mol de CO2?",o:["13.2 g","44 g","22 g","6.6 g"],a:0,exp:"0.3×44"}
+];
+
+const bancoEcuaciones=[
+{q:"2H2 + O2 → 2H2O, ¿mol H2O con 2 mol H2?",o:["2 mol","1 mol","4 mol","0.5 mol"],a:0,exp:"2:2"},
+{q:"2H2 + O2 → 2H2O, ¿mol O2 con 2 mol H2?",o:["1 mol","2 mol","0.5 mol","3 mol"],a:0,exp:"2:1"},
+{q:"2H2 + O2 → 2H2O, ¿mol H2 necesarios para 4 mol H2O?",o:["4 mol","2 mol","1 mol","8 mol"],a:0,exp:"2:2"},
+{q:"N2 + 3H2 → 2NH3, ¿mol NH3 con 1 mol N2?",o:["2 mol","1 mol","3 mol","0.5 mol"],a:0,exp:"1→2"},
+{q:"N2 + 3H2 → 2NH3, ¿mol H2 necesarios para 2 mol NH3?",o:["3 mol","2 mol","1 mol","4 mol"],a:0,exp:"3:2"},
+{q:"C + O2 → CO2, ¿mol CO2 con 3 mol O2?",o:["3 mol","1 mol","2 mol","4 mol"],a:0,exp:"1:1"},
+{q:"C + O2 → CO2, ¿mol C necesarios para 5 mol CO2?",o:["5 mol","2 mol","3 mol","4 mol"],a:0,exp:"1:1"},
+{q:"CH4 + 2O2 → CO2 + 2H2O, ¿mol CO2 con 1 mol CH4?",o:["1 mol","2 mol","0.5 mol","3 mol"],a:0,exp:"1:1"},
+{q:"CH4 + 2O2 → CO2 + 2H2O, ¿mol H2O con 1 mol CH4?",o:["2 mol","1 mol","3 mol","0.5 mol"],a:0,exp:"1:2"},
+{q:"CH4 + 2O2 → CO2 + 2H2O, ¿mol O2 necesarios para 1 mol CH4?",o:["2 mol","1 mol","3 mol","4 mol"],a:0,exp:"1:2"},
+{q:"2Na + Cl2 → 2NaCl, ¿mol NaCl con 2 mol Na?",o:["2 mol","1 mol","3 mol","0.5 mol"],a:0,exp:"2:2"},
+{q:"2Na + Cl2 → 2NaCl, ¿mol Cl2 con 2 mol Na?",o:["1 mol","2 mol","0.5 mol","3 mol"],a:0,exp:"2:1"},
+{q:"2KClO3 → 2KCl + 3O2, ¿mol O2 con 2 mol KClO3?",o:["3 mol","2 mol","1 mol","4 mol"],a:0,exp:"2:3"},
+{q:"Fe2O3 + 3CO → 2Fe + 3CO2, ¿mol Fe con 1 mol Fe2O3?",o:["2 mol","1 mol","3 mol","4 mol"],a:0,exp:"1→2"},
+{q:"Fe2O3 + 3CO → 2Fe + 3CO2, ¿mol CO necesarios para 2 mol Fe?",o:["3 mol","2 mol","1 mol","4 mol"],a:0,exp:"3:2"},
+{q:"2Al + 3Cl2 → 2AlCl3, ¿mol AlCl3 con 2 mol Al?",o:["2 mol","1 mol","3 mol","4 mol"],a:0,exp:"2:2"},
+{q:"2Al + 3Cl2 → 2AlCl3, ¿mol Cl2 necesarios para 2 mol Al?",o:["3 mol","2 mol","1 mol","4 mol"],a:0,exp:"2:3"},
+{q:"H2 + Cl2 → 2HCl, ¿mol HCl con 1 mol H2?",o:["2 mol","1 mol","0.5 mol","3 mol"],a:0,exp:"1→2"},
+{q:"H2 + Cl2 → 2HCl, ¿mol Cl2 con 2 mol HCl?",o:["1 mol","2 mol","0.5 mol","3 mol"],a:0,exp:"2:1"},
+{q:"C2H6 + 7/2 O2 → 2CO2 + 3H2O, ¿mol CO2 con 1 mol C2H6?",o:["2 mol","1 mol","3 mol","4 mol"],a:0,exp:"1→2"}
+];
+
 let questions=[],current=0,answers=[],done=false;
 function iniciar(){const cantidad=parseInt(document.getElementById("cantidad").value);const modo=document.getElementById("modo").value;let base=[];if(modo==="conversiones")base=bancoConversiones;else if(modo==="ecuaciones")base=bancoEcuaciones;else base=[...bancoConversiones,...bancoEcuaciones];questions=[...base].sort(()=>Math.random()-0.5).slice(0,cantidad);answers=new Array(questions.length).fill(null);current=0;done=false;document.getElementById("resultado").style.display="none";render();}
 function render(){const quiz=document.getElementById("quiz");quiz.innerHTML="";questions.forEach((q,i)=>{const div=document.createElement("div");div.className="question"+(i===current?" active":"");let opts="";q.o.forEach((op,j)=>{let cls="";if(answers[i]===j)cls+=" selected";if(done){if(j===q.a)cls+=" correct-answer";if(answers[i]===j&&j!==q.a)cls+=" wrong-answer";}opts+=`<div class="option${cls}" onclick="select(${i},${j})">${op}</div>`;});div.innerHTML=`<h3>${q.q}</h3>${opts}<div class="navigation"><button onclick="prev()" ${i===0?"disabled":""}>Anterior</button>${i===questions.length-1?`<button onclick="finish()">Finalizar</button>`:`<button onclick="next()">Siguiente</button>`}</div>`;quiz.appendChild(div);});update();}
