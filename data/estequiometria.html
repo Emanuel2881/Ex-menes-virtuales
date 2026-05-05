@@ -52,27 +52,37 @@ const bancoConversiones=[
 {q:"¿Cuántos gramos hay en 0.3 mol de CO2?",o:["13.2 g","44 g","22 g","6.6 g"],a:0,exp:"0.3×44"}
 ];
 
-const bancoEcuaciones=[
-{q:"2H2 + O2 → 2H2O, ¿mol H2O con 2 mol H2?",o:["2 mol","1 mol","4 mol","0.5 mol"],a:0,exp:"2:2"},
-{q:"2H2 + O2 → 2H2O, ¿mol O2 con 2 mol H2?",o:["1 mol","2 mol","0.5 mol","3 mol"],a:0,exp:"2:1"},
-{q:"2H2 + O2 → 2H2O, ¿mol H2 necesarios para 4 mol H2O?",o:["4 mol","2 mol","1 mol","8 mol"],a:0,exp:"2:2"},
-{q:"N2 + 3H2 → 2NH3, ¿mol NH3 con 1 mol N2?",o:["2 mol","1 mol","3 mol","0.5 mol"],a:0,exp:"1→2"},
-{q:"N2 + 3H2 → 2NH3, ¿mol H2 necesarios para 2 mol NH3?",o:["3 mol","2 mol","1 mol","4 mol"],a:0,exp:"3:2"},
-{q:"C + O2 → CO2, ¿mol CO2 con 3 mol O2?",o:["3 mol","1 mol","2 mol","4 mol"],a:0,exp:"1:1"},
-{q:"C + O2 → CO2, ¿mol C necesarios para 5 mol CO2?",o:["5 mol","2 mol","3 mol","4 mol"],a:0,exp:"1:1"},
-{q:"CH4 + 2O2 → CO2 + 2H2O, ¿mol CO2 con 1 mol CH4?",o:["1 mol","2 mol","0.5 mol","3 mol"],a:0,exp:"1:1"},
-{q:"CH4 + 2O2 → CO2 + 2H2O, ¿mol H2O con 1 mol CH4?",o:["2 mol","1 mol","3 mol","0.5 mol"],a:0,exp:"1:2"},
-{q:"CH4 + 2O2 → CO2 + 2H2O, ¿mol O2 necesarios para 1 mol CH4?",o:["2 mol","1 mol","3 mol","4 mol"],a:0,exp:"1:2"},
-{q:"2Na + Cl2 → 2NaCl, ¿mol NaCl con 2 mol Na?",o:["2 mol","1 mol","3 mol","0.5 mol"],a:0,exp:"2:2"},
-{q:"2Na + Cl2 → 2NaCl, ¿mol Cl2 con 2 mol Na?",o:["1 mol","2 mol","0.5 mol","3 mol"],a:0,exp:"2:1"},
-{q:"2KClO3 → 2KCl + 3O2, ¿mol O2 con 2 mol KClO3?",o:["3 mol","2 mol","1 mol","4 mol"],a:0,exp:"2:3"},
-{q:"Fe2O3 + 3CO → 2Fe + 3CO2, ¿mol Fe con 1 mol Fe2O3?",o:["2 mol","1 mol","3 mol","4 mol"],a:0,exp:"1→2"},
-{q:"Fe2O3 + 3CO → 2Fe + 3CO2, ¿mol CO necesarios para 2 mol Fe?",o:["3 mol","2 mol","1 mol","4 mol"],a:0,exp:"3:2"},
-{q:"2Al + 3Cl2 → 2AlCl3, ¿mol AlCl3 con 2 mol Al?",o:["2 mol","1 mol","3 mol","4 mol"],a:0,exp:"2:2"},
-{q:"2Al + 3Cl2 → 2AlCl3, ¿mol Cl2 necesarios para 2 mol Al?",o:["3 mol","2 mol","1 mol","4 mol"],a:0,exp:"2:3"},
-{q:"H2 + Cl2 → 2HCl, ¿mol HCl con 1 mol H2?",o:["2 mol","1 mol","0.5 mol","3 mol"],a:0,exp:"1→2"},
-{q:"H2 + Cl2 → 2HCl, ¿mol Cl2 con 2 mol HCl?",o:["1 mol","2 mol","0.5 mol","3 mol"],a:0,exp:"2:1"},
-{q:"C2H6 + 7/2 O2 → 2CO2 + 3H2O, ¿mol CO2 con 1 mol C2H6?",o:["2 mol","1 mol","3 mol","4 mol"],a:0,exp:"1→2"}
+const bancoEcuaciones = [
+
+{q:"En la reacción 2H2 + O2 → 2H2O, si reaccionan 2 mol de H2, ¿cuántos moles de H2O se forman?",o:["2 mol","1 mol","4 mol","0.5 mol"],a:0,exp:"2:2"},
+{q:"En la reacción 2H2 + O2 → 2H2O, si reaccionan 2 mol de H2, ¿cuántos moles de O2 se necesitan?",o:["1 mol","2 mol","0.5 mol","3 mol"],a:0,exp:"2:1"},
+{q:"En la reacción 2H2 + O2 → 2H2O, si se producen 4 mol de H2O, ¿cuántos moles de H2 reaccionaron?",o:["4 mol","2 mol","1 mol","8 mol"],a:0,exp:"2:2"},
+
+{q:"En la reacción N2 + 3H2 → 2NH3, si reacciona 1 mol de N2, ¿cuántos moles de NH3 se producen?",o:["2 mol","1 mol","3 mol","0.5 mol"],a:0,exp:"1:2"},
+{q:"En la reacción N2 + 3H2 → 2NH3, si se producen 2 mol de NH3, ¿cuántos moles de H2 se utilizaron?",o:["3 mol","2 mol","1 mol","4 mol"],a:0,exp:"3:2"},
+{q:"En la reacción N2 + 3H2 → 2NH3, si reaccionan 6 mol de H2, ¿cuántos moles de NH3 se forman?",o:["4 mol","3 mol","2 mol","6 mol"],a:0,exp:"3→2"},
+
+{q:"En la reacción C + O2 → CO2, si reaccionan 5 mol de O2, ¿cuántos moles de CO2 se forman?",o:["5 mol","2 mol","3 mol","4 mol"],a:0,exp:"1:1"},
+{q:"En la reacción C + O2 → CO2, si se producen 3 mol de CO2, ¿cuántos moles de C reaccionaron?",o:["3 mol","1 mol","2 mol","4 mol"],a:0,exp:"1:1"},
+
+{q:"En la reacción CH4 + 2O2 → CO2 + 2H2O, si reacciona 1 mol de CH4, ¿cuántos moles de CO2 se producen?",o:["1 mol","2 mol","0.5 mol","3 mol"],a:0,exp:"1:1"},
+{q:"En la reacción CH4 + 2O2 → CO2 + 2H2O, si reacciona 1 mol de CH4, ¿cuántos moles de H2O se producen?",o:["2 mol","1 mol","3 mol","0.5 mol"],a:0,exp:"1:2"},
+{q:"En la reacción CH4 + 2O2 → CO2 + 2H2O, si reaccionan 2 mol de O2, ¿cuántos moles de CO2 se forman?",o:["1 mol","2 mol","0.5 mol","3 mol"],a:0,exp:"2→1"},
+
+{q:"En la reacción 2Na + Cl2 → 2NaCl, si reaccionan 2 mol de Na, ¿cuántos moles de NaCl se producen?",o:["2 mol","1 mol","3 mol","0.5 mol"],a:0,exp:"2:2"},
+{q:"En la reacción 2Na + Cl2 → 2NaCl, si reaccionan 2 mol de Na, ¿cuántos moles de Cl2 se necesitan?",o:["1 mol","2 mol","0.5 mol","3 mol"],a:0,exp:"2:1"},
+
+{q:"En la reacción 2KClO3 → 2KCl + 3O2, si reaccionan 2 mol de KClO3, ¿cuántos moles de O2 se producen?",o:["3 mol","2 mol","1 mol","4 mol"],a:0,exp:"2:3"},
+
+{q:"En la reacción Fe2O3 + 3CO → 2Fe + 3CO2, si reacciona 1 mol de Fe2O3, ¿cuántos moles de Fe se producen?",o:["2 mol","1 mol","3 mol","4 mol"],a:0,exp:"1→2"},
+{q:"En la reacción Fe2O3 + 3CO → 2Fe + 3CO2, si se producen 2 mol de Fe, ¿cuántos moles de CO reaccionaron?",o:["3 mol","2 mol","1 mol","4 mol"],a:0,exp:"3:2"},
+
+{q:"En la reacción 2Al + 3Cl2 → 2AlCl3, si reaccionan 2 mol de Al, ¿cuántos moles de AlCl3 se producen?",o:["2 mol","1 mol","3 mol","4 mol"],a:0,exp:"2:2"},
+{q:"En la reacción 2Al + 3Cl2 → 2AlCl3, si reaccionan 2 mol de Al, ¿cuántos moles de Cl2 se necesitan?",o:["3 mol","2 mol","1 mol","4 mol"],a:0,exp:"2:3"},
+
+{q:"En la reacción H2 + Cl2 → 2HCl, si reacciona 1 mol de H2, ¿cuántos moles de HCl se producen?",o:["2 mol","1 mol","0.5 mol","3 mol"],a:0,exp:"1→2"},
+{q:"En la reacción H2 + Cl2 → 2HCl, si se producen 2 mol de HCl, ¿cuántos moles de Cl2 reaccionaron?",o:["1 mol","2 mol","0.5 mol","3 mol"],a:0,exp:"2:1"}
+
 ];
 
 let questions=[],current=0,answers=[],done=false;
