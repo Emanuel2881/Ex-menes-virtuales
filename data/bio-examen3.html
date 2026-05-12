@@ -1,577 +1,594 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Biología - Examen 3</title>
-  <style>
-    *{
-      box-sizing:border-box;
-      margin:0;
-      padding:0;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Biología - Examen 3</title>
 
-    body{
-      font-family: Arial, Helvetica, sans-serif;
-      background: linear-gradient(135deg, #fff7ed, #fffbeb, #fef3c7);
-      color:#92400e;
-      min-height:100vh;
-      padding:30px 15px;
-    }
+<style>
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+}
 
-    .container{
-      max-width:1000px;
-      margin:0 auto;
-      background:#ffffff;
-      border-radius:24px;
-      box-shadow:0 12px 35px rgba(0,0,0,0.08);
-      overflow:hidden;
-    }
+body{
+  font-family: Arial, Helvetica, sans-serif;
+  background: linear-gradient(135deg,#f0fdf4,#ecfdf5,#dcfce7);
+  color:#14532d;
+  min-height:100vh;
+  padding:30px 15px;
+}
 
-    .header{
-      background: linear-gradient(135deg, #d97706, #f59e0b);
-      color:white;
-      padding:30px 25px;
-      text-align:center;
-    }
+.container{
+  max-width:950px;
+  margin:auto;
+  background:rgba(255,255,255,0.96);
+  padding:25px;
+  border-radius:24px;
+  box-shadow:0 12px 35px rgba(0,0,0,0.08);
+}
 
-    .header h1{
-      font-size: clamp(1.9rem, 4vw, 2.8rem);
-      margin-bottom:10px;
-    }
+.header{
+  text-align:center;
+  margin-bottom:20px;
+}
 
-    .header p{
-      opacity:0.95;
-      line-height:1.5;
-      font-size:1rem;
-    }
+.header h1{
+  font-size:2.3rem;
+  color:#166534;
+  margin-bottom:10px;
+}
 
-    .top-link{
-      display:inline-block;
-      margin-top:12px;
-      color:white;
-      text-decoration:none;
-      font-weight:bold;
-    }
+.header p{
+  color:#3f6212;
+  line-height:1.6;
+}
 
-    .top-link:hover{
-      text-decoration:underline;
-    }
+.top-link{
+  display:inline-block;
+  margin-top:12px;
+  color:#166534;
+  text-decoration:none;
+  font-weight:bold;
+}
 
-    .content{
-      padding:25px;
-    }
+.top-link:hover{
+  text-decoration:underline;
+}
 
-    .question{
-      background:#fffdf7;
-      border:1px solid #fde68a;
-      border-radius:18px;
-      padding:18px;
-      margin-bottom:18px;
-    }
+.stats-bar{
+  display:flex;
+  gap:12px;
+  justify-content:center;
+  flex-wrap:wrap;
+  margin-bottom:20px;
+}
 
-    .question h3{
-      font-size:1.05rem;
-      line-height:1.5;
-      margin-bottom:14px;
-      color:#92400e;
-    }
+.stat-box{
+  background:#ffffff;
+  border:1px solid #bbf7d0;
+  border-radius:14px;
+  padding:12px 18px;
+  min-width:150px;
+  text-align:center;
+}
 
-    .option{
-      display:block;
-      margin:10px 0;
-      padding:10px 12px;
-      border-radius:12px;
-      cursor:pointer;
-      transition:0.2s ease;
-      border:1px solid transparent;
-      color:#1f2937;
-    }
+.question{
+  display:none;
+  background:#f7fff9;
+  border:1px solid #bbf7d0;
+  border-radius:20px;
+  padding:20px;
+}
 
-    .option:hover{
-      background:#fffbeb;
-      border-color:#fcd34d;
-    }
+.question.active{
+  display:block;
+}
 
-    .option input{
-      margin-right:10px;
-      accent-color:#d97706;
-    }
+.question h3{
+  line-height:1.6;
+  margin-bottom:15px;
+}
 
-    .buttons{
-      display:flex;
-      flex-wrap:wrap;
-      gap:12px;
-      justify-content:center;
-      margin-top:25px;
-    }
+.option{
+  background:#ecfdf5;
+  padding:12px;
+  margin:10px 0;
+  border-radius:12px;
+  cursor:pointer;
+  transition:0.2s ease;
+  border:1px solid transparent;
+}
 
-    button{
-      border:none;
-      border-radius:14px;
-      padding:13px 22px;
-      font-size:1rem;
-      font-weight:bold;
-      cursor:pointer;
-      transition:0.2s ease;
-    }
+.option:hover{
+  border-color:#86efac;
+}
 
-    .btn-primary{
-      background:#d97706;
-      color:white;
-    }
+.option.selected{
+  background:#16a34a;
+  color:white;
+}
 
-    .btn-primary:hover{
-      background:#b45309;
-    }
+.option.correct-answer{
+  background:#bbf7d0;
+  color:#14532d;
+}
 
-    .btn-secondary{
-      background:#fef3c7;
-      color:#92400e;
-    }
+.option.wrong-answer{
+  background:#fecaca;
+  color:#7f1d1d;
+}
 
-    .btn-secondary:hover{
-      background:#fde68a;
-    }
+.navigation{
+  text-align:center;
+  margin-top:18px;
+}
 
-    .result{
-      margin-top:25px;
-      padding:20px;
-      border-radius:18px;
-      background:#fffbeb;
-      border:1px solid #fde68a;
-      text-align:center;
-      display:none;
-    }
+button{
+  border:none;
+  padding:11px 18px;
+  border-radius:12px;
+  margin:5px;
+  cursor:pointer;
+  font-weight:bold;
+  transition:0.2s ease;
+}
 
-    .result h2{
-      margin-bottom:10px;
-      color:#b45309;
-    }
+button:hover{
+  transform:translateY(-2px);
+}
 
-    .result p{
-      font-size:1.08rem;
-      line-height:1.6;
-      color:#92400e;
-    }
+.actions{
+  text-align:center;
+  margin-top:22px;
+}
 
-    .review{
-      margin-top:18px;
-      text-align:left;
-      color:#1f2937;
-    }
+.btn-primary{
+  background:#16a34a;
+  color:white;
+}
 
-    .review-item{
-      background:#ffffff;
-      border:1px solid #fde68a;
-      border-radius:12px;
-      padding:12px;
-      margin-bottom:10px;
-    }
+.btn-primary:hover{
+  background:#15803d;
+}
 
-    .correct{
-      color:#15803d;
-      font-weight:bold;
-    }
+.btn-secondary{
+  background:#dcfce7;
+  color:#166534;
+}
 
-    .incorrect{
-      color:#b91c1c;
-      font-weight:bold;
-    }
-  </style>
+.result{
+  display:none;
+  margin-top:25px;
+  padding:20px;
+  background:#f0fdf4;
+  border-radius:18px;
+  border:1px solid #bbf7d0;
+}
+
+.result h2{
+  color:#166534;
+  margin-bottom:10px;
+}
+
+.review-item{
+  background:white;
+  padding:12px;
+  margin:12px 0;
+  border-left:5px solid gray;
+  border-radius:10px;
+}
+
+.correcta{
+  border-left-color:#16a34a;
+}
+
+.incorrecta{
+  border-left-color:#dc2626;
+}
+
+.sin-responder{
+  border-left-color:#f59e0b;
+}
+
+.timer{
+  font-size:1.1rem;
+  font-weight:bold;
+  color:#166534;
+}
+
+.sources-box{
+  position:fixed;
+  bottom:18px;
+  left:18px;
+  width:230px;
+  background:rgba(255,255,255,0.75);
+  backdrop-filter:blur(10px);
+  border:1px solid rgba(255,255,255,0.5);
+  border-radius:18px;
+  padding:14px;
+  font-size:0.83rem;
+  line-height:1.5;
+  color:#14532d;
+  box-shadow:0 8px 22px rgba(0,0,0,0.08);
+  z-index:999;
+}
+
+.sources-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:10px;
+}
+
+.sources-header h4{
+  color:#166534;
+}
+
+.sources-header button{
+  border:none;
+  background:#16a34a;
+  color:white;
+  padding:5px 10px;
+  border-radius:8px;
+  cursor:pointer;
+  font-size:0.75rem;
+}
+
+@media(max-width:700px){
+
+  .sources-box{
+    position:static;
+    width:100%;
+    margin-top:20px;
+  }
+
+}
+</style>
 </head>
+
 <body>
-  <div class="container">
-    <div class="header">
-      <h1>Biología - Examen 3</h1>
-      <p>Versión digital interactiva</p>
-     <a class="top-link" href="../biologia.html">← Volver a Biología</a>
-    </div>
 
-    <div class="content">
-      <form id="quizForm">
+<div class="container">
 
-        <div class="question">
-          <h3>1. ¿Cómo se le denomina al conjunto de organismos de diferentes especies que comparten un mismo ecosistema?</h3>
-          <label class="option"><input type="radio" name="q1" value="a"> A. Biosfera</label>
-          <label class="option"><input type="radio" name="q1" value="b"> B. Comunidad</label>
-          <label class="option"><input type="radio" name="q1" value="c"> C. Población</label>
-          <label class="option"><input type="radio" name="q1" value="d"> D. Ecosistema</label>
-        </div>
+  <div class="header">
+    <h1>🧫 Biología - Examen 3</h1>
+    <p>
+      Membrana plasmática, transporte celular y homeostasis.
+    </p>
 
-        <div class="question">
-          <h3>2. ¿Cómo se le denomina a todos los elementos vivos del planeta?</h3>
-          <label class="option"><input type="radio" name="q2" value="a"> A. Ecosistema</label>
-          <label class="option"><input type="radio" name="q2" value="b"> B. Comunidad</label>
-          <label class="option"><input type="radio" name="q2" value="c"> C. Biósfera</label>
-          <label class="option"><input type="radio" name="q2" value="d"> D. Población</label>
-        </div>
-
-        <div class="question">
-          <h3>3. Mecanismo por el cual se obtienen elementos orgánicos como carbohidratos, también se le conoce como biosíntesis. ¿Qué nombre recibe?</h3>
-          <label class="option"><input type="radio" name="q3" value="a"> A. Homeostasis</label>
-          <label class="option"><input type="radio" name="q3" value="b"> B. Catabolismo</label>
-          <label class="option"><input type="radio" name="q3" value="c"> C. Anabolismo</label>
-          <label class="option"><input type="radio" name="q3" value="d"> D. Metabolismo</label>
-        </div>
-
-        <div class="question">
-          <h3>4. ¿Cuál de las siguientes características de los seres vivos corresponde a la afirmación: "obtienen elementos orgánicos que les permiten metabolizar y con ello realizar diversas funciones en el organismo"?</h3>
-          <label class="option"><input type="radio" name="q4" value="a"> A. Responden a estímulos</label>
-          <label class="option"><input type="radio" name="q4" value="b"> B. Usan materiales y energía</label>
-          <label class="option"><input type="radio" name="q4" value="c"> C. Mantienen la homeostasis</label>
-          <label class="option"><input type="radio" name="q4" value="d"> D. Los seres vivos crecen</label>
-        </div>
-
-        <div class="question">
-          <h3>5. De los virus podemos asegurar lo siguiente:</h3>
-          <label class="option"><input type="radio" name="q5" value="a"> A. No sufren ningún tipo de mutación</label>
-          <label class="option"><input type="radio" name="q5" value="b"> B. Poseen y pueden replicar su propio material genético</label>
-          <label class="option"><input type="radio" name="q5" value="c"> C. Pueden vivir fuera de un hospedero</label>
-          <label class="option"><input type="radio" name="q5" value="d"> D. No son considerados organismos vivos</label>
-        </div>
-
-        <div class="question">
-          <h3>6. ¿Cuál de las siguientes proteínas tiene como función el movimiento?</h3>
-          <label class="option"><input type="radio" name="q6" value="a"> A. Albúmina</label>
-          <label class="option"><input type="radio" name="q6" value="b"> B. Queratina</label>
-          <label class="option"><input type="radio" name="q6" value="c"> C. Insulina</label>
-          <label class="option"><input type="radio" name="q6" value="d"> D. Actina</label>
-        </div>
-
-        <div class="question">
-          <h3>7. ¿Cuál de los siguientes carbohidratos es un polisacárido?</h3>
-          <label class="option"><input type="radio" name="q7" value="a"> A. Celulosa</label>
-          <label class="option"><input type="radio" name="q7" value="b"> B. Galactosa</label>
-          <label class="option"><input type="radio" name="q7" value="c"> C. Fructosa</label>
-          <label class="option"><input type="radio" name="q7" value="d"> D. Sacarosa</label>
-        </div>
-
-        <div class="question">
-          <h3>8. ¿Cuál de los siguientes carbohidratos es un monosacárido?</h3>
-          <label class="option"><input type="radio" name="q8" value="a"> A. Sacarosa</label>
-          <label class="option"><input type="radio" name="q8" value="b"> B. Celulosa</label>
-          <label class="option"><input type="radio" name="q8" value="c"> C. Galactosa</label>
-          <label class="option"><input type="radio" name="q8" value="d"> D. Fructosa</label>
-        </div>
-
-        <div class="question">
-          <h3>9. ¿Cuál es un ejemplo de célula procariota?</h3>
-          <label class="option"><input type="radio" name="q9" value="a"> A. Espermatozoide</label>
-          <label class="option"><input type="radio" name="q9" value="b"> B. Miocito</label>
-          <label class="option"><input type="radio" name="q9" value="c"> C. Coco</label>
-          <label class="option"><input type="radio" name="q9" value="d"> D. Neurona</label>
-        </div>
-
-        <div class="question">
-          <h3>10. ¿Cuál de las siguientes es característica de las células eucariontes?</h3>
-          <label class="option"><input type="radio" name="q10" value="a"> A. Carece de citoplasma y mitocondrias</label>
-          <label class="option"><input type="radio" name="q10" value="b"> B. Presenta plásmidos y mitocondrias</label>
-          <label class="option"><input type="radio" name="q10" value="c"> C. Posee organelos encerrados en membranas</label>
-          <label class="option"><input type="radio" name="q10" value="d"> D. Conserva nucleoide con ADN</label>
-        </div>
-
-        <div class="question">
-          <h3>11. ¿Cuál de las siguientes estructuras es conformada por células eucariotas?</h3>
-          <label class="option"><input type="radio" name="q11" value="a"> A. Arqueas</label>
-          <label class="option"><input type="radio" name="q11" value="b"> B. Bacterias</label>
-          <label class="option"><input type="radio" name="q11" value="c"> C. Virus</label>
-          <label class="option"><input type="radio" name="q11" value="d"> D. Protistas</label>
-        </div>
-
-        <div class="question">
-          <h3>12. ¿Cuál de las siguientes estructuras se encuentra en la célula procariota?</h3>
-          <label class="option"><input type="radio" name="q12" value="a"> A. Núcleo</label>
-          <label class="option"><input type="radio" name="q12" value="b"> B. Centriolo</label>
-          <label class="option"><input type="radio" name="q12" value="c"> C. ADN policistrónico</label>
-          <label class="option"><input type="radio" name="q12" value="d"> D. Nucleolo</label>
-        </div>
-
-        <div class="question">
-          <h3>13. ¿Cómo se le denomina al proceso asexual en el cual la célula procarionte duplica el ADN circular y se divide?</h3>
-          <label class="option"><input type="radio" name="q13" value="a"> A. Mitosis uno</label>
-          <label class="option"><input type="radio" name="q13" value="b"> B. Fisión Primaria</label>
-          <label class="option"><input type="radio" name="q13" value="c"> C. Fisión Binaria</label>
-          <label class="option"><input type="radio" name="q13" value="d"> D. Meiosis dos</label>
-        </div>
-
-        <div class="question">
-          <h3>14. ¿Cuál de las siguientes estructuras se encarga de degradar material orgánico en las células?</h3>
-          <label class="option"><input type="radio" name="q14" value="a"> A. Lisosoma</label>
-          <label class="option"><input type="radio" name="q14" value="b"> B. Vacuola</label>
-          <label class="option"><input type="radio" name="q14" value="c"> C. Ribosoma</label>
-          <label class="option"><input type="radio" name="q14" value="d"> D. Aparato de Golgi</label>
-        </div>
-
-        <div class="question">
-          <h3>15. ¿Organelo en el cual se lleva a cabo la mayoría de la síntesis de polipéptidos en la célula?</h3>
-          <label class="option"><input type="radio" name="q15" value="a"> A. Centrosoma</label>
-          <label class="option"><input type="radio" name="q15" value="b"> B. Nucleolo</label>
-          <label class="option"><input type="radio" name="q15" value="c"> C. Núcleo</label>
-          <label class="option"><input type="radio" name="q15" value="d"> D. Retículo Endoplásmico</label>
-        </div>
-
-        <div class="question">
-          <h3>16. ¿Cuál de las siguientes estructuras está constituida por una membrana doble perforada por poros revestidos de proteínas?</h3>
-          <label class="option"><input type="radio" name="q16" value="a"> A. Nucleolo</label>
-          <label class="option"><input type="radio" name="q16" value="b"> B. Centrosoma</label>
-          <label class="option"><input type="radio" name="q16" value="c"> C. Lisosoma</label>
-          <label class="option"><input type="radio" name="q16" value="d"> D. Núcleo</label>
-        </div>
-
-        <div class="question">
-          <h3>17. De la estructura de la mitocondria se afirma lo siguiente:</h3>
-          <label class="option"><input type="radio" name="q17" value="a"> A. Conformada por tubos y canales interconectados</label>
-          <label class="option"><input type="radio" name="q17" value="b"> B. Se encarga de la digestión celular</label>
-          <label class="option"><input type="radio" name="q17" value="c"> C. Posee una doble membrana</label>
-          <label class="option"><input type="radio" name="q17" value="d"> D. Posee una membrana, perforada por canales</label>
-        </div>
-
-        <div class="question">
-          <h3>18. ¿Cuál es el organelo que modifica químicamente la estructura de los lípidos en la célula?</h3>
-          <label class="option"><input type="radio" name="q18" value="a"> A. Retículo rugoso endoplásmico</label>
-          <label class="option"><input type="radio" name="q18" value="b"> B. Membrana plasmática</label>
-          <label class="option"><input type="radio" name="q18" value="c"> C. Vacuola central</label>
-          <label class="option"><input type="radio" name="q18" value="d"> D. Retículo endoplásmico liso</label>
-        </div>
-
-        <div class="question">
-          <h3>19. ¿Cuál es el tipo de transporte que se da por difusión del agua a través de una membrana selectivamente permeable?</h3>
-          <label class="option"><input type="radio" name="q19" value="a"> A. Facilitado</label>
-          <label class="option"><input type="radio" name="q19" value="b"> B. Ósmosis</label>
-          <label class="option"><input type="radio" name="q19" value="c"> C. Activo</label>
-          <label class="option"><input type="radio" name="q19" value="d"> D. Endocitosis</label>
-        </div>
-
-        <div class="question">
-          <h3>20. ¿Cómo se le llama al transporte celular que se da por el movimiento de pequeñas moléculas o iones individuales contra su gradiente?</h3>
-          <label class="option"><input type="radio" name="q20" value="a"> A. Activo</label>
-          <label class="option"><input type="radio" name="q20" value="b"> B. Simple</label>
-          <label class="option"><input type="radio" name="q20" value="c"> C. Pasivo</label>
-          <label class="option"><input type="radio" name="q20" value="d"> D. Endocitosis</label>
-        </div>
-
-        <div class="question">
-          <h3>21. Indique dos tipos de transporte celular que requieren energía:</h3>
-          <label class="option"><input type="radio" name="q21" value="a"> A. Osmosis y difusión</label>
-          <label class="option"><input type="radio" name="q21" value="b"> B. Facilitado y selectivo</label>
-          <label class="option"><input type="radio" name="q21" value="c"> C. Endocitosis y Exocitosis</label>
-          <label class="option"><input type="radio" name="q21" value="d"> D. Simple y pasivo</label>
-        </div>
-
-        <div class="question">
-          <h3>22. ¿Cuál es la difusión que ocurre cuando las moléculas pequeñas de soluto no polares se mueven directamente a través de la membrana a favor de su gradiente?</h3>
-          <label class="option"><input type="radio" name="q22" value="a"> A. Activa</label>
-          <label class="option"><input type="radio" name="q22" value="b"> B. Ósmosis</label>
-          <label class="option"><input type="radio" name="q22" value="c"> C. Simple</label>
-          <label class="option"><input type="radio" name="q22" value="d"> D. Facilitada</label>
-        </div>
-
-        <div class="question">
-          <h3>23. ¿Cuál de las siguientes reacciones de la respiración celular ocurre en la matriz de la mitocondria?</h3>
-          <label class="option"><input type="radio" name="q23" value="a"> A. Síntesis de piruvato</label>
-          <label class="option"><input type="radio" name="q23" value="b"> B. Glucólisis</label>
-          <label class="option"><input type="radio" name="q23" value="c"> C. Formación de acetil CoA</label>
-          <label class="option"><input type="radio" name="q23" value="d"> D. Quimiosmosis</label>
-        </div>
-
-        <div class="question">
-          <h3>24. ¿Cómo se llama el tipo de respiración en que el piruvato se va por la ruta fermentativa?</h3>
-          <label class="option"><input type="radio" name="q24" value="a"> A. Aeróbica</label>
-          <label class="option"><input type="radio" name="q24" value="b"> B. Anaeróbica</label>
-          <label class="option"><input type="radio" name="q24" value="c"> C. Fermentación</label>
-          <label class="option"><input type="radio" name="q24" value="d"> D. Glucólisis</label>
-        </div>
-
-        <div class="question">
-          <h3>25. ¿Cuál de las siguientes fases de la respiración celular genera mayor energía?</h3>
-          <label class="option"><input type="radio" name="q25" value="a"> A. Ciclo del ácido cítrico</label>
-          <label class="option"><input type="radio" name="q25" value="b"> B. Formación de acetil CoA</label>
-          <label class="option"><input type="radio" name="q25" value="c"> C. Quimiosmosis</label>
-          <label class="option"><input type="radio" name="q25" value="d"> D. Proceso de glucólisis</label>
-        </div>
-
-        <div class="question">
-          <h3>26. ¿Cuál es el orden de las etapas de la respiración aeróbica?</h3>
-          <label class="option"><input type="radio" name="q26" value="a"> A. Glucólisis, Formación de acetil CoA, Ciclo del ácido cítrico, transporte de electrones y Quimiosmosis</label>
-          <label class="option"><input type="radio" name="q26" value="b"> B. Glucólisis, Formación de acetil CoA, transporte de electrones y quimiosmosis, Ciclo del ácido cítrico</label>
-          <label class="option"><input type="radio" name="q26" value="c"> C. Glucólisis, Ciclo del ácido cítrico, transporte de electrones y quimiosmosis, Formación de acetil CoA</label>
-          <label class="option"><input type="radio" name="q26" value="d"> D. Glucólisis, transporte de electrones y quimiosmosis, Formación de acetil CoA, Ciclo del ácido cítrico</label>
-        </div>
-
-        <div class="question">
-          <h3>27. ¿Cuál es el lugar en donde se realiza la mayor parte de la glucólisis?</h3>
-          <label class="option"><input type="radio" name="q27" value="a"> A. Membrana</label>
-          <label class="option"><input type="radio" name="q27" value="b"> B. Citosol</label>
-          <label class="option"><input type="radio" name="q27" value="c"> C. Matriz</label>
-          <label class="option"><input type="radio" name="q27" value="d"> D. Crestas</label>
-        </div>
-
-        <div class="question">
-          <h3>28. ¿En qué fase de la meiosis II los cromosomas concluyen su traslado a los polos opuestos y vuelven a formar las envolturas nucleares?</h3>
-          <label class="option"><input type="radio" name="q28" value="a"> A. Metafase II</label>
-          <label class="option"><input type="radio" name="q28" value="b"> B. Profase II</label>
-          <label class="option"><input type="radio" name="q28" value="c"> C. Anafase II</label>
-          <label class="option"><input type="radio" name="q28" value="d"> D. Telofase II</label>
-        </div>
-
-        <div class="question">
-          <h3>29. ¿Cuál es la fase del ciclo celular que inicia cuando se separan las cromátidas hermanas y cada una pasa a ser un cromosoma?</h3>
-          <label class="option"><input type="radio" name="q29" value="a"> A. Metafase</label>
-          <label class="option"><input type="radio" name="q29" value="b"> B. Telofase</label>
-          <label class="option"><input type="radio" name="q29" value="c"> C. Anafase</label>
-          <label class="option"><input type="radio" name="q29" value="d"> D. Profase</label>
-        </div>
-
-        <div class="question">
-          <h3>30. ¿Qué sucede primero en la replicación del ADN?</h3>
-          <label class="option"><input type="radio" name="q30" value="a"> A. La ADN polimerasa avanza por las hebras separadas</label>
-          <label class="option"><input type="radio" name="q30" value="b"> B. La ADN helicasa abre la doble hélice de ADN original</label>
-          <label class="option"><input type="radio" name="q30" value="c"> C. La hebra del ADN original y la hebra hija forman doble hélice</label>
-          <label class="option"><input type="radio" name="q30" value="d"> D. Se sintetizan dos hebras nuevas de ADN</label>
-        </div>
-
-        <div class="buttons">
-          <button type="button" class="btn-primary" onclick="calificarExamen()">Calificar examen</button>
-          <button type="reset" class="btn-secondary" onclick="reiniciarExamen()">Reiniciar</button>
-        </div>
-
-        <div class="result" id="resultado">
-          <h2>Resultado</h2>
-          <p id="puntajeTexto"></p>
-          <div class="review" id="revision"></div>
-        </div>
-
-      </form>
-    </div>
+    <a class="top-link" href="../biologia.html">← Volver a Biología</a>
   </div>
 
-  <script>
-    const respuestasCorrectas = {
-      q1:"b",
-      q2:"c",
-      q3:"c",
-      q4:"b",
-      q5:"d",
-      q6:"d",
-      q7:"a",
-      q8:"d",
-      q9:"c",
-      q10:"c",
-      q11:"d",
-      q12:"c",
-      q13:"c",
-      q14:"a",
-      q15:"d",
-      q16:"d",
-      q17:"c",
-      q18:"d",
-      q19:"b",
-      q20:"a",
-      q21:"c",
-      q22:"c",
-      q23:"c",
-      q24:"b",
-      q25:"c",
-      q26:"a",
-      q27:"b",
-      q28:"d",
-      q29:"c",
-      q30:"b"
-    };
+  <div class="stats-bar">
 
-    const textosCorrectos = {
-      q1:"B. Comunidad",
-      q2:"C. Biósfera",
-      q3:"C. Anabolismo",
-      q4:"B. Usan materiales y energía",
-      q5:"D. No son considerados organismos vivos",
-      q6:"D. Actina",
-      q7:"A. Celulosa",
-      q8:"D. Fructosa",
-      q9:"C. Coco",
-      q10:"C. Posee organelos encerrados en membranas",
-      q11:"D. Protistas",
-      q12:"C. ADN policistrónico",
-      q13:"C. Fisión Binaria",
-      q14:"A. Lisosoma",
-      q15:"D. Retículo Endoplásmico",
-      q16:"D. Núcleo",
-      q17:"C. Posee una doble membrana",
-      q18:"D. Retículo endoplásmico liso",
-      q19:"B. Ósmosis",
-      q20:"A. Activo",
-      q21:"C. Endocitosis y Exocitosis",
-      q22:"C. Simple",
-      q23:"C. Formación de acetil CoA",
-      q24:"B. Anaeróbica",
-      q25:"C. Quimiosmosis",
-      q26:"A. Glucólisis, Formación de acetil CoA, Ciclo del ácido cítrico, transporte de electrones y Quimiosmosis",
-      q27:"B. Citosol",
-      q28:"D. Telofase II",
-      q29:"C. Anafase",
-      q30:"B. La ADN helicasa abre la doble hélice de ADN original"
-    };
+    <div class="stat-box">
+      <span>Pregunta</span><br>
+      <b id="qNum">1</b> / 30
+    </div>
 
-    function calificarExamen() {
-      let total = Object.keys(respuestasCorrectas).length;
-      let correctas = 0;
-      let respondidas = 0;
-      let revisionHTML = "";
+    <div class="stat-box">
+      <span>Progreso</span><br>
+      <b id="progress">0 / 30</b>
+    </div>
 
-      for (let pregunta in respuestasCorrectas) {
-        const seleccionada = document.querySelector(`input[name="${pregunta}"]:checked`);
+    <div class="stat-box">
+      <span>Tiempo</span><br>
+      <b class="timer" id="timer">30:00</b>
+    </div>
 
-        if (seleccionada) {
-          respondidas++;
-          if (seleccionada.value === respuestasCorrectas[pregunta]) {
-            correctas++;
-            revisionHTML += `
-              <div class="review-item">
-                <span class="correct">${pregunta.toUpperCase()}: Correcta</span><br>
-                Respuesta: ${textosCorrectos[pregunta]}
-              </div>
-            `;
-          } else {
-            const textoMarcado = seleccionada.parentElement.textContent.trim();
-            revisionHTML += `
-              <div class="review-item">
-                <span class="incorrect">${pregunta.toUpperCase()}: Incorrecta</span><br>
-                Tu respuesta: ${textoMarcado}<br>
-                Correcta: ${textosCorrectos[pregunta]}
-              </div>
-            `;
-          }
-        } else {
-          revisionHTML += `
-            <div class="review-item">
-              <span class="incorrect">${pregunta.toUpperCase()}: Sin responder</span><br>
-              Correcta: ${textosCorrectos[pregunta]}
-            </div>
-          `;
-        }
-      }
+  </div>
 
-      const porcentaje = ((correctas / total) * 100).toFixed(1);
+  <div id="quiz"></div>
 
-      document.getElementById("puntajeTexto").innerHTML = `
-        Respondiste <strong>${respondidas}</strong> de <strong>${total}</strong> preguntas.<br>
-        Obtuviste <strong>${correctas}</strong> correctas de <strong>${total}</strong>.<br>
-        Tu nota fue: <strong>${porcentaje}%</strong>
-      `;
+  <div class="actions">
+    <button class="btn-primary" onclick="finish()">Calificar examen</button>
+    <button class="btn-secondary" onclick="resetExam()">Reiniciar</button>
+  </div>
 
-      document.getElementById("revision").innerHTML = revisionHTML;
-      document.getElementById("resultado").style.display = "block";
-      document.getElementById("resultado").scrollIntoView({ behavior: "smooth" });
-    }
+  <div class="result" id="resultado">
+    <h2>Resultado</h2>
+    <p id="score"></p>
+    <div id="review"></div>
+  </div>
 
-    function reiniciarExamen() {
-      document.getElementById("resultado").style.display = "none";
-      document.getElementById("revision").innerHTML = "";
-      document.getElementById("puntajeTexto").innerHTML = "";
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    }
-  </script>
-  <script type="module" src="../party/party-timer.js"></script>
+</div>
+
+<div class="sources-box">
+
+  <div class="sources-header">
+    <h4>Fuentes</h4>
+    <button onclick="toggleSources()" id="toggleBtn">Ocultar</button>
+  </div>
+
+  <div id="sourcesContent">
+    <div><strong>B1</strong> → Resuelto Biología</div>
+    <div><strong>B4</strong> → Estudio específico</div>
+    <div><strong>B6</strong> → Bio y química</div>
+    <div><strong>T1</strong> → Temario específico USAC</div>
+  </div>
+
+</div>
+
+<script>
+
+const questions = [
+
+{q:"¿Cuál es la principal función de la membrana plasmática?",o:["Sintetizar proteínas","Controlar el paso de sustancias","Producir ATP","Formar ADN"],a:1},
+
+{q:"¿Qué molécula forma la bicapa de la membrana celular?",o:["Triglicéridos","Fosfolípidos","Glucosa","Colágeno"],a:1},
+
+{q:"¿Qué propiedad posee la membrana plasmática?",o:["Rigidez absoluta","Impermeabilidad total","Permeabilidad selectiva","Ausencia de proteínas"],a:2},
+
+{q:"¿Cuál es el modelo que describe la membrana celular?",o:["Modelo nuclear","Modelo mosaico fluido","Modelo cromosómico","Modelo mitótico"],a:1},
+
+{q:"¿Qué tipo de transporte no requiere ATP?",o:["Activo","Pasivo","Endocitosis","Exocitosis"],a:1},
+
+{q:"La difusión simple ocurre:",o:["Contra gradiente","Con gasto de ATP","A favor del gradiente","Por bombas proteicas"],a:2},
+
+{q:"¿Qué transporte utiliza proteínas canal?",o:["Difusión facilitada","Ósmosis","Fagocitosis","Transporte activo"],a:0},
+
+{q:"¿Qué es la ósmosis?",o:["Movimiento de proteínas","Difusión de agua","Síntesis de ATP","Transporte de glucosa"],a:1},
+
+{q:"¿Qué sucede en una solución hipertónica?",o:["La célula gana agua","La célula pierde agua","No hay movimiento","Explota la célula"],a:1},
+
+{q:"¿Qué ocurre en una solución hipotónica?",o:["La célula pierde agua","La célula se deshidrata","La célula gana agua","No ocurre nada"],a:2},
+
+{q:"¿Qué solución mantiene equilibrio de agua?",o:["Hipertónica","Hipotónica","Isotónica","Concentrada"],a:2},
+
+{q:"¿Qué requiere el transporte activo?",o:["ATP","Agua","Oxígeno","Difusión"],a:0},
+
+{q:"El transporte activo mueve sustancias:",o:["A favor del gradiente","Sin proteínas","Contra gradiente","Solo agua"],a:2},
+
+{q:"¿Qué estructura participa en transporte activo?",o:["Bombas proteicas","ADN","Ribosomas","Lisosomas"],a:0},
+
+{q:"¿Qué proceso introduce partículas grandes a la célula?",o:["Exocitosis","Difusión","Endocitosis","Ósmosis"],a:2},
+
+{q:"¿Qué tipo de endocitosis incorpora partículas sólidas?",o:["Pinocitosis","Difusión","Fagocitosis","Ósmosis"],a:2},
+
+{q:"¿Qué tipo de endocitosis incorpora líquidos?",o:["Pinocitosis","Fagocitosis","Difusión","Exocitosis"],a:0},
+
+{q:"¿Qué proceso expulsa sustancias fuera de la célula?",o:["Endocitosis","Exocitosis","Difusión","Ósmosis"],a:1},
+
+{q:"¿Qué componente ayuda a mantener fluidez en la membrana?",o:["ADN","Colesterol","Glucógeno","Celulosa"],a:1},
+
+{q:"¿Qué estructura atraviesa completamente la membrana?",o:["Proteína integral","Ribosoma","Mitocondria","Lisosoma"],a:0},
+
+{q:"¿Cuál es un ejemplo de transporte pasivo?",o:["Bomba sodio-potasio","Difusión simple","Endocitosis","Exocitosis"],a:1},
+
+{q:"¿Qué sucede si una célula animal pierde demasiada agua?",o:["Se rompe","Se encoge","Duplica ADN","Forma ATP"],a:1},
+
+{q:"¿Qué ocurre cuando una célula vegetal absorbe agua?",o:["Pierde rigidez","Se vuelve turgente","Desaparece","Pierde membrana"],a:1},
+
+{q:"¿Cuál es la función de la homeostasis?",o:["Producir mutaciones","Mantener equilibrio interno","Sintetizar ADN","Realizar mitosis"],a:1},
+
+{q:"¿Qué transporte mueve sustancias pequeñas sin proteínas?",o:["Difusión simple","Facilitada","Activo","Vesicular"],a:0},
+
+{q:"¿Qué tipo de moléculas pasan fácilmente por difusión simple?",o:["Moléculas grandes polares","Moléculas no polares pequeñas","Proteínas","Iones"],a:1},
+
+{q:"¿Qué tipo de proteínas ayudan al transporte facilitado?",o:["Contráctiles","Canales y transportadoras","Enzimáticas","Motoras"],a:1},
+
+{q:"¿Qué ocurre durante la exocitosis?",o:["Ingreso de bacterias","Salida de vesículas","Difusión de agua","Producción de ATP"],a:1},
+
+{q:"¿Qué estructura delimita la célula?",o:["Citoplasma","Membrana plasmática","Núcleo","Ribosoma"],a:1},
+
+{q:"¿Qué transporte requiere vesículas?",o:["Difusión simple","Ósmosis","Transporte vesicular","Difusión facilitada"],a:2}
+
+];
+
+let current=0;
+let answers=new Array(questions.length).fill(null);
+let done=false;
+
+function render(){
+
+const quiz=document.getElementById("quiz");
+quiz.innerHTML="";
+
+questions.forEach((q,i)=>{
+
+const div=document.createElement("div");
+div.className="question"+(i===current?" active":"");
+
+let opts="";
+
+q.o.forEach((op,j)=>{
+
+let cls="";
+
+if(answers[i]===j) cls+=" selected";
+
+if(done){
+  if(j===q.a) cls+=" correct-answer";
+  if(answers[i]===j && j!==q.a) cls+=" wrong-answer";
+}
+
+opts+=`<div class="option${cls}" onclick="select(${i},${j})">${op}</div>`;
+
+});
+
+div.innerHTML=`
+<h3>${i+1}. ${q.q}</h3>
+
+${opts}
+
+<div class="navigation">
+
+<button onclick="prev()" ${i===0?"disabled":""}>Anterior</button>
+
+${i===questions.length-1
+? `<button onclick="finish()">Finalizar</button>`
+: `<button onclick="next()">Siguiente</button>`}
+
+</div>
+`;
+
+quiz.appendChild(div);
+
+});
+
+update();
+
+}
+
+function select(i,j){
+
+if(done)return;
+
+answers[i]=j;
+render();
+
+}
+
+function next(){
+
+if(current<questions.length-1){
+  current++;
+  render();
+}
+
+}
+
+function prev(){
+
+if(current>0){
+  current--;
+  render();
+}
+
+}
+
+function update(){
+
+document.getElementById("qNum").textContent=current+1;
+
+document.getElementById("progress").textContent=
+answers.filter(a=>a!==null).length+" / "+questions.length;
+
+}
+
+function finish(){
+
+done=true;
+
+let correct=0;
+let html="";
+
+questions.forEach((q,i)=>{
+
+const user=answers[i];
+
+let estado="sin-responder";
+
+if(user===q.a){
+  correct++;
+  estado="correcta";
+}
+else if(user!==null){
+  estado="incorrecta";
+}
+
+html+=`
+<div class="review-item ${estado}">
+<h4>Pregunta ${i+1}</h4>
+<p><b>Correcta:</b> ${q.o[q.a]}</p>
+</div>
+`;
+
+});
+
+const porcentaje=((correct/questions.length)*100).toFixed(1);
+
+let mensaje="";
+
+if(porcentaje>=85){
+  mensaje="🔥 Excelente resultado";
+}
+else if(porcentaje>=70){
+  mensaje="✅ Buen trabajo";
+}
+else if(porcentaje>=50){
+  mensaje="⚠️ Necesitas reforzar algunos temas";
+}
+else{
+  mensaje="❌ Debes estudiar más este tema";
+}
+
+document.getElementById("score").innerHTML=`
+<strong>${correct} / ${questions.length}</strong><br><br>
+Porcentaje: <strong>${porcentaje}%</strong><br><br>
+${mensaje}
+`;
+
+document.getElementById("review").innerHTML=html;
+
+document.getElementById("resultado").style.display="block";
+
+render();
+
+window.scrollTo({
+  top:document.body.scrollHeight,
+  behavior:"smooth"
+});
+
+}
+
+function resetExam(){
+
+current=0;
+answers=new Array(questions.length).fill(null);
+done=false;
+time=1800;
+
+document.getElementById("resultado").style.display="none";
+
+render();
+
+}
+
+function toggleSources(){
+
+const content=document.getElementById("sourcesContent");
+const button=document.getElementById("toggleBtn");
+
+if(content.style.display==="none"){
+  content.style.display="block";
+  button.textContent="Ocultar";
+}
+else{
+  content.style.display="none";
+  button.textContent="Mostrar";
+}
+
+}
+
+let time=1800;
+
+function updateTimer(){
+
+const minutes=Math.floor(time/60);
+const seconds=time%60;
+
+document.getElementById("timer").textContent=
+`${String(minutes).padStart(2,"0")}:${String(seconds).padStart(2,"0")}`;
+
+if(time>0 && !done){
+  time--;
+}
+else if(time===0 && !done){
+  finish();
+}
+
+}
+
+setInterval(updateTimer,1000);
+
+render();
+
+</script>
+
+<script type="module" src="../party/party-timer.js"></script>
+
 </body>
 </html>
