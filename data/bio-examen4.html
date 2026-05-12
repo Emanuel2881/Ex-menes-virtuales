@@ -1,584 +1,594 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Biología - Examen 4</title>
-  <style>
-    *{
-      box-sizing:border-box;
-      margin:0;
-      padding:0;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Biología - Examen 4</title>
 
-    body{
-      font-family: Arial, Helvetica, sans-serif;
-      background: linear-gradient(135deg, #f5f3ff, #faf5ff, #ede9fe);
-      color:#5b21b6;
-      min-height:100vh;
-      padding:30px 15px;
-    }
+<style>
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+}
 
-    .container{
-      max-width:1000px;
-      margin:0 auto;
-      background:#ffffff;
-      border-radius:24px;
-      box-shadow:0 12px 35px rgba(0,0,0,0.08);
-      overflow:hidden;
-    }
+body{
+  font-family: Arial, Helvetica, sans-serif;
+  background: linear-gradient(135deg,#f0fdf4,#ecfdf5,#dcfce7);
+  color:#14532d;
+  min-height:100vh;
+  padding:30px 15px;
+}
 
-    .header{
-      background: linear-gradient(135deg, #7c3aed, #8b5cf6);
-      color:white;
-      padding:30px 25px;
-      text-align:center;
-    }
+.container{
+  max-width:950px;
+  margin:auto;
+  background:rgba(255,255,255,0.96);
+  padding:25px;
+  border-radius:24px;
+  box-shadow:0 12px 35px rgba(0,0,0,0.08);
+}
 
-    .header h1{
-      font-size: clamp(1.9rem, 4vw, 2.8rem);
-      margin-bottom:10px;
-    }
+.header{
+  text-align:center;
+  margin-bottom:20px;
+}
 
-    .header p{
-      opacity:0.95;
-      line-height:1.5;
-      font-size:1rem;
-    }
+.header h1{
+  font-size:2.3rem;
+  color:#166534;
+  margin-bottom:10px;
+}
 
-    .top-link{
-      display:inline-block;
-      margin-top:12px;
-      color:white;
-      text-decoration:none;
-      font-weight:bold;
-    }
+.header p{
+  color:#3f6212;
+  line-height:1.6;
+}
 
-    .top-link:hover{
-      text-decoration:underline;
-    }
+.top-link{
+  display:inline-block;
+  margin-top:12px;
+  color:#166534;
+  text-decoration:none;
+  font-weight:bold;
+}
 
-    .content{
-      padding:25px;
-    }
+.top-link:hover{
+  text-decoration:underline;
+}
 
-    .question{
-      background:#fcfbff;
-      border:1px solid #ddd6fe;
-      border-radius:18px;
-      padding:18px;
-      margin-bottom:18px;
-    }
+.stats-bar{
+  display:flex;
+  gap:12px;
+  justify-content:center;
+  flex-wrap:wrap;
+  margin-bottom:20px;
+}
 
-    .question h3{
-      font-size:1.05rem;
-      line-height:1.5;
-      margin-bottom:14px;
-      color:#5b21b6;
-    }
+.stat-box{
+  background:#ffffff;
+  border:1px solid #bbf7d0;
+  border-radius:14px;
+  padding:12px 18px;
+  min-width:150px;
+  text-align:center;
+}
 
-    .option{
-      display:block;
-      margin:10px 0;
-      padding:10px 12px;
-      border-radius:12px;
-      cursor:pointer;
-      transition:0.2s ease;
-      border:1px solid transparent;
-      color:#1f2937;
-    }
+.question{
+  display:none;
+  background:#f7fff9;
+  border:1px solid #bbf7d0;
+  border-radius:20px;
+  padding:20px;
+}
 
-    .option:hover{
-      background:#f5f3ff;
-      border-color:#c4b5fd;
-    }
+.question.active{
+  display:block;
+}
 
-    .option input{
-      margin-right:10px;
-      accent-color:#7c3aed;
-    }
+.question h3{
+  line-height:1.6;
+  margin-bottom:15px;
+}
 
-    .buttons{
-      display:flex;
-      flex-wrap:wrap;
-      gap:12px;
-      justify-content:center;
-      margin-top:25px;
-    }
+.option{
+  background:#ecfdf5;
+  padding:12px;
+  margin:10px 0;
+  border-radius:12px;
+  cursor:pointer;
+  transition:0.2s ease;
+  border:1px solid transparent;
+}
 
-    button{
-      border:none;
-      border-radius:14px;
-      padding:13px 22px;
-      font-size:1rem;
-      font-weight:bold;
-      cursor:pointer;
-      transition:0.2s ease;
-    }
+.option:hover{
+  border-color:#86efac;
+}
 
-    .btn-primary{
-      background:#7c3aed;
-      color:white;
-    }
+.option.selected{
+  background:#16a34a;
+  color:white;
+}
 
-    .btn-primary:hover{
-      background:#6d28d9;
-    }
+.option.correct-answer{
+  background:#bbf7d0;
+  color:#14532d;
+}
 
-    .btn-secondary{
-      background:#ede9fe;
-      color:#5b21b6;
-    }
+.option.wrong-answer{
+  background:#fecaca;
+  color:#7f1d1d;
+}
 
-    .btn-secondary:hover{
-      background:#ddd6fe;
-    }
+.navigation{
+  text-align:center;
+  margin-top:18px;
+}
 
-    .result{
-      margin-top:25px;
-      padding:20px;
-      border-radius:18px;
-      background:#faf5ff;
-      border:1px solid #ddd6fe;
-      text-align:center;
-      display:none;
-    }
+button{
+  border:none;
+  padding:11px 18px;
+  border-radius:12px;
+  margin:5px;
+  cursor:pointer;
+  font-weight:bold;
+  transition:0.2s ease;
+}
 
-    .result h2{
-      margin-bottom:10px;
-      color:#6d28d9;
-    }
+button:hover{
+  transform:translateY(-2px);
+}
 
-    .result p{
-      font-size:1.08rem;
-      line-height:1.6;
-      color:#5b21b6;
-    }
+.actions{
+  text-align:center;
+  margin-top:22px;
+}
 
-    .review{
-      margin-top:18px;
-      text-align:left;
-      color:#1f2937;
-    }
+.btn-primary{
+  background:#16a34a;
+  color:white;
+}
 
-    .review-item{
-      background:#ffffff;
-      border:1px solid #ddd6fe;
-      border-radius:12px;
-      padding:12px;
-      margin-bottom:10px;
-    }
+.btn-primary:hover{
+  background:#15803d;
+}
 
-    .correct{
-      color:#15803d;
-      font-weight:bold;
-    }
+.btn-secondary{
+  background:#dcfce7;
+  color:#166534;
+}
 
-    .incorrect{
-      color:#b91c1c;
-      font-weight:bold;
-    }
-  </style>
+.result{
+  display:none;
+  margin-top:25px;
+  padding:20px;
+  background:#f0fdf4;
+  border-radius:18px;
+  border:1px solid #bbf7d0;
+}
+
+.result h2{
+  color:#166534;
+  margin-bottom:10px;
+}
+
+.review-item{
+  background:white;
+  padding:12px;
+  margin:12px 0;
+  border-left:5px solid gray;
+  border-radius:10px;
+}
+
+.correcta{
+  border-left-color:#16a34a;
+}
+
+.incorrecta{
+  border-left-color:#dc2626;
+}
+
+.sin-responder{
+  border-left-color:#f59e0b;
+}
+
+.timer{
+  font-size:1.1rem;
+  font-weight:bold;
+  color:#166534;
+}
+
+.sources-box{
+  position:fixed;
+  bottom:18px;
+  left:18px;
+  width:230px;
+  background:rgba(255,255,255,0.75);
+  backdrop-filter:blur(10px);
+  border:1px solid rgba(255,255,255,0.5);
+  border-radius:18px;
+  padding:14px;
+  font-size:0.83rem;
+  line-height:1.5;
+  color:#14532d;
+  box-shadow:0 8px 22px rgba(0,0,0,0.08);
+  z-index:999;
+}
+
+.sources-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:10px;
+}
+
+.sources-header h4{
+  color:#166534;
+}
+
+.sources-header button{
+  border:none;
+  background:#16a34a;
+  color:white;
+  padding:5px 10px;
+  border-radius:8px;
+  cursor:pointer;
+  font-size:0.75rem;
+}
+
+@media(max-width:700px){
+
+  .sources-box{
+    position:static;
+    width:100%;
+    margin-top:20px;
+  }
+
+}
+</style>
 </head>
+
 <body>
-  <div class="container">
-    <div class="header">
-      <h1>Biología - Examen 4</h1>
-      <p>Versión digital interactiva</p>
-     <a class="top-link" href="../biologia.html">← Volver a Biología</a>
-    </div>
 
-    <div class="content">
-      <form id="quizForm">
+<div class="container">
 
-        <div class="question">
-          <h3>1. Organelo encargado de la síntesis de proteínas:</h3>
-          <label class="option"><input type="radio" name="q1" value="a"> A. Mitocondria</label>
-          <label class="option"><input type="radio" name="q1" value="b"> B. Lisosoma</label>
-          <label class="option"><input type="radio" name="q1" value="c"> C. Aparato de Golgi</label>
-          <label class="option"><input type="radio" name="q1" value="d"> D. Ribosoma</label>
-          <label class="option"><input type="radio" name="q1" value="e"> E. Nucleolo</label>
-        </div>
+  <div class="header">
+    <h1>⚡ Biología - Examen 4</h1>
+    <p>
+      Respiración celular, ATP, glucólisis, Krebs y metabolismo energético.
+    </p>
 
-        <div class="question">
-          <h3>2. ¿En cuál célula humana está la mitocondria más grande?</h3>
-          <label class="option"><input type="radio" name="q2" value="a"> A. Neuronas</label>
-          <label class="option"><input type="radio" name="q2" value="b"> B. Musculares</label>
-          <label class="option"><input type="radio" name="q2" value="c"> C. Espermatozoides</label>
-          <label class="option"><input type="radio" name="q2" value="d"> D. Cardiacas</label>
-          <label class="option"><input type="radio" name="q2" value="e"> E. Hepáticas</label>
-        </div>
-
-        <div class="question">
-          <h3>3. Enlaces que puede realizar el átomo de carbono:</h3>
-          <label class="option"><input type="radio" name="q3" value="a"> A. Sencillos</label>
-          <label class="option"><input type="radio" name="q3" value="b"> B. Dobles</label>
-          <label class="option"><input type="radio" name="q3" value="c"> C. Triples</label>
-          <label class="option"><input type="radio" name="q3" value="d"> D. Todas las anteriores</label>
-          <label class="option"><input type="radio" name="q3" value="e"> E. Ninguna de las anteriores</label>
-        </div>
-
-        <div class="question">
-          <h3>4. ¿Quién vio por primera vez la estructura interna de la célula?</h3>
-          <label class="option"><input type="radio" name="q4" value="a"> A. Z. Janssen</label>
-          <label class="option"><input type="radio" name="q4" value="b"> B. Robert Hooke</label>
-          <label class="option"><input type="radio" name="q4" value="c"> C. Antonie Van Leewenjock</label>
-          <label class="option"><input type="radio" name="q4" value="d"> D. Carl Zeizz</label>
-          <label class="option"><input type="radio" name="q4" value="e"> E. Ninguno de los anteriores</label>
-        </div>
-
-        <div class="question">
-          <h3>5. Teoría celular:</h3>
-          <label class="option"><input type="radio" name="q5" value="a"> A. Todos los organismos consisten en una o más células</label>
-          <label class="option"><input type="radio" name="q5" value="b"> B. La célula es la unidad básica de la estructura</label>
-          <label class="option"><input type="radio" name="q5" value="c"> C. Todas las células se originan únicamente a partir de células</label>
-          <label class="option"><input type="radio" name="q5" value="d"> D. Todas las anteriores</label>
-          <label class="option"><input type="radio" name="q5" value="e"> E. Ninguna de las anteriores</label>
-        </div>
-
-        <div class="question">
-          <h3>6. Estructura que determina la funcionabilidad de las proteínas:</h3>
-          <label class="option"><input type="radio" name="q6" value="a"> A. Primaria</label>
-          <label class="option"><input type="radio" name="q6" value="b"> B. Secundaria</label>
-          <label class="option"><input type="radio" name="q6" value="c"> C. Terciaria</label>
-          <label class="option"><input type="radio" name="q6" value="d"> D. Cuaternaria</label>
-          <label class="option"><input type="radio" name="q6" value="e"> E. Ninguna</label>
-        </div>
-
-        <div class="question">
-          <h3>7. Los triglicéridos están formados por:</h3>
-          <label class="option"><input type="radio" name="q7" value="a"> A. Ácidos grasos y glicerol</label>
-          <label class="option"><input type="radio" name="q7" value="b"> B. Esfingolípidos y glicerol</label>
-          <label class="option"><input type="radio" name="q7" value="c"> C. Fosfolípidos y glicerol</label>
-          <label class="option"><input type="radio" name="q7" value="d"> D. Esteroles</label>
-          <label class="option"><input type="radio" name="q7" value="e"> E. Glicolípidos</label>
-        </div>
-
-        <div class="question">
-          <h3>8. La energía libre se representa como:</h3>
-          <label class="option"><input type="radio" name="q8" value="a"> A. G</label>
-          <label class="option"><input type="radio" name="q8" value="b"> B. S</label>
-          <label class="option"><input type="radio" name="q8" value="c"> C. H</label>
-          <label class="option"><input type="radio" name="q8" value="d"> D. T</label>
-          <label class="option"><input type="radio" name="q8" value="e"> E. Ninguna</label>
-        </div>
-
-        <div class="question">
-          <h3>9. Si delta G es negativo, las reacciones se dirigen hacia:</h3>
-          <label class="option"><input type="radio" name="q9" value="a"> A. Derecha</label>
-          <label class="option"><input type="radio" name="q9" value="b"> B. Izquierda</label>
-          <label class="option"><input type="radio" name="q9" value="c"> C. Equilibrio</label>
-          <label class="option"><input type="radio" name="q9" value="d"> D. Todas las anteriores</label>
-          <label class="option"><input type="radio" name="q9" value="e"> E. Ninguna de las anteriores</label>
-        </div>
-
-        <div class="question">
-          <h3>10. Una función de membrana es:</h3>
-          <label class="option"><input type="radio" name="q10" value="a"> A. Las proteínas de membrana regulan transporte</label>
-          <label class="option"><input type="radio" name="q10" value="b"> B. Detectar señales eléctricas</label>
-          <label class="option"><input type="radio" name="q10" value="c"> C. Definir límites</label>
-          <label class="option"><input type="radio" name="q10" value="d"> D. Todas las anteriores</label>
-          <label class="option"><input type="radio" name="q10" value="e"> E. Ninguna de las anteriores</label>
-        </div>
-
-        <div class="question">
-          <h3>11. Las enzimas funcionan como:</h3>
-          <label class="option"><input type="radio" name="q11" value="a"> A. Incrementan velocidad de reacción</label>
-          <label class="option"><input type="radio" name="q11" value="b"> B. Formando complejos transitorios con las moléculas sustrato</label>
-          <label class="option"><input type="radio" name="q11" value="c"> C. Cambio de velocidad hasta que se consigue equilibrio</label>
-          <label class="option"><input type="radio" name="q11" value="d"> D. Todas las anteriores</label>
-          <label class="option"><input type="radio" name="q11" value="e"> E. Ninguna de las anteriores</label>
-        </div>
-
-        <div class="question">
-          <h3>12. Los lípidos de membrana que se utilizan en tipificación ABO son:</h3>
-          <label class="option"><input type="radio" name="q12" value="a"> A. Fosfolípidos</label>
-          <label class="option"><input type="radio" name="q12" value="b"> B. Esteroles</label>
-          <label class="option"><input type="radio" name="q12" value="c"> C. Glicolípidos</label>
-          <label class="option"><input type="radio" name="q12" value="d"> D. Todas las anteriores</label>
-          <label class="option"><input type="radio" name="q12" value="e"> E. Ninguna de las anteriores</label>
-        </div>
-
-        <div class="question">
-          <h3>13. La glucosa utiliza uno de estos mecanismos:</h3>
-          <label class="option"><input type="radio" name="q13" value="a"> A. Difusión simple</label>
-          <label class="option"><input type="radio" name="q13" value="b"> B. Transporte activo</label>
-          <label class="option"><input type="radio" name="q13" value="c"> C. Difusión facilitada</label>
-          <label class="option"><input type="radio" name="q13" value="d"> D. Todas las anteriores</label>
-          <label class="option"><input type="radio" name="q13" value="e"> E. Ninguna de las anteriores</label>
-        </div>
-
-        <div class="question">
-          <h3>14. La oxidación completa de la glucosa libera:</h3>
-          <label class="option"><input type="radio" name="q14" value="a"> A. 686 Kcal/mol</label>
-          <label class="option"><input type="radio" name="q14" value="b"> B. 36 ATP</label>
-          <label class="option"><input type="radio" name="q14" value="c"> C. 38 ATP</label>
-          <label class="option"><input type="radio" name="q14" value="d"> D. Todas las anteriores</label>
-          <label class="option"><input type="radio" name="q14" value="e"> E. Ninguna de las anteriores</label>
-        </div>
-
-        <div class="question">
-          <h3>15. Productos del ciclo TCA son:</h3>
-          <label class="option"><input type="radio" name="q15" value="a"> A. CO2</label>
-          <label class="option"><input type="radio" name="q15" value="b"> B. ATP</label>
-          <label class="option"><input type="radio" name="q15" value="c"> C. NADH</label>
-          <label class="option"><input type="radio" name="q15" value="d"> D. Todas las anteriores</label>
-          <label class="option"><input type="radio" name="q15" value="e"> E. Ninguna de las anteriores</label>
-        </div>
-
-        <div class="question">
-          <h3>16. Función del nucléolo:</h3>
-          <label class="option"><input type="radio" name="q16" value="a"> A. Guardar información compactada</label>
-          <label class="option"><input type="radio" name="q16" value="b"> B. Formación de ribosomas</label>
-          <label class="option"><input type="radio" name="q16" value="c"> C. Síntesis de ADN</label>
-          <label class="option"><input type="radio" name="q16" value="d"> D. Todas las anteriores</label>
-          <label class="option"><input type="radio" name="q16" value="e"> E. Ninguna de las anteriores</label>
-        </div>
-
-        <div class="question">
-          <h3>17. La producción de proteínas se da en:</h3>
-          <label class="option"><input type="radio" name="q17" value="a"> A. Replicación</label>
-          <label class="option"><input type="radio" name="q17" value="b"> B. Transcripción</label>
-          <label class="option"><input type="radio" name="q17" value="c"> C. Traducción</label>
-          <label class="option"><input type="radio" name="q17" value="d"> D. Ninguna de las anteriores</label>
-          <label class="option"><input type="radio" name="q17" value="e"> E. Todas las anteriores</label>
-        </div>
-
-        <div class="question">
-          <h3>18. La síntesis de hormonas sexuales se da en:</h3>
-          <label class="option"><input type="radio" name="q18" value="a"> A. RE rugoso</label>
-          <label class="option"><input type="radio" name="q18" value="b"> B. RE liso</label>
-          <label class="option"><input type="radio" name="q18" value="c"> C. Mitocondria</label>
-          <label class="option"><input type="radio" name="q18" value="d"> D. Todas las anteriores</label>
-          <label class="option"><input type="radio" name="q18" value="e"> E. Ninguna de las anteriores</label>
-        </div>
-
-        <div class="question">
-          <h3>19. La oxidación de ácidos grasos se da en:</h3>
-          <label class="option"><input type="radio" name="q19" value="a"> A. Lisosomas</label>
-          <label class="option"><input type="radio" name="q19" value="b"> B. Vacuolas</label>
-          <label class="option"><input type="radio" name="q19" value="c"> C. Peroxisomas</label>
-          <label class="option"><input type="radio" name="q19" value="d"> D. Endosomas</label>
-          <label class="option"><input type="radio" name="q19" value="e"> E. Ninguno de los anteriores</label>
-        </div>
-
-        <div class="question">
-          <h3>20. Implicados en la contracción muscular:</h3>
-          <label class="option"><input type="radio" name="q20" value="a"> A. Microtúbulos</label>
-          <label class="option"><input type="radio" name="q20" value="b"> B. Microfilamentos</label>
-          <label class="option"><input type="radio" name="q20" value="c"> C. Filamentos intermedios</label>
-          <label class="option"><input type="radio" name="q20" value="d"> D. Todos los anteriores</label>
-          <label class="option"><input type="radio" name="q20" value="e"> E. Ninguno de los anteriores</label>
-        </div>
-
-        <div class="question">
-          <h3>21. La resistencia de los tejidos es debida a:</h3>
-          <label class="option"><input type="radio" name="q21" value="a"> A. Microtúbulos</label>
-          <label class="option"><input type="radio" name="q21" value="b"> B. Microfilamentos</label>
-          <label class="option"><input type="radio" name="q21" value="c"> C. Filamentos intermedios</label>
-          <label class="option"><input type="radio" name="q21" value="d"> D. Todos los anteriores</label>
-          <label class="option"><input type="radio" name="q21" value="e"> E. Ninguno de los anteriores</label>
-        </div>
-
-        <div class="question">
-          <h3>22. La movilidad en microtúbulos de vesículas mediadas por dineína es:</h3>
-          <label class="option"><input type="radio" name="q22" value="a"> A. Al extremo más</label>
-          <label class="option"><input type="radio" name="q22" value="b"> B. Al extremo menos</label>
-          <label class="option"><input type="radio" name="q22" value="c"> C. Ambos extremos</label>
-          <label class="option"><input type="radio" name="q22" value="d"> D. Todas las anteriores</label>
-          <label class="option"><input type="radio" name="q22" value="e"> E. Ninguna de las anteriores</label>
-        </div>
-
-        <div class="question">
-          <h3>23. En la contracción muscular se produce deslizamiento de los filamentos:</h3>
-          <label class="option"><input type="radio" name="q23" value="a"> A. Gruesos</label>
-          <label class="option"><input type="radio" name="q23" value="b"> B. Finos</label>
-          <label class="option"><input type="radio" name="q23" value="c"> C. Ambos</label>
-          <label class="option"><input type="radio" name="q23" value="d"> D. Todas las anteriores</label>
-          <label class="option"><input type="radio" name="q23" value="e"> E. Ninguna de las anteriores</label>
-        </div>
-
-        <div class="question">
-          <h3>24. La estabilidad de las fibrillas de colágeno se refuerza por:</h3>
-          <label class="option"><input type="radio" name="q24" value="a"> A. Enlaces sulfuro</label>
-          <label class="option"><input type="radio" name="q24" value="b"> B. Enlaces covalentes</label>
-          <label class="option"><input type="radio" name="q24" value="c"> C. Puentes de hidrógeno</label>
-          <label class="option"><input type="radio" name="q24" value="d"> D. Todas las anteriores</label>
-          <label class="option"><input type="radio" name="q24" value="e"> E. Ninguna de las anteriores</label>
-        </div>
-
-        <div class="question">
-          <h3>25. La adhesión célula-célula está mediada por:</h3>
-          <label class="option"><input type="radio" name="q25" value="a"> A. Superfamilias de inmunoglobulinas</label>
-          <label class="option"><input type="radio" name="q25" value="b"> B. Cadherinas</label>
-          <label class="option"><input type="radio" name="q25" value="c"> C. Selectinas</label>
-          <label class="option"><input type="radio" name="q25" value="d"> D. Integrinas</label>
-          <label class="option"><input type="radio" name="q25" value="e"> E. Todas las anteriores</label>
-        </div>
-
-        <div class="question">
-          <h3>26. El canal que atraviesa la pared celular es:</h3>
-          <label class="option"><input type="radio" name="q26" value="a"> A. Desmosomas</label>
-          <label class="option"><input type="radio" name="q26" value="b"> B. Conexones</label>
-          <label class="option"><input type="radio" name="q26" value="c"> C. Plasmodesmos</label>
-          <label class="option"><input type="radio" name="q26" value="d"> D. Todas las anteriores</label>
-          <label class="option"><input type="radio" name="q26" value="e"> E. Ninguna de las anteriores</label>
-        </div>
-
-        <div class="question">
-          <h3>27. El sistema nervioso somático controla:</h3>
-          <label class="option"><input type="radio" name="q27" value="a"> A. Músculo cardíaco</label>
-          <label class="option"><input type="radio" name="q27" value="b"> B. Músculo liso</label>
-          <label class="option"><input type="radio" name="q27" value="c"> C. Músculo esquelético</label>
-          <label class="option"><input type="radio" name="q27" value="d"> D. Vasos sanguíneos</label>
-          <label class="option"><input type="radio" name="q27" value="e"> E. Glándulas secretoras</label>
-        </div>
-
-        <div class="question">
-          <h3>28. Los factores de crecimiento pertenecen a señales químicas:</h3>
-          <label class="option"><input type="radio" name="q28" value="a"> A. Endocrinas</label>
-          <label class="option"><input type="radio" name="q28" value="b"> B. Paracrinas</label>
-          <label class="option"><input type="radio" name="q28" value="c"> C. Autocrinas</label>
-          <label class="option"><input type="radio" name="q28" value="d"> D. Todas las anteriores</label>
-          <label class="option"><input type="radio" name="q28" value="e"> E. Ninguna de las anteriores</label>
-        </div>
-
-        <div class="buttons">
-          <button type="button" class="btn-primary" onclick="calificarExamen()">Calificar examen</button>
-          <button type="reset" class="btn-secondary" onclick="reiniciarExamen()">Reiniciar</button>
-        </div>
-
-        <div class="result" id="resultado">
-          <h2>Resultado</h2>
-          <p id="puntajeTexto"></p>
-          <div class="review" id="revision"></div>
-        </div>
-      </form>
-    </div>
+    <a class="top-link" href="../biologia.html">← Volver a Biología</a>
   </div>
 
-  <script>
-    const respuestasCorrectas = {
-      q1:"d",
-      q2:"c",
-      q3:"d",
-      q4:"c",
-      q5:"d",
-      q6:"c",
-      q7:"a",
-      q8:"a",
-      q9:"a",
-      q10:"d",
-      q11:"d",
-      q12:"c",
-      q13:"c",
-      q14:"d",
-      q15:"d",
-      q16:"b",
-      q17:"c",
-      q18:"b",
-      q19:"c",
-      q20:"b",
-      q21:"c",
-      q22:"b",
-      q23:"c",
-      q24:"b",
-      q25:"e",
-      q26:"c",
-      q27:"c",
-      q28:"d"
-    };
+  <div class="stats-bar">
 
-    const textosCorrectos = {
-      q1:"D. Ribosoma",
-      q2:"C. Espermatozoides",
-      q3:"D. Todas las anteriores",
-      q4:"C. Antonie Van Leewenjock",
-      q5:"D. Todas las anteriores",
-      q6:"C. Terciaria",
-      q7:"A. Ácidos grasos y glicerol",
-      q8:"A. G",
-      q9:"A. Derecha",
-      q10:"D. Todas las anteriores",
-      q11:"D. Todas las anteriores",
-      q12:"C. Glicolípidos",
-      q13:"C. Difusión facilitada",
-      q14:"D. Todas las anteriores",
-      q15:"D. Todas las anteriores",
-      q16:"B. Formación de ribosomas",
-      q17:"C. Traducción",
-      q18:"B. RE liso",
-      q19:"C. Peroxisomas",
-      q20:"B. Microfilamentos",
-      q21:"C. Filamentos intermedios",
-      q22:"B. Al extremo menos",
-      q23:"C. Ambos",
-      q24:"B. Enlaces covalentes",
-      q25:"E. Todas las anteriores",
-      q26:"C. Plasmodesmos",
-      q27:"C. Músculo esquelético",
-      q28:"D. Todas las anteriores"
-    };
+    <div class="stat-box">
+      <span>Pregunta</span><br>
+      <b id="qNum">1</b> / 30
+    </div>
 
-    function calificarExamen() {
-      let total = Object.keys(respuestasCorrectas).length;
-      let correctas = 0;
-      let respondidas = 0;
-      let revisionHTML = "";
+    <div class="stat-box">
+      <span>Progreso</span><br>
+      <b id="progress">0 / 30</b>
+    </div>
 
-      for (let pregunta in respuestasCorrectas) {
-        const seleccionada = document.querySelector(`input[name="${pregunta}"]:checked`);
+    <div class="stat-box">
+      <span>Tiempo</span><br>
+      <b class="timer" id="timer">30:00</b>
+    </div>
 
-        if (seleccionada) {
-          respondidas++;
-          if (seleccionada.value === respuestasCorrectas[pregunta]) {
-            correctas++;
-            revisionHTML += `
-              <div class="review-item">
-                <span class="correct">${pregunta.toUpperCase()}: Correcta</span><br>
-                Respuesta: ${textosCorrectos[pregunta]}
-              </div>
-            `;
-          } else {
-            const textoMarcado = seleccionada.parentElement.textContent.trim();
-            revisionHTML += `
-              <div class="review-item">
-                <span class="incorrect">${pregunta.toUpperCase()}: Incorrecta</span><br>
-                Tu respuesta: ${textoMarcado}<br>
-                Correcta: ${textosCorrectos[pregunta]}
-              </div>
-            `;
-          }
-        } else {
-          revisionHTML += `
-            <div class="review-item">
-              <span class="incorrect">${pregunta.toUpperCase()}: Sin responder</span><br>
-              Correcta: ${textosCorrectos[pregunta]}
-            </div>
-          `;
-        }
-      }
+  </div>
 
-      const porcentaje = ((correctas / total) * 100).toFixed(1);
+  <div id="quiz"></div>
 
-      document.getElementById("puntajeTexto").innerHTML = `
-        Respondiste <strong>${respondidas}</strong> de <strong>${total}</strong> preguntas.<br>
-        Obtuviste <strong>${correctas}</strong> correctas de <strong>${total}</strong>.<br>
-        Tu nota fue: <strong>${porcentaje}%</strong>
-      `;
+  <div class="actions">
+    <button class="btn-primary" onclick="finish()">Calificar examen</button>
+    <button class="btn-secondary" onclick="resetExam()">Reiniciar</button>
+  </div>
 
-      document.getElementById("revision").innerHTML = revisionHTML;
-      document.getElementById("resultado").style.display = "block";
-      document.getElementById("resultado").scrollIntoView({ behavior: "smooth" });
-    }
+  <div class="result" id="resultado">
+    <h2>Resultado</h2>
+    <p id="score"></p>
+    <div id="review"></div>
+  </div>
 
-    function reiniciarExamen() {
-      document.getElementById("resultado").style.display = "none";
-      document.getElementById("revision").innerHTML = "";
-      document.getElementById("puntajeTexto").innerHTML = "";
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    }
-  </script>
-  <script type="module" src="../party/party-timer.js"></script>
+</div>
+
+<div class="sources-box">
+
+  <div class="sources-header">
+    <h4>Fuentes</h4>
+    <button onclick="toggleSources()" id="toggleBtn">Ocultar</button>
+  </div>
+
+  <div id="sourcesContent">
+    <div><strong>B3</strong> → Final Biología USAC</div>
+    <div><strong>B5</strong> → Bio-Química Medicina</div>
+    <div><strong>B7</strong> → Preguntas química-biología</div>
+    <div><strong>T1</strong> → Temario específico USAC</div>
+  </div>
+
+</div>
+
+<script>
+
+const questions = [
+
+{q:"¿En qué parte de la célula ocurre la glucólisis?",o:["Mitocondria","Citoplasma","Núcleo","Ribosoma"],a:1},
+
+{q:"¿Cuál es el producto neto de ATP en la glucólisis?",o:["1 ATP","2 ATP","4 ATP","36 ATP"],a:1},
+
+{q:"¿Qué molécula inicia la glucólisis?",o:["Piruvato","Acetil-CoA","Glucosa","Lactato"],a:2},
+
+{q:"¿Qué proceso ocurre en ausencia de oxígeno?",o:["Respiración aeróbica","Fermentación","Cadena transportadora","Krebs"],a:1},
+
+{q:"¿Qué molécula acepta electrones al final de la cadena transportadora?",o:["CO₂","Oxígeno","ATP","Piruvato"],a:1},
+
+{q:"¿Dónde ocurre el ciclo de Krebs?",o:["Citoplasma","Núcleo","Matriz mitocondrial","Ribosoma"],a:2},
+
+{q:"¿Cuál es una función principal del ATP?",o:["Almacenar ADN","Transportar oxígeno","Transferir energía","Formar proteínas"],a:2},
+
+{q:"¿Qué tipo de metabolismo degrada moléculas?",o:["Anabolismo","Catabolismo","Fotosíntesis","Homeostasis"],a:1},
+
+{q:"¿Qué proceso produce más ATP?",o:["Fermentación","Glucólisis","Respiración aeróbica","Difusión"],a:2},
+
+{q:"¿Cuál es el producto final de la glucólisis?",o:["Piruvato","Oxígeno","Acetilcolina","ADN"],a:0},
+
+{q:"¿Qué moléculas transportan electrones en respiración celular?",o:["NADH y FADH₂","ADP y ATP","ARN y ADN","Glucosa y lactato"],a:0},
+
+{q:"¿Qué tipo de fermentación ocurre en músculos?",o:["Alcohólica","Acética","Láctica","Butírica"],a:2},
+
+{q:"¿Qué estructura contiene la cadena transportadora de electrones?",o:["Membrana interna mitocondrial","Citoplasma","Núcleo","Lisosoma"],a:0},
+
+{q:"¿Qué ocurre durante el anabolismo?",o:["Se degradan moléculas","Se libera ATP","Se construyen moléculas","Se rompe glucosa"],a:2},
+
+{q:"¿Qué molécula entra al ciclo de Krebs?",o:["Piruvato","Acetil-CoA","Lactato","Glucosa"],a:1},
+
+{q:"¿Qué tipo de reacción libera energía?",o:["Endergónica","Exergónica","Mitótica","Anabólica"],a:1},
+
+{q:"¿Qué proceso genera dióxido de carbono?",o:["Difusión","Krebs","Ósmosis","Pinocitosis"],a:1},
+
+{q:"¿Qué ocurre si falta oxígeno en respiración celular?",o:["Se detiene glucólisis","Se activa fermentación","Aumenta ATP","Se produce ADN"],a:1},
+
+{q:"¿Qué molécula almacena energía inmediatamente utilizable?",o:["ADN","ATP","ARN","Lípidos"],a:1},
+
+{q:"¿Cuál es la finalidad de la respiración celular?",o:["Sintetizar ADN","Obtener energía","Producir agua","Transportar proteínas"],a:1},
+
+{q:"¿Qué proceso ocurre en el citoplasma y no en la mitocondria?",o:["Krebs","Cadena transportadora","Glucólisis","ATP sintasa"],a:2},
+
+{q:"¿Qué tipo de respiración utiliza oxígeno?",o:["Anaeróbica","Fermentativa","Aeróbica","Láctica"],a:2},
+
+{q:"¿Qué molécula se reduce al aceptar electrones?",o:["Oxígeno","ATP","Glucosa","Piruvato"],a:0},
+
+{q:"¿Qué sucede durante la fosforilación oxidativa?",o:["Se sintetiza ATP","Se replica ADN","Se forma glucosa","Se produce mitosis"],a:0},
+
+{q:"¿Qué proceso genera menos ATP?",o:["Respiración aeróbica","Krebs","Fermentación","Cadena transportadora"],a:2},
+
+{q:"¿Cuál es el objetivo del catabolismo?",o:["Crear proteínas","Liberar energía","Formar ADN","Sintetizar membranas"],a:1},
+
+{q:"¿Qué producto se forma en fermentación alcohólica?",o:["Lactato","Etanol","Glucógeno","Piruvato"],a:1},
+
+{q:"¿Qué ocurre con los electrones en la cadena transportadora?",o:["Se destruyen","Liberan energía progresivamente","Se convierten en glucosa","Se almacenan en ADN"],a:1},
+
+{q:"¿Qué proceso combina ADP + fosfato para formar ATP?",o:["Difusión","Fosforilación","Ósmosis","Endocitosis"],a:1},
+
+{q:"¿Qué compuesto aumenta después de degradar glucosa?",o:["Energía celular","ADN","Ribosomas","Lisosomas"],a:0}
+
+];
+
+let current=0;
+let answers=new Array(questions.length).fill(null);
+let done=false;
+
+function render(){
+
+const quiz=document.getElementById("quiz");
+quiz.innerHTML="";
+
+questions.forEach((q,i)=>{
+
+const div=document.createElement("div");
+div.className="question"+(i===current?" active":"");
+
+let opts="";
+
+q.o.forEach((op,j)=>{
+
+let cls="";
+
+if(answers[i]===j) cls+=" selected";
+
+if(done){
+  if(j===q.a) cls+=" correct-answer";
+  if(answers[i]===j && j!==q.a) cls+=" wrong-answer";
+}
+
+opts+=`<div class="option${cls}" onclick="select(${i},${j})">${op}</div>`;
+
+});
+
+div.innerHTML=`
+<h3>${i+1}. ${q.q}</h3>
+
+${opts}
+
+<div class="navigation">
+
+<button onclick="prev()" ${i===0?"disabled":""}>Anterior</button>
+
+${i===questions.length-1
+? `<button onclick="finish()">Finalizar</button>`
+: `<button onclick="next()">Siguiente</button>`}
+
+</div>
+`;
+
+quiz.appendChild(div);
+
+});
+
+update();
+
+}
+
+function select(i,j){
+
+if(done)return;
+
+answers[i]=j;
+render();
+
+}
+
+function next(){
+
+if(current<questions.length-1){
+  current++;
+  render();
+}
+
+}
+
+function prev(){
+
+if(current>0){
+  current--;
+  render();
+}
+
+}
+
+function update(){
+
+document.getElementById("qNum").textContent=current+1;
+
+document.getElementById("progress").textContent=
+answers.filter(a=>a!==null).length+" / "+questions.length;
+
+}
+
+function finish(){
+
+done=true;
+
+let correct=0;
+let html="";
+
+questions.forEach((q,i)=>{
+
+const user=answers[i];
+
+let estado="sin-responder";
+
+if(user===q.a){
+  correct++;
+  estado="correcta";
+}
+else if(user!==null){
+  estado="incorrecta";
+}
+
+html+=`
+<div class="review-item ${estado}">
+<h4>Pregunta ${i+1}</h4>
+<p><b>Correcta:</b> ${q.o[q.a]}</p>
+</div>
+`;
+
+});
+
+const porcentaje=((correct/questions.length)*100).toFixed(1);
+
+let mensaje="";
+
+if(porcentaje>=85){
+  mensaje="🔥 Excelente resultado";
+}
+else if(porcentaje>=70){
+  mensaje="✅ Buen trabajo";
+}
+else if(porcentaje>=50){
+  mensaje="⚠️ Necesitas reforzar algunos temas";
+}
+else{
+  mensaje="❌ Debes estudiar más este tema";
+}
+
+document.getElementById("score").innerHTML=`
+<strong>${correct} / ${questions.length}</strong><br><br>
+Porcentaje: <strong>${porcentaje}%</strong><br><br>
+${mensaje}
+`;
+
+document.getElementById("review").innerHTML=html;
+
+document.getElementById("resultado").style.display="block";
+
+render();
+
+window.scrollTo({
+  top:document.body.scrollHeight,
+  behavior:"smooth"
+});
+
+}
+
+function resetExam(){
+
+current=0;
+answers=new Array(questions.length).fill(null);
+done=false;
+time=1800;
+
+document.getElementById("resultado").style.display="none";
+
+render();
+
+}
+
+function toggleSources(){
+
+const content=document.getElementById("sourcesContent");
+const button=document.getElementById("toggleBtn");
+
+if(content.style.display==="none"){
+  content.style.display="block";
+  button.textContent="Ocultar";
+}
+else{
+  content.style.display="none";
+  button.textContent="Mostrar";
+}
+
+}
+
+let time=1800;
+
+function updateTimer(){
+
+const minutes=Math.floor(time/60);
+const seconds=time%60;
+
+document.getElementById("timer").textContent=
+`${String(minutes).padStart(2,"0")}:${String(seconds).padStart(2,"0")}`;
+
+if(time>0 && !done){
+  time--;
+}
+else if(time===0 && !done){
+  finish();
+}
+
+}
+
+setInterval(updateTimer,1000);
+
+render();
+
+</script>
+
+<script type="module" src="../party/party-timer.js"></script>
+
 </body>
 </html>
