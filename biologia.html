@@ -157,7 +157,7 @@
   position:fixed;
   bottom:18px;
   left:18px;
-  width:220px;
+  width:230px;
   background:rgba(255,255,255,0.75);
   backdrop-filter:blur(10px);
   border:1px solid rgba(255,255,255,0.5);
@@ -170,9 +170,36 @@
   z-index:999;
 }
 
-.sources-box h4{
-  margin-bottom:8px;
+.sources-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:10px;
+}
+
+.sources-header h4{
   color:#166534;
+  font-size:0.95rem;
+}
+
+.sources-header button{
+  border:none;
+  background:#16a34a;
+  color:white;
+  padding:5px 10px;
+  border-radius:8px;
+  cursor:pointer;
+  font-size:0.75rem;
+  font-weight:bold;
+  transition:0.2s ease;
+}
+
+.sources-header button:hover{
+  background:#15803d;
+}
+
+#sourcesContent{
+  transition:0.2s ease;
 }
 
 @media (max-width:700px){
@@ -186,17 +213,24 @@
 </head>
 <body>
 
-  <div class="sources-box">
-  <h4>Fuentes</h4>
+  <div class="sources-box" id="sourcesBox">
 
-  <div><strong>B1</strong> → Resuelto Biología</div>
-  <div><strong>B2</strong> → Parcial Bio</div>
-  <div><strong>B3</strong> → Final Biología USAC</div>
-  <div><strong>B4</strong> → Estudio específico</div>
-  <div><strong>B5</strong> → Bio-Química Medicina</div>
-  <div><strong>B6</strong> → Bio y química</div>
-  <div><strong>B7</strong> → Preguntas química-biología</div>
-  <div><strong>T1</strong> → Temario específico USAC</div>
+  <div class="sources-header">
+    <h4>Fuentes</h4>
+    <button onclick="toggleSources()" id="toggleBtn">Ocultar</button>
+  </div>
+
+  <div id="sourcesContent">
+    <div><strong>B1</strong> → Resuelto Biología</div>
+    <div><strong>B2</strong> → Parcial Bio</div>
+    <div><strong>B3</strong> → Final Biología USAC</div>
+    <div><strong>B4</strong> → Estudio específico</div>
+    <div><strong>B5</strong> → Bio-Química Medicina</div>
+    <div><strong>B6</strong> → Bio y química</div>
+    <div><strong>B7</strong> → Preguntas química-biología</div>
+    <div><strong>T1</strong> → Temario específico USAC</div>
+  </div>
+
 </div>
 
   <header>
