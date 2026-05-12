@@ -362,5 +362,20 @@
     Biología • Simuladores específicos Medicina USAC
   </footer>
 
+  <script>
+  function toggleSources(){
+    const content = document.getElementById("sourcesContent");
+    const button = document.getElementById("toggleBtn");
+
+    if(content.style.display === "none"){
+      content.style.display = "block";
+      button.textContent = "Ocultar";
+    } else {
+      content.style.display = "none";
+      button.textContent = "Mostrar";
+    }
+  }
+</script>
+
 </body>
 </html>
