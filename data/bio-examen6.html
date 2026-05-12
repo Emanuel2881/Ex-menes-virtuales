@@ -1,1 +1,594 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Biología - Examen 6</title>
 
+<style>
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+}
+
+body{
+  font-family: Arial, Helvetica, sans-serif;
+  background: linear-gradient(135deg,#f0fdf4,#ecfdf5,#dcfce7);
+  color:#14532d;
+  min-height:100vh;
+  padding:30px 15px;
+}
+
+.container{
+  max-width:950px;
+  margin:auto;
+  background:rgba(255,255,255,0.96);
+  padding:25px;
+  border-radius:24px;
+  box-shadow:0 12px 35px rgba(0,0,0,0.08);
+}
+
+.header{
+  text-align:center;
+  margin-bottom:20px;
+}
+
+.header h1{
+  font-size:2.3rem;
+  color:#166534;
+  margin-bottom:10px;
+}
+
+.header p{
+  color:#3f6212;
+  line-height:1.6;
+}
+
+.top-link{
+  display:inline-block;
+  margin-top:12px;
+  color:#166534;
+  text-decoration:none;
+  font-weight:bold;
+}
+
+.top-link:hover{
+  text-decoration:underline;
+}
+
+.stats-bar{
+  display:flex;
+  gap:12px;
+  justify-content:center;
+  flex-wrap:wrap;
+  margin-bottom:20px;
+}
+
+.stat-box{
+  background:#ffffff;
+  border:1px solid #bbf7d0;
+  border-radius:14px;
+  padding:12px 18px;
+  min-width:150px;
+  text-align:center;
+}
+
+.question{
+  display:none;
+  background:#f7fff9;
+  border:1px solid #bbf7d0;
+  border-radius:20px;
+  padding:20px;
+}
+
+.question.active{
+  display:block;
+}
+
+.question h3{
+  line-height:1.6;
+  margin-bottom:15px;
+}
+
+.option{
+  background:#ecfdf5;
+  padding:12px;
+  margin:10px 0;
+  border-radius:12px;
+  cursor:pointer;
+  transition:0.2s ease;
+  border:1px solid transparent;
+}
+
+.option:hover{
+  border-color:#86efac;
+}
+
+.option.selected{
+  background:#16a34a;
+  color:white;
+}
+
+.option.correct-answer{
+  background:#bbf7d0;
+  color:#14532d;
+}
+
+.option.wrong-answer{
+  background:#fecaca;
+  color:#7f1d1d;
+}
+
+.navigation{
+  text-align:center;
+  margin-top:18px;
+}
+
+button{
+  border:none;
+  padding:11px 18px;
+  border-radius:12px;
+  margin:5px;
+  cursor:pointer;
+  font-weight:bold;
+  transition:0.2s ease;
+}
+
+button:hover{
+  transform:translateY(-2px);
+}
+
+.actions{
+  text-align:center;
+  margin-top:22px;
+}
+
+.btn-primary{
+  background:#16a34a;
+  color:white;
+}
+
+.btn-primary:hover{
+  background:#15803d;
+}
+
+.btn-secondary{
+  background:#dcfce7;
+  color:#166534;
+}
+
+.result{
+  display:none;
+  margin-top:25px;
+  padding:20px;
+  background:#f0fdf4;
+  border-radius:18px;
+  border:1px solid #bbf7d0;
+}
+
+.result h2{
+  color:#166534;
+  margin-bottom:10px;
+}
+
+.review-item{
+  background:white;
+  padding:12px;
+  margin:12px 0;
+  border-left:5px solid gray;
+  border-radius:10px;
+}
+
+.correcta{
+  border-left-color:#16a34a;
+}
+
+.incorrecta{
+  border-left-color:#dc2626;
+}
+
+.sin-responder{
+  border-left-color:#f59e0b;
+}
+
+.timer{
+  font-size:1.1rem;
+  font-weight:bold;
+  color:#166534;
+}
+
+.sources-box{
+  position:fixed;
+  bottom:18px;
+  left:18px;
+  width:230px;
+  background:rgba(255,255,255,0.75);
+  backdrop-filter:blur(10px);
+  border:1px solid rgba(255,255,255,0.5);
+  border-radius:18px;
+  padding:14px;
+  font-size:0.83rem;
+  line-height:1.5;
+  color:#14532d;
+  box-shadow:0 8px 22px rgba(0,0,0,0.08);
+  z-index:999;
+}
+
+.sources-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:10px;
+}
+
+.sources-header h4{
+  color:#166534;
+}
+
+.sources-header button{
+  border:none;
+  background:#16a34a;
+  color:white;
+  padding:5px 10px;
+  border-radius:8px;
+  cursor:pointer;
+  font-size:0.75rem;
+}
+
+@media(max-width:700px){
+
+  .sources-box{
+    position:static;
+    width:100%;
+    margin-top:20px;
+  }
+
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+  <div class="header">
+    <h1>🧬 Biología - Examen 6</h1>
+    <p>
+      ADN, ARN, replicación, transcripción y traducción.
+    </p>
+
+    <a class="top-link" href="../biologia.html">← Volver a Biología</a>
+  </div>
+
+  <div class="stats-bar">
+
+    <div class="stat-box">
+      <span>Pregunta</span><br>
+      <b id="qNum">1</b> / 30
+    </div>
+
+    <div class="stat-box">
+      <span>Progreso</span><br>
+      <b id="progress">0 / 30</b>
+    </div>
+
+    <div class="stat-box">
+      <span>Tiempo</span><br>
+      <b class="timer" id="timer">30:00</b>
+    </div>
+
+  </div>
+
+  <div id="quiz"></div>
+
+  <div class="actions">
+    <button class="btn-primary" onclick="finish()">Calificar examen</button>
+    <button class="btn-secondary" onclick="resetExam()">Reiniciar</button>
+  </div>
+
+  <div class="result" id="resultado">
+    <h2>Resultado</h2>
+    <p id="score"></p>
+    <div id="review"></div>
+  </div>
+
+</div>
+
+<div class="sources-box">
+
+  <div class="sources-header">
+    <h4>Fuentes</h4>
+    <button onclick="toggleSources()" id="toggleBtn">Ocultar</button>
+  </div>
+
+  <div id="sourcesContent">
+    <div><strong>B3</strong> → Final Biología USAC</div>
+    <div><strong>B4</strong> → Estudio específico</div>
+    <div><strong>B6</strong> → Bio y química</div>
+    <div><strong>T1</strong> → Temario específico USAC</div>
+  </div>
+
+</div>
+
+<script>
+
+const questions = [
+
+{q:"¿Cuál es el azúcar presente en el ADN?",o:["Ribosa","Glucosa","Desoxirribosa","Fructosa"],a:2},
+
+{q:"¿Qué base nitrogenada está presente en ARN pero no en ADN?",o:["Timina","Uracilo","Citosina","Guanina"],a:1},
+
+{q:"¿Qué estructura tiene el ADN?",o:["Cadena simple","Doble hélice","Anillo","Lámina"],a:1},
+
+{q:"¿Qué bases se unen en el ADN?",o:["A-G y C-T","A-T y C-G","A-C y T-G","A-U y C-G"],a:1},
+
+{q:"¿Qué enzima separa las cadenas de ADN?",o:["Ligasa","Helicasa","ARN polimerasa","ATP sintasa"],a:1},
+
+{q:"¿Qué enzima sintetiza nueva cadena de ADN?",o:["ADN polimerasa","Helicasa","Lactasa","Pepsina"],a:0},
+
+{q:"¿Cuál es la función principal del ADN?",o:["Transportar energía","Almacenar información genética","Formar membranas","Sintetizar lípidos"],a:1},
+
+{q:"¿Qué tipo de ARN lleva aminoácidos al ribosoma?",o:["ARNm","ARNr","ARNt","ADNc"],a:2},
+
+{q:"¿Qué ARN transporta información genética al ribosoma?",o:["ARNm","ARNt","ARNr","miARN"],a:0},
+
+{q:"¿Qué estructura participa en traducción proteica?",o:["Lisosoma","Ribosoma","Mitocondria","Golgi"],a:1},
+
+{q:"¿Qué ocurre durante la transcripción?",o:["ADN produce ARN","ARN produce ADN","Proteínas forman ADN","ATP forma glucosa"],a:0},
+
+{q:"¿Qué ocurre durante traducción?",o:["Se replica ADN","Se sintetizan proteínas","Se divide célula","Se forma ATP"],a:1},
+
+{q:"¿Qué unidad forma el código genético?",o:["Dipéptidos","Tripletes","Lípidos","Monómeros"],a:1},
+
+{q:"¿Cómo se llama cada triplete del ARNm?",o:["Anticodón","Codón","Intrón","Exón"],a:1},
+
+{q:"¿Qué molécula contiene anticodón?",o:["ARNm","ARNr","ARNt","ADN"],a:2},
+
+{q:"¿Cuál es una base exclusiva del ADN?",o:["Uracilo","Timina","Ribosa","Fosfato"],a:1},
+
+{q:"¿Qué molécula contiene ribosa?",o:["ADN","ARN","ATP sintasa","Glucógeno"],a:1},
+
+{q:"¿Dónde ocurre la replicación del ADN en eucariotas?",o:["Citoplasma","Núcleo","Membrana","Golgi"],a:1},
+
+{q:"¿Qué tipo de mutación agrega nucleótidos?",o:["Deleción","Inserción","Sustitución","Duplicación"],a:1},
+
+{q:"¿Qué mutación elimina nucleótidos?",o:["Inserción","Sustitución","Deleción","Transcripción"],a:2},
+
+{q:"¿Qué sucede en una sustitución?",o:["Se elimina ADN","Se cambia una base","Se duplica cromosoma","Se rompe núcleo"],a:1},
+
+{q:"¿Qué mantiene unidas las bases del ADN?",o:["Enlaces peptídicos","Puentes de hidrógeno","ATP","Lípidos"],a:1},
+
+{q:"¿Qué componente forma parte de nucleótido?",o:["Aminoácido","Ácido graso","Base nitrogenada","Proteína"],a:2},
+
+{q:"¿Qué molécula dirige síntesis proteica?",o:["ADN","ARNm","Lípidos","Glucosa"],a:1},
+
+{q:"¿Qué tipo de ARN forma parte del ribosoma?",o:["ARNm","ARNr","ARNt","ADNc"],a:1},
+
+{q:"¿Cuál es la complementariedad correcta en ARN?",o:["A-T","A-U","C-U","G-T"],a:1},
+
+{q:"¿Qué ocurre antes de división celular?",o:["Traducción","Replicación ADN","Fermentación","Endocitosis"],a:1},
+
+{q:"¿Qué molécula contiene genes?",o:["ATP","ADN","ARNr","Lípidos"],a:1},
+
+{q:"¿Qué proceso interpreta codones para formar proteínas?",o:["Replicación","Transcripción","Traducción","Mutación"],a:2},
+
+{q:"¿Qué característica posee el código genético?",o:["Es variable en cada célula","Es universal","No usa tripletes","No produce proteínas"],a:1}
+
+];
+
+let current=0;
+let answers=new Array(questions.length).fill(null);
+let done=false;
+
+function render(){
+
+const quiz=document.getElementById("quiz");
+quiz.innerHTML="";
+
+questions.forEach((q,i)=>{
+
+const div=document.createElement("div");
+div.className="question"+(i===current?" active":"");
+
+let opts="";
+
+q.o.forEach((op,j)=>{
+
+let cls="";
+
+if(answers[i]===j) cls+=" selected";
+
+if(done){
+  if(j===q.a) cls+=" correct-answer";
+  if(answers[i]===j && j!==q.a) cls+=" wrong-answer";
+}
+
+opts+=`<div class="option${cls}" onclick="select(${i},${j})">${op}</div>`;
+
+});
+
+div.innerHTML=`
+<h3>${i+1}. ${q.q}</h3>
+
+${opts}
+
+<div class="navigation">
+
+<button onclick="prev()" ${i===0?"disabled":""}>Anterior</button>
+
+${i===questions.length-1
+? `<button onclick="finish()">Finalizar</button>`
+: `<button onclick="next()">Siguiente</button>`}
+
+</div>
+`;
+
+quiz.appendChild(div);
+
+});
+
+update();
+
+}
+
+function select(i,j){
+
+if(done)return;
+
+answers[i]=j;
+render();
+
+}
+
+function next(){
+
+if(current<questions.length-1){
+  current++;
+  render();
+}
+
+}
+
+function prev(){
+
+if(current>0){
+  current--;
+  render();
+}
+
+}
+
+function update(){
+
+document.getElementById("qNum").textContent=current+1;
+
+document.getElementById("progress").textContent=
+answers.filter(a=>a!==null).length+" / "+questions.length;
+
+}
+
+function finish(){
+
+done=true;
+
+let correct=0;
+let html="";
+
+questions.forEach((q,i)=>{
+
+const user=answers[i];
+
+let estado="sin-responder";
+
+if(user===q.a){
+  correct++;
+  estado="correcta";
+}
+else if(user!==null){
+  estado="incorrecta";
+}
+
+html+=`
+<div class="review-item ${estado}">
+<h4>Pregunta ${i+1}</h4>
+<p><b>Correcta:</b> ${q.o[q.a]}</p>
+</div>
+`;
+
+});
+
+const porcentaje=((correct/questions.length)*100).toFixed(1);
+
+let mensaje="";
+
+if(porcentaje>=85){
+  mensaje="🔥 Excelente resultado";
+}
+else if(porcentaje>=70){
+  mensaje="✅ Buen trabajo";
+}
+else if(porcentaje>=50){
+  mensaje="⚠️ Necesitas reforzar algunos temas";
+}
+else{
+  mensaje="❌ Debes estudiar más este tema";
+}
+
+document.getElementById("score").innerHTML=`
+<strong>${correct} / ${questions.length}</strong><br><br>
+Porcentaje: <strong>${porcentaje}%</strong><br><br>
+${mensaje}
+`;
+
+document.getElementById("review").innerHTML=html;
+
+document.getElementById("resultado").style.display="block";
+
+render();
+
+window.scrollTo({
+  top:document.body.scrollHeight,
+  behavior:"smooth"
+});
+
+}
+
+function resetExam(){
+
+current=0;
+answers=new Array(questions.length).fill(null);
+done=false;
+time=1800;
+
+document.getElementById("resultado").style.display="none";
+
+render();
+
+}
+
+function toggleSources(){
+
+const content=document.getElementById("sourcesContent");
+const button=document.getElementById("toggleBtn");
+
+if(content.style.display==="none"){
+  content.style.display="block";
+  button.textContent="Ocultar";
+}
+else{
+  content.style.display="none";
+  button.textContent="Mostrar";
+}
+
+}
+
+let time=1800;
+
+function updateTimer(){
+
+const minutes=Math.floor(time/60);
+const seconds=time%60;
+
+document.getElementById("timer").textContent=
+`${String(minutes).padStart(2,"0")}:${String(seconds).padStart(2,"0")}`;
+
+if(time>0 && !done){
+  time--;
+}
+else if(time===0 && !done){
+  finish();
+}
+
+}
+
+setInterval(updateTimer,1000);
+
+render();
+
+</script>
+
+<script type="module" src="../party/party-timer.js"></script>
+
+</body>
+</html>
