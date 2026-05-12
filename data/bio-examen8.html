@@ -1,1 +1,594 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Biología - Examen 8</title>
 
+<style>
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+}
+
+body{
+  font-family: Arial, Helvetica, sans-serif;
+  background: linear-gradient(135deg,#f0fdf4,#ecfdf5,#dcfce7);
+  color:#14532d;
+  min-height:100vh;
+  padding:30px 15px;
+}
+
+.container{
+  max-width:950px;
+  margin:auto;
+  background:rgba(255,255,255,0.96);
+  padding:25px;
+  border-radius:24px;
+  box-shadow:0 12px 35px rgba(0,0,0,0.08);
+}
+
+.header{
+  text-align:center;
+  margin-bottom:20px;
+}
+
+.header h1{
+  font-size:2.3rem;
+  color:#166534;
+  margin-bottom:10px;
+}
+
+.header p{
+  color:#3f6212;
+  line-height:1.6;
+}
+
+.top-link{
+  display:inline-block;
+  margin-top:12px;
+  color:#166534;
+  text-decoration:none;
+  font-weight:bold;
+}
+
+.top-link:hover{
+  text-decoration:underline;
+}
+
+.stats-bar{
+  display:flex;
+  gap:12px;
+  justify-content:center;
+  flex-wrap:wrap;
+  margin-bottom:20px;
+}
+
+.stat-box{
+  background:#ffffff;
+  border:1px solid #bbf7d0;
+  border-radius:14px;
+  padding:12px 18px;
+  min-width:150px;
+  text-align:center;
+}
+
+.question{
+  display:none;
+  background:#f7fff9;
+  border:1px solid #bbf7d0;
+  border-radius:20px;
+  padding:20px;
+}
+
+.question.active{
+  display:block;
+}
+
+.question h3{
+  line-height:1.6;
+  margin-bottom:15px;
+}
+
+.option{
+  background:#ecfdf5;
+  padding:12px;
+  margin:10px 0;
+  border-radius:12px;
+  cursor:pointer;
+  transition:0.2s ease;
+  border:1px solid transparent;
+}
+
+.option:hover{
+  border-color:#86efac;
+}
+
+.option.selected{
+  background:#16a34a;
+  color:white;
+}
+
+.option.correct-answer{
+  background:#bbf7d0;
+  color:#14532d;
+}
+
+.option.wrong-answer{
+  background:#fecaca;
+  color:#7f1d1d;
+}
+
+.navigation{
+  text-align:center;
+  margin-top:18px;
+}
+
+button{
+  border:none;
+  padding:11px 18px;
+  border-radius:12px;
+  margin:5px;
+  cursor:pointer;
+  font-weight:bold;
+  transition:0.2s ease;
+}
+
+button:hover{
+  transform:translateY(-2px);
+}
+
+.actions{
+  text-align:center;
+  margin-top:22px;
+}
+
+.btn-primary{
+  background:#16a34a;
+  color:white;
+}
+
+.btn-primary:hover{
+  background:#15803d;
+}
+
+.btn-secondary{
+  background:#dcfce7;
+  color:#166534;
+}
+
+.result{
+  display:none;
+  margin-top:25px;
+  padding:20px;
+  background:#f0fdf4;
+  border-radius:18px;
+  border:1px solid #bbf7d0;
+}
+
+.result h2{
+  color:#166534;
+  margin-bottom:10px;
+}
+
+.review-item{
+  background:white;
+  padding:12px;
+  margin:12px 0;
+  border-left:5px solid gray;
+  border-radius:10px;
+}
+
+.correcta{
+  border-left-color:#16a34a;
+}
+
+.incorrecta{
+  border-left-color:#dc2626;
+}
+
+.sin-responder{
+  border-left-color:#f59e0b;
+}
+
+.timer{
+  font-size:1.1rem;
+  font-weight:bold;
+  color:#166534;
+}
+
+.sources-box{
+  position:fixed;
+  bottom:18px;
+  left:18px;
+  width:230px;
+  background:rgba(255,255,255,0.75);
+  backdrop-filter:blur(10px);
+  border:1px solid rgba(255,255,255,0.5);
+  border-radius:18px;
+  padding:14px;
+  font-size:0.83rem;
+  line-height:1.5;
+  color:#14532d;
+  box-shadow:0 8px 22px rgba(0,0,0,0.08);
+  z-index:999;
+}
+
+.sources-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:10px;
+}
+
+.sources-header h4{
+  color:#166534;
+}
+
+.sources-header button{
+  border:none;
+  background:#16a34a;
+  color:white;
+  padding:5px 10px;
+  border-radius:8px;
+  cursor:pointer;
+  font-size:0.75rem;
+}
+
+@media(max-width:700px){
+
+  .sources-box{
+    position:static;
+    width:100%;
+    margin-top:20px;
+  }
+
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+  <div class="header">
+    <h1>📗 Biología - Examen 8</h1>
+    <p>
+      Simulador mixto fácil del específico de Medicina.
+    </p>
+
+    <a class="top-link" href="../biologia.html">← Volver a Biología</a>
+  </div>
+
+  <div class="stats-bar">
+
+    <div class="stat-box">
+      <span>Pregunta</span><br>
+      <b id="qNum">1</b> / 30
+    </div>
+
+    <div class="stat-box">
+      <span>Progreso</span><br>
+      <b id="progress">0 / 30</b>
+    </div>
+
+    <div class="stat-box">
+      <span>Tiempo</span><br>
+      <b class="timer" id="timer">30:00</b>
+    </div>
+
+  </div>
+
+  <div id="quiz"></div>
+
+  <div class="actions">
+    <button class="btn-primary" onclick="finish()">Calificar examen</button>
+    <button class="btn-secondary" onclick="resetExam()">Reiniciar</button>
+  </div>
+
+  <div class="result" id="resultado">
+    <h2>Resultado</h2>
+    <p id="score"></p>
+    <div id="review"></div>
+  </div>
+
+</div>
+
+<div class="sources-box">
+
+  <div class="sources-header">
+    <h4>Fuentes</h4>
+    <button onclick="toggleSources()" id="toggleBtn">Ocultar</button>
+  </div>
+
+  <div id="sourcesContent">
+    <div><strong>B1</strong> → Resuelto Biología</div>
+    <div><strong>B4</strong> → Estudio específico</div>
+    <div><strong>B6</strong> → Bio y química</div>
+    <div><strong>T1</strong> → Temario específico USAC</div>
+  </div>
+
+</div>
+
+<script>
+
+const questions = [
+
+{q:"¿Qué biomolécula almacena información genética?",o:["Lípidos","Proteínas","Ácidos nucleicos","Vitaminas"],a:2},
+
+{q:"¿Cuál organelo modifica proteínas?",o:["Mitocondria","Golgi","Ribosoma","Cloroplasto"],a:1},
+
+{q:"¿Qué proceso requiere ATP para mover sustancias?",o:["Difusión","Ósmosis","Transporte activo","Difusión facilitada"],a:2},
+
+{q:"¿Dónde ocurre el ciclo de Krebs?",o:["Citoplasma","Núcleo","Matriz mitocondrial","Golgi"],a:2},
+
+{q:"¿Qué proceso produce células haploides?",o:["Mitosis","Meiosis","Fisión binaria","Interfase"],a:1},
+
+{q:"¿Qué ARN transporta aminoácidos?",o:["ARNm","ARNr","ARNt","ADNc"],a:2},
+
+{q:"¿Qué significa heterocigoto?",o:["Alelos iguales","Alelos diferentes","Sin genes","Sin cromosomas"],a:1},
+
+{q:"¿Qué polisacárido almacena energía en animales?",o:["Celulosa","Glucógeno","Quitina","Sacarosa"],a:1},
+
+{q:"¿Qué estructura controla entrada y salida celular?",o:["Citoplasma","Membrana plasmática","Nucléolo","Mitocondria"],a:1},
+
+{q:"¿Qué tipo de respiración utiliza oxígeno?",o:["Fermentación","Anaeróbica","Aeróbica","Láctica"],a:2},
+
+{q:"¿Qué fase separa cromátidas hermanas en mitosis?",o:["Profase","Metafase","Anafase","Telofase"],a:2},
+
+{q:"¿Qué base reemplaza timina en ARN?",o:["Guanina","Uracilo","Citosina","Adenina"],a:1},
+
+{q:"¿Qué alelo se expresa en heterocigotos?",o:["Recesivo","Dominante","Mutado","Nulo"],a:1},
+
+{q:"¿Qué organelo produce ATP?",o:["Golgi","Lisosoma","Mitocondria","Ribosoma"],a:2},
+
+{q:"¿Qué ocurre en una solución hipotónica?",o:["La célula pierde agua","La célula gana agua","No cambia","Explota núcleo"],a:1},
+
+{q:"¿Qué proceso sintetiza proteínas?",o:["Transcripción","Difusión","Traducción","Replicación"],a:2},
+
+{q:"¿Qué ocurre en profase I?",o:["Crossing over","Citocinesis","Separación cromátidas","Formación ATP"],a:0},
+
+{q:"¿Cuál es la principal fuente inmediata de energía?",o:["Celulosa","Glucosa","Quitina","ADN"],a:1},
+
+{q:"¿Qué tipo de célula posee cloroplastos?",o:["Animal","Vegetal","Procariota","Bacteriana"],a:1},
+
+{q:"¿Qué proceso libera energía al degradar moléculas?",o:["Anabolismo","Catabolismo","Fotosíntesis","Ósmosis"],a:1},
+
+{q:"¿Qué molécula contiene genes?",o:["ATP","ARNt","ADN","Lípidos"],a:2},
+
+{q:"¿Qué estructura une cromátidas?",o:["Ribosoma","Centrómero","Lisosoma","Membrana"],a:1},
+
+{q:"¿Qué tipo de transporte utiliza vesículas?",o:["Difusión","Ósmosis","Vesicular","Facilitado"],a:2},
+
+{q:"¿Qué proceso produce variabilidad genética?",o:["Mitosis","Difusión","Crossing over","Citocinesis"],a:2},
+
+{q:"¿Qué proteína acelera reacciones químicas?",o:["Hormona","Enzima","Anticuerpo","Hemoglobina"],a:1},
+
+{q:"¿Qué proporción fenotípica resulta de Aa × Aa?",o:["1:1","3:1","1:2:1","4:0"],a:1},
+
+{q:"¿Qué estructura forma parte de la membrana celular?",o:["Celulosa","Fosfolípidos","Quitina","ADN"],a:1},
+
+{q:"¿Qué molécula acepta electrones al final de cadena respiratoria?",o:["ATP","Piruvato","Oxígeno","Lactato"],a:2},
+
+{q:"¿Qué ocurre durante transcripción?",o:["ARN produce ADN","ADN produce ARN","Se divide célula","Se sintetiza ATP"],a:1},
+
+{q:"¿Qué tipo de herencia suele afectar más hombres?",o:["Autosómica","Ligada al X","Dominante pura","Codominante"],a:1}
+
+];
+
+let current=0;
+let answers=new Array(questions.length).fill(null);
+let done=false;
+
+function render(){
+
+const quiz=document.getElementById("quiz");
+quiz.innerHTML="";
+
+questions.forEach((q,i)=>{
+
+const div=document.createElement("div");
+div.className="question"+(i===current?" active":"");
+
+let opts="";
+
+q.o.forEach((op,j)=>{
+
+let cls="";
+
+if(answers[i]===j) cls+=" selected";
+
+if(done){
+  if(j===q.a) cls+=" correct-answer";
+  if(answers[i]===j && j!==q.a) cls+=" wrong-answer";
+}
+
+opts+=`<div class="option${cls}" onclick="select(${i},${j})">${op}</div>`;
+
+});
+
+div.innerHTML=`
+<h3>${i+1}. ${q.q}</h3>
+
+${opts}
+
+<div class="navigation">
+
+<button onclick="prev()" ${i===0?"disabled":""}>Anterior</button>
+
+${i===questions.length-1
+? `<button onclick="finish()">Finalizar</button>`
+: `<button onclick="next()">Siguiente</button>`}
+
+</div>
+`;
+
+quiz.appendChild(div);
+
+});
+
+update();
+
+}
+
+function select(i,j){
+
+if(done)return;
+
+answers[i]=j;
+render();
+
+}
+
+function next(){
+
+if(current<questions.length-1){
+  current++;
+  render();
+}
+
+}
+
+function prev(){
+
+if(current>0){
+  current--;
+  render();
+}
+
+}
+
+function update(){
+
+document.getElementById("qNum").textContent=current+1;
+
+document.getElementById("progress").textContent=
+answers.filter(a=>a!==null).length+" / "+questions.length;
+
+}
+
+function finish(){
+
+done=true;
+
+let correct=0;
+let html="";
+
+questions.forEach((q,i)=>{
+
+const user=answers[i];
+
+let estado="sin-responder";
+
+if(user===q.a){
+  correct++;
+  estado="correcta";
+}
+else if(user!==null){
+  estado="incorrecta";
+}
+
+html+=`
+<div class="review-item ${estado}">
+<h4>Pregunta ${i+1}</h4>
+<p><b>Correcta:</b> ${q.o[q.a]}</p>
+</div>
+`;
+
+});
+
+const porcentaje=((correct/questions.length)*100).toFixed(1);
+
+let mensaje="";
+
+if(porcentaje>=85){
+  mensaje="🔥 Excelente resultado";
+}
+else if(porcentaje>=70){
+  mensaje="✅ Buen trabajo";
+}
+else if(porcentaje>=50){
+  mensaje="⚠️ Necesitas reforzar algunos temas";
+}
+else{
+  mensaje="❌ Debes estudiar más este tema";
+}
+
+document.getElementById("score").innerHTML=`
+<strong>${correct} / ${questions.length}</strong><br><br>
+Porcentaje: <strong>${porcentaje}%</strong><br><br>
+${mensaje}
+`;
+
+document.getElementById("review").innerHTML=html;
+
+document.getElementById("resultado").style.display="block";
+
+render();
+
+window.scrollTo({
+  top:document.body.scrollHeight,
+  behavior:"smooth"
+});
+
+}
+
+function resetExam(){
+
+current=0;
+answers=new Array(questions.length).fill(null);
+done=false;
+time=1800;
+
+document.getElementById("resultado").style.display="none";
+
+render();
+
+}
+
+function toggleSources(){
+
+const content=document.getElementById("sourcesContent");
+const button=document.getElementById("toggleBtn");
+
+if(content.style.display==="none"){
+  content.style.display="block";
+  button.textContent="Ocultar";
+}
+else{
+  content.style.display="none";
+  button.textContent="Mostrar";
+}
+
+}
+
+let time=1800;
+
+function updateTimer(){
+
+const minutes=Math.floor(time/60);
+const seconds=time%60;
+
+document.getElementById("timer").textContent=
+`${String(minutes).padStart(2,"0")}:${String(seconds).padStart(2,"0")}`;
+
+if(time>0 && !done){
+  time--;
+}
+else if(time===0 && !done){
+  finish();
+}
+
+}
+
+setInterval(updateTimer,1000);
+
+render();
+
+</script>
+
+<script type="module" src="../party/party-timer.js"></script>
+
+</body>
+</html>
