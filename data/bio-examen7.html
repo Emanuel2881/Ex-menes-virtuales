@@ -1,1 +1,593 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Biología - Examen 7</title>
 
+<style>
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+}
+
+body{
+  font-family: Arial, Helvetica, sans-serif;
+  background: linear-gradient(135deg,#f0fdf4,#ecfdf5,#dcfce7);
+  color:#14532d;
+  min-height:100vh;
+  padding:30px 15px;
+}
+
+.container{
+  max-width:950px;
+  margin:auto;
+  background:rgba(255,255,255,0.96);
+  padding:25px;
+  border-radius:24px;
+  box-shadow:0 12px 35px rgba(0,0,0,0.08);
+}
+
+.header{
+  text-align:center;
+  margin-bottom:20px;
+}
+
+.header h1{
+  font-size:2.3rem;
+  color:#166534;
+  margin-bottom:10px;
+}
+
+.header p{
+  color:#3f6212;
+  line-height:1.6;
+}
+
+.top-link{
+  display:inline-block;
+  margin-top:12px;
+  color:#166534;
+  text-decoration:none;
+  font-weight:bold;
+}
+
+.top-link:hover{
+  text-decoration:underline;
+}
+
+.stats-bar{
+  display:flex;
+  gap:12px;
+  justify-content:center;
+  flex-wrap:wrap;
+  margin-bottom:20px;
+}
+
+.stat-box{
+  background:#ffffff;
+  border:1px solid #bbf7d0;
+  border-radius:14px;
+  padding:12px 18px;
+  min-width:150px;
+  text-align:center;
+}
+
+.question{
+  display:none;
+  background:#f7fff9;
+  border:1px solid #bbf7d0;
+  border-radius:20px;
+  padding:20px;
+}
+
+.question.active{
+  display:block;
+}
+
+.question h3{
+  line-height:1.6;
+  margin-bottom:15px;
+}
+
+.option{
+  background:#ecfdf5;
+  padding:12px;
+  margin:10px 0;
+  border-radius:12px;
+  cursor:pointer;
+  transition:0.2s ease;
+  border:1px solid transparent;
+}
+
+.option:hover{
+  border-color:#86efac;
+}
+
+.option.selected{
+  background:#16a34a;
+  color:white;
+}
+
+.option.correct-answer{
+  background:#bbf7d0;
+  color:#14532d;
+}
+
+.option.wrong-answer{
+  background:#fecaca;
+  color:#7f1d1d;
+}
+
+.navigation{
+  text-align:center;
+  margin-top:18px;
+}
+
+button{
+  border:none;
+  padding:11px 18px;
+  border-radius:12px;
+  margin:5px;
+  cursor:pointer;
+  font-weight:bold;
+  transition:0.2s ease;
+}
+
+button:hover{
+  transform:translateY(-2px);
+}
+
+.actions{
+  text-align:center;
+  margin-top:22px;
+}
+
+.btn-primary{
+  background:#16a34a;
+  color:white;
+}
+
+.btn-primary:hover{
+  background:#15803d;
+}
+
+.btn-secondary{
+  background:#dcfce7;
+  color:#166534;
+}
+
+.result{
+  display:none;
+  margin-top:25px;
+  padding:20px;
+  background:#f0fdf4;
+  border-radius:18px;
+  border:1px solid #bbf7d0;
+}
+
+.result h2{
+  color:#166534;
+  margin-bottom:10px;
+}
+
+.review-item{
+  background:white;
+  padding:12px;
+  margin:12px 0;
+  border-left:5px solid gray;
+  border-radius:10px;
+}
+
+.correcta{
+  border-left-color:#16a34a;
+}
+
+.incorrecta{
+  border-left-color:#dc2626;
+}
+
+.sin-responder{
+  border-left-color:#f59e0b;
+}
+
+.timer{
+  font-size:1.1rem;
+  font-weight:bold;
+  color:#166534;
+}
+
+.sources-box{
+  position:fixed;
+  bottom:18px;
+  left:18px;
+  width:230px;
+  background:rgba(255,255,255,0.75);
+  backdrop-filter:blur(10px);
+  border:1px solid rgba(255,255,255,0.5);
+  border-radius:18px;
+  padding:14px;
+  font-size:0.83rem;
+  line-height:1.5;
+  color:#14532d;
+  box-shadow:0 8px 22px rgba(0,0,0,0.08);
+  z-index:999;
+}
+
+.sources-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:10px;
+}
+
+.sources-header h4{
+  color:#166534;
+}
+
+.sources-header button{
+  border:none;
+  background:#16a34a;
+  color:white;
+  padding:5px 10px;
+  border-radius:8px;
+  cursor:pointer;
+  font-size:0.75rem;
+}
+
+@media(max-width:700px){
+
+  .sources-box{
+    position:static;
+    width:100%;
+    margin-top:20px;
+  }
+
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+  <div class="header">
+    <h1>🧠 Biología - Examen 7</h1>
+    <p>
+      Genética, Mendel, herencia y cuadros de Punnett.
+    </p>
+
+    <a class="top-link" href="../biologia.html">← Volver a Biología</a>
+  </div>
+
+  <div class="stats-bar">
+
+    <div class="stat-box">
+      <span>Pregunta</span><br>
+      <b id="qNum">1</b> / 30
+    </div>
+
+    <div class="stat-box">
+      <span>Progreso</span><br>
+      <b id="progress">0 / 30</b>
+    </div>
+
+    <div class="stat-box">
+      <span>Tiempo</span><br>
+      <b class="timer" id="timer">30:00</b>
+    </div>
+
+  </div>
+
+  <div id="quiz"></div>
+
+  <div class="actions">
+    <button class="btn-primary" onclick="finish()">Calificar examen</button>
+    <button class="btn-secondary" onclick="resetExam()">Reiniciar</button>
+  </div>
+
+  <div class="result" id="resultado">
+    <h2>Resultado</h2>
+    <p id="score"></p>
+    <div id="review"></div>
+  </div>
+
+</div>
+
+<div class="sources-box">
+
+  <div class="sources-header">
+    <h4>Fuentes</h4>
+    <button onclick="toggleSources()" id="toggleBtn">Ocultar</button>
+  </div>
+
+  <div id="sourcesContent">
+    <div><strong>B5</strong> → Bio-Química Medicina</div>
+    <div><strong>B7</strong> → Preguntas química-biología</div>
+    <div><strong>T1</strong> → Temario específico USAC</div>
+  </div>
+
+</div>
+
+<script>
+
+const questions = [
+
+{q:"¿Quién es considerado el padre de la genética?",o:["Darwin","Mendel","Pasteur","Watson"],a:1},
+
+{q:"¿Qué estudia la genética?",o:["Células","Energía","Herencia","Respiración"],a:2},
+
+{q:"¿Qué es un alelo?",o:["Tipo de célula","Forma alternativa de un gen","Proteína","Organelo"],a:1},
+
+{q:"¿Qué significa homocigoto?",o:["Dos alelos diferentes","Sin genes","Dos alelos iguales","Sin cromosomas"],a:2},
+
+{q:"¿Qué significa heterocigoto?",o:["Dos alelos iguales","Dos alelos distintos","Sin ADN","Sin núcleo"],a:1},
+
+{q:"¿Qué representa el fenotipo?",o:["Información genética","Características observables","ADN nuclear","Número cromosómico"],a:1},
+
+{q:"¿Qué representa el genotipo?",o:["Características visibles","Conjunto de genes","Color de ojos","Proteínas"],a:1},
+
+{q:"Si A es dominante y a recesivo, ¿cuál es heterocigoto?",o:["AA","aa","Aa","BB"],a:2},
+
+{q:"¿Qué ocurre en la ley de segregación?",o:["Genes desaparecen","Alelos se separan","ADN se destruye","Mutaciones aumentan"],a:1},
+
+{q:"¿Qué establece la ley de uniformidad?",o:["Todos diferentes","Primera generación igual","Genes mutan","Sin dominancia"],a:1},
+
+{q:"¿Qué proporción fenotípica resulta de Aa × Aa?",o:["1:1","3:1","2:2","4:0"],a:1},
+
+{q:"¿Cuál es la probabilidad de aa en Aa × Aa?",o:["25%","50%","75%","100%"],a:0},
+
+{q:"¿Qué alelo se expresa en heterocigoto?",o:["Recesivo","Dominante","Mutado","Nulo"],a:1},
+
+{q:"¿Qué significa autosómico?",o:["Ligado al cromosoma X","Ligado al cromosoma Y","Ubicado en cromosomas no sexuales","Solo en hombres"],a:2},
+
+{q:"¿Qué herencia afecta más frecuentemente hombres?",o:["Autosómica","Ligada al X","Dominante pura","Mitocondrial"],a:1},
+
+{q:"¿Qué representa un cuadro de Punnett?",o:["Mutaciones","Probabilidades genéticas","División celular","Respiración"],a:1},
+
+{q:"¿Cuál es la probabilidad de heterocigotos en Aa × Aa?",o:["0%","25%","50%","75%"],a:2},
+
+{q:"¿Qué tipo de herencia expresa ambos alelos?",o:["Dominante","Recesiva","Codominancia","Ligada al sexo"],a:2},
+
+{q:"¿Qué genotipo expresa rasgo recesivo?",o:["AA","Aa","aa","BB"],a:2},
+
+{q:"¿Qué proporción genotípica resulta de Aa × Aa?",o:["1:2:1","3:1","1:1","2:1"],a:0},
+
+{q:"¿Qué es una mutación?",o:["División celular","Cambio genético","Transporte activo","Respiración"],a:1},
+
+{q:"¿Qué cromosomas determinan sexo biológico?",o:["Autosómicos","Sexuales","Mitóticos","Homólogos"],a:1},
+
+{q:"¿Cuál es el cromosoma sexual femenino?",o:["XY","XX","YY","XO"],a:1},
+
+{q:"¿Cuál es el cromosoma sexual masculino?",o:["XX","YY","XY","XO"],a:2},
+
+{q:"¿Qué ocurre en distribución independiente?",o:["Genes viajan juntos","Alelos se combinan al azar","ADN desaparece","Fenotipo cambia siempre"],a:1},
+
+{q:"¿Qué probabilidad tiene un cruce AA × aa de producir heterocigotos?",o:["0%","25%","50%","100%"],a:3},
+
+{q:"¿Qué característica posee un rasgo dominante?",o:["Nunca se expresa","Solo aparece en mujeres","Se expresa con un solo alelo","Desaparece en heterocigotos"],a:2},
+
+{q:"¿Qué ocurre en herencia recesiva?",o:["Necesita dos alelos recesivos","Siempre domina","Solo afecta hombres","No existe mutación"],a:0},
+
+{q:"¿Qué símbolo suele representar alelo dominante?",o:["Minúscula","Número","Mayúscula","Guion"],a:2},
+
+{q:"¿Qué porcentaje fenotípico dominante aparece en Aa × Aa?",o:["25%","50%","75%","100%"],a:2}
+
+];
+
+let current=0;
+let answers=new Array(questions.length).fill(null);
+let done=false;
+
+function render(){
+
+const quiz=document.getElementById("quiz");
+quiz.innerHTML="";
+
+questions.forEach((q,i)=>{
+
+const div=document.createElement("div");
+div.className="question"+(i===current?" active":"");
+
+let opts="";
+
+q.o.forEach((op,j)=>{
+
+let cls="";
+
+if(answers[i]===j) cls+=" selected";
+
+if(done){
+  if(j===q.a) cls+=" correct-answer";
+  if(answers[i]===j && j!==q.a) cls+=" wrong-answer";
+}
+
+opts+=`<div class="option${cls}" onclick="select(${i},${j})">${op}</div>`;
+
+});
+
+div.innerHTML=`
+<h3>${i+1}. ${q.q}</h3>
+
+${opts}
+
+<div class="navigation">
+
+<button onclick="prev()" ${i===0?"disabled":""}>Anterior</button>
+
+${i===questions.length-1
+? `<button onclick="finish()">Finalizar</button>`
+: `<button onclick="next()">Siguiente</button>`}
+
+</div>
+`;
+
+quiz.appendChild(div);
+
+});
+
+update();
+
+}
+
+function select(i,j){
+
+if(done)return;
+
+answers[i]=j;
+render();
+
+}
+
+function next(){
+
+if(current<questions.length-1){
+  current++;
+  render();
+}
+
+}
+
+function prev(){
+
+if(current>0){
+  current--;
+  render();
+}
+
+}
+
+function update(){
+
+document.getElementById("qNum").textContent=current+1;
+
+document.getElementById("progress").textContent=
+answers.filter(a=>a!==null).length+" / "+questions.length;
+
+}
+
+function finish(){
+
+done=true;
+
+let correct=0;
+let html="";
+
+questions.forEach((q,i)=>{
+
+const user=answers[i];
+
+let estado="sin-responder";
+
+if(user===q.a){
+  correct++;
+  estado="correcta";
+}
+else if(user!==null){
+  estado="incorrecta";
+}
+
+html+=`
+<div class="review-item ${estado}">
+<h4>Pregunta ${i+1}</h4>
+<p><b>Correcta:</b> ${q.o[q.a]}</p>
+</div>
+`;
+
+});
+
+const porcentaje=((correct/questions.length)*100).toFixed(1);
+
+let mensaje="";
+
+if(porcentaje>=85){
+  mensaje="🔥 Excelente resultado";
+}
+else if(porcentaje>=70){
+  mensaje="✅ Buen trabajo";
+}
+else if(porcentaje>=50){
+  mensaje="⚠️ Necesitas reforzar algunos temas";
+}
+else{
+  mensaje="❌ Debes estudiar más este tema";
+}
+
+document.getElementById("score").innerHTML=`
+<strong>${correct} / ${questions.length}</strong><br><br>
+Porcentaje: <strong>${porcentaje}%</strong><br><br>
+${mensaje}
+`;
+
+document.getElementById("review").innerHTML=html;
+
+document.getElementById("resultado").style.display="block";
+
+render();
+
+window.scrollTo({
+  top:document.body.scrollHeight,
+  behavior:"smooth"
+});
+
+}
+
+function resetExam(){
+
+current=0;
+answers=new Array(questions.length).fill(null);
+done=false;
+time=1800;
+
+document.getElementById("resultado").style.display="none";
+
+render();
+
+}
+
+function toggleSources(){
+
+const content=document.getElementById("sourcesContent");
+const button=document.getElementById("toggleBtn");
+
+if(content.style.display==="none"){
+  content.style.display="block";
+  button.textContent="Ocultar";
+}
+else{
+  content.style.display="none";
+  button.textContent="Mostrar";
+}
+
+}
+
+let time=1800;
+
+function updateTimer(){
+
+const minutes=Math.floor(time/60);
+const seconds=time%60;
+
+document.getElementById("timer").textContent=
+`${String(minutes).padStart(2,"0")}:${String(seconds).padStart(2,"0")}`;
+
+if(time>0 && !done){
+  time--;
+}
+else if(time===0 && !done){
+  finish();
+}
+
+}
+
+setInterval(updateTimer,1000);
+
+render();
+
+</script>
+
+<script type="module" src="../party/party-timer.js"></script>
+
+</body>
+</html>
