@@ -15,127 +15,162 @@
 
 body{
   font-family: Arial, Helvetica, sans-serif;
-  background: linear-gradient(135deg, #ecfeff, #f0f9ff, #cffafe);
+  background: linear-gradient(135deg,#ecfeff,#f0f9ff,#cffafe);
   color:#0f172a;
   min-height:100vh;
   padding:30px 15px;
 }
 
 .container{
-  max-width:1000px;
-  margin:0 auto;
-  background:#ffffff;
+  max-width:950px;
+  margin:auto;
+  background:rgba(255,255,255,0.95);
+  padding:25px;
   border-radius:24px;
   box-shadow:0 12px 35px rgba(0,0,0,0.08);
-  overflow:hidden;
 }
 
 .header{
-  background: linear-gradient(135deg, #0891b2, #06b6d4);
-  color:white;
-  padding:30px 25px;
   text-align:center;
+  margin-bottom:20px;
 }
 
 .header h1{
-  font-size: clamp(1.9rem, 4vw, 2.8rem);
+  font-size: clamp(1.9rem, 4vw, 2.7rem);
   margin-bottom:10px;
+  color:#0891b2;
 }
 
 .header p{
-  opacity:0.95;
+  color:#0f766e;
+  opacity:0.9;
 }
 
 .top-link{
   display:inline-block;
   margin-top:12px;
-  color:white;
+  color:#0891b2;
   text-decoration:none;
   font-weight:bold;
 }
 
-.content{
-  padding:25px;
-}
-
 .stats-bar{
   display:flex;
-  justify-content:center;
-  gap:14px;
   flex-wrap:wrap;
-  margin-bottom:25px;
+  gap:12px;
+  justify-content:center;
+  margin-bottom:20px;
 }
 
 .stat-box{
-  background:#f8feff;
+  background:#fff;
   border:1px solid #bae6fd;
-  border-radius:16px;
+  border-radius:14px;
   padding:12px 18px;
-  min-width:180px;
+  min-width:150px;
   text-align:center;
 }
 
 .stat-label{
   display:block;
-  color:#0f766e;
-  margin-bottom:5px;
+  font-size:0.9rem;
+  color:#0891b2;
+  margin-bottom:4px;
+  font-weight:bold;
 }
 
 .stat-value{
-  font-size:1.1rem;
+  display:block;
+  font-size:1.15rem;
+  color:#0f172a;
   font-weight:bold;
 }
 
 .question{
+  display:none;
   background:#f8feff;
   border:1px solid #bae6fd;
-  border-radius:18px;
-  padding:18px;
+  border-radius:20px;
+  padding:20px;
   margin-bottom:18px;
 }
 
+.question.active{
+  display:block;
+}
+
 .question h3{
-  font-size:1.05rem;
-  line-height:1.5;
-  margin-bottom:14px;
+  font-size:1.08rem;
+  line-height:1.6;
   color:#0f766e;
+  margin-bottom:14px;
 }
 
 .option{
   display:block;
+  background:#ecfeff;
+  padding:12px 14px;
   margin:10px 0;
-  padding:12px;
   border-radius:12px;
   cursor:pointer;
-  transition:0.2s ease;
-  border:1px solid transparent;
-  background:white;
+  transition:0.2s;
 }
 
 .option:hover{
-  background:#ecfeff;
-  border-color:#67e8f9;
+  background:#cffafe;
 }
 
-.option input{
-  margin-right:10px;
-  accent-color:#06b6d4;
+.option.selected{
+  background:#06b6d4;
+  color:white;
 }
 
-.buttons{
+.option.correct-answer{
+  background:#dcfce7 !important;
+  color:#166534 !important;
+}
+
+.option.wrong-answer{
+  background:#fee2e2 !important;
+  color:#991b1b !important;
+}
+
+.navigation{
   display:flex;
-  gap:12px;
   justify-content:center;
-  margin-top:25px;
+  gap:12px;
+  margin-top:18px;
 }
 
 button{
   border:none;
   border-radius:14px;
-  padding:13px 22px;
+  padding:12px 20px;
   font-size:1rem;
   font-weight:bold;
   cursor:pointer;
+}
+
+.prev{
+  background:#a5f3fc;
+  color:#0f766e;
+}
+
+.next{
+  background:#06b6d4;
+  color:white;
+}
+
+.finish{
+  background:#0891b2;
+  color:white;
+}
+
+.actions{
+  display:flex;
+  justify-content:center;
+  gap:12px;
+  margin-top:25px;
 }
 
 .btn-primary{
@@ -161,13 +196,25 @@ button{
   background:white;
   border-radius:14px;
   padding:14px;
-  margin-bottom:14px;
+  margin-bottom:12px;
+}
+
+.review-item.correcta{
+  border-left:6px solid #22c55e;
+}
+
+.review-item.incorrecta{
+  border-left:6px solid #ef4444;
+}
+
+.review-item.sin-responder{
+  border-left:6px solid #f59e0b;
 }
 
 .explicacion{
-  margin-top:10px;
-  background:#f8fafc;
+  margin-top:8px;
   padding:10px;
+  background:#f8fafc;
   border-radius:10px;
 }
 
@@ -187,36 +234,34 @@ button{
 </a>
 </div>
 
-<div class="content">
-
 <div class="stats-bar">
 
 <div class="stat-box">
-<span class="stat-label">Preguntas</span>
-<span class="stat-value">20</span>
+<span class="stat-label">Pregunta actual</span>
+<span class="stat-value">
+<span id="qNum">1</span> / 20
+</span>
 </div>
 
 <div class="stat-box">
 <span class="stat-label">Progreso</span>
-<span class="stat-value" id="progress">0 / 20</span>
+<span class="stat-value" id="progress">
+0 / 20
+</span>
 </div>
 
 </div>
-
-<form id="quizForm">
 
 <div id="quiz"></div>
 
-<div class="buttons">
+<div class="actions">
 
-<button type="button"
-class="btn-primary"
-onclick="calificarExamen()">
+<button class="btn-primary"
+onclick="finishQuiz()">
 Calificar examen
 </button>
 
-<button type="button"
-class="btn-secondary"
+<button class="btn-secondary"
 onclick="reiniciarExamen()">
 Reiniciar
 </button>
@@ -230,10 +275,6 @@ Reiniciar
 <p id="puntajeTexto"></p>
 
 <div id="revision"></div>
-
-</div>
-
-</form>
 
 </div>
 
@@ -385,17 +426,22 @@ exp:"Libera energía."
 
 ];
 
+let current = 0;
 let answers = new Array(questions.length).fill(null);
+let examenFinalizado = false;
 
 const quiz = document.getElementById("quiz");
 
 function actualizarProgreso(){
 
 const respondidas =
-answers.filter(a=>a!==null).length;
+answers.filter(a => a !== null).length;
 
 document.getElementById("progress").textContent =
 `${respondidas} / ${questions.length}`;
+
+document.getElementById("qNum").textContent =
+current + 1;
 
 }
 
@@ -405,37 +451,75 @@ quiz.innerHTML = "";
 
 questions.forEach((q,i)=>{
 
-let opciones = "";
+let div = document.createElement("div");
+
+div.className =
+"question" + (i===current ? " active" : "");
+
+let opts = "";
 
 q.o.forEach((op,j)=>{
 
-opciones += `
-<label class="option">
+let extraClass = "";
 
-<input type="radio"
-name="q${i}"
-value="${j}"
-${answers[i]===j ? "checked" : ""}
-onchange="selectOption(${i},${j})">
+if(answers[i] === j)
+extraClass += " selected";
+
+if(examenFinalizado){
+
+if(j === q.a)
+extraClass += " correct-answer";
+
+if(answers[i] === j && j !== q.a){
+extraClass += " wrong-answer";
+}
+
+}
+
+opts += `
+<div class="option${extraClass}"
+onclick="selectOption(${i},${j})">
 
 ${String.fromCharCode(65+j)}. ${op}
 
-</label>
+</div>
 `;
 
 });
 
-quiz.innerHTML += `
-
-<div class="question">
+div.innerHTML = `
 
 <h3>${i+1}. ${q.q}</h3>
 
-${opciones}
+${opts}
+
+<div class="navigation">
+
+<button class="prev"
+onclick="prevQuestion()"
+${i===0 ? "disabled" : ""}>
+Anterior
+</button>
+
+${i===questions.length-1
+
+? `<button class="finish"
+onclick="finishQuiz()">
+Finalizar
+</button>`
+
+: `<button class="next"
+onclick="nextQuestion()">
+Siguiente
+</button>`
+
+}
 
 </div>
 
 `;
+
+quiz.appendChild(div);
 
 });
 
@@ -445,13 +529,45 @@ actualizarProgreso();
 
 function selectOption(i,j){
 
+if(examenFinalizado) return;
+
 answers[i] = j;
 
-actualizarProgreso();
+render();
 
 }
 
-function calificarExamen(){
+function nextQuestion(){
+
+if(current < questions.length-1){
+
+current++;
+
+render();
+
+}
+
+}
+
+function prevQuestion(){
+
+if(current > 0){
+
+current--;
+
+render();
+
+}
+
+}
+
+function finishQuiz(){
+
+if(examenFinalizado) return;
+
+examenFinalizado = true;
+
+let total = questions.length;
 
 let correctas = 0;
 
@@ -459,12 +575,14 @@ let revisionHTML = "";
 
 questions.forEach((q,i)=>{
 
-if(answers[i] === q.a){
+const respuestaUsuario = answers[i];
+
+if(respuestaUsuario === q.a){
 
 correctas++;
 
 revisionHTML += `
-<div class="review-item">
+<div class="review-item correcta">
 
 <h4>
 Pregunta ${i+1}: ✅ Correcta
@@ -477,22 +595,39 @@ ${q.exp}
 </div>
 `;
 
+}else if(respuestaUsuario === null){
+
+revisionHTML += `
+<div class="review-item sin-responder">
+
+<h4>
+Pregunta ${i+1}: ⚠️ Sin responder
+</h4>
+
+<div class="explicacion">
+Respuesta correcta: ${q.o[q.a]}
+</div>
+
+</div>
+`;
+
 }else{
 
 revisionHTML += `
-<div class="review-item">
+<div class="review-item incorrecta">
 
 <h4>
 Pregunta ${i+1}: ❌ Incorrecta
 </h4>
 
-<p>
-<strong>Respuesta correcta:</strong>
-${q.o[q.a]}
-</p>
-
 <div class="explicacion">
+
+Correcta: ${q.o[q.a]}
+
+<br><br>
+
 ${q.exp}
+
 </div>
 
 </div>
@@ -503,8 +638,7 @@ ${q.exp}
 });
 
 const porcentaje =
-((correctas/questions.length)*100)
-.toFixed(1);
+((correctas/total)*100).toFixed(1);
 
 document.getElementById("puntajeTexto")
 .innerHTML = `
@@ -514,11 +648,12 @@ Obtuviste
 
 de
 
-<strong>${questions.length}</strong>
+<strong>${total}</strong>
 
 correctas.<br>
 
 Nota final:
+
 <strong>${porcentaje}%</strong>
 
 `;
@@ -529,10 +664,7 @@ document.getElementById("revision")
 document.getElementById("resultado")
 .style.display = "block";
 
-window.scrollTo({
-top:document.body.scrollHeight,
-behavior:"smooth"
-});
+render();
 
 }
 
