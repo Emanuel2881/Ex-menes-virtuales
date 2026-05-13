@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Química - Examen 2</title>
+<title>Química - Examen 3</title>
 
 <style>
 
@@ -226,11 +226,11 @@ button{
 <div class="container">
 
 <div class="header">
-<h1>🧪 Química - Examen 2</h1>
-<p>Propiedades, enlaces y reacciones químicas</p>
+<h1>🧪 Química - Examen 3</h1>
+<p>Configuración electrónica, enlaces y biomoléculas</p>
 
 <a class="top-link" href="../quimica.html">
-← Volver a química
+← Volver a Química
 </a>
 </div>
 
@@ -239,14 +239,14 @@ button{
 <div class="stat-box">
 <span class="stat-label">Pregunta actual</span>
 <span class="stat-value">
-<span id="qNum">1</span> / 20
+<span id="qNum">1</span> / 22
 </span>
 </div>
 
 <div class="stat-box">
 <span class="stat-label">Progreso</span>
 <span class="stat-value" id="progress">
-0 / 20
+0 / 22
 </span>
 </div>
 
@@ -285,143 +285,247 @@ Reiniciar
 const questions = [
 
 {
-q:"¿Cuál es una propiedad extensiva?",
-o:["Densidad","Masa y volumen","Color","Punto de ebullición"],
-a:1,
-exp:"La masa y volumen dependen de la cantidad de materia."
+q:"¿Qué nombre reciben los elementos que se ubican en la zona sombreada de la tabla periódica?",
+o:["Metales","Alcalinotérreos","Metaloides","De transición"],
+a:2,
+exp:"Los elementos en la línea escalonada son metaloides."
 },
 
 {
-q:"¿Cómo se llama el paso de sólido a líquido?",
-o:["Evaporación","Condensación","Sublimación","Fusión"],
+q:"¿Cuál es la configuración electrónica semidesarrollada del elemento K, si su número atómico es 19?",
+o:[
+"1s² 2s² 2p⁶ 3s² 3p⁶ 4s¹",
+"1s² 2s² 2p⁶ 3s² 3p⁶ 4s²",
+"1s² 2s² 2p⁶ 3s² 3p⁵ 4s²",
+"1s² 2s² 2p⁶ 3s² 3p⁶ 3d¹"
+],
+a:0,
+exp:"El potasio tiene 19 electrones."
+},
+
+{
+q:"Del electrón se afirma lo siguiente:",
+o:[
+"Es neutro",
+"Tiene carga negativa y masa diminuta",
+"Es la partícula más pequeña",
+"Tiene carga positiva"
+],
+a:1,
+exp:"El electrón tiene carga negativa."
+},
+
+{
+q:"¿Cuántas moléculas de H₂O hay en 0.5 moles de H₂O?",
+o:[
+"0.5",
+"1.21 × 10²⁴",
+"3.011 × 10²³",
+"9.05"
+],
+a:2,
+exp:"0.5 × 6.022×10²³."
+},
+
+{
+q:"Orden creciente de electronegatividad:",
+o:[
+"Na < Mg < Si < P < S < Cl",
+"Na < Mg < P < Si < Cl < S",
+"Na < Si < Mg < Cl < P < S",
+"Cl < S < P < Si < Mg < Na"
+],
+a:0,
+exp:"La electronegatividad aumenta hacia la derecha."
+},
+
+{
+q:"¿Cuántos gramos de CO₂ hay en 0.05 moles?",
+o:[
+"2.20 g",
+"1.4 g",
+"1.40 g",
+"0.0013 g"
+],
+a:2,
+exp:"0.05 × 44.01 ≈ 1.40 g."
+},
+
+{
+q:"¿Qué número de oxidación utiliza el S en Cu₂SO₃?",
+o:["-4","+4","+6","-3"],
+a:1,
+exp:"En sulfito el azufre usa +4."
+},
+
+{
+q:"¿Cuál es el elemento más electronegativo?",
+o:["Oxígeno","Cloro","Hidrógeno","Flúor"],
 a:3,
-exp:"Ese cambio de estado se llama fusión."
+exp:"El flúor es el más electronegativo."
 },
 
 {
-q:"El agua es un:",
-o:["Compuesto","Elemento","Átomo","Ion"],
-a:0,
-exp:"Está formada por hidrógeno y oxígeno."
-},
-
-{
-q:"Una sustancia formada por un solo tipo de átomo es:",
-o:["Elemento","Compuesto","Mezcla","Solución"],
-a:0,
-exp:"Eso define a un elemento."
-},
-
-{
-q:"La unidad más pequeña de un elemento es:",
-o:["Átomo","Mol","Protón","Neutrón"],
-a:0,
-exp:"El átomo conserva propiedades del elemento."
-},
-
-{
-q:"Entre dos no metales se forma enlace:",
-o:["Iónico","Covalente","Metálico","Nuclear"],
+q:"¿Qué tipo de enlace se forma en CH₄?",
+o:["Polar","Apolar","Iónico","Metálico"],
 a:1,
-exp:"Comparten electrones."
+exp:"CH₄ es covalente apolar."
 },
 
 {
-q:"Metal + no metal produce enlace:",
-o:["Metálico","Covalente","Polar","Iónico"],
+q:"El término orgánico describe moléculas formadas por:",
+o:[
+"Carbono e hidrógeno",
+"Hierro e hidrógeno",
+"Hierro y nitrógeno",
+"Sodio y cloro"
+],
+a:0,
+exp:"Los compuestos orgánicos contienen carbono."
+},
+
+{
+q:"Nombre clásico de Cl₂O₇:",
+o:[
+"Heptaóxido de dicloro",
+"Anhídrido de cloro VII",
+"Óxido clórico",
+"Anhídrido perclórico"
+],
 a:3,
-exp:"Hay transferencia de electrones."
+exp:"Es el anhídrido perclórico."
 },
 
 {
-q:"Los fertilizantes sirven para:",
-o:["Dar color","Secar plantas","Aportar nutrientes","Eliminar minerales"],
+q:"Nombre de H₂Te(ac):",
+o:[
+"Hidruro de telurio",
+"Teluro de hidrógeno",
+"Ácido telurhídrico",
+"Monotelurio de dihidrógeno"
+],
 a:2,
-exp:"Ayudan al crecimiento vegetal."
+exp:"En disolución acuosa es ácido telurhídrico."
 },
 
 {
-q:"Una propiedad percibida con sentidos es:",
-o:["Extensiva","Cuantitativa","Propiedad cualitativa","Numérica"],
-a:2,
-exp:"No requiere medición."
-},
-
-{
-q:"Los elementos se organizan en:",
-o:["Lista química","Sistema orbital","Tabla periódica","Configuración"],
-a:2,
-exp:"La tabla periódica los ordena."
-},
-
-{
-q:"Los halógenos tienen:",
-o:["1 electrón","2 electrones","7 electrones de valencia","8 protones"],
-a:2,
-exp:"Pertenecen al grupo 17."
-},
-
-{
-q:"Los bioelementos principales son:",
-o:["Na y Cl","Ca y Mg","C, H, O, N, P, S","K y Fe"],
-a:2,
-exp:"Son esenciales para vida."
-},
-
-{
-q:"¿Qué partículas participan en enlaces?",
-o:["Protones","Electrones","Neutrones","Núcleos"],
+q:"1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d⁴ corresponde a:",
+o:[
+"Manganeso",
+"Cromo",
+"Hierro",
+"Vanadio"
+],
 a:1,
-exp:"Los electrones participan directamente."
+exp:"Corresponde al cromo."
 },
 
 {
-q:"La valencia indica:",
-o:["Peso","Volumen","Capacidad de combinación","Número de neutrones"],
-a:2,
-exp:"Indica cómo se combina un átomo."
-},
-
-{
-q:"Entre metales existe enlace:",
-o:["Iónico","Covalente","Metálico","Polar"],
-a:2,
-exp:"Comparten electrones móviles."
-},
-
-{
-q:"Los electrones externos se llaman:",
-o:["Internos","De valencia","Neutrones","Orbitales"],
-a:1,
-exp:"Participan en reacciones."
-},
-
-{
-q:"Los conductores eléctricos:",
-o:["Tienen electrones libres","No tienen protones","Son líquidos","Son neutros"],
+q:"La fórmula general de carbohidratos es:",
+o:[
+"(CH₂O)n",
+"(CH₂O₂)n",
+"(2CH₂O)n",
+"(CH₃O)n"
+],
 a:0,
-exp:"Los electrones móviles conducen electricidad."
+exp:"Es la fórmula general clásica."
 },
 
 {
-q:"Con col morada, verde indica solución:",
-o:["Ácida","Neutra","Transparente","Básica"],
+q:"Misma fórmula pero diferente estructura:",
+o:[
+"Sacarosa",
+"Enlaces glucosídicos",
+"Isómeros",
+"Fructuosa"
+],
+a:2,
+exp:"Eso define a los isómeros."
+},
+
+{
+q:"Característica del enlace beta:",
+o:[
+"Recto y fácil de romper",
+"Cruzado y difícil de romper",
+"Recto y difícil de romper",
+"Cruzado y fácil de romper"
+],
+a:1,
+exp:"Los beta son más resistentes."
+},
+
+{
+q:"Enlaces entre monosacáridos:",
+o:[
+"Glucosídicos",
+"Peptídicos",
+"Gamma",
+"Éter"
+],
+a:0,
+exp:"Los monosacáridos forman enlaces glucosídicos."
+},
+
+{
+q:"Polisacárido de reserva animal:",
+o:[
+"Almidón",
+"Celulosa",
+"Quitina",
+"Glucógeno"
+],
 a:3,
-exp:"El verde indica base."
+exp:"El glucógeno almacena energía."
 },
 
 {
-q:"Una ecuación química contiene:",
-o:["Solo productos","Solo reactivos","Reactivos y productos","Solo números"],
+q:"En estructura secundaria de proteína hay:",
+o:[
+"Puentes disulfuro",
+"Puentes eléctricos",
+"Puentes de hidrógeno",
+"Puentes metálicos"
+],
 a:2,
-exp:"Toda reacción tiene ambos."
+exp:"Predominan los puentes de hidrógeno."
 },
 
 {
-q:"Una reacción que libera calor es:",
-o:["Exotérmica","Endotérmica","Nuclear","Reversible"],
+q:"Proceso de volver básica una proteína:",
+o:[
+"Estructura primaria",
+"Estructura secundaria",
+"Desnaturalización",
+"Glucosilación"
+],
+a:2,
+exp:"Pierde su estructura original."
+},
+
+{
+q:"Proteínas que aceleran reacciones:",
+o:[
+"Reguladoras",
+"Motoras",
+"Enzimas",
+"Transportadoras"
+],
+a:2,
+exp:"Las enzimas son catalizadores."
+},
+
+{
+q:"Organización de materia biológica:",
+o:[
+"Átomos, moléculas, células, tejidos, órganos, sistemas",
+"Moléculas, átomos, órganos, tejidos, células, sistemas",
+"Sistemas, órganos, tejidos, células, moléculas, átomos",
+"Átomos, tejidos, moléculas, órganos, células, sistemas"
+],
 a:0,
-exp:"Libera energía."
+exp:"Ese es el orden correcto."
 }
 
 ];
