@@ -4,7 +4,9 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Habilidad Verbal</title>
+
   <style>
+
     *{
       margin:0;
       padding:0;
@@ -141,6 +143,71 @@
       transform: scale(1.03);
     }
 
+    .sources-box{
+      margin-top:35px;
+      background: rgba(255,255,255,0.9);
+      border-radius:24px;
+      padding:25px;
+      box-shadow:0 10px 30px rgba(244,63,94,0.10);
+      border:1px solid rgba(255,255,255,0.7);
+    }
+
+    .sources-header{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:12px;
+      margin-bottom:18px;
+    }
+
+    .sources-header h4{
+      color:#be123c;
+      font-size:1.3rem;
+    }
+
+    .sources-header button{
+      border:none;
+      background:#f43f5e;
+      color:white;
+      padding:10px 16px;
+      border-radius:12px;
+      font-weight:bold;
+      cursor:pointer;
+      transition:0.2s ease;
+    }
+
+    .sources-header button:hover{
+      background:#e11d48;
+    }
+
+    #sourcesContent{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+      gap:14px;
+    }
+
+    .source-item{
+      background:#fff1f2;
+      border:1px solid #fecdd3;
+      padding:14px;
+      border-radius:16px;
+      color:#881337;
+      line-height:1.5;
+      transition:0.2s ease;
+    }
+
+    .source-item:hover{
+      background:#ffe4e6;
+    }
+
+    .source-item strong{
+      color:#e11d48;
+    }
+
+    .hidden-sources{
+      display:none !important;
+    }
+
     footer{
       text-align:center;
       padding:20px;
@@ -149,16 +216,26 @@
     }
 
     @media (max-width: 600px){
+
       .card p{
         min-height:auto;
       }
+
+      .sources-header{
+        flex-direction:column;
+        align-items:flex-start;
+      }
+
     }
+
   </style>
 </head>
+
 <body>
 
   <header>
     <h1>Habilidad Verbal</h1>
+
     <p>
       Aquí están organizados mis exámenes digitales de razonamiento verbal,
       enfocados en analogías, comprensión, antónimos y relación de palabras.
@@ -168,14 +245,18 @@
   <div class="container">
 
     <div class="top-box">
+
       <h2>Exámenes disponibles</h2>
+
       <p>
         En este apartado puedo practicar ejercicios de analogías, completar oraciones
         y relaciones de palabras para mejorar mi comprensión verbal.
       </p>
+
       <div class="actions">
         <a href="index.html" class="back-btn">← Volver al inicio</a>
       </div>
+
     </div>
 
     <div class="grid">
@@ -210,6 +291,117 @@
         <a href="data/verbal-examen3.html">Abrir examen</a>
       </div>
 
+      <div class="card">
+        <div class="icon">📚</div>
+        <h3>Examen 4</h3>
+        <p>
+          Examen de razonamiento verbal basado en analogías, categorías gramaticales
+          y relaciones lógicas entre conceptos.
+        </p>
+        <a href="data/verbal-examen4.html">Abrir examen</a>
+      </div>
+
+      <div class="card">
+        <div class="icon">🧩</div>
+        <h3>Examen 5</h3>
+        <p>
+          Incluye ejercicios de sinonimia, oposición, relación objeto-función
+          y asociaciones comunes de palabras.
+        </p>
+        <a href="data/verbal-examen5.html">Abrir examen</a>
+      </div>
+
+      <div class="card">
+        <div class="icon">🧠</div>
+        <h3>Examen 6</h3>
+        <p>
+          Examen enfocado en relaciones semánticas, asociaciones lógicas
+          y conexiones entre profesiones, objetos y acciones.
+        </p>
+        <a href="data/verbal-examen6.html">Abrir examen</a>
+      </div>
+
+      <div class="card">
+        <div class="icon">📖</div>
+        <h3>Examen 7</h3>
+        <p>
+          Evaluación verbal con analogías, antónimos y ejercicios de razonamiento
+          similares a pruebas de admisión.
+        </p>
+        <a href="data/verbal-examen7.html">Abrir examen</a>
+      </div>
+
+      <div class="card">
+        <div class="icon">📝</div>
+        <h3>Examen 8</h3>
+        <p>
+          Contiene preguntas sobre relaciones de palabras, funciones de objetos,
+          categorías y asociaciones verbales.
+        </p>
+        <a href="data/verbal-examen8.html">Abrir examen</a>
+      </div>
+
+      <div class="card">
+        <div class="icon">🎯</div>
+        <h3>Examen 9</h3>
+        <p>
+          Simulador verbal de práctica intensiva con ejercicios de lógica verbal,
+          comparación y comprensión de relaciones.
+        </p>
+        <a href="data/verbal-examen9.html">Abrir examen</a>
+      </div>
+
+      <div class="card">
+        <div class="icon">⏱️</div>
+        <h3>Examen 10</h3>
+        <p>
+          Simulacro general de 50 preguntas con límite de 20 minutos,
+          diseñado para repasar los exámenes anteriores.
+        </p>
+        <a href="data/verbal-examen10.html">Abrir examen</a>
+      </div>
+
+    </div>
+
+    <div class="sources-box" id="sourcesBox">
+
+      <div class="sources-header">
+        <h4>📚 Fuentes verbales utilizadas</h4>
+        <button onclick="toggleSources()" id="toggleBtn">Ocultar</button>
+      </div>
+
+      <div id="sourcesContent">
+
+        <div class="source-item">
+          <strong>V1</strong> → examen verbal resuelto.pdf
+        </div>
+
+        <div class="source-item">
+          <strong>V2</strong> → examen de habilidad verbal (1).pdf
+        </div>
+
+        <div class="source-item">
+          <strong>V3</strong> → nivel m vebal y numerico resuelto-1 (3).pdf
+        </div>
+
+        <div class="source-item">
+          <strong>V4</strong> → Cuadernillo 1 resuelto, Médicos 2021_compressed (1).pdf
+        </div>
+
+        <div class="source-item">
+          <strong>V5</strong> → Cuadernillo 3 resuelto, Médicos 2021_compressed (1) (2).pdf
+        </div>
+
+        <div class="source-item">
+          <strong>V6</strong> → RAZONAMIENTO Numerico y verbal DAT 5 lv1 (2).pdf
+        </div>
+
+        <div class="source-item">
+          <strong>V7</strong> → examen de 3r oportunidad razo. numerico y verbal resueltas (1) (3).pdf
+        </div>
+
+      </div>
+
     </div>
 
   </div>
@@ -217,6 +409,25 @@
   <footer>
     Habilidad Verbal • Exámenes digitales
   </footer>
+
+  <script>
+
+    function toggleSources(){
+
+      const content = document.getElementById("sourcesContent");
+      const btn = document.getElementById("toggleBtn");
+
+      content.classList.toggle("hidden-sources");
+
+      if(content.classList.contains("hidden-sources")){
+        btn.textContent = "Mostrar";
+      }else{
+        btn.textContent = "Ocultar";
+      }
+
+    }
+
+  </script>
 
 </body>
 </html>
