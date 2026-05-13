@@ -1,1 +1,633 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Examen Verbal 8</title>
 
+<style>
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+}
+
+body{
+  font-family: Arial, Helvetica, sans-serif;
+  background: linear-gradient(135deg,#fff1f2,#ffe4e6,#fecdd3);
+  color:#7f1d1d;
+  min-height:100vh;
+  padding:30px 15px;
+}
+
+.container{
+  max-width:950px;
+  margin:auto;
+  background:rgba(255,255,255,0.95);
+  padding:25px;
+  border-radius:24px;
+  box-shadow:0 12px 35px rgba(0,0,0,0.08);
+}
+
+.header{
+  text-align:center;
+  margin-bottom:20px;
+}
+
+.header h1{
+  font-size: clamp(1.9rem, 4vw, 2.7rem);
+  margin-bottom:10px;
+  color:#9f1239;
+}
+
+.header p{
+  color:#881337;
+  opacity:0.9;
+}
+
+.top-link{
+  display:inline-block;
+  margin-top:12px;
+  color:#be123c;
+  text-decoration:none;
+  font-weight:bold;
+}
+
+.stats-bar{
+  display:flex;
+  flex-wrap:wrap;
+  gap:12px;
+  justify-content:center;
+  margin-bottom:20px;
+}
+
+.stat-box{
+  background:#fff;
+  border:1px solid #fecdd3;
+  border-radius:14px;
+  padding:12px 18px;
+  min-width:150px;
+  text-align:center;
+}
+
+.stat-label{
+  display:block;
+  font-size:0.9rem;
+  color:#be123c;
+  margin-bottom:4px;
+  font-weight:bold;
+}
+
+.stat-value{
+  display:block;
+  font-size:1.15rem;
+  color:#7f1d1d;
+  font-weight:bold;
+}
+
+.question{
+  display:none;
+  background:#fff7f8;
+  border:1px solid #fecdd3;
+  border-radius:20px;
+  padding:20px;
+  margin-bottom:18px;
+}
+
+.question.active{
+  display:block;
+}
+
+.question h3{
+  font-size:1.08rem;
+  line-height:1.6;
+  color:#9f1239;
+  margin-bottom:14px;
+}
+
+.option{
+  display:block;
+  background:#ffe4e6;
+  padding:12px 14px;
+  margin:10px 0;
+  border-radius:12px;
+  cursor:pointer;
+  transition:0.2s;
+}
+
+.option:hover{
+  background:#fecdd3;
+}
+
+.option.selected{
+  background:#f43f5e;
+  color:white;
+}
+
+.option.correct-answer{
+  background:#dcfce7 !important;
+  color:#166534 !important;
+}
+
+.option.wrong-answer{
+  background:#fee2e2 !important;
+  color:#991b1b !important;
+}
+
+.navigation{
+  display:flex;
+  justify-content:center;
+  gap:12px;
+  margin-top:18px;
+}
+
+button{
+  border:none;
+  border-radius:14px;
+  padding:12px 20px;
+  font-size:1rem;
+  font-weight:bold;
+  cursor:pointer;
+}
+
+.prev{
+  background:#fda4af;
+  color:#881337;
+}
+
+.next{
+  background:#fb7185;
+  color:white;
+}
+
+.finish{
+  background:#dc2626;
+  color:white;
+}
+
+.actions{
+  display:flex;
+  justify-content:center;
+  gap:12px;
+  margin-top:25px;
+}
+
+.btn-primary{
+  background:#e11d48;
+  color:white;
+}
+
+.btn-secondary{
+  background:#fecdd3;
+  color:#9f1239;
+}
+
+.result{
+  margin-top:25px;
+  padding:20px;
+  border-radius:18px;
+  background:#fff7f8;
+  border:1px solid #fecdd3;
+  display:none;
+}
+
+.review-item{
+  background:white;
+  border-radius:14px;
+  padding:14px;
+  margin-bottom:12px;
+}
+
+.review-item.correcta{
+  border-left:6px solid #22c55e;
+}
+
+.review-item.incorrecta{
+  border-left:6px solid #ef4444;
+}
+
+.review-item.sin-responder{
+  border-left:6px solid #f59e0b;
+}
+
+.explicacion{
+  margin-top:8px;
+  padding:10px;
+  background:#f8fafc;
+  border-radius:10px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="header">
+<h1>📖 Examen Verbal 8</h1>
+<p>Versión digital interactiva</p>
+<a class="top-link" href="../verbal.html">← Volver a Verbal</a>
+</div>
+
+<div class="stats-bar">
+<div class="stat-box">
+<span class="stat-label">Pregunta actual</span>
+<span class="stat-value"><span id="qNum">1</span> / 25</span>
+</div>
+
+<div class="stat-box">
+<span class="stat-label">Progreso</span>
+<span class="stat-value" id="progress">0 / 25</span>
+</div>
+</div>
+
+<div id="quiz"></div>
+
+<div class="actions">
+<button class="btn-primary" onclick="finishQuiz()">Calificar examen</button>
+<button class="btn-secondary" onclick="reiniciarExamen()">Reiniciar</button>
+</div>
+
+<div class="result" id="resultado">
+<h2>Resultado</h2>
+<p id="puntajeTexto"></p>
+<div id="revision"></div>
+</div>
+
+</div>
+
+<script>
+
+const questions = [
+
+{
+q:"AGUA es a RÍO como ARENA es a ___",
+o:["Desierto","Playa","Tierra","Montaña"],
+a:0,
+exp:"La relación es elemento predominante y lugar."
+},
+
+{
+q:"DOCTOR es a HOSPITAL como COCINERO es a ___",
+o:["Comida","Restaurante","Cocina","Chef"],
+a:1,
+exp:"Profesión y lugar de trabajo."
+},
+
+{
+q:"LIBRO es a CONOCIMIENTO como EJERCICIO es a ___",
+o:["Cuerpo","Salud","Movimiento","Fuerza"],
+a:1,
+exp:"Objeto y beneficio."
+},
+
+{
+q:"PERRO es a LADRAR como GATO es a ___",
+o:["Morder","Arañar","Maullar","Dormir"],
+a:2,
+exp:"Animal y sonido característico."
+},
+
+{
+q:"LÁPIZ es a PAPEL como TIZA es a ___",
+o:["Pizarra","Libro","Mesa","Borrador"],
+a:0,
+exp:"Objeto y superficie donde se usa."
+},
+
+{
+q:"MÚSICA es a OÍDO como PINTURA es a ___",
+o:["Arte","Color","Vista","Museo"],
+a:2,
+exp:"Relación entre estímulo y sentido."
+},
+
+{
+q:"HAMBRE es a COMER como SED es a ___",
+o:["Tomar","Beber","Agua","Dormir"],
+a:1,
+exp:"Necesidad y acción para satisfacerla."
+},
+
+{
+q:"ABEJA es a MIEL como GALLINA es a ___",
+o:["Huevo","Pluma","Nido","Granja"],
+a:0,
+exp:"Animal y producto."
+},
+
+{
+q:"FRÍO es a HIELO como CALOR es a ___",
+o:["Agua","Fuego","Vapor","Sol"],
+a:1,
+exp:"Elemento relacionado."
+},
+
+{
+q:"MAESTRO es a ENSEÑAR como ENTRENADOR es a ___",
+o:["Jugar","Practicar","Aprender","Dirigir"],
+a:3,
+exp:"Profesión y función."
+},
+
+{
+q:"SOL es a LUZ como BOMBILLA es a ___",
+o:["Electricidad","Calor","Iluminación","Cable"],
+a:2,
+exp:"Objeto y resultado."
+},
+
+{
+q:"CAMINAR es a PIES como VER es a ___",
+o:["Ojos","Mirar","Cara","Lentes"],
+a:0,
+exp:"Acción y órgano utilizado."
+},
+
+{
+q:"NUBE es a LLUVIA como VOLCÁN es a ___",
+o:["Piedra","Fuego","Lava","Montaña"],
+a:2,
+exp:"Elemento y producto."
+},
+
+{
+q:"ESCUELA es a ESTUDIANTE como HOSPITAL es a ___",
+o:["Doctor","Paciente","Cirugía","Emergencia"],
+a:1,
+exp:"Lugar y persona atendida."
+},
+
+{
+q:"PÁJARO es a ALA como PEZ es a ___",
+o:["Aleta","Escama","Agua","Branquia"],
+a:0,
+exp:"Animal y parte usada para moverse."
+},
+
+{
+q:"AUTO es a CARRETERA como BARCO es a ___",
+o:["Agua","Puerto","Océano","Mar"],
+a:3,
+exp:"Vehículo y medio principal."
+},
+
+{
+q:"TRISTE es a LLORAR como FELIZ es a ___",
+o:["Reír","Hablar","Jugar","Cantar"],
+a:0,
+exp:"Emoción y reacción."
+},
+
+{
+q:"RELOJ es a HORA como CALENDARIO es a ___",
+o:["Tiempo","Semana","Fecha","Día"],
+a:2,
+exp:"Objeto y lo que indica."
+},
+
+{
+q:"MADERA es a MESA como HIERRO es a ___",
+o:["Metal","Puerta","Clavo","Acero"],
+a:2,
+exp:"Material y objeto fabricado."
+},
+
+{
+q:"SOLTERO es a MATRIMONIO como ESTUDIANTE es a ___",
+o:["Escuela","Graduación","Universidad","Examen"],
+a:1,
+exp:"Estado inicial y final."
+},
+
+{
+q:"BOCA es a COMER como NARIZ es a ___",
+o:["Respirar","Oler","Hablar","Escuchar"],
+a:1,
+exp:"Órgano y función."
+},
+
+{
+q:"LUNA es a SATÉLITE como TIERRA es a ___",
+o:["Sol","Planeta","Universo","Estrella"],
+a:1,
+exp:"Clasificación."
+},
+
+{
+q:"FUEGO es a QUEMAR como AGUA es a ___",
+o:["Limpiar","Ahogar","Mojar","Caer"],
+a:2,
+exp:"Elemento y acción principal."
+},
+
+{
+q:"JUGADOR es a BALÓN como TENISTA es a ___",
+o:["Cancha","Raqueta","Red","Pelota"],
+a:1,
+exp:"Persona y herramienta."
+},
+
+{
+q:"BIBLIOTECA es a LIBROS como ZOOLÓGICO es a ___",
+o:["Jaulas","Animales","Visitantes","Parque"],
+a:1,
+exp:"Lugar y contenido."
+}
+
+];
+
+let current = 0;
+let answers = new Array(questions.length).fill(null);
+let examenFinalizado = false;
+
+const quiz = document.getElementById("quiz");
+
+function actualizarProgreso(){
+const respondidas = answers.filter(a => a !== null).length;
+document.getElementById("progress").textContent = `${respondidas} / ${questions.length}`;
+document.getElementById("qNum").textContent = current + 1;
+}
+
+function render(){
+
+quiz.innerHTML = "";
+
+questions.forEach((q,i)=>{
+
+let div = document.createElement("div");
+div.className = "question" + (i===current ? " active" : "");
+
+let opts = "";
+
+q.o.forEach((op,j)=>{
+
+let extraClass = "";
+
+if(answers[i] === j) extraClass += " selected";
+
+if(examenFinalizado){
+
+if(j === q.a) extraClass += " correct-answer";
+
+if(answers[i] === j && j !== q.a){
+extraClass += " wrong-answer";
+}
+
+}
+
+opts += `<div class="option${extraClass}" onclick="selectOption(${i},${j})">${String.fromCharCode(65+j)}. ${op}</div>`;
+
+});
+
+div.innerHTML = `
+<h3>${q.q}</h3>
+
+${opts}
+
+<div class="navigation">
+
+<button class="prev" onclick="prevQuestion()" ${i===0 ? "disabled" : ""}>
+Anterior
+</button>
+
+${i===questions.length-1
+? `<button class="finish" onclick="finishQuiz()">Finalizar</button>`
+: `<button class="next" onclick="nextQuestion()">Siguiente</button>`
+}
+
+</div>
+`;
+
+quiz.appendChild(div);
+
+});
+
+actualizarProgreso();
+
+}
+
+function selectOption(i,j){
+
+if(examenFinalizado) return;
+
+answers[i] = j;
+
+render();
+
+}
+
+function nextQuestion(){
+
+if(current < questions.length-1){
+
+current++;
+
+render();
+
+}
+
+}
+
+function prevQuestion(){
+
+if(current > 0){
+
+current--;
+
+render();
+
+}
+
+}
+
+function finishQuiz(){
+
+if(examenFinalizado) return;
+
+examenFinalizado = true;
+
+let total = questions.length;
+let correctas = 0;
+let revisionHTML = "";
+
+questions.forEach((q,i)=>{
+
+const respuestaUsuario = answers[i];
+
+if(respuestaUsuario === q.a){
+
+correctas++;
+
+revisionHTML += `
+<div class="review-item correcta">
+<h4>Pregunta ${i+1}: ✅ Correcta</h4>
+<div class="explicacion">${q.exp}</div>
+</div>
+`;
+
+}else if(respuestaUsuario === null){
+
+revisionHTML += `
+<div class="review-item sin-responder">
+<h4>Pregunta ${i+1}: ⚠️ Sin responder</h4>
+<div class="explicacion">
+Respuesta correcta: ${q.o[q.a]}
+</div>
+</div>
+`;
+
+}else{
+
+revisionHTML += `
+<div class="review-item incorrecta">
+<h4>Pregunta ${i+1}: ❌ Incorrecta</h4>
+<div class="explicacion">
+Correcta: ${q.o[q.a]}<br>
+${q.exp}
+</div>
+</div>
+`;
+
+}
+
+});
+
+const porcentaje = ((correctas/total)*100).toFixed(1);
+
+document.getElementById("puntajeTexto").innerHTML = `
+Obtuviste <strong>${correctas}</strong> de <strong>${total}</strong> correctas.<br>
+Nota final: <strong>${porcentaje}%</strong>
+`;
+
+document.getElementById("revision").innerHTML = revisionHTML;
+
+document.getElementById("resultado").style.display = "block";
+
+render();
+
+}
+
+function reiniciarExamen(){
+
+current = 0;
+answers = new Array(questions.length).fill(null);
+examenFinalizado = false;
+
+document.getElementById("resultado").style.display = "none";
+document.getElementById("revision").innerHTML = "";
+document.getElementById("puntajeTexto").innerHTML = "";
+
+render();
+
+}
+
+render();
+
+</script>
+
+<script type="module" src="../party/party-timer.js"></script>
+<script type="module" src="../party/party-resultados.js"></script>
+
+</body>
+</html>
