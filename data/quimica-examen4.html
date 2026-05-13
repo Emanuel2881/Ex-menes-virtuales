@@ -1,0 +1,826 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Química - Examen 4</title>
+
+<style>
+
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+}
+
+body{
+  font-family: Arial, Helvetica, sans-serif;
+  background: linear-gradient(135deg,#ecfeff,#f0f9ff,#cffafe);
+  color:#0f172a;
+  min-height:100vh;
+  padding:30px 15px;
+}
+
+.container{
+  max-width:1000px;
+  margin:0 auto;
+  background:#ffffff;
+  border-radius:24px;
+  box-shadow:0 12px 35px rgba(0,0,0,0.08);
+  overflow:hidden;
+}
+
+.header{
+  background: linear-gradient(135deg,#0891b2,#06b6d4);
+  color:white;
+  padding:30px 25px;
+  text-align:center;
+}
+
+.header h1{
+  font-size: clamp(1.9rem,4vw,2.8rem);
+  margin-bottom:10px;
+}
+
+.header p{
+  opacity:0.95;
+}
+
+.top-link{
+  display:inline-block;
+  margin-top:12px;
+  color:white;
+  text-decoration:none;
+  font-weight:bold;
+}
+
+.content{
+  padding:25px;
+}
+
+.tools-buttons{
+  display:flex;
+  justify-content:center;
+  gap:12px;
+  flex-wrap:wrap;
+  margin-bottom:18px;
+}
+
+.tool-btn{
+  background:#0891b2;
+  color:white;
+  border:none;
+  border-radius:14px;
+  padding:12px 18px;
+  font-size:1rem;
+  font-weight:bold;
+  cursor:pointer;
+}
+
+.visual-box{
+  display:none;
+  background:#f8feff;
+  border:1px solid #bae6fd;
+  border-radius:20px;
+  padding:18px;
+  text-align:center;
+  margin-bottom:20px;
+}
+
+.visual-box img{
+  width:100%;
+  max-width:850px;
+  border-radius:14px;
+}
+
+.stats-bar{
+  display:flex;
+  justify-content:center;
+  gap:14px;
+  flex-wrap:wrap;
+  margin-bottom:25px;
+}
+
+.stat-box{
+  background:#f8feff;
+  border:1px solid #bae6fd;
+  border-radius:16px;
+  padding:12px 18px;
+  min-width:180px;
+  text-align:center;
+}
+
+.question{
+  display:none;
+  background:#f8feff;
+  border:1px solid #bae6fd;
+  border-radius:18px;
+  padding:18px;
+  margin-bottom:18px;
+}
+
+.question.active{
+  display:block;
+}
+
+.question h3{
+  margin-bottom:14px;
+  color:#0f766e;
+  line-height:1.5;
+}
+
+.option{
+  display:block;
+  margin:10px 0;
+  padding:12px;
+  border-radius:12px;
+  cursor:pointer;
+  background:white;
+  transition:0.2s ease;
+}
+
+.option:hover{
+  background:#ecfeff;
+}
+
+.option.selected{
+  background:#06b6d4;
+  color:white;
+}
+
+.navigation{
+  display:flex;
+  justify-content:center;
+  gap:12px;
+  margin-top:20px;
+}
+
+button{
+  border:none;
+  border-radius:14px;
+  padding:13px 22px;
+  font-size:1rem;
+  font-weight:bold;
+  cursor:pointer;
+}
+
+.prev{
+  background:#cffafe;
+  color:#0f766e;
+}
+
+.next{
+  background:#06b6d4;
+  color:white;
+}
+
+.finish{
+  background:#0891b2;
+  color:white;
+}
+
+.actions{
+  display:flex;
+  justify-content:center;
+  gap:12px;
+  margin-top:25px;
+}
+
+.btn-primary{
+  background:#0891b2;
+  color:white;
+}
+
+.btn-secondary{
+  background:#cffafe;
+  color:#0f766e;
+}
+
+.result{
+  margin-top:25px;
+  padding:20px;
+  border-radius:18px;
+  background:#f0fdfa;
+  border:1px solid #99f6e4;
+  display:none;
+}
+
+.review-item{
+  background:white;
+  border-radius:14px;
+  padding:14px;
+  margin-bottom:12px;
+}
+
+.explicacion{
+  margin-top:8px;
+  background:#f8fafc;
+  padding:10px;
+  border-radius:10px;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="header">
+
+<h1>🧪 Química - Examen 4</h1>
+
+<p>
+Tabla periódica, configuración electrónica y reacciones químicas
+</p>
+
+<a class="top-link" href="../quimica.html">
+← Volver a química
+</a>
+
+</div>
+
+<div class="content">
+
+<div class="tools-buttons">
+
+<button onclick="toggleTabla()" class="tool-btn">
+🧪 Tabla periódica
+</button>
+
+<button onclick="toggleDiagrama()" class="tool-btn">
+⚛️ Diagrama
+</button>
+
+</div>
+
+<div class="visual-box" id="tablaBox">
+<img src="https://files.catbox.moe/g9tw9y.jpg">
+</div>
+
+<div class="visual-box" id="diagramaBox">
+<img src="https://files.catbox.moe/upqjuw.png">
+</div>
+
+<div class="stats-bar">
+
+<div class="stat-box">
+Pregunta actual:
+<span id="qNum">1</span> / 30
+</div>
+
+<div class="stat-box">
+Progreso:
+<span id="progress">0 / 30</span>
+</div>
+
+</div>
+
+<div id="quiz"></div>
+
+<div class="actions">
+
+<button class="btn-primary"
+onclick="finishQuiz()">
+Calificar examen
+</button>
+
+<button class="btn-secondary"
+onclick="reiniciarExamen()">
+Reiniciar
+</button>
+
+</div>
+
+<div class="result" id="resultado">
+
+<h2>Resultado</h2>
+
+<p id="puntajeTexto"></p>
+
+<div id="revision"></div>
+
+</div>
+
+</div>
+
+</div>
+
+<script>
+
+const questions = [
+
+{
+q:"¿Qué representa el número atómico?",
+o:["Neutrones","Protones","Electrones externos","Masa"],
+a:1,
+exp:"Representa protones."
+},
+
+{
+q:"¿Cuál es la configuración del sodio?",
+o:[
+"1s² 2s² 2p⁶ 3s¹",
+"1s² 2s²",
+"1s² 2p⁶",
+"1s² 2s² 2p⁵"
+],
+a:0,
+exp:"El sodio tiene 11 electrones."
+},
+
+{
+q:"¿Cuántos electrones tiene un átomo neutro de carbono?",
+o:["4","6","8","12"],
+a:1,
+exp:"Tiene 6 protones y 6 electrones."
+},
+
+{
+q:"¿Qué partícula tiene carga negativa?",
+o:["Protón","Neutrón","Electrón","Núcleo"],
+a:2,
+exp:"El electrón es negativo."
+},
+
+{
+q:"¿Cuál elemento pertenece al grupo 17?",
+o:["Na","Cl","Mg","Ca"],
+a:1,
+exp:"El cloro es halógeno."
+},
+
+{
+q:"¿Cuál es un metal?",
+o:["Oxígeno","Cloro","Hierro","Azufre"],
+a:2,
+exp:"El hierro es metálico."
+},
+
+{
+q:"¿Qué enlace se forma entre Na y Cl?",
+o:["Covalente","Metálico","Iónico","Polar"],
+a:2,
+exp:"Metal + no metal."
+},
+
+{
+q:"¿Qué tipo de enlace comparte electrones?",
+o:["Iónico","Metálico","Covalente","Nuclear"],
+a:2,
+exp:"Enlace covalente."
+},
+
+{
+q:"¿Qué indica el número de masa?",
+o:["Protones","Electrones","Protones + neutrones","Valencia"],
+a:2,
+exp:"Suma partículas nucleares."
+},
+
+{
+q:"¿Cuántos protones tiene Al?",
+o:["11","12","13","14"],
+a:2,
+exp:"Aluminio tiene Z=13."
+},
+
+{
+q:"¿Cuál es un gas noble?",
+o:["Cl","Ne","Na","Mg"],
+a:1,
+exp:"Neón."
+},
+
+{
+q:"¿Cuál reacción está balanceada?",
+o:[
+"H₂ + O₂ → H₂O",
+"2H₂ + O₂ → H₂O",
+"H₂ + O₂ → 2H₂O",
+"2H₂ + O₂ → 2H₂O"
+],
+a:3,
+exp:"Mismos átomos en ambos lados."
+},
+
+{
+q:"¿Qué ocurre en oxidación?",
+o:[
+"Gana electrones",
+"Pierde electrones",
+"Gana protones",
+"Pierde neutrones"
+],
+a:1,
+exp:"Oxidación = pérdida."
+},
+
+{
+q:"¿Qué ocurre en reducción?",
+o:[
+"Pierde electrones",
+"Gana electrones",
+"Gana neutrones",
+"Pierde masa"
+],
+a:1,
+exp:"Reducción = ganancia."
+},
+
+{
+q:"¿Cuál es una reacción exotérmica?",
+o:[
+"Absorbe calor",
+"Libera calor",
+"No cambia energía",
+"Pierde masa"
+],
+a:1,
+exp:"Exotérmica libera energía."
+},
+
+{
+q:"¿Qué indica la valencia?",
+o:[
+"Masa",
+"Capacidad de combinación",
+"Color",
+"Densidad"
+],
+a:1,
+exp:"Cómo se combina."
+},
+
+{
+q:"¿Qué elemento tiene símbolo O?",
+o:["Oro","Osmio","Oxígeno","Óxido"],
+a:2,
+exp:"O = oxígeno."
+},
+
+{
+q:"¿Cuántos electrones de valencia tiene el cloro?",
+o:["1","3","5","7"],
+a:3,
+exp:"Grupo 17."
+},
+
+{
+q:"¿Qué unidad mide cantidad de sustancia?",
+o:["Gramo","Litro","Mol","Metro"],
+a:2,
+exp:"Mol."
+},
+
+{
+q:"1 mol contiene:",
+o:[
+"6.022×10²³ partículas",
+"3.14 partículas",
+"1000 partículas",
+"10² partículas"
+],
+a:0,
+exp:"Número de Avogadro."
+},
+
+{
+q:"¿Qué tipo de cambio es derretir hielo?",
+o:[
+"Químico",
+"Nuclear",
+"Físico",
+"Oxidación"
+],
+a:2,
+exp:"No cambia sustancia."
+},
+
+{
+q:"¿Qué produce una reacción química?",
+o:[
+"Nuevas sustancias",
+"Solo calor",
+"Solo luz",
+"Nada"
+],
+a:0,
+exp:"Se forman sustancias nuevas."
+},
+
+{
+q:"¿Qué partícula no tiene carga?",
+o:["Protón","Electrón","Neutrón","Ion"],
+a:2,
+exp:"El neutrón es neutro."
+},
+
+{
+q:"¿Cuál es una propiedad intensiva?",
+o:["Masa","Volumen","Densidad","Peso"],
+a:2,
+exp:"No depende cantidad."
+},
+
+{
+q:"¿Qué elemento tiene 8 protones?",
+o:["O","N","C","F"],
+a:0,
+exp:"Oxígeno."
+},
+
+{
+q:"¿Qué estado tiene forma y volumen fijo?",
+o:["Gas","Plasma","Líquido","Sólido"],
+a:3,
+exp:"Sólido."
+},
+
+{
+q:"¿Qué pasa de líquido a gas?",
+o:["Condensación","Fusión","Evaporación","Solidificación"],
+a:2,
+exp:"Evaporación."
+},
+
+{
+q:"¿Qué símbolo tiene el hierro?",
+o:["Ir","Fe","Hg","H"],
+a:1,
+exp:"Fe."
+},
+
+{
+q:"¿Cuál es una base?",
+o:["HCl","NaOH","CO₂","H₂SO₄"],
+a:1,
+exp:"Hidróxido."
+},
+
+{
+q:"¿Qué color indica base con col morada?",
+o:["Rojo","Rosa","Verde","Negro"],
+a:2,
+exp:"Verde indica básica."
+}
+
+];
+
+let current = 0;
+
+let answers =
+new Array(questions.length).fill(null);
+
+let examenFinalizado = false;
+
+const quiz =
+document.getElementById("quiz");
+
+function actualizarProgreso(){
+
+const respondidas =
+answers.filter(a=>a!==null).length;
+
+document.getElementById("progress").textContent =
+`${respondidas} / ${questions.length}`;
+
+document.getElementById("qNum").textContent =
+current + 1;
+
+}
+
+function render(){
+
+quiz.innerHTML = "";
+
+questions.forEach((q,i)=>{
+
+let div = document.createElement("div");
+
+div.className =
+"question" + (i===current ? " active" : "");
+
+let opts = "";
+
+q.o.forEach((op,j)=>{
+
+let extraClass = "";
+
+if(answers[i] === j){
+extraClass += " selected";
+}
+
+opts += `
+<div class="option${extraClass}"
+onclick="selectOption(${i},${j})">
+
+${String.fromCharCode(65+j)}. ${op}
+
+</div>
+`;
+
+});
+
+div.innerHTML = `
+
+<h3>${i+1}. ${q.q}</h3>
+
+${opts}
+
+<div class="navigation">
+
+<button class="prev"
+onclick="prevQuestion()"
+${i===0 ? "disabled" : ""}>
+Anterior
+</button>
+
+${i===questions.length-1
+
+? `<button class="finish"
+onclick="finishQuiz()">
+Finalizar
+</button>`
+
+: `<button class="next"
+onclick="nextQuestion()">
+Siguiente
+</button>`
+
+}
+
+</div>
+
+`;
+
+quiz.appendChild(div);
+
+});
+
+actualizarProgreso();
+
+}
+
+function selectOption(i,j){
+
+if(examenFinalizado) return;
+
+answers[i] = j;
+
+render();
+
+}
+
+function nextQuestion(){
+
+if(current < questions.length-1){
+
+current++;
+
+render();
+
+}
+
+}
+
+function prevQuestion(){
+
+if(current > 0){
+
+current--;
+
+render();
+
+}
+
+}
+
+function finishQuiz(){
+
+if(examenFinalizado) return;
+
+examenFinalizado = true;
+
+let correctas = 0;
+
+let revisionHTML = "";
+
+questions.forEach((q,i)=>{
+
+if(answers[i] === q.a){
+
+correctas++;
+
+revisionHTML += `
+<div class="review-item">
+
+<h4>
+Pregunta ${i+1}: ✅ Correcta
+</h4>
+
+<div class="explicacion">
+${q.exp}
+</div>
+
+</div>
+`;
+
+}else{
+
+revisionHTML += `
+<div class="review-item">
+
+<h4>
+Pregunta ${i+1}: ❌ Incorrecta
+</h4>
+
+<p>
+<strong>Respuesta correcta:</strong>
+${q.o[q.a]}
+</p>
+
+<div class="explicacion">
+${q.exp}
+</div>
+
+</div>
+`;
+
+}
+
+});
+
+const porcentaje =
+((correctas/questions.length)*100)
+.toFixed(1);
+
+document.getElementById("puntajeTexto")
+.innerHTML = `
+
+Obtuviste
+<strong>${correctas}</strong>
+
+de
+
+<strong>${questions.length}</strong>
+
+correctas.<br>
+
+Nota final:
+<strong>${porcentaje}%</strong>
+
+`;
+
+document.getElementById("revision")
+.innerHTML = revisionHTML;
+
+document.getElementById("resultado")
+.style.display = "block";
+
+render();
+
+}
+
+function reiniciarExamen(){
+
+location.reload();
+
+}
+
+function toggleTabla(){
+
+const tabla =
+document.getElementById("tablaBox");
+
+tabla.style.display =
+tabla.style.display === "block"
+? "none"
+: "block";
+
+}
+
+function toggleDiagrama(){
+
+const diagrama =
+document.getElementById("diagramaBox");
+
+diagrama.style.display =
+diagrama.style.display === "block"
+? "none"
+: "block";
+
+}
+
+render();
+
+</script>
+
+<script type="module"
+src="../party/party-timer.js"></script>
+
+<script type="module"
+src="../party/party-resultados.js"></script>
+
+</body>
+</html>
