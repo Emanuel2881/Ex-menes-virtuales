@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Simulador Verbal - Examen 4</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, Helvetica, sans-serif;
+}
+
+body{
+    background:#0f172a;
+    color:white;
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:20px;
+}
+
+.container{
+    width:100%;
+    max-width:900px;
+    background:#111827;
+    border-radius:20px;
+    padding:30px;
+    box-shadow:0 0 30px rgba(0,0,0,0.4);
+}
+
+.top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:25px;
+    gap:15px;
+    flex-wrap:wrap;
+}
+
+.title{
+    font-size:1.8rem;
+    font-weight:bold;
+}
+
+.info{
+    display:flex;
+    gap:15px;
+    flex-wrap:wrap;
+}
+
+.box{
+    background:#1e293b;
+    padding:10px 15px;
+    border-radius:12px;
+    font-weight:bold;
+}
+
+.questionBox{
+    background:#1e293b;
+    padding:25px;
+    border-radius:15px;
+    margin-bottom:20px;
+}
+
+.questionNumber{
+    color:#38bdf8;
+    font-size:1rem;
+    margin-bottom:10px;
+}
+
+.question{
+    font-size:1.2rem;
+    line-height:1.6;
+}
+
+.options{
+    display:flex;
+    flex-direction:column;
+    gap:15px;
+}
+
+.option{
+    background:#1e293b;
+    border:2px solid transparent;
+    padding:15px;
+    border-radius:12px;
+    cursor:pointer;
+    transition:0.2s;
+    font-size:1rem;
+}
+
+.option:hover{
+    transform:scale(1.02);
+    border-color:#38bdf8;
+}
+
+.correct{
+    background:#14532d !important;
+    border-color:#22c55e !important;
+}
+
+.incorrect{
+    background:#7f1d1d !important;
+    border-color:#ef4444 !important;
+}
+
+.disabled{
+    pointer-events:none;
+}
+
+.nextBtn{
+    margin-top:25px;
+    width:100%;
+    padding:15px;
+    border:none;
+    border-radius:12px;
+    background:#38bdf8;
+    color:white;
+    font-size:1rem;
+    font-weight:bold;
+    cursor:pointer;
+    transition:0.2s;
+}
+
+.nextBtn:hover{
+    background:#0ea5e9;
+}
+
+.result{
+    text-align:center;
+    padding:30px;
+}
+
+.result h2{
+    font-size:2rem;
+    margin-bottom:20px;
+}
+
+.result p{
+    font-size:1.2rem;
+    margin-bottom:10px;
+}
+
+.hidden{
+    display:none;
+}
+
+@media(max-width:700px){
+    .question{
+        font-size:1rem;
+    }
+
+    .title{
+        font-size:1.4rem;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="top">
+        <div class="title">Examen 4 - Verbal</div>
+
+        <div class="info">
+            <div class="box" id="timer">30:00</div>
+            <div class="box" id="score">0 Correctas</div>
+        </div>
+    </div>
+
+    <div id="quizContainer">
+
+        <div class="questionBox">
+            <div class="questionNumber" id="questionNumber">
+                Pregunta 1 de 10
+            </div>
+
+            <div class="question" id="questionText"></div>
+        </div>
+
+        <div class="options" id="optionsContainer"></div>
+
+        <button class="nextBtn hidden" id="nextBtn">
+            Siguiente Pregunta
+        </button>
+
+    </div>
+
+    <div class="result hidden" id="resultContainer">
+        <h2>Examen Finalizado</h2>
+        <p id="finalScore"></p>
+        <p id="finalPercent"></p>
+    </div>
+
+</div>
+
+<script>
+const questions = [
+
+{
+question:"ROJO es a AMARILLO como DULCE es a...",
+options:["Amargo","Suave","Oscuro","Áspero"],
+answer:0
+},
+
+{
+question:"PALABRA es a FRASE como VERSO es a...",
+options:["Rima","Canción","Estrofa","Sermón"],
+answer:2
+},
+
+{
+question:"LÁTIGO es a DOMADOR como ESPUELA es a...",
+options:["Jinete","Futbolista","Trapecista","Malabarista"],
+answer:0
+},
+
+{
+question:"PIE es a CUERPO como BOMBILLA es a...",
+options:["Ojos","Luz","Vela","Lámpara"],
+answer:3
+},
+
+{
+question:"BICICLETA es a AVIÓN como METAL es a...",
+options:["Solidez","Madera","Velocidad","Fragmento"],
+answer:1
+},
+
+{
+question:"DERMATOLOGÍA es a MEDICINA como CARTOGRAFÍA es a...",
+options:["Geografía","Geología","Astronomía","Heráldica"],
+answer:0
+},
+
+{
+question:"ESCULTOR es a ESTUDIO como ACTOR es a...",
+options:["Arte","Escenario","Drama","Literatura"],
+answer:1
+},
+
+{
+question:"PERDER es a GANAR como REPOSO es a...",
+options:["Ganancia","Descanso","Actividad","Calma"],
+answer:2
+},
+
+{
+question:"APOCADO es a TÍMIDO como ARROGANTE es a...",
+options:["Listo","Humilde","Virtuoso","Soberbio"],
+answer:3
+},
+
+{
+question:"ENCUBIERTO es a CLANDESTINO como ENDEBLE es a...",
+options:["Doblado","Simple","Delicado","Comprimido"],
+answer:2
+}
+
+];
+
+let currentQuestion = 0;
+let score = 0;
+let answered = false;
+
+const questionText = document.getElementById("questionText");
+const optionsContainer = document.getElementById("optionsContainer");
+const questionNumber = document.getElementById("questionNumber");
+const scoreText = document.getElementById("score");
+const nextBtn = document.getElementById("nextBtn");
+
+function loadQuestion(){
+
+answered = false;
+nextBtn.classList.add("hidden");
+
+const q = questions[currentQuestion];
+
+questionNumber.textContent = `Pregunta ${currentQuestion+1} de ${questions.length}`;
+questionText.textContent = q.question;
+
+optionsContainer.innerHTML = "";
+
+q.options.forEach((option,index)=>{
+
+const btn = document.createElement("div");
+btn.classList.add("option");
+btn.textContent = option;
+
+btn.onclick = ()=>checkAnswer(index,btn);
+
+optionsContainer.appendChild(btn);
+
+});
+
+}
+
+function checkAnswer(index,element){
+
+if(answered) return;
+
+answered = true;
+
+const q = questions[currentQuestion];
+const allOptions = document.querySelectorAll(".option");
+
+allOptions.forEach(opt=>{
+opt.classList.add("disabled");
+});
+
+if(index === q.answer){
+
+element.classList.add("correct");
+score++;
+
+}else{
+
+element.classList.add("incorrect");
+allOptions[q.answer].classList.add("correct");
+
+}
+
+scoreText.textContent = `${score} Correctas`;
+
+nextBtn.classList.remove("hidden");
+
+}
+
+nextBtn.onclick = ()=>{
+
+currentQuestion++;
+
+if(currentQuestion < questions.length){
+
+loadQuestion();
+
+}else{
+
+finishQuiz();
+
+}
+
+};
+
+function finishQuiz(){
+
+document.getElementById("quizContainer").classList.add("hidden");
+document.getElementById("resultContainer").classList.remove("hidden");
+
+document.getElementById("finalScore").textContent =
+`Obtuviste ${score} de ${questions.length} correctas`;
+
+let percent = Math.round((score/questions.length)*100);
+
+document.getElementById("finalPercent").textContent =
+`Porcentaje: ${percent}%`;
+
+}
+
+let time = 1800;
+
+const timer = document.getElementById("timer");
+
+const countdown = setInterval(()=>{
+
+let minutes = Math.floor(time/60);
+let seconds = time%60;
+
+minutes = minutes < 10 ? "0"+minutes : minutes;
+seconds = seconds < 10 ? "0"+seconds : seconds;
+
+timer.textContent = `${minutes}:${seconds}`;
+
+time--;
+
+if(time < 0){
+
+clearInterval(countdown);
+finishQuiz();
+
+}
+
+},1000);
+
+loadQuestion();
+</script>
+
+</body>
+</html>
