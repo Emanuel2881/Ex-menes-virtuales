@@ -1,213 +1,237 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Química - Examen 1</title>
-  <style>
-    *{
-      box-sizing:border-box;
-      margin:0;
-      padding:0;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Química - Examen 1</title>
 
-    body{
-      font-family: Arial, Helvetica, sans-serif;
-      background: linear-gradient(135deg, #ecfeff, #f0f9ff, #cffafe);
-      color:#0f172a;
-      min-height:100vh;
-      padding:30px 15px;
-    }
+<style>
 
-    .container{
-      max-width:1000px;
-      margin:0 auto;
-      background:#ffffff;
-      border-radius:24px;
-      box-shadow:0 12px 35px rgba(0,0,0,0.08);
-      overflow:hidden;
-    }
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+}
 
-    .header{
-      background: linear-gradient(135deg, #0891b2, #06b6d4);
-      color:white;
-      padding:30px 25px;
-      text-align:center;
-    }
+body{
+  font-family: Arial, Helvetica, sans-serif;
+  background: linear-gradient(135deg,#ecfeff,#f0f9ff,#cffafe);
+  color:#0f172a;
+  min-height:100vh;
+  padding:30px 15px;
+}
 
-    .header h1{
-      font-size: clamp(1.9rem, 4vw, 2.8rem);
-      margin-bottom:10px;
-    }
+.container{
+  max-width:950px;
+  margin:auto;
+  background:rgba(255,255,255,0.95);
+  padding:25px;
+  border-radius:24px;
+  box-shadow:0 12px 35px rgba(0,0,0,0.08);
+}
 
-    .header p{
-      opacity:0.95;
-      line-height:1.5;
-      font-size:1rem;
-    }
+.header{
+  text-align:center;
+  margin-bottom:20px;
+}
 
-    .top-link{
-      display:inline-block;
-      margin-top:12px;
-      color:white;
-      text-decoration:none;
-      font-weight:bold;
-    }
+.header h1{
+  font-size: clamp(1.9rem, 4vw, 2.7rem);
+  margin-bottom:10px;
+  color:#0891b2;
+}
 
-    .top-link:hover{
-      text-decoration:underline;
-    }
+.header p{
+  color:#0f766e;
+  opacity:0.9;
+}
 
-    .content{
-      padding:25px;
-    }
+.top-link{
+  display:inline-block;
+  margin-top:12px;
+  color:#0891b2;
+  text-decoration:none;
+  font-weight:bold;
+}
 
-    .question{
-      background:#f8feff;
-      border:1px solid #bae6fd;
-      border-radius:18px;
-      padding:18px;
-      margin-bottom:18px;
-    }
+.stats-bar{
+  display:flex;
+  flex-wrap:wrap;
+  gap:12px;
+  justify-content:center;
+  margin-bottom:20px;
+}
 
-    .question h3{
-      font-size:1.05rem;
-      line-height:1.5;
-      margin-bottom:14px;
-      color:#0f766e;
-    }
+.stat-box{
+  background:#fff;
+  border:1px solid #bae6fd;
+  border-radius:14px;
+  padding:12px 18px;
+  min-width:150px;
+  text-align:center;
+}
 
-    .question p{
-      margin-bottom:10px;
-      color:#334155;
-      line-height:1.5;
-    }
+.stat-label{
+  display:block;
+  font-size:0.9rem;
+  color:#0891b2;
+  margin-bottom:4px;
+  font-weight:bold;
+}
 
-    .option{
-      display:block;
-      margin:10px 0;
-      padding:10px 12px;
-      border-radius:12px;
-      cursor:pointer;
-      transition:0.2s ease;
-      border:1px solid transparent;
-      color:#1f2937;
-    }
+.stat-value{
+  display:block;
+  font-size:1.15rem;
+  color:#0f172a;
+  font-weight:bold;
+}
 
-    .option:hover{
-      background:#ecfeff;
-      border-color:#67e8f9;
-    }
+.question{
+  display:none;
+  background:#f8feff;
+  border:1px solid #bae6fd;
+  border-radius:20px;
+  padding:20px;
+  margin-bottom:18px;
+}
 
-    .option input{
-      margin-right:10px;
-      accent-color:#06b6d4;
-    }
+.question.active{
+  display:block;
+}
 
-    .buttons{
-      display:flex;
-      flex-wrap:wrap;
-      gap:12px;
-      justify-content:center;
-      margin-top:25px;
-    }
+.question h3{
+  font-size:1.08rem;
+  line-height:1.6;
+  color:#0f766e;
+  margin-bottom:14px;
+}
 
-    button{
-      border:none;
-      border-radius:14px;
-      padding:13px 22px;
-      font-size:1rem;
-      font-weight:bold;
-      cursor:pointer;
-      transition:0.2s ease;
-    }
+.question p{
+  margin-bottom:14px;
+  line-height:1.6;
+  color:#334155;
+}
 
-    .btn-primary{
-      background:#0891b2;
-      color:white;
-    }
+.option{
+  display:block;
+  background:#ecfeff;
+  padding:12px 14px;
+  margin:10px 0;
+  border-radius:12px;
+  cursor:pointer;
+  transition:0.2s;
+  border:1px solid transparent;
+}
 
-    .btn-primary:hover{
-      background:#0e7490;
-    }
+.option:hover{
+  background:#cffafe;
+}
 
-    .btn-secondary{
-      background:#cffafe;
-      color:#0f766e;
-    }
+.option.selected{
+  background:#06b6d4;
+  color:white;
+}
 
-    .btn-secondary:hover{
-      background:#a5f3fc;
-    }
+.option.correct-answer{
+  background:#dcfce7 !important;
+  color:#166534 !important;
+}
 
-    .result{
-      margin-top:25px;
-      padding:20px;
-      border-radius:18px;
-      background:#f0fdfa;
-      border:1px solid #99f6e4;
-      text-align:center;
-      display:none;
-    }
+.option.wrong-answer{
+  background:#fee2e2 !important;
+  color:#991b1b !important;
+}
 
-    .result h2{
-      margin-bottom:10px;
-      color:#0f766e;
-    }
+.option input{
+  display:none;
+}
 
-    .result p{
-      font-size:1.08rem;
-      line-height:1.6;
-      color:#134e4a;
-    }
+.navigation{
+  display:flex;
+  justify-content:center;
+  gap:12px;
+  margin-top:18px;
+}
 
-    .review{
-      margin-top:18px;
-      text-align:left;
-      color:#1f2937;
-    }
+button{
+  border:none;
+  border-radius:14px;
+  padding:12px 20px;
+  font-size:1rem;
+  font-weight:bold;
+  cursor:pointer;
+}
 
-    .review-item{
-      background:#ffffff;
-      border:1px solid #ccfbf1;
-      border-radius:12px;
-      padding:12px;
-      margin-bottom:10px;
-    }
+.prev{
+  background:#a5f3fc;
+  color:#0f766e;
+}
 
-    .correct{
-      color:#15803d;
-      font-weight:bold;
-    }
+.next{
+  background:#06b6d4;
+  color:white;
+}
 
-    .incorrect{
-      color:#b91c1c;
-      font-weight:bold;
-    }
+.finish{
+  background:#0891b2;
+  color:white;
+}
 
-    .note{
-      font-size:0.95rem;
-      color:#475569;
-      margin-top:8px;
-    }
+.actions{
+  display:flex;
+  justify-content:center;
+  gap:12px;
+  margin-top:25px;
+}
 
-    input[type="text"]{
-      width:100%;
-      padding:12px;
-      border:1px solid #cbd5e1;
-      border-radius:12px;
-      font-size:1rem;
-      margin-top:8px;
-    }
+.btn-primary{
+  background:#0891b2;
+  color:white;
+}
 
-    input[type="text"]:focus{
-      outline:none;
-      border-color:#06b6d4;
-      box-shadow:0 0 0 3px rgba(6,182,212,0.15);
-    }
-    .party-grid{
+.btn-secondary{
+  background:#cffafe;
+  color:#0f766e;
+}
+
+.result{
+  margin-top:25px;
+  padding:20px;
+  border-radius:18px;
+  background:#f0fdfa;
+  border:1px solid #99f6e4;
+  display:none;
+}
+
+.review-item{
+  background:white;
+  border-radius:14px;
+  padding:14px;
+  margin-bottom:12px;
+}
+
+.review-item.correcta{
+  border-left:6px solid #22c55e;
+}
+
+.review-item.incorrecta{
+  border-left:6px solid #ef4444;
+}
+
+.review-item.sin-responder{
+  border-left:6px solid #f59e0b;
+}
+
+.explicacion{
+  margin-top:8px;
+  padding:10px;
+  background:#f8fafc;
+  border-radius:10px;
+}
+
+.party-grid{
   display:grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
   gap:14px;
   margin-top:18px;
 }
@@ -229,401 +253,444 @@
   font-weight:bold;
   text-align:center;
 }
-  </style>
+
+</style>
 </head>
+
 <body>
-  <div class="container">
-    <div class="header">
-      <h1>Química - Examen 1</h1>
-      <p>Versión digital interactiva</p>
-      <a class="top-link" href="../quimica.html">← Volver a Química</a>
-    </div>
 
-    <div class="content">
-      <form id="quizForm">
+<div class="container">
 
-        <div class="question">
-          <h3>1. De moles a átomos</h3>
-          <p>Convertir 2.5 moles de Hierro (Fe) a átomos de Hierro.</p>
-          <label class="option"><input type="radio" name="q1" value="a"> A. 1.5055 × 10²³ átomos</label>
-          <label class="option"><input type="radio" name="q1" value="b"> B. 1.5055 × 10²⁴ átomos</label>
-          <label class="option"><input type="radio" name="q1" value="c"> C. 1.5055 × 10²⁵ átomos</label>
-          <label class="option"><input type="radio" name="q1" value="d"> D. 6.022 × 10²³ átomos</label>
-        </div>
-
-        <div class="question">
-          <h3>2. De moléculas a moles</h3>
-          <p>Convertir 1.2044 × 10²⁴ moléculas de H₂O a moles de agua.</p>
-          <label class="option"><input type="radio" name="q2" value="a"> A. 1 mol</label>
-          <label class="option"><input type="radio" name="q2" value="b"> B. 2 mol</label>
-          <label class="option"><input type="radio" name="q2" value="c"> C. 3 mol</label>
-          <label class="option"><input type="radio" name="q2" value="d"> D. 0.5 mol</label>
-        </div>
-
-        <div class="question">
-          <h3>3. De moles a iones</h3>
-          <p>Convertir 0.5 moles de NaCl a iones de sodio (Na⁺).</p>
-          <label class="option"><input type="radio" name="q3" value="a"> A. 3.011 × 10²³ iones</label>
-          <label class="option"><input type="radio" name="q3" value="b"> B. 6.022 × 10²³ iones</label>
-          <label class="option"><input type="radio" name="q3" value="c"> C. 1.2044 × 10²⁴ iones</label>
-          <label class="option"><input type="radio" name="q3" value="d"> D. 0.5 iones</label>
-        </div>
-
-        <div class="question">
-          <h3>4. De átomos a moles</h3>
-          <p>Convertir 3.011 × 10²³ átomos de Carbono (C) a moles de Carbono.</p>
-          <label class="option"><input type="radio" name="q4" value="a"> A. 0.25 mol</label>
-          <label class="option"><input type="radio" name="q4" value="b"> B. 0.5 mol</label>
-          <label class="option"><input type="radio" name="q4" value="c"> C. 1 mol</label>
-          <label class="option"><input type="radio" name="q4" value="d"> D. 2 mol</label>
-        </div>
-
-        <div class="question">
-          <h3>5. De mol a gramo</h3>
-          <p>Convertir 3 moles de CO₂ a gramos de CO₂. Masa molar: 44.01 g/mol.</p>
-          <label class="option"><input type="radio" name="q5" value="a"> A. 44.01 g</label>
-          <label class="option"><input type="radio" name="q5" value="b"> B. 88.02 g</label>
-          <label class="option"><input type="radio" name="q5" value="c"> C. 132.03 g</label>
-          <label class="option"><input type="radio" name="q5" value="d"> D. 146.03 g</label>
-        </div>
-
-        <div class="question">
-          <h3>6. De gramo a miligramo</h3>
-          <p>Convertir 0.75 gramos de azúcar a miligramos.</p>
-          <label class="option"><input type="radio" name="q6" value="a"> A. 7.5 mg</label>
-          <label class="option"><input type="radio" name="q6" value="b"> B. 75 mg</label>
-          <label class="option"><input type="radio" name="q6" value="c"> C. 750 mg</label>
-          <label class="option"><input type="radio" name="q6" value="d"> D. 7500 mg</label>
-        </div>
-
-        <div class="question">
-          <h3>7. De litro a mililitro</h3>
-          <p>Convertir 1.5 litros de agua a mililitros.</p>
-          <label class="option"><input type="radio" name="q7" value="a"> A. 15 mL</label>
-          <label class="option"><input type="radio" name="q7" value="b"> B. 150 mL</label>
-          <label class="option"><input type="radio" name="q7" value="c"> C. 1500 mL</label>
-          <label class="option"><input type="radio" name="q7" value="d"> D. 15000 mL</label>
-        </div>
-
-        <div class="question">
-          <h3>8. De kilogramo a gramo</h3>
-          <p>Convertir 0.2 kilogramos de sal a gramos.</p>
-          <label class="option"><input type="radio" name="q8" value="a"> A. 20 g</label>
-          <label class="option"><input type="radio" name="q8" value="b"> B. 200 g</label>
-          <label class="option"><input type="radio" name="q8" value="c"> C. 2000 g</label>
-          <label class="option"><input type="radio" name="q8" value="d"> D. 0.2 g</label>
-        </div>
-
-        <div class="question">
-          <h3>9. De miligramo a gramo</h3>
-          <p>Convertir 500 miligramos de vitamina C a gramos.</p>
-          <label class="option"><input type="radio" name="q9" value="a"> A. 0.05 g</label>
-          <label class="option"><input type="radio" name="q9" value="b"> B. 0.5 g</label>
-          <label class="option"><input type="radio" name="q9" value="c"> C. 5 g</label>
-          <label class="option"><input type="radio" name="q9" value="d"> D. 50 g</label>
-        </div>
-
-        <div class="question">
-          <h3>10. De gramo a mol</h3>
-          <p>Convertir 98 gramos de H₂SO₄ a moles. Masa molar aproximada: 98.09 g/mol.</p>
-          <label class="option"><input type="radio" name="q10" value="a"> A. 0.5 mol</label>
-          <label class="option"><input type="radio" name="q10" value="b"> B. 1 mol</label>
-          <label class="option"><input type="radio" name="q10" value="c"> C. 2 mol</label>
-          <label class="option"><input type="radio" name="q10" value="d"> D. 9.8 mol</label>
-        </div>
-
-        <div class="question">
-          <h3>11. Reacción química</h3>
-          <p>En la reacción Zn(s) + 2HCl(ac) → ZnCl₂(ac) + H₂(g), la afirmación “en los reactivos hay una sustancia gaseosa” es:</p>
-          <label class="option"><input type="radio" name="q11" value="a"> A. Verdadera</label>
-          <label class="option"><input type="radio" name="q11" value="b"> B. Falsa</label>
-        </div>
-
-        <div class="question">
-          <h3>12. Reacción reversible</h3>
-          <p>En la ecuación 2Fe(s) + 3Cl₂(g) ⇌ 2FeCl₃(s), la reacción es:</p>
-          <label class="option"><input type="radio" name="q12" value="a"> A. Irreversible</label>
-          <label class="option"><input type="radio" name="q12" value="b"> B. Reversible</label>
-          <label class="option"><input type="radio" name="q12" value="c"> C. De descomposición</label>
-          <label class="option"><input type="radio" name="q12" value="d"> D. Sin productos</label>
-        </div>
-
-        <div class="question">
-          <h3>13. Productos formados</h3>
-          <p>En Zn(s) + 2HCl(ac) → ZnCl₂(ac) + H₂(g), uno de los productos es:</p>
-          <label class="option"><input type="radio" name="q13" value="a"> A. Sólido</label>
-          <label class="option"><input type="radio" name="q13" value="b"> B. Plasma</label>
-          <label class="option"><input type="radio" name="q13" value="c"> C. Gas</label>
-          <label class="option"><input type="radio" name="q13" value="d"> D. Solo líquido</label>
-        </div>
-
-        <div class="question">
-          <h3>14. Estado físico del hidrógeno</h3>
-          <p>En la reacción Zn(s) + 2HCl(ac) → ZnCl₂(ac) + H₂(g), el estado físico del H₂ producido es:</p>
-          <label class="option"><input type="radio" name="q14" value="a"> A. Sólido</label>
-          <label class="option"><input type="radio" name="q14" value="b"> B. Acuoso</label>
-          <label class="option"><input type="radio" name="q14" value="c"> C. Líquido</label>
-          <label class="option"><input type="radio" name="q14" value="d"> D. Gaseoso</label>
-        </div>
-
-        <div class="question">
-          <h3>15. Subíndice (g)</h3>
-          <p>¿Qué indica el subíndice “(g)” junto al Cl₂?</p>
-          <label class="option"><input type="radio" name="q15" value="a"> A. Que el cloro es un gas</label>
-          <label class="option"><input type="radio" name="q15" value="b"> B. Que el cloro es un gramo</label>
-          <label class="option"><input type="radio" name="q15" value="c"> C. Que el cloro está en estado líquido</label>
-          <label class="option"><input type="radio" name="q15" value="d"> D. Que el cloro es un catalizador</label>
-        </div>
-
-        <div class="question">
-          <h3>16. Reacción correcta</h3>
-          <p>Para la reacción Zn(s) + 2HCl(ac) → ZnCl₂(ac) + H₂(g), ¿cuál afirmación es correcta?</p>
-          <label class="option"><input type="radio" name="q16" value="a"> A. El ZnCl₂ es un gas</label>
-          <label class="option"><input type="radio" name="q16" value="b"> B. Los reactivos son solo sólidos</label>
-          <label class="option"><input type="radio" name="q16" value="c"> C. La reacción produce gas hidrógeno</label>
-          <label class="option"><input type="radio" name="q16" value="d"> D. Es una reacción de síntesis</label>
-        </div>
-
-        <div class="question">
-          <h3>17. Configuración electrónica</h3>
-          <p>¿Cuál es la configuración electrónica correcta para el Litio (Li, Z = 3)?</p>
-          <label class="option"><input type="radio" name="q17" value="a"> A. 1s² 2p¹</label>
-          <label class="option"><input type="radio" name="q17" value="b"> B. 1s² 2s¹</label>
-          <label class="option"><input type="radio" name="q17" value="c"> C. 1s¹ 2s²</label>
-          <label class="option"><input type="radio" name="q17" value="d"> D. 1s² 2s² 2p¹</label>
-        </div>
-
-        <div class="question">
-          <h3>18. Identificación de elemento</h3>
-          <p>La configuración 1s² 2s² 2p⁶ 3s² 3p⁴ corresponde a:</p>
-          <label class="option"><input type="radio" name="q18" value="a"> A. Silicio (Si)</label>
-          <label class="option"><input type="radio" name="q18" value="b"> B. Fósforo (P)</label>
-          <label class="option"><input type="radio" name="q18" value="c"> C. Azufre (S)</label>
-          <label class="option"><input type="radio" name="q18" value="d"> D. Cloro (Cl)</label>
-        </div>
-
-        <div class="question">
-          <h3>19. Identificación de elemento</h3>
-          <p>La configuración 1s² 2s² 2p⁶ 3s² 3p⁶ 4s² 3d⁷ corresponde a:</p>
-          <label class="option"><input type="radio" name="q19" value="a"> A. Manganeso (Mn)</label>
-          <label class="option"><input type="radio" name="q19" value="b"> B. Cobalto (Co)</label>
-          <label class="option"><input type="radio" name="q19" value="c"> C. Níquel (Ni)</label>
-          <label class="option"><input type="radio" name="q19" value="d"> D. Hierro (Fe)</label>
-        </div>
-
-        <div class="question">
-          <h3>20. Balanceo</h3>
-          <p>En la ecuación FeCl₃ + Na₂CO₃ → Fe₂(CO₃)₃ + NaCl, la sumatoria de coeficientes balanceados es:</p>
-          <label class="option"><input type="radio" name="q20" value="a"> A. 8</label>
-          <label class="option"><input type="radio" name="q20" value="b"> B. 10</label>
-          <label class="option"><input type="radio" name="q20" value="c"> C. 12</label>
-          <label class="option"><input type="radio" name="q20" value="d"> D. 14</label>
-          
-        </div>
-
-        <div class="buttons">
-          <button type="button" class="btn-primary" onclick="calificarExamen()">Calificar examen</button>
-          <button type="reset" class="btn-secondary" onclick="reiniciarExamen()">Reiniciar</button>
-        </div>
-
-        <div class="result" id="resultado">
-          <h2>Resultado</h2>
-          <p id="puntajeTexto"></p>
-          <div class="review" id="revision"></div>
-        </div>
-
-        <div class="result" id="resultadoParty" style="display:none;">
-  <h2>Resultado final de la sala</h2>
-  <div id="partyResultadoContenido"></div>
+<div class="header">
+<h1>🧪 Química - Examen 1</h1>
+<p>Versión digital interactiva</p>
+<a class="top-link" href="../quimica.html">
+← Volver a Química
+</a>
 </div>
 
-      </form>
-    </div>
-  </div>
+<div class="stats-bar">
 
-  <script>
-  const respuestasCorrectas = {
-    q1:"b",
-    q2:"b",
-    q3:"a",
-    q4:"b",
-    q5:"c",
-    q6:"c",
-    q7:"c",
-    q8:"b",
-    q9:"b",
-    q10:"b",
-    q11:"b",
-    q12:"b",
-    q13:"c",
-    q14:"d",
-    q15:"a",
-    q16:"c",
-    q17:"b",
-    q18:"c",
-    q19:"b",
-    q20:"c"
-  };
+<div class="stat-box">
+<span class="stat-label">
+Pregunta actual
+</span>
 
-  const textosCorrectos = {
-    q1:"B. 1.5055 × 10²⁴ átomos",
-    q2:"B. 2 mol",
-    q3:"A. 3.011 × 10²³ iones",
-    q4:"B. 0.5 mol",
-    q5:"C. 132.03 g",
-    q6:"C. 750 mg",
-    q7:"C. 1500 mL",
-    q8:"B. 200 g",
-    q9:"B. 0.5 g",
-    q10:"B. 1 mol",
-    q11:"B. Falsa",
-    q12:"B. Reversible",
-    q13:"C. Gas",
-    q14:"D. Gaseoso",
-    q15:"A. Que el cloro es un gas",
-    q16:"C. La reacción produce gas hidrógeno",
-    q17:"B. 1s² 2s¹",
-    q18:"C. Azufre (S)",
-    q19:"B. Cobalto (Co)",
-    q20:"C. 12"
-  };
+<span class="stat-value">
+<span id="qNum">1</span> / 20
+</span>
+</div>
 
-  const explicaciones = {
-    q1:"Para pasar de moles a átomos se multiplica por el número de Avogadro: 2.5 × 6.022 × 10²³ = 1.5055 × 10²⁴.",
-    q2:"Para pasar de moléculas a moles se divide entre 6.022 × 10²³. El resultado es 2 moles.",
-    q3:"Cada unidad de NaCl aporta un ion Na⁺. Entonces 0.5 mol de NaCl produce 0.5 mol de Na⁺, que equivale a 3.011 × 10²³ iones.",
-    q4:"3.011 × 10²³ es la mitad de 6.022 × 10²³, por eso corresponde a 0.5 mol.",
-    q5:"Gramos = moles × masa molar. 3 × 44.01 = 132.03 g.",
-    q6:"1 gramo = 1000 mg. Entonces 0.75 g = 750 mg.",
-    q7:"1 litro = 1000 mL. Entonces 1.5 L = 1500 mL.",
-    q8:"1 kg = 1000 g. Entonces 0.2 kg = 200 g.",
-    q9:"1000 mg = 1 g. Entonces 500 mg = 0.5 g.",
-    q10:"Moles = gramos ÷ masa molar. 98 ÷ 98.09 ≈ 1 mol.",
-    q11:"En los reactivos aparece Zn(s) y HCl(ac). No hay gas en los reactivos, así que es falsa.",
-    q12:"La doble flecha ⇌ indica que la reacción es reversible.",
-    q13:"Uno de los productos es H₂(g), y la g indica que está en estado gaseoso.",
-    q14:"El símbolo H₂(g) indica que el hidrógeno producido está en estado gaseoso.",
-    q15:"El subíndice o símbolo (g) indica estado gaseoso.",
-    q16:"La ecuación muestra que se forma H₂(g), por eso la afirmación correcta es que produce gas hidrógeno.",
-    q17:"El litio tiene 3 electrones: 1s² 2s¹.",
-    q18:"2 + 2 + 6 + 2 + 4 = 16 electrones, así que corresponde al azufre.",
-    q19:"2 + 2 + 6 + 2 + 6 + 2 + 7 = 27 electrones, que corresponde al cobalto.",
-    q20:"La ecuación balanceada es 2FeCl₃ + 3Na₂CO₃ → Fe₂(CO₃)₃ + 6NaCl. La suma es 2 + 3 + 1 + 6 = 12."
-  };
+<div class="stat-box">
+<span class="stat-label">
+Progreso
+</span>
 
-  function limpiarEstadosVisuales() {
-    document.querySelectorAll(".question").forEach(q => {
-      q.classList.remove("correcta", "incorrecta", "sin-responder");
-    });
-  }
+<span class="stat-value" id="progress">
+0 / 20
+</span>
+</div>
 
-  function calificarExamen() {
-    let total = Object.keys(respuestasCorrectas).length;
-    let correctas = 0;
-    let incorrectas = 0;
-    let sinResponder = 0;
-    let respondidas = 0;
-    let revisionHTML = "";
+</div>
 
-    limpiarEstadosVisuales();
+<form id="quizForm">
 
-    for (let pregunta in respuestasCorrectas) {
-      const seleccionada = document.querySelector(`input[name="${pregunta}"]:checked`);
-      const bloquePregunta = document.querySelector(`input[name="${pregunta}"]`).closest(".question");
-      const numero = pregunta.replace("q", "");
+<div class="question active">
 
-      if (seleccionada) {
-        respondidas++;
-        const textoMarcado = seleccionada.parentElement.textContent.trim();
+<h3>1. De moles a átomos</h3>
 
-        if (seleccionada.value === respuestasCorrectas[pregunta]) {
-          correctas++;
-          bloquePregunta.classList.add("correcta");
+<p>
+Convertir 2.5 moles de Hierro (Fe)
+a átomos de Hierro.
+</p>
 
-          revisionHTML += `
-            <div class="review-item correcta">
-              <h4>Pregunta ${numero}: ✅ Correcta</h4>
-              <p><strong>Tu respuesta:</strong> ${textoMarcado}</p>
-              <div class="explicacion"><strong>Retroalimentación:</strong> ${explicaciones[pregunta]}</div>
-            </div>
-          `;
-        } else {
-          incorrectas++;
-          bloquePregunta.classList.add("incorrecta");
+<label class="option">
+<input type="radio" name="q1" value="a">
+A. 1.5055 × 10²³ átomos
+</label>
 
-          revisionHTML += `
-            <div class="review-item incorrecta">
-              <h4>Pregunta ${numero}: ❌ Incorrecta</h4>
-              <p><strong>Tu respuesta:</strong> ${textoMarcado}</p>
-              <p><strong>Respuesta correcta:</strong> ${textosCorrectos[pregunta]}</p>
-              <div class="explicacion"><strong>Retroalimentación:</strong> ${explicaciones[pregunta]}</div>
-            </div>
-          `;
-        }
-      } else {
-        sinResponder++;
-        bloquePregunta.classList.add("sin-responder");
+<label class="option">
+<input type="radio" name="q1" value="b">
+B. 1.5055 × 10²⁴ átomos
+</label>
 
-        revisionHTML += `
-          <div class="review-item sin-responder">
-            <h4>Pregunta ${numero}: ⚠️ Sin responder</h4>
-            <p><strong>Respuesta correcta:</strong> ${textosCorrectos[pregunta]}</p>
-            <div class="explicacion"><strong>Retroalimentación:</strong> ${explicaciones[pregunta]}</div>
-          </div>
-        `;
-      }
-    }
+<label class="option">
+<input type="radio" name="q1" value="c">
+C. 1.5055 × 10²⁵ átomos
+</label>
 
-    const porcentaje = ((correctas / total) * 100).toFixed(1);
+<label class="option">
+<input type="radio" name="q1" value="d">
+D. 6.022 × 10²³ átomos
+</label>
 
-    if (typeof window.enviarResultadoFinal === "function") {
-      window.enviarResultadoFinal({
-        correctas,
-        incorrectas,
-        sinResponder,
-        total,
-        porcentaje: Number(porcentaje)
-      });
-    }
+</div>
 
-    document.getElementById("puntajeTexto").innerHTML = `
-      Respondiste <strong>${respondidas}</strong> de <strong>${total}</strong> preguntas.<br>
-      Obtuviste <strong>${correctas}</strong> correctas de <strong>${total}</strong>.<br>
-      Tu nota fue: <strong>${porcentaje}%</strong>
-    `;
+<!-- PEGA AQUÍ TODAS LAS DEMÁS PREGUNTAS EXACTAMENTE IGUAL -->
 
-    document.getElementById("revision").innerHTML = `
-      <div class="review-summary">
-        <div class="summary-box">
-          <h4>Correctas</h4>
-          <p>${correctas}</p>
-        </div>
-        <div class="summary-box">
-          <h4>Incorrectas</h4>
-          <p>${incorrectas}</p>
-        </div>
-        <div class="summary-box">
-          <h4>Sin responder</h4>
-          <p>${sinResponder}</p>
-        </div>
-      </div>
-      ${revisionHTML}
-    `;
+<div class="actions">
 
-    document.getElementById("resultado").style.display = "block";
-    document.getElementById("resultado").scrollIntoView({ behavior: "smooth" });
-  }
+<button type="button"
+class="btn-primary"
+onclick="calificarExamen()">
+Calificar examen
+</button>
 
-  function reiniciarExamen() {
-    document.getElementById("resultado").style.display = "none";
-    document.getElementById("revision").innerHTML = "";
-    document.getElementById("puntajeTexto").innerHTML = "";
-    document.getElementById("resultadoParty").style.display = "none";
-    limpiarEstadosVisuales();
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  }
+<button type="button"
+class="btn-secondary"
+onclick="reiniciarExamen()">
+Reiniciar
+</button>
+
+</div>
+
+<div class="result" id="resultado">
+
+<h2>Resultado</h2>
+
+<p id="puntajeTexto"></p>
+
+<div id="revision"></div>
+
+</div>
+
+<div class="result"
+id="resultadoParty"
+style="display:none;">
+
+<h2>Resultado final de la sala</h2>
+
+<div id="partyResultadoContenido"></div>
+
+</div>
+
+</form>
+
+</div>
+
+<script>
+
+const respuestasCorrectas = {
+q1:"b"
+};
+
+const textosCorrectos = {
+q1:"B. 1.5055 × 10²⁴ átomos"
+};
+
+const explicaciones = {
+q1:"Para pasar de moles a átomos se multiplica por el número de Avogadro."
+};
+
+let current = 0;
+let examenFinalizado = false;
+
+const preguntas =
+document.querySelectorAll(".question");
+
+function actualizarProgreso(){
+
+const respondidas =
+document.querySelectorAll(
+"input[type='radio']:checked"
+).length;
+
+document.getElementById("progress").textContent =
+`${respondidas} / ${preguntas.length}`;
+
+document.getElementById("qNum").textContent =
+current + 1;
+
+}
+
+function mostrarPregunta(index){
+
+preguntas.forEach((p,i)=>{
+
+p.classList.remove("active");
+
+if(i === index){
+p.classList.add("active");
+}
+
+});
+
+actualizarProgreso();
+
+}
+
+function siguientePregunta(){
+
+if(current < preguntas.length - 1){
+
+current++;
+
+mostrarPregunta(current);
+
+}
+
+}
+
+function anteriorPregunta(){
+
+if(current > 0){
+
+current--;
+
+mostrarPregunta(current);
+
+}
+
+}
+
+document.querySelectorAll(".option")
+.forEach(option=>{
+
+option.addEventListener("click",()=>{
+
+if(examenFinalizado) return;
+
+const radio =
+option.querySelector("input");
+
+radio.checked = true;
+
+const question =
+option.closest(".question");
+
+question.querySelectorAll(".option")
+.forEach(o=>{
+o.classList.remove("selected");
+});
+
+option.classList.add("selected");
+
+actualizarProgreso();
+
+});
+
+});
+
+function limpiarEstadosVisuales(){
+
+document.querySelectorAll(".option")
+.forEach(o=>{
+
+o.classList.remove(
+"correct-answer",
+"wrong-answer"
+);
+
+});
+
+}
+
+function calificarExamen(){
+
+if(examenFinalizado) return;
+
+examenFinalizado = true;
+
+let total =
+Object.keys(respuestasCorrectas).length;
+
+let correctas = 0;
+
+let revisionHTML = "";
+
+limpiarEstadosVisuales();
+
+for(let pregunta in respuestasCorrectas){
+
+const seleccionada =
+document.querySelector(
+`input[name="${pregunta}"]:checked`
+);
+
+const opciones =
+document.querySelectorAll(
+`input[name="${pregunta}"]`
+);
+
+const numero =
+pregunta.replace("q","");
+
+opciones.forEach(op=>{
+
+const label =
+op.closest(".option");
+
+if(op.value ===
+respuestasCorrectas[pregunta]){
+
+label.classList.add(
+"correct-answer"
+);
+
+}
+
+});
+
+if(seleccionada){
+
+const labelSeleccionado =
+seleccionada.closest(".option");
+
+if(seleccionada.value ===
+respuestasCorrectas[pregunta]){
+
+correctas++;
+
+revisionHTML += `
+<div class="review-item correcta">
+
+<h4>
+Pregunta ${numero}: ✅ Correcta
+</h4>
+
+<div class="explicacion">
+${explicaciones[pregunta]}
+</div>
+
+</div>
+`;
+
+}else{
+
+labelSeleccionado.classList.add(
+"wrong-answer"
+);
+
+revisionHTML += `
+<div class="review-item incorrecta">
+
+<h4>
+Pregunta ${numero}: ❌ Incorrecta
+</h4>
+
+<div class="explicacion">
+
+<strong>Respuesta correcta:</strong>
+
+${textosCorrectos[pregunta]}
+
+<br><br>
+
+${explicaciones[pregunta]}
+
+</div>
+
+</div>
+`;
+
+}
+
+}else{
+
+revisionHTML += `
+<div class="review-item sin-responder">
+
+<h4>
+Pregunta ${numero}: ⚠️ Sin responder
+</h4>
+
+<div class="explicacion">
+
+<strong>Respuesta correcta:</strong>
+
+${textosCorrectos[pregunta]}
+
+</div>
+
+</div>
+`;
+
+}
+
+}
+
+const porcentaje =
+((correctas / total) * 100)
+.toFixed(1);
+
+document.getElementById("puntajeTexto")
+.innerHTML = `
+
+Obtuviste
+<strong>${correctas}</strong>
+
+de
+
+<strong>${total}</strong>
+
+correctas.<br>
+
+Nota final:
+
+<strong>${porcentaje}%</strong>
+
+`;
+
+document.getElementById("revision")
+.innerHTML = revisionHTML;
+
+document.getElementById("resultado")
+.style.display = "block";
+
+mostrarPregunta(current);
+
+}
+
+function reiniciarExamen(){
+
+location.reload();
+
+}
+
+preguntas.forEach((pregunta,index)=>{
+
+const nav =
+document.createElement("div");
+
+nav.className = "navigation";
+
+nav.innerHTML = `
+
+<button class="prev"
+onclick="anteriorPregunta()"
+${index===0 ? "disabled" : ""}>
+Anterior
+</button>
+
+${index===preguntas.length-1
+
+? `<button class="finish"
+onclick="calificarExamen()">
+Finalizar
+</button>`
+
+: `<button class="next"
+onclick="siguientePregunta()">
+Siguiente
+</button>`
+
+}
+
+`;
+
+pregunta.appendChild(nav);
+
+});
+
+mostrarPregunta(0);
+
 </script>
-<script type="module" src="../party/party-timer.js"></script>
-<script type="module" src="../party/party-resultados.js"></script>
+
+<script type="module"
+src="../party/party-timer.js"></script>
+
+<script type="module"
+src="../party/party-resultados.js"></script>
+
 </body>
 </html>
