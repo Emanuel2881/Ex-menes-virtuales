@@ -2,9 +2,11 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Química</title>
+
   <style>
+
     *{
       margin:0;
       padding:0;
@@ -15,7 +17,7 @@
       font-family: Arial, Helvetica, sans-serif;
       min-height:100vh;
       background: linear-gradient(135deg, #ecfeff, #f0f9ff, #cffafe);
-      color:#164e63;
+      color:#0f172a;
     }
 
     header{
@@ -25,7 +27,7 @@
 
     header h1{
       font-size: clamp(2rem, 5vw, 3.2rem);
-      color:#0f766e;
+      color:#0891b2;
       margin-bottom:12px;
     }
 
@@ -34,21 +36,21 @@
       margin:auto;
       font-size:1.05rem;
       line-height:1.6;
-      color:#155e75;
+      color:#0f766e;
     }
 
     .container{
-      width:min(1100px, 92%);
+      width:min(1150px, 92%);
       margin:0 auto 50px;
     }
 
     .top-box{
-      background: rgba(255,255,255,0.82);
+      background: rgba(255,255,255,0.9);
       backdrop-filter: blur(8px);
-      border:1px solid rgba(255,255,255,0.6);
+      border:1px solid rgba(255,255,255,0.7);
       border-radius:24px;
       padding:28px;
-      box-shadow:0 10px 30px rgba(8,145,178,0.10);
+      box-shadow:0 10px 30px rgba(8,145,178,0.12);
       margin-bottom:30px;
       text-align:center;
     }
@@ -74,7 +76,7 @@
 
     .back-btn{
       text-decoration:none;
-      background:#0f766e;
+      background:#0891b2;
       color:white;
       padding:12px 18px;
       border-radius:12px;
@@ -83,28 +85,76 @@
     }
 
     .back-btn:hover{
-      background:#115e59;
+      background:#0e7490;
       transform:translateY(-2px);
+    }
+
+    .sources-box{
+      background: rgba(255,255,255,0.92);
+      border:1px solid #bae6fd;
+      border-radius:20px;
+      padding:20px;
+      margin-bottom:28px;
+      box-shadow:0 8px 24px rgba(0,0,0,0.06);
+    }
+
+    .sources-header{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      margin-bottom:12px;
+    }
+
+    .sources-header h4{
+      color:#0891b2;
+      font-size:1.2rem;
+    }
+
+    .sources-header button{
+      border:none;
+      background:#06b6d4;
+      color:white;
+      padding:10px 14px;
+      border-radius:10px;
+      cursor:pointer;
+      font-weight:bold;
+    }
+
+    .sources-header button:hover{
+      background:#0891b2;
+    }
+
+    #sourcesContent{
+      color:#0f172a;
+      line-height:1.8;
+    }
+
+    #sourcesContent div{
+      background:#f0f9ff;
+      border:1px solid #bae6fd;
+      border-radius:10px;
+      padding:10px 12px;
+      margin-bottom:10px;
     }
 
     .grid{
       display:grid;
-      grid-template-columns:repeat(auto-fit, minmax(250px, 1fr));
+      grid-template-columns:repeat(auto-fit, minmax(260px, 1fr));
       gap:22px;
     }
 
     .card{
-      background: rgba(255,255,255,0.92);
+      background: rgba(255,255,255,0.94);
       border-radius:22px;
       padding:24px;
       box-shadow:0 10px 25px rgba(0,0,0,0.08);
       transition: transform 0.25s ease, box-shadow 0.25s ease;
-      border:1px solid rgba(255,255,255,0.7);
+      border:1px solid rgba(255,255,255,0.8);
     }
 
     .card:hover{
       transform: translateY(-6px);
-      box-shadow:0 14px 32px rgba(8,145,178,0.14);
+      box-shadow:0 14px 32px rgba(8,145,178,0.18);
     }
 
     .card .icon{
@@ -113,7 +163,7 @@
     }
 
     .card h3{
-      color:#0f766e;
+      color:#0891b2;
       margin-bottom:10px;
       font-size:1.3rem;
     }
@@ -122,7 +172,7 @@
       color:#334155;
       line-height:1.55;
       margin-bottom:18px;
-      min-height:88px;
+      min-height:100px;
     }
 
     .card a{
@@ -144,108 +194,212 @@
     footer{
       text-align:center;
       padding:20px;
-      color:#155e75;
+      color:#0f766e;
       font-size:0.95rem;
     }
 
     @media (max-width: 600px){
+
       .card p{
         min-height:auto;
       }
+
+      .sources-header{
+        flex-direction:column;
+        gap:10px;
+        align-items:flex-start;
+      }
+
     }
+
   </style>
 </head>
+
 <body>
 
-  <header>
-    <h1>Química</h1>
-    <p>
-      Aquí están organizados mis exámenes digitales de química para practicar de forma más clara,
-      ordenada e interactiva.
-    </p>
-  </header>
+<header>
 
-  <div class="container">
+  <h1>Química</h1>
 
-    <div class="top-box">
-      <h2>Exámenes disponibles</h2>
-      <p>
-        En este apartado puedo entrar a cada examen de química, resolverlo y revisar mi resultado al final.
-      </p>
-      <div class="actions">
-        <a href="index.html" class="back-btn">← Volver al inicio</a>
-      </div>
-    </div>
-
-    <div class="grid">
-
-      <div class="card">
-        <div class="icon">⚗️</div>
-        <h3>Examen 1</h3>
-        <p>
-          Examen de química con conversiones, reacciones químicas y configuración electrónica.
-          Ideal para practicar lo básico primero.
-        </p>
-        <a href="data/quimica-examen1.html">Abrir examen</a>
-      </div>
-
-      <div class="card">
-        <div class="icon">🧪</div>
-        <h3>Examen 2</h3>
-        <p>
-          Examen más completo con propiedades de la materia, enlaces químicos, tabla periódica,
-          cambios químicos, pH y reacciones redox.
-        </p>
-        <a href="data/quimica-examen2.html">Abrir examen</a>
-      </div>
-
-      <div class="card">
-        <div class="icon">🔬</div>
-        <h3>Examen 3</h3>
-        <p>
-          Examen refinado con preguntas de electronegatividad, número de oxidación,
-          nomenclatura, carbohidratos y configuración electrónica.
-        </p>
-        <a href="data/quimica-examen3.html">Abrir examen</a>
-      </div>
- 
-      <div class="card">
-        <div class="icon">📘</div>
-        <h3>Nomenclatura</h3>
-        <p>
-          Simulador de nomenclatura química para practicar tradicional, Stock y sistemática
-          con un repaso completo y preguntas interactivas.
-        </p>
-        <a href="data/nomenclatura.html">Abrir simulador</a>
-      </div>
-
-      <div class="card"> 
-  <div class="icon">🧪</div>
-  <h3>Estequiometría</h3>
   <p>
-    Simulador interactivo de estequiometría con conversiones completas (mol, gramos y moléculas),
-  resolución paso a paso, historial de cálculos y enfoque tipo examen.
+    Exámenes digitales de química enfocados en nomenclatura,
+    estructura atómica, enlaces químicos, estequiometría,
+    propiedades periódicas y simuladores avanzados.
   </p>
-  <a href="data/estequiometria.html">Abrir simulador</a>
-</div>
 
-      
-      <div class="card">
-        <div class="icon">📘</div>
-        <h3>Clase</h3>
-        <p>
-          Simulador de nomenclatura química para practicar tradicional, Stock y sistemática
-          con un repaso completo y preguntas interactivas.
-        </p>
-        <a href="data/clase-nomenclatura.html">Abrir simulador</a>
-      </div>
+</header>
 
+<div class="container">
+
+  <div class="top-box">
+
+    <h2>Exámenes disponibles</h2>
+
+    <p>
+      Aquí puedo practicar ejercicios y simuladores de química
+      con dificultad progresiva para reforzar conceptos básicos,
+      intermedios y avanzados.
+    </p>
+
+    <div class="actions">
+      <a href="index.html" class="back-btn">
+        ← Volver al inicio
+      </a>
     </div>
+
   </div>
 
-  <footer>
-    Química • Exámenes digitales
-  </footer>
+  <div class="sources-box" id="sourcesBox">
+
+    <div class="sources-header">
+
+      <h4>Fuentes utilizadas</h4>
+
+      <button onclick="toggleSources()" id="toggleBtn">
+        Ocultar
+      </button>
+
+    </div>
+
+    <div id="sourcesContent">
+
+      <div><strong>Q1</strong> → EXAMEN DE QUÍMICA</div>
+      <div><strong>Q2</strong> → EXAMEN QUIMICA 2</div>
+      <div><strong>Q3</strong> → Examen I – Química</div>
+      <div><strong>Q4</strong> → Química específica</div>
+      <div><strong>Q5</strong> → Examen biología-química medicina</div>
+      <div><strong>Q6</strong> → Estequiometría y conversiones</div>
+      <div><strong>Q7</strong> → Nomenclatura y valencias</div>
+      <div><strong>Q8</strong> → Simuladores y preguntas avanzadas</div>
+
+    </div>
+
+  </div>
+
+  <div class="grid">
+
+    <div class="card">
+      <div class="icon">⚛️</div>
+      <h3>Examen 1</h3>
+      <p>
+        Fundamentos básicos de química, propiedades de la materia,
+        estructura atómica y conceptos introductorios.
+      </p>
+      <a href="data/quimica-examen1.html">Abrir examen</a>
+    </div>
+
+    <div class="card">
+      <div class="icon">🧪</div>
+      <h3>Examen 2</h3>
+      <p>
+        Propiedades químicas, enlaces, partículas subatómicas
+        y conceptos generales de química básica.
+      </p>
+      <a href="data/quimica-examen2.html">Abrir examen</a>
+    </div>
+
+    <div class="card">
+      <div class="icon">📘</div>
+      <h3>Examen 3</h3>
+      <p>
+        Evaluación general de química con preguntas introductorias
+        sobre átomos, elementos y compuestos.
+      </p>
+      <a href="data/quimica-examen3.html">Abrir examen</a>
+    </div>
+
+    <div class="card">
+      <div class="icon">⚡</div>
+      <h3>Examen 4</h3>
+      <p>
+        Tabla periódica, configuración electrónica, protones,
+        electrones, neutrones y propiedades periódicas.
+      </p>
+      <a href="data/quimica-examen4.html">Abrir examen</a>
+    </div>
+
+    <div class="card">
+      <div class="icon">🧫</div>
+      <h3>Examen 5</h3>
+      <p>
+        Nomenclatura química, valencias, óxidos, hidróxidos,
+        ácidos, sales y formulación química.
+      </p>
+      <a href="data/quimica-examen5.html">Abrir examen</a>
+    </div>
+
+    <div class="card">
+      <div class="icon">⚖️</div>
+      <h3>Examen 6</h3>
+      <p>
+        Estequiometría, masa molar, conversiones químicas,
+        relaciones molares y balanceo de ecuaciones.
+      </p>
+      <a href="data/quimica-examen6.html">Abrir examen</a>
+    </div>
+
+    <div class="card">
+      <div class="icon">🔗</div>
+      <h3>Examen 7</h3>
+      <p>
+        Propiedades periódicas, electronegatividad,
+        configuración electrónica y enlaces químicos.
+      </p>
+      <a href="data/quimica-examen7.html">Abrir examen</a>
+    </div>
+
+    <div class="card">
+      <div class="icon">💀</div>
+      <h3>Examen 8</h3>
+      <p>
+        Simulador avanzado con enlaces covalentes, dativos,
+        oxidación, nomenclatura y cálculos químicos.
+      </p>
+      <a href="data/quimica-examen8.html">Abrir examen</a>
+    </div>
+
+    <div class="card">
+      <div class="icon">🏆</div>
+      <h3>Examen 9</h3>
+      <p>
+        Simulador final completo con todos los temas de química:
+        enlaces, estequiometría, tabla periódica y reacciones.
+      </p>
+      <a href="data/quimica-examen9.html">Abrir examen</a>
+    </div>
+
+  </div>
+
+</div>
+
+<footer>
+  Química • Exámenes digitales
+</footer>
+
+<script>
+
+function toggleSources(){
+
+  const content =
+  document.getElementById("sourcesContent");
+
+  const btn =
+  document.getElementById("toggleBtn");
+
+  if(content.style.display === "none"){
+
+    content.style.display = "block";
+    btn.textContent = "Ocultar";
+
+  }else{
+
+    content.style.display = "none";
+    btn.textContent = "Mostrar";
+
+  }
+
+}
+
+</script>
 
 </body>
-</html>
