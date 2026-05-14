@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Química - Examen 6</title>
+
+<style>
+
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+}
+
+body{
+  font-family: Arial, Helvetica, sans-serif;
+  background: linear-gradient(135deg,#ecfeff,#f0f9ff,#cffafe);
+  color:#0f172a;
+  min-height:100vh;
+  padding:30px 15px;
+}
+
+.container{
+  max-width:950px;
+  margin:auto;
+  background:rgba(255,255,255,0.95);
+  padding:25px;
+  border-radius:24px;
+  box-shadow:0 12px 35px rgba(0,0,0,0.08);
+}
+
+.header{
+  text-align:center;
+  margin-bottom:20px;
+}
+
+.header h1{
+  font-size: clamp(1.9rem,4vw,2.7rem);
+  margin-bottom:10px;
+  color:#0f766e;
+}
+
+.header p{
+  color:#0f766e;
+  opacity:0.9;
+}
+
+.top-link{
+  display:inline-block;
+  margin-top:12px;
+  color:#0891b2;
+  text-decoration:none;
+  font-weight:bold;
+}
+
+.tools-buttons{
+  display:flex;
+  justify-content:center;
+  gap:12px;
+  flex-wrap:wrap;
+  margin:20px 0;
+}
+
+.tool-btn{
+  background:#0891b2;
+  color:white;
+  border:none;
+  border-radius:14px;
+  padding:12px 18px;
+  font-size:1rem;
+  font-weight:bold;
+  cursor:pointer;
+}
+
+.visual-box{
+  display:none;
+  background:#f8feff;
+  border:1px solid #bae6fd;
+  border-radius:18px;
+  padding:16px;
+  margin-bottom:20px;
+}
+
+.formula-card{
+  background:white;
+  border-left:5px solid #06b6d4;
+  padding:12px;
+  border-radius:10px;
+  margin-bottom:10px;
+  font-weight:bold;
+}
+
+.mass-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(120px,1fr));
+  gap:12px;
+}
+
+.mass-card{
+  background:white;
+  border:1px solid #bae6fd;
+  border-radius:14px;
+  padding:12px;
+  text-align:center;
+}
+
+.mass-card h4{
+  color:#0891b2;
+  margin-bottom:6px;
+}
+
+.stats-bar{
+  display:flex;
+  flex-wrap:wrap;
+  gap:12px;
+  justify-content:center;
+  margin-bottom:20px;
+}
+
+.stat-box{
+  background:#fff;
+  border:1px solid #bae6fd;
+  border-radius:14px;
+  padding:12px 18px;
+  min-width:150px;
+  text-align:center;
+}
+
+.stat-label{
+  display:block;
+  font-size:0.9rem;
+  color:#0891b2;
+  margin-bottom:4px;
+  font-weight:bold;
+}
+
+.stat-value{
+  display:block;
+  font-size:1.15rem;
+  color:#0f172a;
+  font-weight:bold;
+}
+
+.question{
+  display:none;
+  background:#f8feff;
+  border:1px solid #bae6fd;
+  border-radius:20px;
+  padding:20px;
+  margin-bottom:18px;
+}
+
+.question.active{
+  display:block;
+}
+
+.question h3{
+  font-size:1.08rem;
+  line-height:1.6;
+  color:#0f766e;
+  margin-bottom:14px;
+}
+
+.option{
+  display:block;
+  background:#ecfeff;
+  padding:12px 14px;
+  margin:10px 0;
+  border-radius:12px;
+  cursor:pointer;
+  transition:0.2s;
+}
+
+.option:hover{
+  background:#cffafe;
+}
+
+.option.selected{
+  background:#06b6d4;
+  color:white;
+}
+
+.option.correct-answer{
+  background:#dcfce7 !important;
+  color:#166534 !important;
+}
+
+.option.wrong-answer{
+  background:#fee2e2 !important;
+  color:#991b1b !important;
+}
+
+.navigation{
+  display:flex;
+  justify-content:center;
+  gap:12px;
+  margin-top:18px;
+}
+
+button{
+  border:none;
+  border-radius:14px;
+  padding:12px 20px;
+  font-size:1rem;
+  font-weight:bold;
+  cursor:pointer;
+}
+
+.prev{
+  background:#a5f3fc;
+  color:#0f766e;
+}
+
+.next{
+  background:#06b6d4;
+  color:white;
+}
+
+.finish{
+  background:#0891b2;
+  color:white;
+}
+
+.actions{
+  display:flex;
+  justify-content:center;
+  gap:12px;
+  margin-top:25px;
+}
+
+.btn-primary{
+  background:#0891b2;
+  color:white;
+}
+
+.btn-secondary{
+  background:#cffafe;
+  color:#0f766e;
+}
+
+.result{
+  margin-top:25px;
+  padding:20px;
+  border-radius:18px;
+  background:#f0fdfa;
+  border:1px solid #bae6fd;
+  display:none;
+}
+
+.review-item{
+  background:white;
+  border-radius:14px;
+  padding:14px;
+  margin-bottom:12px;
+}
+
+.review-item.correcta{
+  border-left:6px solid #22c55e;
+}
+
+.review-item.incorrecta{
+  border-left:6px solid #ef4444;
+}
+
+.review-item.sin-responder{
+  border-left:6px solid #f59e0b;
+}
+
+.explicacion{
+  margin-top:8px;
+  padding:10px;
+  background:#f8fafc;
+  border-radius:10px;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="header">
+
+<h1>⚖️ Química - Examen 6</h1>
+
+<p>
+Estequiometría, conversiones y cálculos químicos
+</p>
+
+<a class="top-link" href="../quimica.html">
+← Volver a química
+</a>
+
+</div>
+
+<div class="tools-buttons">
+
+<button onclick="toggleFormulas()" class="tool-btn">
+⚖️ Fórmulas rápidas
+</button>
+
+<button onclick="toggleMasas()" class="tool-btn">
+🧪 Masas molares
+</button>
+
+</div>
+
+<div class="visual-box" id="formulasBox">
+
+<div class="formula-card">
+mol = masa / masa molar
+</div>
+
+<div class="formula-card">
+masa = mol × masa molar
+</div>
+
+<div class="formula-card">
+partículas = mol × 6.022×10²³
+</div>
+
+<div class="formula-card">
+mol = partículas / 6.022×10²³
+</div>
+
+</div>
+
+<div class="visual-box" id="masasBox">
+
+<div class="mass-grid">
+
+<div class="mass-card"><h4>H</h4><p>1</p></div>
+<div class="mass-card"><h4>O</h4><p>16</p></div>
+<div class="mass-card"><h4>C</h4><p>12</p></div>
+<div class="mass-card"><h4>Na</h4><p>23</p></div>
+<div class="mass-card"><h4>Cl</h4><p>35.5</p></div>
+<div class="mass-card"><h4>Ca</h4><p>40</p></div>
+<div class="mass-card"><h4>S</h4><p>32</p></div>
+<div class="mass-card"><h4>N</h4><p>14</p></div>
+
+</div>
+
+</div>
+
+<div class="stats-bar">
+
+<div class="stat-box">
+<span class="stat-label">Pregunta actual</span>
+
+<span class="stat-value">
+<span id="qNum">1</span> / 30
+</span>
+</div>
+
+<div class="stat-box">
+<span class="stat-label">Progreso</span>
+
+<span class="stat-value" id="progress">
+0 / 30
+</span>
+</div>
+
+</div>
+
+<div id="quiz"></div>
+
+<div class="actions">
+
+<button class="btn-primary"
+onclick="finishQuiz()">
+Calificar examen
+</button>
+
+<button class="btn-secondary"
+onclick="reiniciarExamen()">
+Reiniciar
+</button>
+
+</div>
+
+<div class="result" id="resultado">
+
+<h2>Resultado</h2>
+
+<p id="puntajeTexto"></p>
+
+<div id="revision"></div>
+
+</div>
+
+</div>
+
+<script>
+
+const questions = [
+
+{
+q:"¿Cuántos gramos hay en 2 moles de H₂O?",
+o:["18 g","36 g","54 g","72 g"],
+a:1,
+exp:"1 mol H₂O = 18 g."
+},
+
+{
+q:"¿Cuántos moles son 44 g de CO₂?",
+o:["0.5","1","2","4"],
+a:1,
+exp:"CO₂ = 44 g/mol."
+},
+
+{
+q:"¿Cuántas partículas hay en 1 mol?",
+o:["3.14×10²³","6.022×10²³","1×10²³","9.81×10²³"],
+a:1,
+exp:"Número de Avogadro."
+},
+
+{
+q:"¿Cuántos gramos son 0.5 mol de NaCl?",
+o:["29.25","58.5","15","10"],
+a:0,
+exp:"58.5 × 0.5."
+},
+
+{
+q:"¿Cuántos moles son 18 g de agua?",
+o:["0.5","1","2","3"],
+a:1,
+exp:"18 g/mol."
+},
+
+{
+q:"¿Qué masa molar tiene H₂SO₄?",
+o:["98","80","64","120"],
+a:0,
+exp:"2+32+64."
+},
+
+{
+q:"¿Cuántos átomos hay en 2 mol de carbono?",
+o:[
+"6.022×10²³",
+"1.2044×10²⁴",
+"3×10²³",
+"2×10²³"
+],
+a:1,
+exp:"2 × Avogadro."
+},
+
+{
+q:"¿Cuál ecuación está balanceada?",
+o:[
+"H₂ + O₂ → H₂O",
+"2H₂ + O₂ → 2H₂O",
+"H₂ + O₂ → 2H₂O",
+"H₂ + 2O₂ → H₂O"
+],
+a:1,
+exp:"Mismos átomos."
+},
+
+{
+q:"¿Cuántos gramos son 2 mol de CO₂?",
+o:["22","44","88","66"],
+a:2,
+exp:"44×2."
+},
+
+{
+q:"¿Cuántos moles son 23 g de Na?",
+o:["0.5","1","2","3"],
+a:1,
+exp:"Na=23."
+},
+
+{
+q:"¿Cuántos gramos son 3 mol de O₂?",
+o:["96","64","32","48"],
+a:0,
+exp:"O₂=32."
+},
+
+{
+q:"¿Cuántos moles son 64 g de O₂?",
+o:["1","2","3","4"],
+a:1,
+exp:"64÷32."
+},
+
+{
+q:"¿Qué masa molar tiene NaOH?",
+o:["40","23","17","56"],
+a:0,
+exp:"23+16+1."
+},
+
+{
+q:"¿Cuántos gramos son 1 mol de CaCO₃?",
+o:["100","80","120","56"],
+a:0,
+exp:"40+12+48."
+},
+
+{
+q:"¿Cuántos moles son 100 g de CaCO₃?",
+o:["0.5","1","2","4"],
+a:1,
+exp:"100 g/mol."
+},
+
+{
+q:"¿Qué masa molar tiene NH₃?",
+o:["17","18","16","20"],
+a:0,
+exp:"14+3."
+},
+
+{
+q:"¿Cuántos gramos son 4 mol de H₂?",
+o:["2","4","8","16"],
+a:2,
+exp:"H₂=2."
+},
+
+{
+q:"¿Cuántas moléculas hay en 0.5 mol?",
+o:[
+"3.011×10²³",
+"6.022×10²³",
+"1×10²³",
+"9×10²³"
+],
+a:0,
+exp:"Mitad de Avogadro."
+},
+
+{
+q:"¿Qué masa molar tiene CO₂?",
+o:["22","44","28","32"],
+a:1,
+exp:"12+32."
+},
+
+{
+q:"¿Cuántos gramos son 2 mol de NaOH?",
+o:["20","40","80","60"],
+a:2,
+exp:"40×2."
+},
+
+{
+q:"¿Cuántos moles son 80 g de NaOH?",
+o:["1","2","3","4"],
+a:1,
+exp:"80÷40."
+},
+
+{
+q:"¿Qué indica el coeficiente en una reacción?",
+o:[
+"Masa",
+"Moles",
+"Color",
+"Valencia"
+],
+a:1,
+exp:"Representa moles."
+},
+
+{
+q:"¿Qué masa molar tiene CaO?",
+o:["40","56","72","80"],
+a:1,
+exp:"40+16."
+},
+
+{
+q:"¿Cuántos gramos son 5 mol de H₂O?",
+o:["45","90","72","108"],
+a:1,
+exp:"18×5."
+},
+
+{
+q:"¿Cuántos moles son 90 g de H₂O?",
+o:["2","3","4","5"],
+a:3,
+exp:"90÷18."
+},
+
+{
+q:"¿Qué masa molar tiene NaCl?",
+o:["58.5","40","74","65"],
+a:0,
+exp:"23+35.5."
+},
+
+{
+q:"¿Cuántos gramos son 2 mol de HCl?",
+o:["36.5","73","50","80"],
+a:1,
+exp:"36.5×2."
+},
+
+{
+q:"¿Cuántos moles son 73 g de HCl?",
+o:["0.5","1","2","3"],
+a:1,
+exp:"73÷36.5."
+},
+
+{
+q:"¿Qué masa molar tiene O₂?",
+o:["16","32","18","24"],
+a:1,
+exp:"16×2."
+},
+
+{
+q:"¿Qué ley se cumple al balancear ecuaciones?",
+o:[
+"Conservación de masa",
+"Ley gravitacional",
+"Ley térmica",
+"Ley periódica"
+],
+a:0,
+exp:"La masa se conserva."
+}
+
+];
+
+let current = 0;
+let answers = new Array(questions.length).fill(null);
+let examenFinalizado = false;
+
+const quiz = document.getElementById("quiz");
+
+function actualizarProgreso(){
+
+const respondidas =
+answers.filter(a => a !== null).length;
+
+document.getElementById("progress").textContent =
+`${respondidas} / ${questions.length}`;
+
+document.getElementById("qNum").textContent =
+current + 1;
+
+}
+
+function render(){
+
+quiz.innerHTML = "";
+
+questions.forEach((q,i)=>{
+
+let div = document.createElement("div");
+
+div.className =
+"question" + (i===current ? " active" : "");
+
+let opts = "";
+
+q.o.forEach((op,j)=>{
+
+let extraClass = "";
+
+if(answers[i] === j)
+extraClass += " selected";
+
+if(examenFinalizado){
+
+if(j === q.a)
+extraClass += " correct-answer";
+
+if(answers[i] === j && j !== q.a){
+extraClass += " wrong-answer";
+}
+
+}
+
+opts += `
+<div class="option${extraClass}"
+onclick="selectOption(${i},${j})">
+
+${String.fromCharCode(65+j)}. ${op}
+
+</div>
+`;
+
+});
+
+div.innerHTML = `
+
+<h3>${q.q}</h3>
+
+${opts}
+
+<div class="navigation">
+
+<button class="prev"
+onclick="prevQuestion()"
+${i===0 ? "disabled" : ""}>
+Anterior
+</button>
+
+${i===questions.length-1
+
+? `<button class="finish"
+onclick="finishQuiz()">
+Finalizar
+</button>`
+
+: `<button class="next"
+onclick="nextQuestion()">
+Siguiente
+</button>`
+
+}
+
+</div>
+
+`;
+
+quiz.appendChild(div);
+
+});
+
+actualizarProgreso();
+
+}
+
+function selectOption(i,j){
+
+if(examenFinalizado) return;
+
+answers[i] = j;
+
+render();
+
+}
+
+function nextQuestion(){
+
+if(current < questions.length-1){
+
+current++;
+
+render();
+
+}
+
+}
+
+function prevQuestion(){
+
+if(current > 0){
+
+current--;
+
+render();
+
+}
+
+}
+
+function finishQuiz(){
+
+if(examenFinalizado) return;
+
+examenFinalizado = true;
+
+let total = questions.length;
+
+let correctas = 0;
+
+let revisionHTML = "";
+
+questions.forEach((q,i)=>{
+
+const respuestaUsuario = answers[i];
+
+if(respuestaUsuario === q.a){
+
+correctas++;
+
+revisionHTML += `
+<div class="review-item correcta">
+
+<h4>
+Pregunta ${i+1}: ✅ Correcta
+</h4>
+
+<div class="explicacion">
+${q.exp}
+</div>
+
+</div>
+`;
+
+}else if(respuestaUsuario === null){
+
+revisionHTML += `
+<div class="review-item sin-responder">
+
+<h4>
+Pregunta ${i+1}: ⚠️ Sin responder
+</h4>
+
+<div class="explicacion">
+Respuesta correcta: ${q.o[q.a]}
+</div>
+
+</div>
+`;
+
+}else{
+
+revisionHTML += `
+<div class="review-item incorrecta">
+
+<h4>
+Pregunta ${i+1}: ❌ Incorrecta
+</h4>
+
+<div class="explicacion">
+
+Correcta: ${q.o[q.a]}
+
+<br><br>
+
+${q.exp}
+
+</div>
+
+</div>
+`;
+
+}
+
+});
+
+const porcentaje =
+((correctas/total)*100).toFixed(1);
+
+document.getElementById("puntajeTexto")
+.innerHTML = `
+
+Obtuviste
+<strong>${correctas}</strong>
+
+de
+
+<strong>${total}</strong>
+
+correctas.<br>
+
+Nota final:
+
+<strong>${porcentaje}%</strong>
+
+`;
+
+document.getElementById("revision")
+.innerHTML = revisionHTML;
+
+document.getElementById("resultado")
+.style.display = "block";
+
+render();
+
+}
+
+function reiniciarExamen(){
+
+location.reload();
+
+}
+
+function toggleFormulas(){
+
+const box =
+document.getElementById("formulasBox");
+
+box.style.display =
+box.style.display === "block"
+? "none"
+: "block";
+
+}
+
+function toggleMasas(){
+
+const box =
+document.getElementById("masasBox");
+
+box.style.display =
+box.style.display === "block"
+? "none"
+: "block";
+
+}
+
+render();
+
+</script>
+
+<script type="module" src="../party/party-timer.js"></script>
+<script type="module" src="../party/party-resultados.js"></script>
+
+</body>
+</html>
