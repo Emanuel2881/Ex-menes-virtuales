@@ -1,0 +1,892 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Química - Examen 5</title>
+
+<style>
+
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+}
+
+body{
+  font-family: Arial, Helvetica, sans-serif;
+  background: linear-gradient(135deg,#ecfeff,#f0f9ff,#cffafe);
+  color:#0f172a;
+  min-height:100vh;
+  padding:30px 15px;
+}
+
+.container{
+  max-width:950px;
+  margin:auto;
+  background:rgba(255,255,255,0.95);
+  padding:25px;
+  border-radius:24px;
+  box-shadow:0 12px 35px rgba(0,0,0,0.08);
+}
+
+.header{
+  text-align:center;
+  margin-bottom:20px;
+}
+
+.header h1{
+  font-size: clamp(1.9rem,4vw,2.7rem);
+  margin-bottom:10px;
+  color:#0f766e;
+}
+
+.header p{
+  color:#0f766e;
+  opacity:0.9;
+}
+
+.top-link{
+  display:inline-block;
+  margin-top:12px;
+  color:#0891b2;
+  text-decoration:none;
+  font-weight:bold;
+}
+
+.tools-buttons{
+  display:flex;
+  justify-content:center;
+  gap:12px;
+  flex-wrap:wrap;
+  margin:20px 0;
+}
+
+.tool-btn{
+  background:#0891b2;
+  color:white;
+  border:none;
+  border-radius:14px;
+  padding:12px 18px;
+  font-size:1rem;
+  font-weight:bold;
+  cursor:pointer;
+}
+
+.visual-box{
+  display:none;
+  background:#f8feff;
+  border:1px solid #bae6fd;
+  border-radius:18px;
+  padding:16px;
+  margin-bottom:20px;
+}
+
+.valencias-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(120px,1fr));
+  gap:12px;
+}
+
+.val-card{
+  background:white;
+  border:1px solid #bae6fd;
+  border-radius:14px;
+  padding:12px;
+  text-align:center;
+}
+
+.val-card h4{
+  color:#0891b2;
+  margin-bottom:6px;
+}
+
+.guide-rule{
+  background:white;
+  border-left:5px solid #06b6d4;
+  padding:12px;
+  border-radius:10px;
+  margin-bottom:10px;
+}
+
+.stats-bar{
+  display:flex;
+  flex-wrap:wrap;
+  gap:12px;
+  justify-content:center;
+  margin-bottom:20px;
+}
+
+.stat-box{
+  background:#fff;
+  border:1px solid #bae6fd;
+  border-radius:14px;
+  padding:12px 18px;
+  min-width:150px;
+  text-align:center;
+}
+
+.stat-label{
+  display:block;
+  font-size:0.9rem;
+  color:#0891b2;
+  margin-bottom:4px;
+  font-weight:bold;
+}
+
+.stat-value{
+  display:block;
+  font-size:1.15rem;
+  color:#0f172a;
+  font-weight:bold;
+}
+
+.question{
+  display:none;
+  background:#f8feff;
+  border:1px solid #bae6fd;
+  border-radius:20px;
+  padding:20px;
+  margin-bottom:18px;
+}
+
+.question.active{
+  display:block;
+}
+
+.question h3{
+  font-size:1.08rem;
+  line-height:1.6;
+  color:#0f766e;
+  margin-bottom:14px;
+}
+
+.option{
+  display:block;
+  background:#ecfeff;
+  padding:12px 14px;
+  margin:10px 0;
+  border-radius:12px;
+  cursor:pointer;
+  transition:0.2s;
+}
+
+.option:hover{
+  background:#cffafe;
+}
+
+.option.selected{
+  background:#06b6d4;
+  color:white;
+}
+
+.option.correct-answer{
+  background:#dcfce7 !important;
+  color:#166534 !important;
+}
+
+.option.wrong-answer{
+  background:#fee2e2 !important;
+  color:#991b1b !important;
+}
+
+.navigation{
+  display:flex;
+  justify-content:center;
+  gap:12px;
+  margin-top:18px;
+}
+
+button{
+  border:none;
+  border-radius:14px;
+  padding:12px 20px;
+  font-size:1rem;
+  font-weight:bold;
+  cursor:pointer;
+}
+
+.prev{
+  background:#a5f3fc;
+  color:#0f766e;
+}
+
+.next{
+  background:#06b6d4;
+  color:white;
+}
+
+.finish{
+  background:#0891b2;
+  color:white;
+}
+
+.actions{
+  display:flex;
+  justify-content:center;
+  gap:12px;
+  margin-top:25px;
+}
+
+.btn-primary{
+  background:#0891b2;
+  color:white;
+}
+
+.btn-secondary{
+  background:#cffafe;
+  color:#0f766e;
+}
+
+.result{
+  margin-top:25px;
+  padding:20px;
+  border-radius:18px;
+  background:#f0fdfa;
+  border:1px solid #bae6fd;
+  display:none;
+}
+
+.review-item{
+  background:white;
+  border-radius:14px;
+  padding:14px;
+  margin-bottom:12px;
+}
+
+.review-item.correcta{
+  border-left:6px solid #22c55e;
+}
+
+.review-item.incorrecta{
+  border-left:6px solid #ef4444;
+}
+
+.review-item.sin-responder{
+  border-left:6px solid #f59e0b;
+}
+
+.explicacion{
+  margin-top:8px;
+  padding:10px;
+  background:#f8fafc;
+  border-radius:10px;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="header">
+
+<h1>🧪 Química - Examen 5</h1>
+
+<p>
+Nomenclatura química y valencias
+</p>
+
+<a class="top-link" href="../quimica.html">
+← Volver a química
+</a>
+
+</div>
+
+<div class="tools-buttons">
+
+<button onclick="toggleValencias()" class="tool-btn">
+🧪 Tabla de valencias
+</button>
+
+<button onclick="toggleGuia()" class="tool-btn">
+📘 Guía rápida
+</button>
+
+</div>
+
+<div class="visual-box" id="valenciasBox">
+
+<div class="valencias-grid">
+
+<div class="val-card"><h4>Fe</h4><p>+2,+3</p></div>
+<div class="val-card"><h4>Cu</h4><p>+1,+2</p></div>
+<div class="val-card"><h4>Pb</h4><p>+2,+4</p></div>
+<div class="val-card"><h4>Sn</h4><p>+2,+4</p></div>
+<div class="val-card"><h4>Au</h4><p>+1,+3</p></div>
+<div class="val-card"><h4>Hg</h4><p>+1,+2</p></div>
+<div class="val-card"><h4>Cl</h4><p>-1,+3,+5,+7</p></div>
+<div class="val-card"><h4>S</h4><p>-2,+4,+6</p></div>
+<div class="val-card"><h4>SO₄</h4><p>-2</p></div>
+<div class="val-card"><h4>NO₃</h4><p>-1</p></div>
+
+</div>
+
+</div>
+
+<div class="visual-box" id="guiaBox">
+
+<div class="guide-rule">
+Metal + Oxígeno → Óxido
+</div>
+
+<div class="guide-rule">
+Metal + OH → Hidróxido
+</div>
+
+<div class="guide-rule">
+H + No metal → Ácido
+</div>
+
+<div class="guide-rule">
+Metal + No metal → Sal
+</div>
+
+</div>
+
+<div class="stats-bar">
+
+<div class="stat-box">
+<span class="stat-label">Pregunta actual</span>
+
+<span class="stat-value">
+<span id="qNum">1</span> / 30
+</span>
+</div>
+
+<div class="stat-box">
+<span class="stat-label">Progreso</span>
+
+<span class="stat-value" id="progress">
+0 / 30
+</span>
+</div>
+
+</div>
+
+<div id="quiz"></div>
+
+<div class="actions">
+
+<button class="btn-primary"
+onclick="finishQuiz()">
+Calificar examen
+</button>
+
+<button class="btn-secondary"
+onclick="reiniciarExamen()">
+Reiniciar
+</button>
+
+</div>
+
+<div class="result" id="resultado">
+
+<h2>Resultado</h2>
+
+<p id="puntajeTexto"></p>
+
+<div id="revision"></div>
+
+</div>
+
+</div>
+
+<script>
+
+const questions = [
+
+{
+q:"¿Cómo se llama NaCl?",
+o:["Cloruro de sodio","Óxido de sodio","Sulfato de sodio","Hidróxido de sodio"],
+a:0,
+exp:"NaCl es cloruro de sodio."
+},
+
+{
+q:"¿Cuál es la fórmula del óxido de calcio?",
+o:["CaO","Ca₂O","CaO₂","Ca(OH)₂"],
+a:0,
+exp:"Calcio + oxígeno."
+},
+
+{
+q:"¿Qué valencia usa el hierro en FeCl₃?",
+o:["+1","+2","+3","+4"],
+a:2,
+exp:"Tres cloros requieren Fe+3."
+},
+
+{
+q:"¿Cómo se llama Fe₂O₃?",
+o:["Óxido ferroso","Óxido férrico","Óxido de hierro","Peróxido férrico"],
+a:1,
+exp:"Fe trabaja con +3."
+},
+
+{
+q:"¿Cuál es la fórmula del hidróxido de sodio?",
+o:["NaOH","Na₂OH","Na(OH)₂","NaH"],
+a:0,
+exp:"Sodio + OH."
+},
+
+{
+q:"¿Cómo se llama HCl?",
+o:["Ácido sulfúrico","Ácido clorhídrico","Ácido nítrico","Ácido carbónico"],
+a:1,
+exp:"Ácido del cloro."
+},
+
+{
+q:"¿Cuál es la fórmula del ácido sulfúrico?",
+o:["H₂SO₄","HSO₄","H₂SO₃","HCl"],
+a:0,
+exp:"Sulfúrico = SO₄."
+},
+
+{
+q:"¿Cómo se llama CuO?",
+o:["Óxido cuproso","Óxido cúprico","Óxido cobre","Peróxido de cobre"],
+a:1,
+exp:"Cu trabaja con +2."
+},
+
+{
+q:"¿Qué tipo de compuesto es NaOH?",
+o:["Óxido","Ácido","Hidróxido","Sal"],
+a:2,
+exp:"Contiene OH."
+},
+
+{
+q:"¿Cuál es la fórmula del cloruro de calcio?",
+o:["CaCl","CaCl₂","Ca₂Cl","Ca₂Cl₂"],
+a:1,
+exp:"Ca+2 y Cl-1."
+},
+
+{
+q:"¿Cómo se llama HNO₃?",
+o:["Ácido nitroso","Ácido sulfúrico","Ácido nítrico","Ácido fosfórico"],
+a:2,
+exp:"Ácido nítrico."
+},
+
+{
+q:"¿Cuál es la fórmula del sulfato de sodio?",
+o:["NaSO₄","Na₂SO₄","Na₂SO₃","NaSO₃"],
+a:1,
+exp:"SO₄ tiene -2."
+},
+
+{
+q:"¿Cómo se llama FeO?",
+o:["Óxido férrico","Óxido ferroso","Óxido hierroso","Óxido ferro"],
+a:1,
+exp:"Fe trabaja con +2."
+},
+
+{
+q:"¿Cuál es la fórmula del óxido férrico?",
+o:["FeO","Fe₂O₃","Fe₃O₂","FeO₂"],
+a:1,
+exp:"Hierro +3."
+},
+
+{
+q:"¿Qué valencia usa Cu en Cu₂O?",
+o:["+1","+2","+3","+4"],
+a:0,
+exp:"Oxígeno vale -2."
+},
+
+{
+q:"¿Cómo se llama Ca(OH)₂?",
+o:["Hidróxido de calcio","Óxido de calcio","Peróxido de calcio","Cloruro de calcio"],
+a:0,
+exp:"Contiene OH."
+},
+
+{
+q:"¿Cuál es la fórmula del ácido clorhídrico?",
+o:["HCl","H₂Cl","HCl₂","H₂Cl₂"],
+a:0,
+exp:"Ácido binario."
+},
+
+{
+q:"¿Cómo se llama Na₂SO₄?",
+o:["Sulfato de sodio","Sulfito de sodio","Cloruro de sodio","Nitrato de sodio"],
+a:0,
+exp:"SO₄."
+},
+
+{
+q:"¿Cuál es la fórmula del nitrato de calcio?",
+o:["CaNO₃","Ca(NO₃)₂","Ca₂NO₃","Ca₂(NO₃)"],
+a:1,
+exp:"NO₃ vale -1."
+},
+
+{
+q:"¿Cómo se llama Al₂O₃?",
+o:["Óxido aluminoso","Óxido de aluminio","Peróxido de aluminio","Hidróxido de aluminio"],
+a:1,
+exp:"Óxido metálico."
+},
+
+{
+q:"¿Qué tipo de compuesto es H₂SO₄?",
+o:["Óxido","Sal","Ácido","Base"],
+a:2,
+exp:"Comienza con H."
+},
+
+{
+q:"¿Cuál es la fórmula del hidróxido férrico?",
+o:["FeOH","Fe(OH)₂","Fe(OH)₃","Fe₂OH"],
+a:2,
+exp:"Fe+3."
+},
+
+{
+q:"¿Cómo se llama Cu₂O?",
+o:["Óxido cuproso","Óxido cúprico","Óxido cobre","Óxido cobroso"],
+a:0,
+exp:"Cu trabaja con +1."
+},
+
+{
+q:"¿Cuál es la fórmula del carbonato de calcio?",
+o:["CaCO₃","Ca₂CO₃","Ca(CO₃)₂","CaCO₂"],
+a:0,
+exp:"Carbonato = CO₃."
+},
+
+{
+q:"¿Cómo se llama KOH?",
+o:["Óxido de potasio","Hidróxido de potasio","Cloruro de potasio","Nitrato de potasio"],
+a:1,
+exp:"K + OH."
+},
+
+{
+q:"¿Cuál es la fórmula del ácido nítrico?",
+o:["HNO₂","HNO₃","H₂NO₃","HN"],
+a:1,
+exp:"Ácido nítrico."
+},
+
+{
+q:"¿Qué valencia usa el cobre en CuCl₂?",
+o:["+1","+2","+3","+4"],
+a:1,
+exp:"Dos Cl-1."
+},
+
+{
+q:"¿Cómo se llama AgNO₃?",
+o:["Nitrato de plata","Sulfato de plata","Óxido de plata","Hidróxido de plata"],
+a:0,
+exp:"NO₃ = nitrato."
+},
+
+{
+q:"¿Cuál es la fórmula del sulfuro de hierro III?",
+o:["FeS","Fe₂S₃","FeS₂","Fe₃S₂"],
+a:1,
+exp:"Fe+3 y S-2."
+},
+
+{
+q:"¿Cómo se llama PbO₂?",
+o:["Óxido plumboso","Óxido plúmbico","Óxido de plomo","Peróxido de plomo"],
+a:1,
+exp:"Pb trabaja con +4."
+}
+
+];
+
+let current = 0;
+let answers = new Array(questions.length).fill(null);
+let examenFinalizado = false;
+
+const quiz = document.getElementById("quiz");
+
+function actualizarProgreso(){
+
+const respondidas =
+answers.filter(a => a !== null).length;
+
+document.getElementById("progress").textContent =
+`${respondidas} / ${questions.length}`;
+
+document.getElementById("qNum").textContent =
+current + 1;
+
+}
+
+function render(){
+
+quiz.innerHTML = "";
+
+questions.forEach((q,i)=>{
+
+let div = document.createElement("div");
+
+div.className =
+"question" + (i===current ? " active" : "");
+
+let opts = "";
+
+q.o.forEach((op,j)=>{
+
+let extraClass = "";
+
+if(answers[i] === j)
+extraClass += " selected";
+
+if(examenFinalizado){
+
+if(j === q.a)
+extraClass += " correct-answer";
+
+if(answers[i] === j && j !== q.a){
+extraClass += " wrong-answer";
+}
+
+}
+
+opts += `
+<div class="option${extraClass}"
+onclick="selectOption(${i},${j})">
+
+${String.fromCharCode(65+j)}. ${op}
+
+</div>
+`;
+
+});
+
+div.innerHTML = `
+
+<h3>${q.q}</h3>
+
+${opts}
+
+<div class="navigation">
+
+<button class="prev"
+onclick="prevQuestion()"
+${i===0 ? "disabled" : ""}>
+Anterior
+</button>
+
+${i===questions.length-1
+
+? `<button class="finish"
+onclick="finishQuiz()">
+Finalizar
+</button>`
+
+: `<button class="next"
+onclick="nextQuestion()">
+Siguiente
+</button>`
+
+}
+
+</div>
+
+`;
+
+quiz.appendChild(div);
+
+});
+
+actualizarProgreso();
+
+}
+
+function selectOption(i,j){
+
+if(examenFinalizado) return;
+
+answers[i] = j;
+
+render();
+
+}
+
+function nextQuestion(){
+
+if(current < questions.length-1){
+
+current++;
+
+render();
+
+}
+
+}
+
+function prevQuestion(){
+
+if(current > 0){
+
+current--;
+
+render();
+
+}
+
+}
+
+function finishQuiz(){
+
+if(examenFinalizado) return;
+
+examenFinalizado = true;
+
+let total = questions.length;
+
+let correctas = 0;
+
+let revisionHTML = "";
+
+questions.forEach((q,i)=>{
+
+const respuestaUsuario = answers[i];
+
+if(respuestaUsuario === q.a){
+
+correctas++;
+
+revisionHTML += `
+<div class="review-item correcta">
+
+<h4>
+Pregunta ${i+1}: ✅ Correcta
+</h4>
+
+<div class="explicacion">
+${q.exp}
+</div>
+
+</div>
+`;
+
+}else if(respuestaUsuario === null){
+
+revisionHTML += `
+<div class="review-item sin-responder">
+
+<h4>
+Pregunta ${i+1}: ⚠️ Sin responder
+</h4>
+
+<div class="explicacion">
+Respuesta correcta: ${q.o[q.a]}
+</div>
+
+</div>
+`;
+
+}else{
+
+revisionHTML += `
+<div class="review-item incorrecta">
+
+<h4>
+Pregunta ${i+1}: ❌ Incorrecta
+</h4>
+
+<div class="explicacion">
+
+Correcta: ${q.o[q.a]}
+
+<br><br>
+
+${q.exp}
+
+</div>
+
+</div>
+`;
+
+}
+
+});
+
+const porcentaje =
+((correctas/total)*100).toFixed(1);
+
+document.getElementById("puntajeTexto")
+.innerHTML = `
+
+Obtuviste
+<strong>${correctas}</strong>
+
+de
+
+<strong>${total}</strong>
+
+correctas.<br>
+
+Nota final:
+
+<strong>${porcentaje}%</strong>
+
+`;
+
+document.getElementById("revision")
+.innerHTML = revisionHTML;
+
+document.getElementById("resultado")
+.style.display = "block";
+
+render();
+
+}
+
+function reiniciarExamen(){
+
+location.reload();
+
+}
+
+function toggleValencias(){
+
+const box =
+document.getElementById("valenciasBox");
+
+box.style.display =
+box.style.display === "block"
+? "none"
+: "block";
+
+}
+
+function toggleGuia(){
+
+const box =
+document.getElementById("guiaBox");
+
+box.style.display =
+box.style.display === "block"
+? "none"
+: "block";
+
+}
+
+render();
+
+</script>
+
+<script type="module" src="../party/party-timer.js"></script>
+<script type="module" src="../party/party-resultados.js"></script>
+
+</body>
+</html>
