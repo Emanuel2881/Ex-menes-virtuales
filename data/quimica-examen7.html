@@ -1,1 +1,898 @@
-quimica-examen2.html
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Química - Examen 7</title>
+
+<style>
+
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+}
+
+body{
+  font-family: Arial, Helvetica, sans-serif;
+  background: linear-gradient(135deg,#ecfeff,#f0f9ff,#cffafe);
+  color:#0f172a;
+  min-height:100vh;
+  padding:30px 15px;
+}
+
+.container{
+  max-width:950px;
+  margin:auto;
+  background:rgba(255,255,255,0.95);
+  padding:25px;
+  border-radius:24px;
+  box-shadow:0 12px 35px rgba(0,0,0,0.08);
+}
+
+.header{
+  text-align:center;
+  margin-bottom:20px;
+}
+
+.header h1{
+  font-size: clamp(1.9rem,4vw,2.7rem);
+  margin-bottom:10px;
+  color:#0f766e;
+}
+
+.header p{
+  color:#0f766e;
+  opacity:0.9;
+}
+
+.top-link{
+  display:inline-block;
+  margin-top:12px;
+  color:#0891b2;
+  text-decoration:none;
+  font-weight:bold;
+}
+
+.tools-buttons{
+  display:flex;
+  justify-content:center;
+  gap:12px;
+  flex-wrap:wrap;
+  margin:20px 0;
+}
+
+.tool-btn{
+  background:#0891b2;
+  color:white;
+  border:none;
+  border-radius:14px;
+  padding:12px 18px;
+  font-size:1rem;
+  font-weight:bold;
+  cursor:pointer;
+}
+
+.visual-box{
+  display:none;
+  background:#f8feff;
+  border:1px solid #bae6fd;
+  border-radius:18px;
+  padding:16px;
+  margin-bottom:20px;
+}
+
+.periodic-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(90px,1fr));
+  gap:10px;
+}
+
+.periodic-card{
+  background:white;
+  border:1px solid #bae6fd;
+  border-radius:12px;
+  padding:10px;
+  text-align:center;
+}
+
+.periodic-card h4{
+  color:#0891b2;
+}
+
+.guide-rule{
+  background:white;
+  border-left:5px solid #06b6d4;
+  padding:12px;
+  border-radius:10px;
+  margin-bottom:10px;
+}
+
+.stats-bar{
+  display:flex;
+  flex-wrap:wrap;
+  gap:12px;
+  justify-content:center;
+  margin-bottom:20px;
+}
+
+.stat-box{
+  background:#fff;
+  border:1px solid #bae6fd;
+  border-radius:14px;
+  padding:12px 18px;
+  min-width:150px;
+  text-align:center;
+}
+
+.stat-label{
+  display:block;
+  font-size:0.9rem;
+  color:#0891b2;
+  margin-bottom:4px;
+  font-weight:bold;
+}
+
+.stat-value{
+  display:block;
+  font-size:1.15rem;
+  color:#0f172a;
+  font-weight:bold;
+}
+
+.question{
+  display:none;
+  background:#f8feff;
+  border:1px solid #bae6fd;
+  border-radius:20px;
+  padding:20px;
+  margin-bottom:18px;
+}
+
+.question.active{
+  display:block;
+}
+
+.question h3{
+  font-size:1.08rem;
+  line-height:1.6;
+  color:#0f766e;
+  margin-bottom:14px;
+}
+
+.option{
+  display:block;
+  background:#ecfeff;
+  padding:12px 14px;
+  margin:10px 0;
+  border-radius:12px;
+  cursor:pointer;
+  transition:0.2s;
+}
+
+.option:hover{
+  background:#cffafe;
+}
+
+.option.selected{
+  background:#06b6d4;
+  color:white;
+}
+
+.option.correct-answer{
+  background:#dcfce7 !important;
+  color:#166534 !important;
+}
+
+.option.wrong-answer{
+  background:#fee2e2 !important;
+  color:#991b1b !important;
+}
+
+.navigation{
+  display:flex;
+  justify-content:center;
+  gap:12px;
+  margin-top:18px;
+}
+
+button{
+  border:none;
+  border-radius:14px;
+  padding:12px 20px;
+  font-size:1rem;
+  font-weight:bold;
+  cursor:pointer;
+}
+
+.prev{
+  background:#a5f3fc;
+  color:#0f766e;
+}
+
+.next{
+  background:#06b6d4;
+  color:white;
+}
+
+.finish{
+  background:#0891b2;
+  color:white;
+}
+
+.actions{
+  display:flex;
+  justify-content:center;
+  gap:12px;
+  margin-top:25px;
+}
+
+.btn-primary{
+  background:#0891b2;
+  color:white;
+}
+
+.btn-secondary{
+  background:#cffafe;
+  color:#0f766e;
+}
+
+.result{
+  margin-top:25px;
+  padding:20px;
+  border-radius:18px;
+  background:#f0fdfa;
+  border:1px solid #bae6fd;
+  display:none;
+}
+
+.review-item{
+  background:white;
+  border-radius:14px;
+  padding:14px;
+  margin-bottom:12px;
+}
+
+.review-item.correcta{
+  border-left:6px solid #22c55e;
+}
+
+.review-item.incorrecta{
+  border-left:6px solid #ef4444;
+}
+
+.review-item.sin-responder{
+  border-left:6px solid #f59e0b;
+}
+
+.explicacion{
+  margin-top:8px;
+  padding:10px;
+  background:#f8fafc;
+  border-radius:10px;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="header">
+
+<h1>🧪 Química - Examen 7</h1>
+
+<p>
+Propiedades periódicas y enlaces químicos
+</p>
+
+<a class="top-link" href="../quimica.html">
+← Volver a química
+</a>
+
+</div>
+
+<div class="tools-buttons">
+
+<button onclick="toggleTabla()" class="tool-btn">
+⚛️ Mini tabla
+</button>
+
+<button onclick="toggleGuia()" class="tool-btn">
+🔗 Enlaces
+</button>
+
+</div>
+
+<div class="visual-box" id="tablaBox">
+
+<div class="periodic-grid">
+
+<div class="periodic-card"><h4>Na</h4><p>Metal</p></div>
+<div class="periodic-card"><h4>Cl</h4><p>Halógeno</p></div>
+<div class="periodic-card"><h4>O</h4><p>No metal</p></div>
+<div class="periodic-card"><h4>Mg</h4><p>Alcalinotérreo</p></div>
+<div class="periodic-card"><h4>Ne</h4><p>Gas noble</p></div>
+<div class="periodic-card"><h4>Fe</h4><p>Transición</p></div>
+
+</div>
+
+</div>
+
+<div class="visual-box" id="guiaBox">
+
+<div class="guide-rule">
+Metal + no metal → enlace iónico
+</div>
+
+<div class="guide-rule">
+No metal + no metal → enlace covalente
+</div>
+
+<div class="guide-rule">
+Metal + metal → enlace metálico
+</div>
+
+</div>
+
+<div class="stats-bar">
+
+<div class="stat-box">
+<span class="stat-label">Pregunta actual</span>
+
+<span class="stat-value">
+<span id="qNum">1</span> / 30
+</span>
+</div>
+
+<div class="stat-box">
+<span class="stat-label">Progreso</span>
+
+<span class="stat-value" id="progress">
+0 / 30
+</span>
+</div>
+
+</div>
+
+<div id="quiz"></div>
+
+<div class="actions">
+
+<button class="btn-primary"
+onclick="finishQuiz()">
+Calificar examen
+</button>
+
+<button class="btn-secondary"
+onclick="reiniciarExamen()">
+Reiniciar
+</button>
+
+</div>
+
+<div class="result" id="resultado">
+
+<h2>Resultado</h2>
+
+<p id="puntajeTexto"></p>
+
+<div id="revision"></div>
+
+</div>
+
+</div>
+
+<script>
+
+const questions = [
+
+{
+q:"¿Qué elemento tiene mayor electronegatividad?",
+o:["Na","Cl","Mg","Al"],
+a:1,
+exp:"Cloro atrae más electrones."
+},
+
+{
+q:"¿Cuál compuesto presenta enlace iónico?",
+o:["H₂O","CO₂","NaCl","O₂"],
+a:2,
+exp:"Metal + no metal."
+},
+
+{
+q:"¿Qué enlace comparte electrones?",
+o:["Iónico","Metálico","Covalente","Nuclear"],
+a:2,
+exp:"Covalente."
+},
+
+{
+q:"¿Cuál elemento tiene mayor radio atómico?",
+o:["Na","Cl","O","F"],
+a:0,
+exp:"Aumenta hacia abajo e izquierda."
+},
+
+{
+q:"¿Qué tipo de enlace existe en Fe?",
+o:["Iónico","Metálico","Covalente","Polar"],
+a:1,
+exp:"Entre metales."
+},
+
+{
+q:"¿Cuál elemento tiene configuración terminada en 3s¹?",
+o:["Na","Mg","Al","Cl"],
+a:0,
+exp:"Sodio."
+},
+
+{
+q:"¿Qué compuesto conduce electricidad fundido?",
+o:["CO₂","NaCl","O₂","CH₄"],
+a:1,
+exp:"Compuestos iónicos."
+},
+
+{
+q:"¿Cuál tiene mayor energía de ionización?",
+o:["Na","Mg","Cl","K"],
+a:2,
+exp:"Cloro."
+},
+
+{
+q:"¿Qué tipo de enlace hay en H₂O?",
+o:["Iónico","Metálico","Covalente polar","Covalente no polar"],
+a:2,
+exp:"Diferencia de electronegatividad."
+},
+
+{
+q:"¿Qué elemento pertenece al grupo 18?",
+o:["Cl","O","Ne","Na"],
+a:2,
+exp:"Gas noble."
+},
+
+{
+q:"¿Qué elemento tiene 2 electrones de valencia?",
+o:["Na","Mg","Cl","O"],
+a:1,
+exp:"Grupo 2."
+},
+
+{
+q:"¿Qué compuesto tiene enlace covalente no polar?",
+o:["NaCl","H₂O","O₂","MgO"],
+a:2,
+exp:"Mismo elemento."
+},
+
+{
+q:"¿Cuál tiene mayor carácter metálico?",
+o:["Na","Cl","O","Ne"],
+a:0,
+exp:"Sodio."
+},
+
+{
+q:"¿Qué propiedad aumenta hacia la derecha?",
+o:["Radio atómico","Carácter metálico","Electronegatividad","Tamaño"],
+a:2,
+exp:"Electronegatividad."
+},
+
+{
+q:"¿Cuál elemento pierde electrones fácilmente?",
+o:["Na","Cl","O","F"],
+a:0,
+exp:"Metales."
+},
+
+{
+q:"¿Qué tipo de compuesto forma MgO?",
+o:["Covalente","Metálico","Iónico","Polar"],
+a:2,
+exp:"Metal + oxígeno."
+},
+
+{
+q:"¿Cuál elemento tiene configuración 1s²2s²2p⁶3s²?",
+o:["Na","Mg","Al","Si"],
+a:1,
+exp:"Magnesio."
+},
+
+{
+q:"¿Qué enlace mantiene unidos a los metales?",
+o:["Covalente","Iónico","Metálico","Polar"],
+a:2,
+exp:"Mar de electrones."
+},
+
+{
+q:"¿Cuál compuesto NO conduce electricidad?",
+o:["NaCl fundido","Fe","Cu","CO₂"],
+a:3,
+exp:"Covalente molecular."
+},
+
+{
+q:"¿Qué elemento tiene mayor afinidad electrónica?",
+o:["Na","Cl","Mg","Ca"],
+a:1,
+exp:"Halógenos."
+},
+
+{
+q:"¿Qué tipo de enlace hay en CO₂?",
+o:["Iónico","Metálico","Covalente","Nuclear"],
+a:2,
+exp:"Entre no metales."
+},
+
+{
+q:"¿Cuál tiene menor radio atómico?",
+o:["Na","Mg","Cl","K"],
+a:2,
+exp:"Cloro."
+},
+
+{
+q:"¿Qué elemento tiene 7 electrones de valencia?",
+o:["Na","Mg","Cl","O"],
+a:2,
+exp:"Grupo 17."
+},
+
+{
+q:"¿Qué propiedad tienen los gases nobles?",
+o:[
+"Muy reactivos",
+"Tienen valencia incompleta",
+"Son estables",
+"Pierden electrones fácilmente"
+],
+a:2,
+exp:"Capa completa."
+},
+
+{
+q:"¿Qué elemento pertenece al período 3?",
+o:["O","Ne","Cl","F"],
+a:2,
+exp:"Cloro."
+},
+
+{
+q:"¿Qué compuesto tiene enlace iónico?",
+o:["MgCl₂","O₂","CO₂","CH₄"],
+a:0,
+exp:"Metal + no metal."
+},
+
+{
+q:"¿Qué propiedad tienen los metales?",
+o:[
+"Son frágiles",
+"Malos conductores",
+"Buenos conductores",
+"No tienen brillo"
+],
+a:2,
+exp:"Conducen electricidad."
+},
+
+{
+q:"¿Qué elemento tiene mayor electronegatividad?",
+o:["F","Cl","Na","Mg"],
+a:0,
+exp:"Flúor."
+},
+
+{
+q:"¿Qué tipo de enlace presenta HCl?",
+o:[
+"Iónico",
+"Covalente polar",
+"Metálico",
+"Covalente no polar"
+],
+a:1,
+exp:"Diferencia moderada."
+},
+
+{
+q:"¿Cuál elemento tiene mayor tamaño atómico?",
+o:["Li","Na","K","Rb"],
+a:3,
+exp:"Aumenta hacia abajo."
+}
+
+];
+
+let current = 0;
+let answers = new Array(questions.length).fill(null);
+let examenFinalizado = false;
+
+const quiz = document.getElementById("quiz");
+
+function actualizarProgreso(){
+
+const respondidas =
+answers.filter(a => a !== null).length;
+
+document.getElementById("progress").textContent =
+`${respondidas} / ${questions.length}`;
+
+document.getElementById("qNum").textContent =
+current + 1;
+
+}
+
+function render(){
+
+quiz.innerHTML = "";
+
+questions.forEach((q,i)=>{
+
+let div = document.createElement("div");
+
+div.className =
+"question" + (i===current ? " active" : "");
+
+let opts = "";
+
+q.o.forEach((op,j)=>{
+
+let extraClass = "";
+
+if(answers[i] === j)
+extraClass += " selected";
+
+if(examenFinalizado){
+
+if(j === q.a)
+extraClass += " correct-answer";
+
+if(answers[i] === j && j !== q.a){
+extraClass += " wrong-answer";
+}
+
+}
+
+opts += `
+<div class="option${extraClass}"
+onclick="selectOption(${i},${j})">
+
+${String.fromCharCode(65+j)}. ${op}
+
+</div>
+`;
+
+});
+
+div.innerHTML = `
+
+<h3>${q.q}</h3>
+
+${opts}
+
+<div class="navigation">
+
+<button class="prev"
+onclick="prevQuestion()"
+${i===0 ? "disabled" : ""}>
+Anterior
+</button>
+
+${i===questions.length-1
+
+? `<button class="finish"
+onclick="finishQuiz()">
+Finalizar
+</button>`
+
+: `<button class="next"
+onclick="nextQuestion()">
+Siguiente
+</button>`
+
+}
+
+</div>
+
+`;
+
+quiz.appendChild(div);
+
+});
+
+actualizarProgreso();
+
+}
+
+function selectOption(i,j){
+
+if(examenFinalizado) return;
+
+answers[i] = j;
+
+render();
+
+}
+
+function nextQuestion(){
+
+if(current < questions.length-1){
+
+current++;
+
+render();
+
+}
+
+}
+
+function prevQuestion(){
+
+if(current > 0){
+
+current--;
+
+render();
+
+}
+
+}
+
+function finishQuiz(){
+
+if(examenFinalizado) return;
+
+examenFinalizado = true;
+
+let total = questions.length;
+
+let correctas = 0;
+
+let revisionHTML = "";
+
+questions.forEach((q,i)=>{
+
+const respuestaUsuario = answers[i];
+
+if(respuestaUsuario === q.a){
+
+correctas++;
+
+revisionHTML += `
+<div class="review-item correcta">
+
+<h4>
+Pregunta ${i+1}: ✅ Correcta
+</h4>
+
+<div class="explicacion">
+${q.exp}
+</div>
+
+</div>
+`;
+
+}else if(respuestaUsuario === null){
+
+revisionHTML += `
+<div class="review-item sin-responder">
+
+<h4>
+Pregunta ${i+1}: ⚠️ Sin responder
+</h4>
+
+<div class="explicacion">
+Respuesta correcta: ${q.o[q.a]}
+</div>
+
+</div>
+`;
+
+}else{
+
+revisionHTML += `
+<div class="review-item incorrecta">
+
+<h4>
+Pregunta ${i+1}: ❌ Incorrecta
+</h4>
+
+<div class="explicacion">
+
+Correcta: ${q.o[q.a]}
+
+<br><br>
+
+${q.exp}
+
+</div>
+
+</div>
+`;
+
+}
+
+});
+
+const porcentaje =
+((correctas/total)*100).toFixed(1);
+
+document.getElementById("puntajeTexto")
+.innerHTML = `
+
+Obtuviste
+<strong>${correctas}</strong>
+
+de
+
+<strong>${total}</strong>
+
+correctas.<br>
+
+Nota final:
+
+<strong>${porcentaje}%</strong>
+
+`;
+
+document.getElementById("revision")
+.innerHTML = revisionHTML;
+
+document.getElementById("resultado")
+.style.display = "block";
+
+render();
+
+}
+
+function reiniciarExamen(){
+
+location.reload();
+
+}
+
+function toggleTabla(){
+
+const box =
+document.getElementById("tablaBox");
+
+box.style.display =
+box.style.display === "block"
+? "none"
+: "block";
+
+}
+
+function toggleGuia(){
+
+const box =
+document.getElementById("guiaBox");
+
+box.style.display =
+box.style.display === "block"
+? "none"
+: "block";
+
+}
+
+render();
+
+</script>
+
+<script type="module" src="../party/party-timer.js"></script>
+<script type="module" src="../party/party-resultados.js"></script>
+
+</body>
+</html>
