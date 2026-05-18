@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Simulador Verbal</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, sans-serif;
+}
+
+body{
+    background:#e7dfcf;
+    color:#2b2b2b;
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:20px;
+}
+
+.container{
+    width:100%;
+    max-width:900px;
+    background:#f8f4ec;
+    border-radius:18px;
+    padding:30px;
+    box-shadow:0 8px 25px rgba(0,0,0,0.15);
+}
+
+h1{
+    text-align:center;
+    margin-bottom:10px;
+}
+
+.sub{
+    text-align:center;
+    color:#5d564d;
+    margin-bottom:25px;
+}
+
+.inicio{
+    text-align:center;
+}
+
+button{
+    background:#8b6b3f;
+    color:white;
+    border:none;
+    padding:14px 24px;
+    border-radius:12px;
+    cursor:pointer;
+    font-size:16px;
+    transition:0.2s;
+}
+
+button:hover{
+    transform:scale(1.03);
+}
+
+.info{
+    display:flex;
+    gap:15px;
+    margin-bottom:20px;
+    flex-wrap:wrap;
+}
+
+.card{
+    flex:1;
+    background:#ece3d3;
+    padding:15px;
+    border-radius:12px;
+    text-align:center;
+}
+
+.progreso{
+    width:100%;
+    height:16px;
+    background:#ddd3c0;
+    border-radius:20px;
+    overflow:hidden;
+    margin-bottom:25px;
+}
+
+.barra{
+    width:0%;
+    height:100%;
+    background:#8b6b3f;
+    transition:0.3s;
+}
+
+.pregunta{
+    background:#f1ebdf;
+    border-radius:16px;
+    padding:25px;
+}
+
+.tipo{
+    color:#7a5a31;
+    margin-bottom:10px;
+    font-weight:bold;
+}
+
+.texto{
+    font-size:24px;
+    margin-bottom:25px;
+    line-height:1.5;
+}
+
+.opcion{
+    background:#ece3d3;
+    padding:15px;
+    border-radius:12px;
+    margin-bottom:12px;
+    cursor:pointer;
+    transition:0.2s;
+}
+
+.opcion:hover{
+    background:#ddd1bc;
+}
+
+.correcta{
+    background:#9bc59f !important;
+}
+
+.incorrecta{
+    background:#d8aaaa !important;
+}
+
+.botones{
+    display:flex;
+    justify-content:space-between;
+    gap:10px;
+    margin-top:20px;
+}
+
+.estadistica{
+    background:#ece3d3;
+    padding:18px;
+    border-radius:12px;
+    margin-bottom:15px;
+}
+
+.resultados{
+    text-align:center;
+}
+
+.oculto{
+    display:none;
+}
+
+@media(max-width:700px){
+
+    .texto{
+        font-size:20px;
+    }
+
+    .info{
+        flex-direction:column;
+    }
+
+    .botones{
+        flex-direction:column;
+    }
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+
+<div id="pantallaInicio" class="inicio">
+    <h1>Simulador de Habilidad Verbal</h1>
+    <p class="sub">50 preguntas • 20 minutos</p>
+
+    <div class="estadistica">
+        <p>Analogías continuas, alternas e incompletas</p>
+    </div>
+
+    <button id="startBtn">Iniciar examen</button>
+</div>
+
+<div id="pantallaExamen" class="oculto">
+
+    <div class="info">
+
+        <div class="card">
+            <h3>Tiempo</h3>
+            <p id="timer">20:00</p>
+        </div>
+
+        <div class="card">
+            <h3>Pregunta</h3>
+            <p id="contadorPregunta">1 / 50</p>
+        </div>
+
+        <div class="card">
+            <h3>Puntaje</h3>
+            <p id="puntaje">0</p>
+        </div>
+
+    </div>
+
+    <div class="progreso">
+        <div class="barra" id="barra"></div>
+    </div>
+
+    <div class="pregunta">
+
+        <p class="tipo" id="tipoPregunta"></p>
+
+        <div class="texto" id="textoPregunta"></div>
+
+        <div id="opciones"></div>
+
+    </div>
+
+    <div class="botones">
+        <button id="anteriorBtn">Anterior</button>
+        <button id="siguienteBtn">Siguiente</button>
+    </div>
+
+</div>
+
+<div id="pantallaResultados" class="resultados oculto">
+
+    <h2>Resultados</h2>
+
+    <div class="estadistica">
+        <h3>Nota final</h3>
+        <p id="notaFinal"></p>
+    </div>
+
+    <div class="estadistica">
+        <h3>Correctas</h3>
+        <p id="correctas"></p>
+    </div>
+
+    
+
+    
+
+    <button onclick="location.reload()">Intentar otra vez</button>
+
+</div>
+
+</div>
+
+<script>
+
+const preguntas = [
+
+{
+    tipo:"Incompleta",
+    pregunta:"_____ es a NUNCA como TODO es a _____",
+    opciones:["JAMÁS - PARTE","SIEMPRE - NADA","DESPUÉS - UNO","SIEMPRE - COMPLETO"],
+    correcta:0
+},
+{
+    tipo:"Continua",
+    pregunta:"ÓSCULO es a BESO como ENCONO es a:",
+    opciones:["Caricia","Amor","Odio","Dédalo"],
+    correcta:2
+},
+{
+    tipo:"Alterna",
+    pregunta:"TAXATIVO es a POPULAR como EXCLUSIVO es a:",
+    opciones:["Público","Superfluo","Tremebundo","Específico"],
+    correcta:0
+},
+{
+    tipo:"Continua",
+    pregunta:"CADENA es a ESLABÓN como LIBRO es a:",
+    opciones:["Página","Biblioteca","Lápiz","Lectura"],
+    correcta:0
+},
+{
+    tipo:"Incompleta",
+    pregunta:"_____ es a PULMÓN como CORAZÓN es a _____",
+    opciones:["Pleura - Pericardio","Peritoneo - Pleura","Pleura - Hígado","Pericardio - Pleura"],
+    correcta:0
+},
+{
+    tipo:"Continua",
+    pregunta:"LACÓNICO es a BREVE como EXTENSO es a:",
+    opciones:["Amplio","Corto","Pequeño","Simple"],
+    correcta:0
+},
+{
+    tipo:"Alterna",
+    pregunta:"PRÓLOGO es a LIBRO como INTRODUCCIÓN es a:",
+    opciones:["Capítulo","Discurso","Poema","Párrafo"],
+    correcta:1
+},
+{
+    tipo:"Continua",
+    pregunta:"MÉDICO es a DIAGNOSTICAR como JUEZ es a:",
+    opciones:["Castigar","Acusar","Sentenciar","Investigar"],
+    correcta:2
+},
+{
+    tipo:"Continua",
+    pregunta:"AVARO es a GENEROSO como OSADO es a:",
+    opciones:["Cobarde","Miedoso","Valiente","Dudoso"],
+    correcta:0
+},
+{
+    tipo:"Incompleta",
+    pregunta:"_____ es a TECLADO como VOLANTE es a _____",
+    opciones:["Computadora - automóvil","Pantalla - rueda","Mouse - motor","Cable - vehículo"],
+    correcta:0
+},
+{
+    tipo:"Continua",
+    pregunta:"SEMILLA es a ÁRBOL como HUEVO es a:",
+    opciones:["Ave","Nido","Pluma","Pico"],
+    correcta:0
+},
+{
+    tipo:"Alterna",
+    pregunta:"POBREZA es a ESCASEZ como RIQUEZA es a:",
+    opciones:["Exceso","Abundancia","Poder","Dinero"],
+    correcta:1
+},
+{
+    tipo:"Continua",
+    pregunta:"BRÚJULA es a ORIENTACIÓN como TERMÓMETRO es a:",
+    opciones:["Presión","Clima","Temperatura","Calor"],
+    correcta:2
+},
+{
+    tipo:"Continua",
+    pregunta:"BIBLIOTECA es a LIBROS como MUSEO es a:",
+    opciones:["Historia","Arte","Pinturas","Escultor"],
+    correcta:2
+},
+{
+    tipo:"Incompleta",
+    pregunta:"_____ es a RÍO como CARRETERA es a _____",
+    opciones:["Puente - automóvil","Agua - vehículo","Canal - tránsito","Barco - ciudad"],
+    correcta:1
+},
+{
+    tipo:"Continua",
+    pregunta:"CEREBRO es a PENSAR como CORAZÓN es a:",
+    opciones:["Latir","Vivir","Respirar","Sentir"],
+    correcta:0
+},
+{
+    tipo:"Alterna",
+    pregunta:"LEÓN es a SELVA como CAMELLO es a:",
+    opciones:["Arena","Calor","Desierto","Oasis"],
+    correcta:2
+},
+{
+    tipo:"Continua",
+    pregunta:"PLUMA es a ESCRIBIR como TIJERA es a:",
+    opciones:["Papel","Pegar","Cortar","Doblar"],
+    correcta:2
+},
+{
+    tipo:"Continua",
+    pregunta:"CAUSA es a EFECTO como PREGUNTA es a:",
+    opciones:["Problema","Respuesta","Duda","Solución"],
+    correcta:1
+},
+{
+    tipo:"Alterna",
+    pregunta:"ACTOR es a TEATRO como MÚSICO es a:",
+    opciones:["Concierto","Escenario","Radio","Micrófono"],
+    correcta:1
+},
+{
+    tipo:"Continua",
+    pregunta:"EFÍMERO es a DURADERO como ANTIGUO es a:",
+    opciones:["Moderno","Viejo","Histórico","Arcaico"],
+    correcta:0
+},
+{
+    tipo:"Incompleta",
+    pregunta:"_____ es a ABEJA como MADRIGUERA es a _____",
+    opciones:["Panal - conejo","Miel - ratón","Colmena - perro","Flor - zorro"],
+    correcta:0
+},
+{
+    tipo:"Continua",
+    pregunta:"PILOTO es a AVIÓN como CAPITÁN es a:",
+    opciones:["Barco","Puerto","Timón","Mar"],
+    correcta:0
+},
+{
+    tipo:"Alterna",
+    pregunta:"LLAVE es a PUERTA como CONTRASEÑA es a:",
+    opciones:["Acceso","Usuario","Internet","Cuenta"],
+    correcta:0
+},
+{
+    tipo:"Continua",
+    pregunta:"OSCURO es a LUZ como IGNORANCIA es a:",
+    opciones:["Escuela","Inteligencia","Conocimiento","Sabiduría"],
+    correcta:2
+},
+{
+    tipo:"Continua",
+    pregunta:"HIELO es a FRÍO como FUEGO es a:",
+    opciones:["Ceniza","Humo","Calor","Llama"],
+    correcta:2
+},
+{
+    tipo:"Alterna",
+    pregunta:"MONTAÑA es a CIMA como EDIFICIO es a:",
+    opciones:["Techo","Puerta","Ventana","Pared"],
+    correcta:0
+},
+{
+    tipo:"Continua",
+    pregunta:"MAESTRO es a ESCUELA como MÉDICO es a:",
+    opciones:["Farmacia","Hospital","Enfermera","Consulta"],
+    correcta:1
+},
+{
+    tipo:"Incompleta",
+    pregunta:"_____ es a TRISTEZA como RISA es a _____",
+    opciones:["Llanto - alegría","Dolor - sonrisa","Miedo - felicidad","Silencio - emoción"],
+    correcta:0
+},
+{
+    tipo:"Continua",
+    pregunta:"ABEJA es a MIEL como VACA es a:",
+    opciones:["Queso","Leche","Pasto","Carne"],
+    correcta:1
+},
+{
+    tipo:"Alterna",
+    pregunta:"PERRO es a LADRAR como GATO es a:",
+    opciones:["Dormir","Correr","Maullar","Arañar"],
+    correcta:2
+},
+{
+    tipo:"Continua",
+    pregunta:"ESPEJO es a REFLEJO como ECO es a:",
+    opciones:["Repetición","Ruido","Sonido","Voz"],
+    correcta:2
+},
+{
+    tipo:"Continua",
+    pregunta:"CUCHILLO es a CORTAR como AGUJA es a:",
+    opciones:["Pinchar","Coser","Romper","Unir"],
+    correcta:1
+},
+{
+    tipo:"Alterna",
+    pregunta:"RÁPIDO es a LENTO como ALTO es a:",
+    opciones:["Bajo","Grande","Gigante","Ancho"],
+    correcta:0
+},
+{
+    tipo:"Incompleta",
+    pregunta:"_____ es a FLOR como FRUTO es a _____",
+    opciones:["Semilla - árbol","Raíz - planta","Hoja - tallo","Pétalo - jardín"],
+    correcta:0
+},
+{
+    tipo:"Continua",
+    pregunta:"RELOJ es a TIEMPO como TERMÓMETRO es a:",
+    opciones:["Clima","Temperatura","Calor","Grados"],
+    correcta:1
+},
+{
+    tipo:"Continua",
+    pregunta:"DOCTOR es a HOSPITAL como JUEZ es a:",
+    opciones:["Ley","Cárcel","Tribunal","Sentencia"],
+    correcta:2
+},
+{
+    tipo:"Alterna",
+    pregunta:"PEZ es a AGUA como AVE es a:",
+    opciones:["Cielo","Nido","Aire","Árbol"],
+    correcta:2
+},
+{
+    tipo:"Continua",
+    pregunta:"SILLA es a SENTARSE como CAMA es a:",
+    opciones:["Dormir","Acostarse","Descansar","Relajarse"],
+    correcta:1
+},
+{
+    tipo:"Incompleta",
+    pregunta:"_____ es a MÚSICA como LIBRO es a _____",
+    opciones:["Sonido - lectura","Canción - biblioteca","Radio - página","Melodía - escritor"],
+    correcta:0
+},
+{
+    tipo:"Continua",
+    pregunta:"TORMENTA es a LLUVIA como TERREMOTO es a:",
+    opciones:["Temblor","Desastre","Ruido","Miedo"],
+    correcta:0
+},
+{
+    tipo:"Alterna",
+    pregunta:"PANADERO es a PAN como ZAPATERO es a:",
+    opciones:["Cuero","Zapato","Tela","Pie"],
+    correcta:1
+},
+{
+    tipo:"Continua",
+    pregunta:"PULMÓN es a RESPIRAR como ESTÓMAGO es a:",
+    opciones:["Alimentar","Comer","Digerir","Procesar"],
+    correcta:2
+},
+{
+    tipo:"Continua",
+    pregunta:"HOSPITAL es a ENFERMO como CÁRCEL es a:",
+    opciones:["Castigo","Guardia","Preso","Celda"],
+    correcta:2
+},
+{
+    tipo:"Alterna",
+    pregunta:"LÁPIZ es a ESCRIBIR como PINCEL es a:",
+    opciones:["Pintar","Color","Arte","Dibujar"],
+    correcta:0
+},
+{
+    tipo:"Continua",
+    pregunta:"SOL es a DÍA como LUNA es a:",
+    opciones:["Oscuridad","Noche","Estrella","Cielo"],
+    correcta:1
+},
+{
+    tipo:"Incompleta",
+    pregunta:"_____ es a BARCO como HANGAR es a _____",
+    opciones:["Puerto - avión","Mar - piloto","Capitán - vuelo","Ancla - motor"],
+    correcta:0
+},
+{
+    tipo:"Continua",
+    pregunta:"DIENTE es a BOCA como DEDO es a:",
+    opciones:["Brazo","Mano","Uña","Palma"],
+    correcta:1
+},
+{
+    tipo:"Alterna",
+    pregunta:"COMPUTADORA es a TECLADO como CUERPO es a:",
+    opciones:["Cabeza","Pierna","Mano","Cerebro"],
+    correcta:0
+},
+{
+    tipo:"Continua",
+    pregunta:"PERIÓDICO es a NOTICIA como REVISTA es a:",
+    opciones:["Artículo","Papel","Lectura","Publicidad"],
+    correcta:0
+},
+{
+    tipo:"Continua",
+    pregunta:"CAMISA es a VESTIR como COMIDA es a:",
+    opciones:["Cocinar","Servir","Alimentar","Consumir"],
+    correcta:2
+}
+];
+
+
+
+let indice = 0;
+let puntaje = 0;
+let tiempo = 20 * 60;
+let respuestas = Array(preguntas.length).fill(null);
+
+const textoPregunta = document.getElementById("textoPregunta");
+const opcionesDiv = document.getElementById("opciones");
+const contadorPregunta = document.getElementById("contadorPregunta");
+const puntajeTexto = document.getElementById("puntaje");
+const tipoPregunta = document.getElementById("tipoPregunta");
+const barra = document.getElementById("barra");
+
+function iniciarExamen(){
+
+    document.getElementById("pantallaInicio").classList.add("oculto");
+    document.getElementById("pantallaExamen").classList.remove("oculto");
+
+    mostrarPregunta();
+    iniciarTimer();
+}
+
+function iniciarTimer(){
+
+    const intervalo = setInterval(()=>{
+
+        tiempo--;
+
+        let minutos = Math.floor(tiempo / 60);
+        let segundos = tiempo % 60;
+
+        if(segundos < 10){
+            segundos = "0" + segundos;
+        }
+
+        document.getElementById("timer").textContent = `${minutos}:${segundos}`;
+
+        if(tiempo <= 0){
+            clearInterval(intervalo);
+            finalizarExamen();
+        }
+
+    },1000);
+}
+
+function mostrarPregunta(){
+
+    const actual = preguntas[indice];
+
+    contadorPregunta.textContent = `${indice + 1} / ${preguntas.length}`;
+
+    tipoPregunta.textContent = `Tipo: ${actual.tipo}`;
+
+    textoPregunta.textContent = actual.pregunta;
+
+    barra.style.width = `${((indice + 1) / preguntas.length) * 100}%`;
+
+    opcionesDiv.innerHTML = "";
+
+    actual.opciones.forEach((opcion,i)=>{
+
+        const div = document.createElement("div");
+
+        div.classList.add("opcion");
+
+        div.textContent = opcion;
+
+        if(respuestas[indice] !== null){
+
+            if(i === actual.correcta){
+                div.classList.add("correcta");
+            }
+
+            if(i === respuestas[indice] && i !== actual.correcta){
+                div.classList.add("incorrecta");
+            }
+        }
+
+        div.addEventListener("click",()=> responder(i));
+
+        opcionesDiv.appendChild(div);
+
+    });
+}
+
+function responder(i){
+
+    if(respuestas[indice] !== null) return;
+
+    respuestas[indice] = i;
+
+    if(i === preguntas[indice].correcta){
+        puntaje++;
+    }
+
+    puntajeTexto.textContent = puntaje;
+
+    mostrarPregunta();
+}
+
+function siguiente(){
+
+    if(indice < preguntas.length - 1){
+        indice++;
+        mostrarPregunta();
+    }else{
+        finalizarExamen();
+    }
+}
+
+function anterior(){
+
+    if(indice > 0){
+        indice--;
+        mostrarPregunta();
+    }
+}
+
+function finalizarExamen(){
+
+    document.getElementById("pantallaExamen").classList.add("oculto");
+    document.getElementById("pantallaResultados").classList.remove("oculto");
+
+    const nota = Math.round((puntaje / preguntas.length) * 100);
+
+    document.getElementById("notaFinal").textContent = `${nota} / 100`;
+    document.getElementById("correctas").textContent = `${puntaje} de ${preguntas.length}`;
+}
+
+function random(min,max){
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+
+document.getElementById("startBtn").addEventListener("click", iniciarExamen);
+document.getElementById("siguienteBtn").addEventListener("click", siguiente);
+document.getElementById("anteriorBtn").addEventListener("click", anterior);
+
+</script>
+
+</body>
+</html>
