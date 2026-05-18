@@ -570,23 +570,34 @@ function anterior(){
 
 function finalizarExamen(){
 
+    // ocultar examen
     document.getElementById("examen").classList.add("oculto");
+
+    // mostrar resultados
     document.getElementById("resultados").classList.remove("oculto");
 
-    const nota = Math.round((puntaje / preguntas.length) * 100);
+    // calcular nota
+    const nota = Math.round(
+        (puntaje / preguntas.length) * 100
+    );
 
+    // guardar nota de numérica
     localStorage.setItem("numerica", nota);
 
-    document.getElementById("notaFinal").textContent = `${nota} / 100`;
-    document.getElementById("correctas").textContent = `${puntaje} de ${preguntas.length}`;
+    // mostrar resultados
+    document.getElementById("notaFinal").textContent =
+    `${nota} / 100`;
 
+    document.getElementById("correctas").textContent =
+    `${puntaje} de ${preguntas.length}`;
+
+    // pasar automáticamente a resultados
     setTimeout(()=>{
 
-       window.location.href = "Resultados.html";
+        window.location.href = "Resultados.html";
 
     },3000);
 }
-
 
 document.getElementById("startBtn").addEventListener("click", iniciarExamen);
 document.getElementById("siguienteBtn").addEventListener("click", siguiente);
