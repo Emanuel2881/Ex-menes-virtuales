@@ -1,4 +1,8 @@
-import { db } from "./firebase.js";
+import {
+   db,
+   collection,
+   addDoc
+} from "./firebase.js";
 const verbal = Number(localStorage.getItem("verbal")) || 0;
 const numerica = Number(localStorage.getItem("numerica")) || 0;
 
@@ -83,6 +87,46 @@ if(percentil >= 90){
 }
 
 document.getElementById("nivel").textContent = nivel;
+
+// ======================
+// GUARDAR EN FIREBASE
+// ======================
+
+guardarResultado();
+
+async function guardarResultado(){
+
+    try{
+
+        await addDoc(
+            collection(db, "rankings"),
+            {
+
+                nombre:"Invitado",
+
+                verbal,
+
+                numerica,
+
+                promedio,
+
+                percentil,
+
+                nivel,
+
+                fecha:new Date().toLocaleString()
+
+            }
+        );
+
+        console.log("Resultado guardado");
+
+    }catch(error){
+
+        console.error("Error guardando:", error);
+
+    }
+}
 
 
 
