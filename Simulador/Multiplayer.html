@@ -1,1 +1,145 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Multiplayer</title>
 
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial,sans-serif;
+}
+
+body{
+    background:#e7dfcf;
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:20px;
+}
+
+.container{
+    width:100%;
+    max-width:700px;
+    background:#f8f4ec;
+    padding:35px;
+    border-radius:20px;
+    box-shadow:0 8px 25px rgba(0,0,0,0.15);
+}
+
+h1{
+    text-align:center;
+    margin-bottom:10px;
+    color:#5d4320;
+}
+
+.sub{
+    text-align:center;
+    color:#5d564d;
+    margin-bottom:30px;
+}
+
+.card{
+    background:#ece3d3;
+    padding:25px;
+    border-radius:16px;
+    margin-bottom:20px;
+}
+
+input{
+    width:100%;
+    padding:14px;
+    border:none;
+    border-radius:10px;
+    margin-top:15px;
+    font-size:16px;
+}
+
+button{
+    width:100%;
+    padding:15px;
+    border:none;
+    border-radius:12px;
+    background:#8b6b3f;
+    color:white;
+    font-size:16px;
+    cursor:pointer;
+    margin-top:15px;
+}
+
+button:hover{
+    opacity:0.9;
+}
+
+#codigoSala{
+    font-size:42px;
+    text-align:center;
+    margin-top:20px;
+    color:#5d4320;
+    letter-spacing:5px;
+}
+
+</style>
+</head>
+<body>
+
+<div class="container">
+
+    <h1>Modo Multijugador</h1>
+
+    <p class="sub">
+        Crea una sala o únete con un código.
+    </p>
+
+    <div class="card">
+
+        <h2>Crear sala</h2>
+
+        <input
+        type="text"
+        id="nombreCrear"
+        placeholder="Tu nombre"
+        >
+
+        <button id="crearBtn">
+            Crear sala
+        </button>
+
+        <div id="codigoSala"></div>
+
+    </div>
+
+    <div class="card">
+
+        <h2>Unirse a sala</h2>
+
+        <input
+        type="text"
+        id="nombreUnirse"
+        placeholder="Tu nombre"
+        >
+
+        <input
+        type="text"
+        id="codigoInput"
+        placeholder="Código de sala"
+        maxlength="4"
+        >
+
+        <button id="unirseBtn">
+            Entrar
+        </button>
+
+    </div>
+
+</div>
+
+<script type="module" src="multiplayer.js"></script>
+
+</body>
+</html>
