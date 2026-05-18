@@ -6,7 +6,8 @@ import {
     doc,
     setDoc,
     getDoc,
-    updateDoc
+    updateDoc,
+    onSnapshot
 } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
 
@@ -47,9 +48,12 @@ crearBtn.addEventListener("click", async()=>{
 
     localStorage.setItem("codigoSala", codigo);
     localStorage.setItem("jugador", nombre);
+    localStorage.setItem("modo","multiplayer");
 
     document.getElementById("codigoSala")
     .textContent = codigo;
+
+    esperarJugador(codigo);
 
 });
 
@@ -68,6 +72,18 @@ unirseBtn.addEventListener("click", async()=>{
     document.getElementById("codigoInput")
     .value
     .toUpperCase();
+
+    if(nombre.trim() === ""){
+
+        alert("Ingresa tu nombre");
+        return;
+    }
+
+    if(codigo.length !== 4){
+
+        alert("Código inválido");
+        return;
+    }
 
     const salaRef = doc(db,"salas",codigo);
 
@@ -97,10 +113,34 @@ unirseBtn.addEventListener("click", async()=>{
 
     localStorage.setItem("codigoSala", codigo);
     localStorage.setItem("jugador", nombre);
+    localStorage.setItem("modo","multiplayer");
 
     window.location.href = "Verbal.html";
 
 });
+
+
+
+// ======================
+// ESPERAR JUGADOR
+// ======================
+
+function esperarJugador(codigo){
+
+    const salaRef = doc(db,"salas",codigo);
+
+    onSnapshot(salaRef,(docSnap)=>{
+
+        const datos = docSnap.data();
+
+        if(datos.estado === "listo"){
+
+            window.location.href = "Verbal.html";
+        }
+
+    });
+
+}
 
 
 
