@@ -689,8 +689,15 @@ function finalizarExamen(){
 
     const nota = Math.round((puntaje / preguntas.length) * 100);
 
+    localStorage.setItem("verbal", nota);
+
     document.getElementById("notaFinal").textContent = `${nota} / 100`;
     document.getElementById("correctas").textContent = `${puntaje} de ${preguntas.length}`;
+     setTimeout(()=>{
+
+        window.location.href = "Numerica.html";
+
+    },3000);
 }
 
 function random(min,max){
