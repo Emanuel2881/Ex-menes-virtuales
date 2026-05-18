@@ -1,3 +1,4 @@
+import { db } from "./firebase.js";
 const verbal = Number(localStorage.getItem("verbal")) || 0;
 const numerica = Number(localStorage.getItem("numerica")) || 0;
 
