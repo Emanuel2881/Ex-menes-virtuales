@@ -6,6 +6,7 @@
 <title>Simulador de Habilidades</title>
 
 <style>
+
 *{
     margin:0;
     padding:0;
@@ -124,6 +125,7 @@ button:hover{
         padding:25px;
     }
 }
+
 </style>
 </head>
 <body>
@@ -135,7 +137,6 @@ button:hover{
     <p class="subtitulo">
         Simulador de habilidad verbal y numérica basado en pruebas de admisión universitaria.
     </p>
-
 
     <div class="grid">
 
@@ -157,7 +158,6 @@ button:hover{
 
         </div>
 
-
         <div class="card">
 
             <div class="icono">👥</div>
@@ -176,7 +176,6 @@ button:hover{
         </div>
 
     </div>
-
 
     <div class="info">
 
@@ -199,11 +198,10 @@ function iniciarIndividual(){
 
     localStorage.clear();
 
-    <a href="Simulador/Verbal.html">Entrar</a>
+    window.location.href = "Simulador/Verbal.html";
 }
 
 function modoMultijugador(){
-    
 
     alert("El modo de 2 personas estará disponible próximamente.");
 }
