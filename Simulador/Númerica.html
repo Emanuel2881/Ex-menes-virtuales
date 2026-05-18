@@ -575,10 +575,13 @@ function finalizarExamen(){
 
     const nota = Math.round((puntaje / preguntas.length) * 100);
 
-    localStorage.setItem("resultadoNumerica", nota);
-
+    localStorage.setItem("numerica", nota);
+    
     document.getElementById("notaFinal").textContent = `${nota} / 100`;
     document.getElementById("correctas").textContent = `${puntaje} de ${preguntas.length}`;
+
+    window.location.href = "Resultados.html";
+    },3000);
 }
 
 
