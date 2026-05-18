@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Simulador Numérico</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, sans-serif;
+}
+
+body{
+    background:#e7dfcf;
+    color:#2b2b2b;
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:20px;
+}
+
+.container{
+    width:100%;
+    max-width:950px;
+    background:#f8f4ec;
+    border-radius:18px;
+    padding:30px;
+    box-shadow:0 8px 25px rgba(0,0,0,0.15);
+}
+
+h1{
+    text-align:center;
+    margin-bottom:10px;
+}
+
+.sub{
+    text-align:center;
+    color:#5d564d;
+    margin-bottom:25px;
+}
+
+button{
+    background:#8b6b3f;
+    color:white;
+    border:none;
+    padding:14px 24px;
+    border-radius:12px;
+    cursor:pointer;
+    font-size:16px;
+}
+
+.info{
+    display:flex;
+    gap:15px;
+    flex-wrap:wrap;
+    margin-bottom:20px;
+}
+
+.card{
+    flex:1;
+    background:#ece3d3;
+    padding:15px;
+    border-radius:12px;
+    text-align:center;
+}
+
+.progreso{
+    width:100%;
+    height:16px;
+    background:#ddd3c0;
+    border-radius:20px;
+    overflow:hidden;
+    margin-bottom:25px;
+}
+
+.barra{
+    width:0%;
+    height:100%;
+    background:#8b6b3f;
+}
+
+.pregunta{
+    background:#f1ebdf;
+    padding:25px;
+    border-radius:16px;
+}
+
+.texto{
+    font-size:24px;
+    margin-bottom:25px;
+    line-height:1.6;
+}
+
+.opcion{
+    background:#ece3d3;
+    padding:15px;
+    border-radius:12px;
+    margin-bottom:12px;
+    cursor:pointer;
+}
+
+.opcion:hover{
+    background:#ddd1bc;
+}
+
+.correcta{
+    background:#9bc59f !important;
+}
+
+.incorrecta{
+    background:#d8aaaa !important;
+}
+
+.botones{
+    display:flex;
+    justify-content:space-between;
+    gap:10px;
+    margin-top:20px;
+}
+
+.estadistica{
+    background:#ece3d3;
+    padding:18px;
+    border-radius:12px;
+    margin-bottom:15px;
+}
+
+.oculto{
+    display:none;
+}
+
+.resultados{
+    text-align:center;
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+
+<div id="inicio">
+    <h1>Simulador de Habilidad Numérica</h1>
+    <p class="sub">40 preguntas • 28 minutos</p>
+
+    <div class="estadistica">
+        <p>Series numéricas, lógica, operaciones, porcentajes y razonamiento matemático.</p>
+    </div>
+
+    <button id="startBtn">Iniciar examen</button>
+</div>
+
+<div id="examen" class="oculto">
+
+    <div class="info">
+
+        <div class="card">
+            <h3>Tiempo</h3>
+            <p id="timer">28:00</p>
+        </div>
+
+        <div class="card">
+            <h3>Pregunta</h3>
+            <p id="contador">1 / 40</p>
+        </div>
+
+        <div class="card">
+            <h3>Puntaje</h3>
+            <p id="puntaje">0</p>
+        </div>
+
+    </div>
+
+    <div class="progreso">
+        <div class="barra" id="barra"></div>
+    </div>
+
+    <div class="pregunta">
+        <div class="texto" id="pregunta"></div>
+        <div id="opciones"></div>
+    </div>
+
+    <div class="botones">
+        <button id="anteriorBtn">Anterior</button>
+        <button id="siguienteBtn">Siguiente</button>
+    </div>
+
+</div>
+
+<div id="resultados" class="resultados oculto">
+
+    <h2>Resultados</h2>
+
+    <div class="estadistica">
+        <h3>Nota final</h3>
+        <p id="notaFinal"></p>
+    </div>
+
+    <div class="estadistica">
+        <h3>Correctas</h3>
+        <p id="correctas"></p>
+    </div>
+
+    <button onclick="location.reload()">Intentar otra vez</button>
+
+</div>
+
+</div>
+
+<script>
+
+const preguntas = [
+
+{
+pregunta:"¿Qué número sigue en la serie? 1 - 3 - 7 - 13 - 21 - 31 - ?",
+opciones:["45","43","34","32","Ninguna de las anteriores"],
+correcta:0
+},
+
+{
+pregunta:"Obtenga la raíz cuadrada de 196",
+opciones:["13","14","49","98","Ninguna de las anteriores"],
+correcta:1
+},
+
+{
+pregunta:"¿Qué número sigue en la serie? 7 - 4 - 1 - -2 - -5 - ?",
+opciones:["-7","-6","-9","-8","Ninguna de las anteriores"],
+correcta:3
+},
+
+{
+pregunta:"-95 ÷ 19 =",
+opciones:["-5","-4","0","5","Ninguna de las anteriores"],
+correcta:0
+},
+
+{
+pregunta:"¿Qué número puede sustituir ambos signos de interrogación? ?/1 = 64/?",
+opciones:["1","32","64","8","Ninguna de las anteriores"],
+correcta:3
+},
+
+{
+pregunta:"Los dos números cuya suma es 42 y cuya división es 6 son:",
+opciones:["6 y 7","24 y 18","3 y 14","36 y 6","Ninguna de las anteriores"],
+correcta:3
+},
+
+{
+pregunta:"¿Qué número debe sustituir a la M? 3M4 × 4 = 1216",
+opciones:["0","2","4","5","Ninguna de las anteriores"],
+correcta:1
+},
+
+{
+pregunta:"¿Qué número puede sustituir ambos signos de interrogación? 2/? = ?/18",
+opciones:["3","9","6","36","Ninguna de las anteriores"],
+correcta:2
+},
+
+{
+pregunta:"¿Qué número sigue en la serie? 18 - 10 - 20 - 12 - 24 - 16 - 32 - ?",
+opciones:["30","48","36","56","Ninguna de las anteriores"],
+correcta:0
+},
+
+{
+pregunta:"18 es 75% de:",
+opciones:["24","12","24","27","Ninguna de las anteriores"],
+correcta:0
+},
+
+{
+pregunta:"¿Qué número puede sustituir ambos signos de interrogación? 4/? = ?/100",
+opciones:["1","20","25","200","Ninguna de las anteriores"],
+correcta:1
+},
+
+{
+pregunta:"Los dos números que elevados al cuadrado y sumados dan 20, y multiplicados dan 8 son:",
+opciones:["8 y 12","4 y 5","9 y 11","4 y 2","Ninguna de las anteriores"],
+correcta:3
+},
+
+{
+pregunta:"¿Cuál es el mayor número? -10, -7/15, 0, -2",
+opciones:["-10","-7/15","0","-2","Ninguna de las anteriores"],
+correcta:2
+},
+
+{
+pregunta:"¿Qué número sigue en la serie? 25 - 22 - 26 - 24 - 29 - 28 - 34 - 31 - 35 - 33 - ?",
+opciones:["30","36","37","38","Ninguna de las anteriores"],
+correcta:2
+},
+
+{
+pregunta:"¿Qué número sigue en la serie? 4 - 5 - 4 - 6 - 5 - 8 - 7 - ?",
+opciones:["11","9","10","5","Ninguna de las anteriores"],
+correcta:0
+},
+
+{
+pregunta:"¿Qué número sigue en la serie? 6 - 12 - 14 - 7 - 9 - 18 - 20 - 10 - 12 - ?",
+opciones:["24","16","14","4","Ninguna de las anteriores"],
+correcta:0
+},
+
+{
+pregunta:"3/5 × 10/9 =",
+opciones:["27/50","30/45","2/3","1 1/2","Ninguna de las anteriores"],
+correcta:2
+},
+
+{
+pregunta:"18 + 24 ÷ 6 =",
+opciones:["7","22","14","10","Ninguna de las anteriores"],
+correcta:1
+},
+
+{
+pregunta:"¿Qué número sigue en la serie? 2 - 4 - 8 - 16 - ?",
+opciones:["20","24","32","64","Ninguna de las anteriores"],
+correcta:2
+},
+
+{
+pregunta:"25% de 200 =",
+opciones:["25","40","50","75","Ninguna de las anteriores"],
+correcta:2
+},
+
+{
+pregunta:"¿Qué número sigue? 81 - 27 - 9 - 3 - ?",
+opciones:["1","0","2","6","Ninguna de las anteriores"],
+correcta:0
+},
+
+{
+pregunta:"Si 5x = 45, entonces x =",
+opciones:["5","9","10","15","Ninguna de las anteriores"],
+correcta:1
+},
+
+{
+pregunta:"¿Qué número sigue? 11 - 22 - 44 - 88 - ?",
+opciones:["166","144","176","132","Ninguna de las anteriores"],
+correcta:2
+},
+
+{
+pregunta:"La mitad de 3/4 es:",
+opciones:["3/8","1/2","6/8","2/4","Ninguna de las anteriores"],
+correcta:0
+},
+
+{
+pregunta:"¿Qué número sigue? 100 - 90 - 81 - 73 - ?",
+opciones:["66","65","64","63","Ninguna de las anteriores"],
+correcta:0
+},
+
+{
+pregunta:"12² =",
+opciones:["122","124","144","148","Ninguna de las anteriores"],
+correcta:2
+},
+
+{
+pregunta:"¿Qué número sigue? 5 - 10 - 20 - 40 - ?",
+opciones:["60","80","100","120","Ninguna de las anteriores"],
+correcta:1
+},
+
+{
+pregunta:"40% de 150 =",
+opciones:["40","50","60","70","Ninguna de las anteriores"],
+correcta:2
+},
+
+{
+pregunta:"Si un artículo cuesta Q80 y tiene descuento del 25%, ¿cuánto se paga?",
+opciones:["Q55","Q60","Q65","Q70","Ninguna de las anteriores"],
+correcta:1
+},
+
+{
+pregunta:"¿Qué número sigue? 9 - 16 - 25 - 36 - ?",
+opciones:["49","64","45","81","Ninguna de las anteriores"],
+correcta:0
+},
+
+{
+pregunta:"2³ =",
+opciones:["4","6","8","16","Ninguna de las anteriores"],
+correcta:2
+},
+
+{
+pregunta:"¿Qué número sigue? 50 - 45 - 40 - 35 - ?",
+opciones:["20","25","30","15","Ninguna de las anteriores"],
+correcta:2
+},
+
+{
+pregunta:"Un automóvil recorre 60 km en 1 hora. ¿Cuánto recorrerá en 3 horas?",
+opciones:["120 km","150 km","180 km","240 km","Ninguna de las anteriores"],
+correcta:2
+},
+
+{
+pregunta:"¿Qué número sigue? 3 - 6 - 12 - 24 - ?",
+opciones:["36","42","48","54","Ninguna de las anteriores"],
+correcta:2
+},
+
+{
+pregunta:"15% de 400 =",
+opciones:["50","55","60","65","Ninguna de las anteriores"],
+correcta:2
+},
+
+{
+pregunta:"Si x + 12 = 30, entonces x =",
+opciones:["12","18","20","24","Ninguna de las anteriores"],
+correcta:1
+},
+
+{
+pregunta:"¿Qué número sigue? 1 - 4 - 9 - 16 - 25 - ?",
+opciones:["30","35","36","49","Ninguna de las anteriores"],
+correcta:2
+},
+
+{
+pregunta:"¿Qué número sigue? 64 - 32 - 16 - 8 - ?",
+opciones:["2","4","6","10","Ninguna de las anteriores"],
+correcta:1
+},
+
+{
+pregunta:"7 × 8 =",
+opciones:["54","56","58","64","Ninguna de las anteriores"],
+correcta:1
+},
+
+{
+pregunta:"Si una camisa cuesta Q120 y aumenta 10%, ¿cuál es el nuevo precio?",
+opciones:["Q126","Q130","Q132","Q140","Ninguna de las anteriores"],
+correcta:2
+}
+];
+
+let indice = 0;
+let puntaje = 0;
+let tiempo = 28 * 60;
+let respuestas = Array(preguntas.length).fill(null);
+
+const preguntaTexto = document.getElementById("pregunta");
+const opcionesDiv = document.getElementById("opciones");
+const contador = document.getElementById("contador");
+const puntajeTexto = document.getElementById("puntaje");
+const barra = document.getElementById("barra");
+
+function iniciarExamen(){
+    document.getElementById("inicio").classList.add("oculto");
+    document.getElementById("examen").classList.remove("oculto");
+
+    mostrarPregunta();
+    iniciarTimer();
+}
+
+function iniciarTimer(){
+
+    const intervalo = setInterval(()=>{
+
+        tiempo--;
+
+        let minutos = Math.floor(tiempo / 60);
+        let segundos = tiempo % 60;
+
+        if(segundos < 10){
+            segundos = "0" + segundos;
+        }
+
+        document.getElementById("timer").textContent = `${minutos}:${segundos}`;
+
+        if(tiempo <= 0){
+            clearInterval(intervalo);
+            finalizarExamen();
+        }
+
+    },1000);
+}
+
+function mostrarPregunta(){
+
+    const actual = preguntas[indice];
+
+    contador.textContent = `${indice + 1} / ${preguntas.length}`;
+
+    preguntaTexto.textContent = actual.pregunta;
+
+    barra.style.width = `${((indice + 1) / preguntas.length) * 100}%`;
+
+    opcionesDiv.innerHTML = "";
+
+    actual.opciones.forEach((opcion,i)=>{
+
+        const div = document.createElement("div");
+
+        div.classList.add("opcion");
+
+        div.textContent = opcion;
+
+        if(respuestas[indice] !== null){
+
+            if(i === actual.correcta){
+                div.classList.add("correcta");
+            }
+
+            if(i === respuestas[indice] && i !== actual.correcta){
+                div.classList.add("incorrecta");
+            }
+        }
+
+        div.addEventListener("click",()=> responder(i));
+
+        opcionesDiv.appendChild(div);
+
+    });
+}
+
+function responder(i){
+
+    if(respuestas[indice] !== null) return;
+
+    respuestas[indice] = i;
+
+    if(i === preguntas[indice].correcta){
+        puntaje++;
+    }
+
+    puntajeTexto.textContent = puntaje;
+
+    mostrarPregunta();
+}
+
+function siguiente(){
+
+    if(indice < preguntas.length - 1){
+        indice++;
+        mostrarPregunta();
+    }else{
+        finalizarExamen();
+    }
+}
+
+function anterior(){
+
+    if(indice > 0){
+        indice--;
+        mostrarPregunta();
+    }
+}
+
+function finalizarExamen(){
+
+    // ocultar examen
+    document.getElementById("examen").classList.add("oculto");
+
+    // mostrar resultados
+    document.getElementById("resultados").classList.remove("oculto");
+
+    // calcular nota
+    const nota = Math.round(
+        (puntaje / preguntas.length) * 100
+    );
+
+    // guardar nota de numérica
+    localStorage.setItem("numerica", nota);
+
+    // mostrar resultados
+    document.getElementById("notaFinal").textContent =
+    `${nota} / 100`;
+
+    document.getElementById("correctas").textContent =
+    `${puntaje} de ${preguntas.length}`;
+
+    // pasar automáticamente a resultados
+    setTimeout(()=>{
+
+        window.location.href = "Resultados.html";
+
+    },3000);
+}
+
+document.getElementById("startBtn").addEventListener("click", iniciarExamen);
+document.getElementById("siguienteBtn").addEventListener("click", siguiente);
+document.getElementById("anteriorBtn").addEventListener("click", anterior);
+
+</script>
+
+</body>
+</html>
