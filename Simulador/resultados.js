@@ -62,19 +62,31 @@ for(let i = 1; i <= 30; i++){
 
     let nota;
 
-    if(i <= 8){
+    const r = Math.random();
 
-        nota = random(40,60);
+    // pocos muy bajos
+    if(r < 0.15){
 
-    }else if(i <= 20){
+        nota = random(30,55);
 
-        nota = random(61,80);
+    }
 
-    }else if(i <= 28){
+    // mayoría promedio
+    else if(r < 0.75){
+
+        nota = random(56,80);
+
+    }
+
+    // buenos
+    else if(r < 0.95){
 
         nota = random(81,92);
 
-    }else{
+    }
+
+    // pocos excelentes
+    else{
 
         nota = random(93,100);
     }
@@ -86,13 +98,9 @@ for(let i = 1; i <= 30; i++){
         nota
 
     });
+
 }
 
-
-
-// ======================
-// RANKING
-// ======================
 
 const ranking = [
 
@@ -111,43 +119,53 @@ const ranking = [
 ];
 
 
-
-// ordenar ranking
 ranking.sort(
     (a,b) => b.nota - a.nota
 );
 
-
-
-// ======================
-// PERCENTIL
-// ======================
 
 let debajo =
 ranking.filter(
     persona => promedio > persona.nota
 ).length;
 
-let percentil =
-Math.round(
-    (debajo / ranking.length) * 100
+
+let iguales =
+ranking.filter(
+    persona => promedio === persona.nota
+).length;
+
+
+let percentil = Math.round(
+
+    (
+        debajo + (0.5 * iguales)
+    )
+
+    / ranking.length
+
+    * 100
+
 );
 
-if(percentil < 50){
 
-    percentil = 50;
+if(percentil < 1){
+
+    percentil = 1;
 }
+
+if(percentil > 99){
+
+    percentil = 99;
+}
+
 
 document.getElementById("percentil")
 .textContent = `${percentil}%`;
 
 
 
-// ======================
-// NIVEL
-// ======================
-
-let nivel = "Promedio";
+let nivel = "Muy bajo";
 
 if(percentil >= 90){
 
@@ -160,6 +178,14 @@ if(percentil >= 90){
 }else if(percentil >= 60){
 
     nivel = "Bueno";
+
+}else if(percentil >= 40){
+
+    nivel = "Promedio";
+
+}else if(percentil >= 20){
+
+    nivel = "Bajo";
 }
 
 document.getElementById("nivel")
@@ -167,9 +193,6 @@ document.getElementById("nivel")
 
 
 
-// ======================
-// GUARDAR EN FIREBASE
-// ======================
 
 guardarResultado();
 
@@ -216,13 +239,9 @@ async function guardarResultado(){
         );
 
     }
+
 }
 
-
-
-// ======================
-// MULTIPLAYER
-// ======================
 
 if(modo === "multiplayer"){
 
@@ -232,11 +251,6 @@ if(modo === "multiplayer"){
 
 }
 
-
-
-// ======================
-// GUARDAR RESULTADO MULTI
-// ======================
 
 async function guardarResultadoMultiplayer(){
 
@@ -283,10 +297,6 @@ async function guardarResultadoMultiplayer(){
 
 
 
-// ======================
-// LEER RIVAL
-// ======================
-
 function leerRival(){
 
     const salaRef =
@@ -320,10 +330,6 @@ function leerRival(){
 
 
 
-// ======================
-// AGREGAR RIVAL
-// ======================
-
 function agregarRival(notaRival){
 
     const existe =
@@ -345,34 +351,50 @@ function agregarRival(notaRival){
         (a,b)=> b.nota - a.nota
     );
 
-    // recalcular percentil
+
     let debajo =
     ranking.filter(
         persona => promedio > persona.nota
     ).length;
 
+    let iguales =
+    ranking.filter(
+        persona => promedio === persona.nota
+    ).length;
+
     percentil =
     Math.round(
-        (debajo / ranking.length) * 100
+
+        (
+            debajo + (0.5 * iguales)
+        )
+
+        / ranking.length
+
+        * 100
+
     );
 
-    if(percentil < 50){
+    if(percentil < 1){
 
-        percentil = 50;
+        percentil = 1;
+    }
+
+    if(percentil > 99){
+
+        percentil = 99;
     }
 
     document.getElementById("percentil")
     .textContent = `${percentil}%`;
+
+
 
     renderRanking();
 
 }
 
 
-
-// ======================
-// MOSTRAR RANKING
-// ======================
 
 const rankingDiv =
 document.getElementById("ranking");
@@ -415,11 +437,6 @@ function renderRanking(){
 }
 
 
-
-// ======================
-// REINICIAR
-// ======================
-
 document.getElementById("reiniciarBtn")
 .addEventListener("click",()=>{
 
@@ -431,10 +448,6 @@ document.getElementById("reiniciarBtn")
 });
 
 
-
-// ======================
-// RANDOM
-// ======================
 
 function random(min,max){
 
