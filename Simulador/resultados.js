@@ -3,14 +3,52 @@ import {
    collection,
    addDoc
 } from "./firebase.js";
-const verbal = Number(localStorage.getItem("verbal")) || 0;
-const numerica = Number(localStorage.getItem("numerica")) || 0;
 
-const promedio = Math.round((verbal + numerica) / 2);
+import {
+   doc,
+   updateDoc,
+   getDoc,
+   onSnapshot
+} from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
-document.getElementById("verbal").textContent = verbal;
-document.getElementById("numerica").textContent = numerica;
-document.getElementById("promedio").textContent = promedio;
+
+
+// ======================
+// DATOS
+// ======================
+
+const verbal =
+Number(localStorage.getItem("verbal")) || 0;
+
+const numerica =
+Number(localStorage.getItem("numerica")) || 0;
+
+const promedio =
+Math.round((verbal + numerica) / 2);
+
+const modo =
+localStorage.getItem("modo");
+
+const codigoSala =
+localStorage.getItem("codigoSala");
+
+const jugador =
+localStorage.getItem("jugador");
+
+
+
+// ======================
+// MOSTRAR RESULTADOS
+// ======================
+
+document.getElementById("verbal")
+.textContent = verbal;
+
+document.getElementById("numerica")
+.textContent = numerica;
+
+document.getElementById("promedio")
+.textContent = promedio;
 
 
 
@@ -24,7 +62,6 @@ for(let i = 1; i <= 30; i++){
 
     let nota;
 
-    // distribución más realista
     if(i <= 8){
 
         nota = random(40,60);
@@ -43,10 +80,42 @@ for(let i = 1; i <= 30; i++){
     }
 
     bots.push({
+
         nombre:`Bot_${i}`,
+
         nota
+
     });
 }
+
+
+
+// ======================
+// RANKING
+// ======================
+
+const ranking = [
+
+    ...bots,
+
+    {
+
+        nombre:"Tú",
+
+        nota:promedio,
+
+        usuario:true
+
+    }
+
+];
+
+
+
+// ordenar ranking
+ranking.sort(
+    (a,b) => b.nota - a.nota
+);
 
 
 
@@ -54,16 +123,23 @@ for(let i = 1; i <= 30; i++){
 // PERCENTIL
 // ======================
 
-const debajo = bots.filter(bot => promedio > bot.nota).length;
+let debajo =
+ranking.filter(
+    persona => promedio > persona.nota
+).length;
 
-let percentil = Math.round((debajo / bots.length) * 100);
+let percentil =
+Math.round(
+    (debajo / ranking.length) * 100
+);
 
-// mínimo 50
 if(percentil < 50){
+
     percentil = 50;
 }
 
-document.getElementById("percentil").textContent = `${percentil}%`;
+document.getElementById("percentil")
+.textContent = `${percentil}%`;
 
 
 
@@ -86,7 +162,10 @@ if(percentil >= 90){
     nivel = "Bueno";
 }
 
-document.getElementById("nivel").textContent = nivel;
+document.getElementById("nivel")
+.textContent = nivel;
+
+
 
 // ======================
 // GUARDAR EN FIREBASE
@@ -99,10 +178,13 @@ async function guardarResultado(){
     try{
 
         await addDoc(
+
             collection(db, "rankings"),
+
             {
 
-                nombre:"Invitado",
+                nombre:
+                jugador || "Invitado",
 
                 verbal,
 
@@ -114,16 +196,24 @@ async function guardarResultado(){
 
                 nivel,
 
-                fecha:new Date().toLocaleString()
+                modo:
+                modo || "individual",
+
+                fecha:
+                new Date().toLocaleString()
 
             }
+
         );
 
         console.log("Resultado guardado");
 
     }catch(error){
 
-        console.error("Error guardando:", error);
+        console.error(
+            "Error guardando:",
+            error
+        );
 
     }
 }
@@ -131,25 +221,152 @@ async function guardarResultado(){
 
 
 // ======================
-// RANKING
+// MULTIPLAYER
 // ======================
 
-const ranking = [
+if(modo === "multiplayer"){
 
-    ...bots,
+    guardarResultadoMultiplayer();
 
-    {
-        nombre:"Tú",
-        nota:promedio,
-        usuario:true
+    leerRival();
+
+}
+
+
+
+// ======================
+// GUARDAR RESULTADO MULTI
+// ======================
+
+async function guardarResultadoMultiplayer(){
+
+    try{
+
+        const salaRef =
+        doc(db,"salas",codigoSala);
+
+        const salaSnap =
+        await getDoc(salaRef);
+
+        const datos =
+        salaSnap.data();
+
+        if(datos.jugador1 === jugador){
+
+            await updateDoc(salaRef,{
+
+                resultado1:promedio
+
+            });
+
+        }else{
+
+            await updateDoc(salaRef,{
+
+                resultado2:promedio
+
+            });
+
+        }
+
+        console.log(
+            "Resultado multiplayer guardado"
+        );
+
+    }catch(error){
+
+        console.error(error);
+
     }
 
-];
+}
 
 
 
-// ordenar de mayor a menor
-ranking.sort((a,b) => b.nota - a.nota);
+// ======================
+// LEER RIVAL
+// ======================
+
+function leerRival(){
+
+    const salaRef =
+    doc(db,"salas",codigoSala);
+
+    onSnapshot(salaRef,(docSnap)=>{
+
+        const datos =
+        docSnap.data();
+
+        let rival = null;
+
+        if(datos.jugador1 === jugador){
+
+            rival = datos.resultado2;
+
+        }else{
+
+            rival = datos.resultado1;
+        }
+
+        if(rival){
+
+            agregarRival(rival);
+
+        }
+
+    });
+
+}
+
+
+
+// ======================
+// AGREGAR RIVAL
+// ======================
+
+function agregarRival(notaRival){
+
+    const existe =
+    ranking.some(
+        p => p.nombre === "Rival"
+    );
+
+    if(existe) return;
+
+    ranking.push({
+
+        nombre:"Rival",
+
+        nota:notaRival
+
+    });
+
+    ranking.sort(
+        (a,b)=> b.nota - a.nota
+    );
+
+    // recalcular percentil
+    let debajo =
+    ranking.filter(
+        persona => promedio > persona.nota
+    ).length;
+
+    percentil =
+    Math.round(
+        (debajo / ranking.length) * 100
+    );
+
+    if(percentil < 50){
+
+        percentil = 50;
+    }
+
+    document.getElementById("percentil")
+    .textContent = `${percentil}%`;
+
+    renderRanking();
+
+}
 
 
 
@@ -157,33 +374,45 @@ ranking.sort((a,b) => b.nota - a.nota);
 // MOSTRAR RANKING
 // ======================
 
-const rankingDiv = document.getElementById("ranking");
+const rankingDiv =
+document.getElementById("ranking");
 
-ranking.forEach((persona,index)=>{
+renderRanking();
 
-    const fila = document.createElement("div");
+function renderRanking(){
 
-    fila.classList.add("fila");
+    rankingDiv.innerHTML = "";
 
-    if(persona.usuario){
-        fila.classList.add("usuario");
-    }
+    ranking.forEach((persona,index)=>{
 
-    fila.innerHTML = `
-    
-        <span>
-            #${index + 1} - ${persona.nombre}
-        </span>
+        const fila =
+        document.createElement("div");
 
-        <span>
-            ${persona.nota}
-        </span>
-    
-    `;
+        fila.classList.add("fila");
 
-    rankingDiv.appendChild(fila);
+        if(persona.usuario){
 
-});
+            fila.classList.add("usuario");
+        }
+
+        fila.innerHTML = `
+        
+            <span>
+                #${index + 1}
+                - ${persona.nombre}
+            </span>
+
+            <span>
+                ${persona.nota}
+            </span>
+        
+        `;
+
+        rankingDiv.appendChild(fila);
+
+    });
+
+}
 
 
 
@@ -191,11 +420,13 @@ ranking.forEach((persona,index)=>{
 // REINICIAR
 // ======================
 
-document.getElementById("reiniciarBtn").addEventListener("click",()=>{
+document.getElementById("reiniciarBtn")
+.addEventListener("click",()=>{
 
     localStorage.clear();
 
-    window.location.href = "../index.html";
+    window.location.href =
+    "../Simulador de habilidades.html";
 
 });
 
@@ -208,8 +439,10 @@ document.getElementById("reiniciarBtn").addEventListener("click",()=>{
 function random(min,max){
 
     return Math.floor(
-        Math.random() * (max - min + 1)
+
+        Math.random()
+        * (max - min + 1)
+
     ) + min;
 
 }
- 
