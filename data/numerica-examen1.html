@@ -6,12 +6,13 @@
 <title>Examen Habilidad Numérica 1</title>
 
 <style>
+
 *{
 box-sizing:border-box;
 margin:0;
 padding:0;
 }
- 
+
 body{
 font-family:Arial, Helvetica, sans-serif;
 background:linear-gradient(135deg,#eff6ff,#dbeafe,#bfdbfe);
@@ -164,6 +165,57 @@ margin-top:8px;
 font-size:0.92rem;
 color:#374151;
 }
+
+/* PANEL RANKING */
+
+.ranking-panel{
+position:fixed;
+left:0;
+top:0;
+width:320px;
+height:100vh;
+background:white;
+box-shadow:4px 0 20px rgba(0,0,0,0.1);
+padding:20px;
+overflow-y:auto;
+z-index:999;
+transition:transform 0.3s ease;
+}
+
+.ranking-panel.hidden{
+transform:translateX(-100%);
+}
+
+.toggle-ranking{
+position:fixed;
+left:15px;
+top:15px;
+z-index:1000;
+background:#2563eb;
+color:white;
+border:none;
+padding:10px 15px;
+border-radius:12px;
+cursor:pointer;
+font-weight:bold;
+}
+
+.ranking-content{
+margin-top:60px;
+}
+
+@media(max-width:768px){
+
+.ranking-panel{
+width:260px;
+}
+
+.container{
+padding:18px;
+}
+
+}
+
 </style>
 </head>
 
@@ -196,10 +248,6 @@ color:#374151;
 <button onclick="finish()">Calificar</button>
 <button onclick="location.reload()">Reiniciar</button>
 </div>
-
-
-
-<!-- RESULTADOS -->
 
 <div class="result" id="resultado">
 
@@ -291,9 +339,11 @@ cls+=" wrong-answer";
 }
 
 opts+=`
+
 <div class="option${cls}" onclick="select(${i},${j})">
 ${op}
 </div>
+
 `;
 
 });
@@ -332,8 +382,6 @@ update();
 
 }
 
-
-
 function select(i,j){
 
 if(done)return;
@@ -343,8 +391,6 @@ answers[i]=j;
 render();
 
 }
-
-
 
 function next(){
 
@@ -361,15 +407,11 @@ current++;
 render();
 
 window.scrollTo({
-
 top:0,
 behavior:"smooth"
-
 });
 
 }
-
-
 
 function prev(){
 
@@ -379,31 +421,21 @@ render();
 
 }
 
-
-
 function update(){
 
 document.getElementById("qNum").textContent=current+1;
 
 document.getElementById("progress").textContent=
-
 answers.filter(a=>a!==null).length+" / "+questions.length;
 
 }
-
-
 
 function finish(){
 
 done=true;
 
 let correct=0;
-
 let html="";
-
-
-
-// CONTAR
 
 questions.forEach((q,i)=>{
 
@@ -415,173 +447,87 @@ correct++;
 
 });
 
-
-
-// PORCENTAJE
-
 let porcentaje=Math.round(
-
 (correct/questions.length)*100
-
 );
-
-
-
-// BOTS
 
 const bots=[];
 
 for(let i=1;i<=30;i++){
 
 bots.push({
-
 nombre:`Bot_${i}`,
-
-nota:Math.floor(
-Math.random()*71
-)+30
-
+nota:Math.floor(Math.random()*71)+30
 });
 
 }
 
-
-
-// RANKING
-
 const ranking=[
-
 ...bots,
-
 {
-
 nombre:"Tú",
 nota:porcentaje,
 usuario:true
-
 }
-
 ];
 
-
-
-ranking.sort(
-
-(a,b)=>b.nota-a.nota
-
-);
-
-
-
-// PERCENTIL
+ranking.sort((a,b)=>b.nota-a.nota);
 
 let debajo=ranking.filter(
-
 p=>porcentaje>p.nota
-
 ).length;
-
-
 
 let iguales=ranking.filter(
-
 p=>porcentaje===p.nota
-
 ).length;
 
-
-
 let percentil=Math.round(
-
 (
-
 debajo+(0.5*iguales)
-
 )
-
 /ranking.length
-
 *100
-
 );
 
-
-
 if(percentil<1){
-
 percentil=1;
-
 }
 
 if(percentil>99){
-
 percentil=99;
-
 }
-
-
-
-// NIVEL
 
 let nivel="Muy bajo";
 
 if(percentil>=90){
-
 nivel="Excelente";
-
 }
-
 else if(percentil>=75){
-
 nivel="Muy bueno";
-
 }
-
 else if(percentil>=60){
-
 nivel="Bueno";
-
 }
-
 else if(percentil>=40){
-
 nivel="Promedio";
-
 }
-
 else if(percentil>=20){
-
 nivel="Bajo";
-
 }
-
-
-
-// REVIEW
 
 questions.forEach((q,i)=>{
 
 let estado="";
 
 if(answers[i]===null){
-
 estado="sin-responder";
-
 }
-
 else if(answers[i]===q.a){
-
 estado="correcta";
-
 }
-
 else{
-
 estado="incorrecta";
-
 }
-
-
 
 html+=`
 
@@ -602,28 +548,20 @@ ${q.q}
 
 ${
 answers[i]!==null
-
 ?
-
 q.o[answers[i]]
-
 :
-
 "Sin responder"
-
 }
 </p>
 
 <p style="margin-top:6px;">
 <b>Correcta:</b>
-
 ${q.o[q.a]}
 </p>
 
 <div class="explicacion">
-
 ${q.exp}
-
 </div>
 
 </div>
@@ -631,10 +569,6 @@ ${q.exp}
 `;
 
 });
-
-
-
-// RANKING HTML
 
 let rankingHTML="";
 
@@ -665,13 +599,27 @@ ${p.nota}%
 
 });
 
-
-
-// MOSTRAR
-
 document.getElementById("score").innerHTML=
 
 `
+
+<button class="toggle-ranking" onclick="toggleRanking()">
+☰ Ranking
+</button>
+
+<div id="rankingPanel" class="ranking-panel">
+
+<div class="ranking-content">
+
+<h3 style="margin-bottom:15px;">
+🏆 Ranking General
+</h3>
+
+${rankingHTML}
+
+</div>
+
+</div>
 
 <div style="
 background:white;
@@ -715,72 +663,39 @@ max-width:250px;
 
 </div>
 
-
-
-<div style="
-background:white;
-padding:20px;
-border-radius:18px;
-max-height:420px;
-overflow-y:auto;
-">
-
-<h3 style="margin-bottom:15px;">
-🏆 Ranking General
-</h3>
-
-${rankingHTML}
-
-</div>
-
 `;
-
-
 
 document.getElementById("review")
 .innerHTML=html;
 
-
-
 document.getElementById("resultado")
 .style.display="block";
 
-
-
 document.getElementById("resultado")
 .scrollIntoView({
-
 behavior:"smooth"
-
 });
-
-
-
-// PARTY
 
 if(window.enviarResultadoFinal){
 
 window.enviarResultadoFinal({
-
 correctas:correct,
 total:questions.length,
 porcentaje
-
 });
 
 }
-
-
-
-// REPINTAR
 
 render();
 
 }
 
+function toggleRanking(){
 
+document.getElementById("rankingPanel")
+.classList.toggle("hidden");
 
-// PARTY
+}
 
 window.mostrarResultadosParty = function(data){
 
@@ -834,8 +749,6 @@ document.getElementById("resultadoParty")
 .style.display="block";
 
 };
-
-
 
 render();
 
