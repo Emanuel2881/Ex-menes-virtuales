@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Examen Habilidad Numérica 1</title>
- 
+
 <style>
 *{box-sizing:border-box;margin:0;padding:0;}
  
@@ -135,11 +135,58 @@ button{
     <button onclick="resetExam()">Reiniciar</button>
   </div>
 
-  <div class="result" id="resultado">
-    <h2>Resultado</h2>
-    <p id="score"></p>
-    <div id="review"></div>
+ <div class="result" id="resultado">
+
+  <h2 style="margin-bottom:20px;">
+    Resultado Final
+  </h2>
+
+  <div id="score"></div>
+
+  <div class="stats-bar" style="margin-top:20px;">
+
+    <div class="stat-box">
+      <span>Percentil</span><br>
+      <b id="percentil">0%</b>
+    </div>
+
+    <div class="stat-box">
+      <span>Promedio Global</span><br>
+      <b id="promedioGlobal">0</b>
+    </div>
+
+    <div class="stat-box">
+      <span>Nivel</span><br>
+      <b id="nivel">Promedio</b>
+    </div>
+
   </div>
+
+  <div style="
+    background:white;
+    padding:15px;
+    border-radius:15px;
+    margin-top:20px;
+  ">
+
+    <h3 style="margin-bottom:15px;">
+      🏆 Ranking General
+    </h3>
+
+    <div id="ranking"></div>
+
+  </div>
+
+  <div style="margin-top:25px;">
+
+    <h3 style="margin-bottom:15px;">
+      📘 Revisión de respuestas
+    </h3>
+
+    <div id="review"></div>
+
+  </div>
+
 </div>
 
 <script>
@@ -227,36 +274,214 @@ answers.filter(a=>a!==null).length+" / "+questions.length;
 }
 
 function finish(){
-done=true;
-let correct=0;
-let html="";
+
+done = true;
+
+let correct = 0;
+
+let html = "";
+
+
+
+// ======================
+// CONTAR CORRECTAS
+// ======================
 
 questions.forEach((q,i)=>{
-if(answers[i]===q.a) correct++;
 
-html+=`<div class="review-item">
-<p>Correcta: ${q.o[q.a]}</p>
-<div class="explicacion">${q.exp}</div>
-</div>`;
+if(answers[i]===q.a){
+
+correct++;
+
+}
+
 });
 
-let porcentaje=Math.round((correct/questions.length)*100);
+
+
+// ======================
+// PORCENTAJE
+// ======================
+
+let porcentaje = Math.round(
+
+(correct/questions.length)*100
+
+);
+
+
+
+// ======================
+// GUARDAR NOTA
+// ======================
+
+localStorage.setItem(
+
+"numerica-examen1",
+porcentaje
+
+);
+
+
+
+// ======================
+// SISTEMA GLOBAL
+// ======================
+
+if(window.calcularResultadosGlobales){
+
+window.calcularResultadosGlobales();
+
+}
+
+
+
+// ======================
+// MOSTRAR NOTA
+// ======================
 
 document.getElementById("score").innerHTML=
-`${correct}/${questions.length} (${porcentaje}%)`;
 
-document.getElementById("review").innerHTML=html;
-document.getElementById("resultado").style.display="block";
+`
+
+<h2>
+${correct}/${questions.length}
+</h2>
+
+<p style="
+font-size:22px;
+margin-top:10px;
+font-weight:bold;
+">
+${porcentaje}%
+</p>
+
+`;
+
+
+
+// ======================
+// REVIEW
+// ======================
+
+questions.forEach((q,i)=>{
+
+let estado = "";
+
+if(answers[i]===null){
+
+estado = "sin-responder";
+
+}
+
+else if(answers[i]===q.a){
+
+estado = "correcta";
+
+}
+
+else{
+
+estado = "incorrecta";
+
+}
+
+
+
+html += `
+
+<div class="review-item ${estado}">
+
+<h3>
+Pregunta ${i+1}
+</h3>
+
+<p style="margin-top:8px;">
+${q.q}
+</p>
+
+<br>
+
+<p>
+<b>Tu respuesta:</b>
+
+${
+answers[i]!==null
+
+?
+
+q.o[answers[i]]
+
+:
+
+"Sin responder"
+
+}
+</p>
+
+<p style="margin-top:6px;">
+<b>Correcta:</b>
+
+${q.o[q.a]}
+</p>
+
+<div class="explicacion">
+
+${q.exp}
+
+</div>
+
+</div>
+
+`;
+
+});
+
+
+
+document.getElementById("review")
+.innerHTML = html;
+
+
+
+// ======================
+// MOSTRAR RESULTADO
+// ======================
+
+document.getElementById("resultado")
+.style.display = "block";
+
+
+
+document.getElementById("resultado")
+.scrollIntoView({
+
+behavior:"smooth"
+
+});
+
+
+
+// ======================
+// PARTY
+// ======================
 
 if(window.enviarResultadoFinal){
+
 window.enviarResultadoFinal({
+
 correctas:correct,
 total:questions.length,
 porcentaje
+
 });
+
 }
 
+
+
 render();
+
 }
 
 // PARTY
