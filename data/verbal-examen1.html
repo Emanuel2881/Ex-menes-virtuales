@@ -8,214 +8,265 @@
 <style>
 
 *{
-  box-sizing:border-box;
-  margin:0;
-  padding:0;
+box-sizing:border-box;
+margin:0;
+padding:0;
 }
 
 body{
-  font-family: Arial, Helvetica, sans-serif;
-  background: linear-gradient(135deg,#fff1f2,#ffe4e6,#fecdd3);
-  color:#7f1d1d;
-  min-height:100vh;
-  padding:30px 15px;
+font-family:Arial, Helvetica, sans-serif;
+background:linear-gradient(135deg,#fff1f2,#ffe4e6,#fecdd3);
+color:#7f1d1d;
+min-height:100vh;
+padding:30px 15px;
 }
 
 .container{
-  max-width:950px;
-  margin:auto;
-  background:rgba(255,255,255,0.95);
-  padding:25px;
-  border-radius:24px;
-  box-shadow:0 12px 35px rgba(0,0,0,0.08);
+max-width:950px;
+margin:auto;
+background:rgba(255,255,255,0.95);
+padding:25px;
+border-radius:24px;
+box-shadow:0 12px 35px rgba(0,0,0,0.08);
 }
 
 .header{
-  text-align:center;
-  margin-bottom:20px;
+text-align:center;
+margin-bottom:20px;
 }
 
 .header h1{
-  font-size: clamp(1.9rem, 4vw, 2.7rem);
-  margin-bottom:10px;
-  color:#9f1239;
+font-size:clamp(1.9rem,4vw,2.7rem);
+margin-bottom:10px;
+color:#9f1239;
 }
 
 .header p{
-  color:#881337;
-  opacity:0.9;
+color:#881337;
+opacity:0.9;
 }
 
 .top-link{
-  display:inline-block;
-  margin-top:12px;
-  color:#be123c;
-  text-decoration:none;
-  font-weight:bold;
+display:inline-block;
+margin-top:12px;
+color:#be123c;
+text-decoration:none;
+font-weight:bold;
 }
 
 .stats-bar{
-  display:flex;
-  flex-wrap:wrap;
-  gap:12px;
-  justify-content:center;
-  margin-bottom:20px;
+display:flex;
+flex-wrap:wrap;
+gap:12px;
+justify-content:center;
+margin-bottom:20px;
 }
 
 .stat-box{
-  background:#fff;
-  border:1px solid #fecdd3;
-  border-radius:14px;
-  padding:12px 18px;
-  min-width:150px;
-  text-align:center;
+background:#fff;
+border:1px solid #fecdd3;
+border-radius:14px;
+padding:12px 18px;
+min-width:150px;
+text-align:center;
 }
 
 .stat-label{
-  display:block;
-  font-size:0.9rem;
-  color:#be123c;
-  margin-bottom:4px;
-  font-weight:bold;
+display:block;
+font-size:0.9rem;
+color:#be123c;
+margin-bottom:4px;
+font-weight:bold;
 }
 
 .stat-value{
-  display:block;
-  font-size:1.15rem;
-  color:#7f1d1d;
-  font-weight:bold;
+display:block;
+font-size:1.15rem;
+color:#7f1d1d;
+font-weight:bold;
 }
 
 .question{
-  display:none;
-  background:#fff7f8;
-  border:1px solid #fecdd3;
-  border-radius:20px;
-  padding:20px;
-  margin-bottom:18px;
+display:none;
+background:#fff7f8;
+border:1px solid #fecdd3;
+border-radius:20px;
+padding:20px;
+margin-bottom:18px;
 }
 
 .question.active{
-  display:block;
+display:block;
 }
 
 .question h3{
-  font-size:1.08rem;
-  line-height:1.6;
-  color:#9f1239;
-  margin-bottom:14px;
+font-size:1.08rem;
+line-height:1.6;
+color:#9f1239;
+margin-bottom:14px;
 }
 
 .option{
-  display:block;
-  background:#ffe4e6;
-  padding:12px 14px;
-  margin:10px 0;
-  border-radius:12px;
-  cursor:pointer;
-  transition:0.2s;
+display:block;
+background:#ffe4e6;
+padding:12px 14px;
+margin:10px 0;
+border-radius:12px;
+cursor:pointer;
+transition:0.2s;
 }
 
 .option:hover{
-  background:#fecdd3;
+background:#fecdd3;
 }
 
 .option.selected{
-  background:#f43f5e;
-  color:white;
+background:#f43f5e;
+color:white;
 }
 
 .option.correct-answer{
-  background:#dcfce7 !important;
-  color:#166534 !important;
+background:#dcfce7 !important;
+color:#166534 !important;
 }
 
 .option.wrong-answer{
-  background:#fee2e2 !important;
-  color:#991b1b !important;
+background:#fee2e2 !important;
+color:#991b1b !important;
 }
 
 .navigation{
-  display:flex;
-  justify-content:center;
-  gap:12px;
-  margin-top:18px;
+display:flex;
+justify-content:center;
+gap:12px;
+margin-top:18px;
 }
 
 button{
-  border:none;
-  border-radius:14px;
-  padding:12px 20px;
-  font-size:1rem;
-  font-weight:bold;
-  cursor:pointer;
+border:none;
+border-radius:14px;
+padding:12px 20px;
+font-size:1rem;
+font-weight:bold;
+cursor:pointer;
 }
 
 .prev{
-  background:#fda4af;
-  color:#881337;
+background:#fda4af;
+color:#881337;
 }
 
 .next{
-  background:#fb7185;
-  color:white;
+background:#fb7185;
+color:white;
 }
 
 .finish{
-  background:#dc2626;
-  color:white;
+background:#dc2626;
+color:white;
 }
 
 .actions{
-  display:flex;
-  justify-content:center;
-  gap:12px;
-  margin-top:25px;
+display:flex;
+justify-content:center;
+gap:12px;
+margin-top:25px;
 }
 
 .btn-primary{
-  background:#e11d48;
-  color:white;
+background:#e11d48;
+color:white;
 }
 
 .btn-secondary{
-  background:#fecdd3;
-  color:#9f1239;
+background:#fecdd3;
+color:#9f1239;
 }
 
 .result{
-  margin-top:25px;
-  padding:20px;
-  border-radius:18px;
-  background:#fff7f8;
-  border:1px solid #fecdd3;
-  display:none;
+margin-top:25px;
+padding:20px;
+border-radius:18px;
+background:#fff7f8;
+border:1px solid #fecdd3;
+display:none;
 }
 
 .review-item{
-  background:white;
-  border-radius:14px;
-  padding:14px;
-  margin-bottom:12px;
+background:white;
+border-radius:14px;
+padding:14px;
+margin-bottom:12px;
 }
 
 .review-item.correcta{
-  border-left:6px solid #22c55e;
+border-left:6px solid #22c55e;
 }
 
 .review-item.incorrecta{
-  border-left:6px solid #ef4444;
+border-left:6px solid #ef4444;
 }
 
 .review-item.sin-responder{
-  border-left:6px solid #f59e0b;
+border-left:6px solid #f59e0b;
 }
 
 .explicacion{
-  margin-top:8px;
-  padding:10px;
-  background:#f8fafc;
-  border-radius:10px;
+margin-top:8px;
+padding:10px;
+background:#f8fafc;
+border-radius:10px;
+}
+
+/* PANEL RANKING */
+
+.ranking-panel{
+position:fixed;
+left:0;
+top:0;
+width:320px;
+height:100vh;
+background:white;
+color:#111827;
+box-shadow:4px 0 20px rgba(0,0,0,0.12);
+padding:20px;
+overflow-y:auto;
+z-index:999;
+transition:transform 0.3s ease;
+}
+
+.ranking-panel.hidden{
+transform:translateX(-100%);
+}
+
+.toggle-ranking{
+position:fixed;
+left:15px;
+top:15px;
+z-index:1000;
+background:#e11d48;
+color:white;
+border:none;
+padding:10px 15px;
+border-radius:12px;
+cursor:pointer;
+font-weight:bold;
+}
+
+.ranking-content{
+margin-top:60px;
+}
+
+@media(max-width:768px){
+
+.ranking-panel{
+width:260px;
+}
+
+.container{
+padding:18px;
+}
+
 }
 
 </style>
@@ -226,25 +277,36 @@ button{
 <div class="container">
 
 <div class="header">
+
 <h1>📖 Examen Verbal 1</h1>
-<p>Analogías y relaciones verbales</p>
+
+<p>
+Analogías y relaciones verbales
+</p>
 
 <a class="top-link" href="../verbal.html">
 ← Volver a Verbal
 </a>
+
 </div>
 
 <div class="stats-bar">
 
 <div class="stat-box">
-<span class="stat-label">Pregunta actual</span>
+<span class="stat-label">
+Pregunta actual
+</span>
+
 <span class="stat-value">
 <span id="qNum">1</span> / 15
 </span>
 </div>
 
 <div class="stat-box">
-<span class="stat-label">Progreso</span>
+<span class="stat-label">
+Progreso
+</span>
+
 <span class="stat-value" id="progress">
 0 / 15
 </span>
@@ -270,7 +332,9 @@ Reiniciar
 
 <div class="result" id="resultado">
 
-<h2>Resultado</h2>
+<h2>
+Resultado Final
+</h2>
 
 <p id="puntajeTexto"></p>
 
@@ -392,10 +456,14 @@ exp:"Acción y resultado."
 ];
 
 let current = 0;
-let answers = new Array(questions.length).fill(null);
+
+let answers =
+new Array(questions.length).fill(null);
+
 let examenFinalizado = false;
 
-const quiz = document.getElementById("quiz");
+const quiz =
+document.getElementById("quiz");
 
 function actualizarProgreso(){
 
@@ -436,18 +504,22 @@ if(j === q.a)
 extraClass += " correct-answer";
 
 if(answers[i] === j && j !== q.a){
+
 extraClass += " wrong-answer";
+
 }
 
 }
 
 opts += `
+
 <div class="option${extraClass}"
 onclick="selectOption(${i},${j})">
 
 ${String.fromCharCode(65+j)}. ${op}
 
 </div>
+
 `;
 
 });
@@ -510,6 +582,11 @@ current++;
 
 render();
 
+window.scrollTo({
+top:0,
+behavior:"smooth"
+});
+
 }
 
 }
@@ -546,7 +623,91 @@ if(respuestaUsuario === q.a){
 
 correctas++;
 
+}
+
+});
+
+const porcentaje =
+Math.round((correctas/total)*100);
+
+const bots=[];
+
+for(let i=1;i<=30;i++){
+
+bots.push({
+
+nombre:`Bot_${i}`,
+
+nota:Math.floor(Math.random()*71)+30
+
+});
+
+}
+
+const ranking=[
+
+...bots,
+
+{
+nombre:"Tú",
+nota:porcentaje,
+usuario:true
+}
+
+];
+
+ranking.sort((a,b)=>b.nota-a.nota);
+
+let debajo=ranking.filter(
+p=>porcentaje>p.nota
+).length;
+
+let iguales=ranking.filter(
+p=>porcentaje===p.nota
+).length;
+
+let percentil=Math.round(
+(
+debajo+(0.5*iguales)
+)
+/ranking.length
+*100
+);
+
+if(percentil<1){
+percentil=1;
+}
+
+if(percentil>99){
+percentil=99;
+}
+
+let nivel="Muy bajo";
+
+if(percentil>=90){
+nivel="Excelente";
+}
+else if(percentil>=75){
+nivel="Muy bueno";
+}
+else if(percentil>=60){
+nivel="Bueno";
+}
+else if(percentil>=40){
+nivel="Promedio";
+}
+else if(percentil>=20){
+nivel="Bajo";
+}
+
+questions.forEach((q,i)=>{
+
+const respuestaUsuario = answers[i];
+
+if(respuestaUsuario === q.a){
+
 revisionHTML += `
+
 <div class="review-item correcta">
 
 <h4>
@@ -554,15 +715,20 @@ Pregunta ${i+1}: ✅ Correcta
 </h4>
 
 <div class="explicacion">
+
 ${q.exp}
+
 </div>
 
 </div>
+
 `;
 
-}else if(respuestaUsuario === null){
+}
+else if(respuestaUsuario === null){
 
 revisionHTML += `
+
 <div class="review-item sin-responder">
 
 <h4>
@@ -570,15 +736,21 @@ Pregunta ${i+1}: ⚠️ Sin responder
 </h4>
 
 <div class="explicacion">
-Respuesta correcta: ${q.o[q.a]}
+
+Respuesta correcta:
+${q.o[q.a]}
+
 </div>
 
 </div>
+
 `;
 
-}else{
+}
+else{
 
 revisionHTML += `
+
 <div class="review-item incorrecta">
 
 <h4>
@@ -587,7 +759,8 @@ Pregunta ${i+1}: ❌ Incorrecta
 
 <div class="explicacion">
 
-Correcta: ${q.o[q.a]}
+Correcta:
+${q.o[q.a]}
 
 <br><br>
 
@@ -596,30 +769,108 @@ ${q.exp}
 </div>
 
 </div>
+
 `;
 
 }
 
 });
 
-const porcentaje =
-((correctas/total)*100).toFixed(1);
-
 document.getElementById("puntajeTexto")
 .innerHTML = `
 
-Obtuviste
-<strong>${correctas}</strong>
+<button class="toggle-ranking" onclick="toggleRanking()">
+☰ Ranking
+</button>
 
-de
+<div id="rankingPanel" class="ranking-panel">
 
-<strong>${total}</strong>
+<div class="ranking-content">
 
-correctas.<br>
+<h3 style="margin-bottom:15px;">
+🏆 Ranking General
+</h3>
 
-Nota final:
+${ranking.map((p,i)=>`
 
-<strong>${porcentaje}%</strong>
+<div style="
+display:flex;
+justify-content:space-between;
+padding:10px;
+margin:6px 0;
+background:${p.usuario ? "#ffe4e6" : "white"};
+border-radius:10px;
+">
+
+<span>
+#${i+1} - ${p.nombre}
+</span>
+
+<span>
+${p.nota}%
+</span>
+
+</div>
+
+`).join("")}
+
+</div>
+
+</div>
+
+<div style="
+background:white;
+padding:20px;
+border-radius:15px;
+margin-bottom:20px;
+">
+
+<h2>
+${correctas}/${total}
+</h2>
+
+<p style="
+font-size:26px;
+font-weight:bold;
+margin-top:10px;
+color:#e11d48;
+">
+
+${porcentaje}%
+
+</p>
+
+<div style="
+display:flex;
+flex-direction:column;
+gap:12px;
+margin-top:20px;
+max-width:250px;
+">
+
+<div class="stat-box">
+<span class="stat-label">
+Percentil
+</span>
+
+<span class="stat-value">
+${percentil}%
+</span>
+</div>
+
+<div class="stat-box">
+<span class="stat-label">
+Nivel
+</span>
+
+<span class="stat-value">
+${nivel}
+</span>
+</div>
+
+</div>
+
+</div>
 
 `;
 
@@ -630,6 +881,25 @@ document.getElementById("resultado")
 .style.display = "block";
 
 render();
+
+if(window.enviarResultadoFinal){
+
+window.enviarResultadoFinal({
+
+correctas,
+total,
+porcentaje
+
+});
+
+}
+
+}
+
+function toggleRanking(){
+
+document.getElementById("rankingPanel")
+.classList.toggle("hidden");
 
 }
 
