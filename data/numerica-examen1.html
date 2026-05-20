@@ -638,7 +638,7 @@ ${q.exp}
 
 let rankingHTML="";
 
-ranking.slice(0,10).forEach((p,i)=>{
+ranking.forEach((p,i)=>{
 
 rankingHTML+=`
 
@@ -694,10 +694,11 @@ ${porcentaje}%
 </p>
 
 <div style="
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+display:flex;
+flex-direction:column;
 gap:12px;
 margin-top:20px;
+max-width:250px;
 ">
 
 <div class="stat-box">
