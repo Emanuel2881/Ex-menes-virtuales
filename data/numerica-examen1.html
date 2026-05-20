@@ -496,7 +496,9 @@ let html = "";
 
 
 
+// ======================
 // CONTAR CORRECTAS
+// ======================
 
 questions.forEach((q,i)=>{
 
@@ -510,7 +512,9 @@ correct++;
 
 
 
+// ======================
 // PORCENTAJE
+// ======================
 
 let porcentaje = Math.round(
 
@@ -520,7 +524,9 @@ let porcentaje = Math.round(
 
 
 
+// ======================
 // MOTOR GLOBAL
+// ======================
 
 const resultados =
 
@@ -533,7 +539,9 @@ porcentaje
 
 
 
+// ======================
 // SCORE
+// ======================
 
 document.getElementById("score")
 .innerHTML =
@@ -556,7 +564,9 @@ ${porcentaje}%
 
 
 
+// ======================
 // DATOS GLOBALES
+// ======================
 
 document.getElementById("percentil")
 .textContent = resultados.percentil + "%";
@@ -573,7 +583,9 @@ document.getElementById("nivel")
 
 
 
+// ======================
 // RANKING
+// ======================
 
 let rankingHTML = "";
 
@@ -611,7 +623,9 @@ document.getElementById("ranking")
 
 
 
+// ======================
 // REVIEW
+// ======================
 
 questions.forEach((q,i)=>{
 
@@ -693,6 +707,10 @@ document.getElementById("review")
 
 
 
+// ======================
+// MOSTRAR RESULTADO
+// ======================
+
 document.getElementById("resultado")
 .style.display = "block";
 
@@ -707,7 +725,9 @@ behavior:"smooth"
 
 
 
+// ======================
 // PARTY
+// ======================
 
 if(window.enviarResultadoFinal){
 
@@ -721,14 +741,7 @@ porcentaje
 
 }
 
-
-
-render();
-
 }
-
-
-
 // PARTY
 
 window.mostrarResultadosParty = function(data){
