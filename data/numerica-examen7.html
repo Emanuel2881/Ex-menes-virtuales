@@ -6,166 +6,316 @@
 <title>Examen Habilidad Numérica 7</title>
 
 <style>
-*{box-sizing:border-box;margin:0;padding:0;}
+
+*{
+box-sizing:border-box;
+margin:0;
+padding:0;
+}
 
 body{
-  font-family: Arial, Helvetica, sans-serif;
-  background: linear-gradient(135deg,#eef2ff,#e0e7ff,#c7d2fe);
-  color:#3730a3;
-  min-height:100vh;
-  padding:30px 15px;
+font-family:Arial, Helvetica, sans-serif;
+background:linear-gradient(135deg,#eef2ff,#e0e7ff,#c7d2fe);
+color:#3730a3;
+min-height:100vh;
+padding:30px 15px;
 }
 
 .container{
-  max-width:950px;
-  margin:auto;
-  background:rgba(255,255,255,0.95);
-  padding:25px;
-  border-radius:24px;
-  box-shadow:0 12px 35px rgba(0,0,0,0.08);
+max-width:950px;
+margin:auto;
+background:rgba(255,255,255,0.95);
+padding:25px;
+border-radius:24px;
+box-shadow:0 12px 35px rgba(0,0,0,0.08);
 }
 
-.header{text-align:center;margin-bottom:20px;}
-.header h1{font-size:2.3rem;color:#4338ca;margin-bottom:10px;}
+.header{
+text-align:center;
+margin-bottom:20px;
+}
+
+.header h1{
+font-size:2.3rem;
+color:#4338ca;
+margin-bottom:10px;
+}
+
+.header p{
+color:#4f46e5;
+}
 
 .stats-bar{
-  display:flex;
-  gap:12px;
-  justify-content:center;
-  margin-bottom:20px;
+display:flex;
+gap:12px;
+justify-content:center;
+margin-bottom:20px;
+flex-wrap:wrap;
 }
 
 .stat-box{
-  background:#fff;
-  border:1px solid #a5b4fc;
-  border-radius:14px;
-  padding:12px 18px;
-  min-width:150px;
-  text-align:center;
+background:#fff;
+border:1px solid #a5b4fc;
+border-radius:14px;
+padding:12px 18px;
+min-width:150px;
+text-align:center;
 }
 
 .question{
-  display:none;
-  background:#eef2ff;
-  border:1px solid #a5b4fc;
-  border-radius:20px;
-  padding:20px;
+display:none;
+background:#eef2ff;
+border:1px solid #a5b4fc;
+border-radius:20px;
+padding:20px;
 }
 
-.question.active{display:block;}
+.question.active{
+display:block;
+}
 
 .option{
-  background:#e0e7ff;
-  padding:12px;
-  margin:10px 0;
-  border-radius:12px;
-  cursor:pointer;
+background:#e0e7ff;
+padding:12px;
+margin:10px 0;
+border-radius:12px;
+cursor:pointer;
+transition:0.2s;
 }
 
-.option.selected{background:#4338ca;color:white;}
-.option.correct-answer{background:#bbf7d0;}
-.option.wrong-answer{background:#fecaca;}
+.option:hover{
+background:#c7d2fe;
+}
 
-.navigation{text-align:center;margin-top:15px;}
+.option.selected{
+background:#4338ca;
+color:white;
+}
+
+.option.correct-answer{
+background:#bbf7d0;
+}
+
+.option.wrong-answer{
+background:#fecaca;
+}
+
+.navigation{
+text-align:center;
+margin-top:15px;
+}
 
 button{
-  border:none;
-  padding:10px 15px;
-  border-radius:10px;
-  margin:5px;
-  cursor:pointer;
+border:none;
+padding:10px 15px;
+border-radius:10px;
+margin:5px;
+cursor:pointer;
+font-weight:bold;
 }
 
-.actions{text-align:center;margin-top:20px;}
+.next{
+background:#4338ca;
+color:white;
+}
+
+.prev{
+background:#a5b4fc;
+}
+
+.finish{
+background:#3730a3;
+color:white;
+}
+
+.actions{
+text-align:center;
+margin-top:20px;
+}
 
 .result{
-  display:none;
-  margin-top:20px;
-  padding:20px;
-  background:#eef2ff;
-  border-radius:15px;
+display:none;
+margin-top:20px;
+padding:20px;
+background:#eef2ff;
+border-radius:15px;
 }
 
 .review-item{
-  background:white;
-  padding:10px;
-  margin:10px 0;
-  border-left:5px solid gray;
+background:white;
+padding:14px;
+margin:12px 0;
+border-left:5px solid gray;
+border-radius:12px;
 }
 
-.correcta{border-left-color:green;}
-.incorrecta{border-left-color:red;}
-.sin-responder{border-left-color:orange;}
+.correcta{
+border-left-color:green;
+}
+
+.incorrecta{
+border-left-color:red;
+}
+
+.sin-responder{
+border-left-color:orange;
+}
+
+.explicacion{
+margin-top:8px;
+font-size:0.92rem;
+color:#374151;
+}
+
+/* PANEL RANKING */
+
+.ranking-panel{
+position:fixed;
+left:0;
+top:0;
+width:320px;
+height:100vh;
+background:white;
+box-shadow:4px 0 20px rgba(0,0,0,0.1);
+padding:20px;
+overflow-y:auto;
+z-index:999;
+transition:transform 0.3s ease;
+}
+
+.ranking-panel.hidden{
+transform:translateX(-100%);
+}
+
+.toggle-ranking{
+position:fixed;
+left:15px;
+top:15px;
+z-index:1000;
+background:#4338ca;
+color:white;
+border:none;
+padding:10px 15px;
+border-radius:12px;
+cursor:pointer;
+font-weight:bold;
+}
+
+.ranking-content{
+margin-top:60px;
+}
+
+@media(max-width:768px){
+
+.ranking-panel{
+width:260px;
+}
+
+.container{
+padding:18px;
+}
+
+}
+
 </style>
 </head>
 
 <body>
 
 <div class="container">
-  <div class="header">
-    <h1>🧠 Simulacro Final – Habilidad Numérica</h1>
-    <p>Nivel examen real</p>
-  </div>
 
-  <div class="stats-bar">
-    <div class="stat-box">
-      <span>Pregunta</span><br>
-      <b id="qNum">1</b> / 25
-    </div>
-    <div class="stat-box">
-      <span>Progreso</span><br>
-      <b id="progress">0 / 25</b>
-    </div>
-  </div>
+<div class="header">
+<h1>🧠 Simulacro Final – Habilidad Numérica</h1>
+<p>Nivel examen real</p>
+</div>
 
-  <div id="quiz"></div>
+<div class="stats-bar">
 
-  <div class="actions">
-    <button onclick="finish()">Calificar</button>
-    <button onclick="resetExam()">Reiniciar</button>
-  </div>
+<div class="stat-box">
+<span>Pregunta</span><br>
+<b id="qNum">1</b> / 25
+</div>
 
-  <div class="result" id="resultado">
-    <h2>Resultado</h2>
-    <p id="score"></p>
-    <div id="review"></div>
-  </div>
+<div class="stat-box">
+<span>Progreso</span><br>
+<b id="progress">0 / 25</b>
+</div>
+
+</div>
+
+<div id="quiz"></div>
+
+<div class="actions">
+<button class="finish" onclick="finish()">Calificar</button>
+<button class="prev" onclick="resetExam()">Reiniciar</button>
+</div>
+
+<div class="result" id="resultado">
+
+<h2 style="margin-bottom:20px;">
+Resultado Final
+</h2>
+
+<p id="score"></p>
+
+<div id="review"></div>
+
+</div>
+
 </div>
 
 <script>
+
 const questions = [
 
 {q:"Serie: 4, 9, 19, 39, 79, ?",o:["119","139","159","199","Ninguna"],a:2,exp:"Se multiplica por 2 y se suma 1: 79×2+1=159"},
+
 {q:"Serie: 1, 3, 6, 10, 15, ?",o:["18","20","21","24","Ninguna"],a:2,exp:"Se suma 2,3,4,5,6 → 15+6=21"},
+
 {q:"Serie: 2, 6, 7, 21, 22, ?",o:["44","66","67","88","Ninguna"],a:1,exp:"Se alterna ×3 y +1 → 22×3=66"},
+
 {q:"Serie: 5, 10, 20, 40, 80, ?",o:["120","140","160","180","Ninguna"],a:2,exp:"Se multiplica por 2 → 80×2=160"},
+
 {q:"Serie: 3, 6, 18, 72, ?",o:["144","216","288","360","Ninguna"],a:2,exp:"Se multiplica por 2,3,4 → 72×4=288"},
 
 {q:"Si 4x - 8 = 24, ¿x?",o:["6","7","8","9","Ninguna"],a:2,exp:"4x=32 → x=8"},
+
 {q:"Si 3x + 6 = 21, ¿x?",o:["3","4","5","6","Ninguna"],a:2,exp:"3x=15 → x=5"},
+
 {q:"Si x/4 = 7, ¿x?",o:["21","24","28","32","Ninguna"],a:2,exp:"x=28"},
+
 {q:"Si 2x + 5 = 19, ¿x?",o:["5","6","7","8","Ninguna"],a:2,exp:"2x=14 → x=7"},
 
 {q:"(3/5)+(7/10)",o:["1","11/10","12/10","13/10","Ninguna"],a:3,exp:"6/10+7/10=13/10"},
+
 {q:"(4/3)×(9/8)",o:["3/2","1/2","2","4","Ninguna"],a:0,exp:"36/24=3/2"},
+
 {q:"(10/3)÷(5/6)",o:["2","3","4","5","Ninguna"],a:2,exp:"(10/3)×(6/5)=60/15=4"},
 
 {q:"25% de 360",o:["80","85","90","95","Ninguna"],a:2,exp:"0.25×360=90"},
+
 {q:"40% de 250",o:["80","90","100","110","Ninguna"],a:2,exp:"0.4×250=100"},
+
 {q:"Si 12 es el 20% de un número, ¿cuál es?",o:["50","60","70","80","Ninguna"],a:1,exp:"12÷0.2=60"},
 
 {q:"(8×5)+(12÷3)",o:["40","42","44","46","Ninguna"],a:2,exp:"40+4=44"},
+
 {q:"(15×2)+(18÷6)",o:["30","32","33","36","Ninguna"],a:2,exp:"30+3=33"},
 
 {q:"Serie: 1, 4, 9, 16, 25, ?",o:["30","32","36","40","Ninguna"],a:2,exp:"Son cuadrados: 6²=36"},
+
 {q:"Serie: 2, 5, 10, 17, 26, ?",o:["35","36","37","38","Ninguna"],a:2,exp:"Se suma 3,5,7,9,11 → 26+11=37"},
+
 {q:"Serie: 1, 2, 4, 8, 16, ?",o:["24","30","32","36","Ninguna"],a:2,exp:"Se multiplica por 2 → 32"},
 
 {q:"Promedio de 20, 30, 40, 50",o:["30","35","40","45","Ninguna"],a:1,exp:"(20+30+40+50)/4=35"},
+
 {q:"Perímetro de un cuadrado lado 7",o:["21","24","28","30","Ninguna"],a:2,exp:"7×4=28"},
+
 {q:"Área de un rectángulo 8×5",o:["30","35","40","45","Ninguna"],a:2,exp:"8×5=40"},
 
 {q:"Si 5x = 45, ¿x?",o:["7","8","9","10","Ninguna"],a:2,exp:"x=9"},
+
 {q:"Si x² = 81, ¿x?",o:["7","8","9","10","Ninguna"],a:2,exp:"x=9"}
 
 ];
@@ -175,85 +325,442 @@ let answers=new Array(questions.length).fill(null);
 let done=false;
 
 function render(){
+
 const quiz=document.getElementById("quiz");
+
 quiz.innerHTML="";
 
 questions.forEach((q,i)=>{
+
 const div=document.createElement("div");
+
 div.className="question"+(i===current?" active":"");
 
 let opts="";
+
 q.o.forEach((op,j)=>{
+
 let cls="";
-if(answers[i]===j) cls+=" selected";
-if(done){
-if(j===q.a) cls+=" correct-answer";
-if(answers[i]===j && j!==q.a) cls+=" wrong-answer";
+
+if(answers[i]===j){
+
+cls+=" selected";
+
 }
-opts+=`<div class="option${cls}" onclick="select(${i},${j})">${op}</div>`;
+
+if(done){
+
+if(j===q.a){
+
+cls+=" correct-answer";
+
+}
+
+if(answers[i]===j && j!==q.a){
+
+cls+=" wrong-answer";
+
+}
+
+}
+
+opts+=`
+
+<div class="option${cls}" onclick="select(${i},${j})">
+${op}
+</div>
+
+`;
+
 });
 
 div.innerHTML=`
+
 <h3>${q.q}</h3>
+
 ${opts}
+
 <div class="navigation">
-<button onclick="prev()" ${i===0?"disabled":""}>Anterior</button>
+
+<button class="prev"
+onclick="prev()"
+${i===0?"disabled":""}>
+Anterior
+</button>
+
 ${i===questions.length-1
-? `<button onclick="finish()">Finalizar</button>`
-: `<button onclick="next()">Siguiente</button>`}
-</div>`;
+
+? `<button class="finish" onclick="finish()">Finalizar</button>`
+
+: `<button class="next" onclick="next()">Siguiente</button>`
+
+}
+
+</div>
+
+`;
 
 quiz.appendChild(div);
+
 });
 
 update();
+
 }
 
-function select(i,j){if(done)return;answers[i]=j;render();}
-function next(){if(current<questions.length-1){current++;render();}}
-function prev(){if(current>0){current--;render();}}
+function select(i,j){
+
+if(done)return;
+
+answers[i]=j;
+
+render();
+
+}
+
+function next(){
+
+if(answers[current]===null){
+
+alert("Responde primero");
+
+return;
+
+}
+
+current++;
+
+render();
+
+window.scrollTo({
+top:0,
+behavior:"smooth"
+});
+
+}
+
+function prev(){
+
+current--;
+
+render();
+
+}
 
 function update(){
+
 document.getElementById("qNum").textContent=current+1;
-document.getElementById("progress").textContent=answers.filter(a=>a!==null).length+" / "+questions.length;
+
+document.getElementById("progress").textContent=
+answers.filter(a=>a!==null).length+" / "+questions.length;
+
 }
 
 function finish(){
+
 done=true;
+
 let correct=0;
 let html="";
 
 questions.forEach((q,i)=>{
-const user=answers[i];
 
-let estado="sin-responder";
-if(user===q.a){correct++;estado="correcta";}
-else if(user!==null){estado="incorrecta";}
+if(answers[i]===q.a){
 
-html+=`
-<div class="review-item ${estado}">
-<h4>Pregunta ${i+1}</h4>
-<p><b>Correcta:</b> ${q.o[q.a]}</p>
-<div class="explicacion">${q.exp}</div>
-</div>`;
+correct++;
+
+}
+
 });
 
-document.getElementById("score").innerHTML=`${correct} / ${questions.length}`;
-document.getElementById("review").innerHTML=html;
-document.getElementById("resultado").style.display="block";
+let porcentaje=Math.round(
+(correct/questions.length)*100
+);
+
+const bots=[];
+
+for(let i=1;i<=30;i++){
+
+bots.push({
+
+nombre:`Bot_${i}`,
+
+nota:Math.floor(Math.random()*71)+30
+
+});
+
+}
+
+const ranking=[
+
+...bots,
+
+{
+
+nombre:"Tú",
+nota:porcentaje,
+usuario:true
+
+}
+
+];
+
+ranking.sort((a,b)=>b.nota-a.nota);
+
+let debajo=ranking.filter(
+p=>porcentaje>p.nota
+).length;
+
+let iguales=ranking.filter(
+p=>porcentaje===p.nota
+).length;
+
+let percentil=Math.round(
+(
+debajo+(0.5*iguales)
+)
+/ranking.length
+*100
+);
+
+if(percentil<1){
+percentil=1;
+}
+
+if(percentil>99){
+percentil=99;
+}
+
+let nivel="Muy bajo";
+
+if(percentil>=90){
+nivel="Excelente";
+}
+else if(percentil>=75){
+nivel="Muy bueno";
+}
+else if(percentil>=60){
+nivel="Bueno";
+}
+else if(percentil>=40){
+nivel="Promedio";
+}
+else if(percentil>=20){
+nivel="Bajo";
+}
+
+questions.forEach((q,i)=>{
+
+let estado="";
+
+if(answers[i]===null){
+
+estado="sin-responder";
+
+}
+else if(answers[i]===q.a){
+
+estado="correcta";
+
+}
+else{
+
+estado="incorrecta";
+
+}
+
+html+=`
+
+<div class="review-item ${estado}">
+
+<h3>
+Pregunta ${i+1}
+</h3>
+
+<p style="margin-top:8px;">
+${q.q}
+</p>
+
+<br>
+
+<p>
+<b>Tu respuesta:</b>
+
+${
+answers[i]!==null
+?
+q.o[answers[i]]
+:
+"Sin responder"
+}
+
+</p>
+
+<p style="margin-top:6px;">
+<b>Correcta:</b>
+
+${q.o[q.a]}
+
+</p>
+
+<div class="explicacion">
+
+${q.exp}
+
+</div>
+
+</div>
+
+`;
+
+});
+
+let rankingHTML="";
+
+ranking.forEach((p,i)=>{
+
+rankingHTML+=`
+
+<div style="
+display:flex;
+justify-content:space-between;
+padding:10px;
+margin:6px 0;
+background:${p.usuario ? "#e0e7ff" : "white"};
+border-radius:10px;
+">
+
+<span>
+#${i+1} - ${p.nombre}
+</span>
+
+<span>
+${p.nota}%
+</span>
+
+</div>
+
+`;
+
+});
+
+document.getElementById("score").innerHTML=
+
+`
+
+<button class="toggle-ranking" onclick="toggleRanking()">
+☰ Ranking
+</button>
+
+<div id="rankingPanel" class="ranking-panel">
+
+<div class="ranking-content">
+
+<h3 style="margin-bottom:15px;">
+🏆 Ranking General
+</h3>
+
+${rankingHTML}
+
+</div>
+
+</div>
+
+<div style="
+background:white;
+padding:20px;
+border-radius:15px;
+margin-bottom:20px;
+">
+
+<h2>
+${correct}/${questions.length}
+</h2>
+
+<p style="
+font-size:26px;
+font-weight:bold;
+margin-top:10px;
+color:#4338ca;
+">
+${porcentaje}%
+</p>
+
+<div style="
+display:flex;
+flex-direction:column;
+gap:12px;
+margin-top:20px;
+max-width:250px;
+">
+
+<div class="stat-box">
+<span>Percentil</span><br>
+<b>${percentil}%</b>
+</div>
+
+<div class="stat-box">
+<span>Nivel</span><br>
+<b>${nivel}</b>
+</div>
+
+</div>
+
+</div>
+
+`;
+
+document.getElementById("review")
+.innerHTML=html;
+
+document.getElementById("resultado")
+.style.display="block";
+
+document.getElementById("resultado")
+.scrollIntoView({
+behavior:"smooth"
+});
+
+if(window.enviarResultadoFinal){
+
+window.enviarResultadoFinal({
+
+correctas:correct,
+total:questions.length,
+porcentaje
+
+});
+
+}
 
 render();
+
+}
+
+function toggleRanking(){
+
+document.getElementById("rankingPanel")
+.classList.toggle("hidden");
+
 }
 
 function resetExam(){
+
 current=0;
+
 answers=new Array(questions.length).fill(null);
+
 done=false;
-document.getElementById("resultado").style.display="none";
+
+document.getElementById("resultado")
+.style.display="none";
+
 render();
+
 }
 
 render();
+
 </script>
 
 <script type="module" src="../party/party-timer.js"></script>
