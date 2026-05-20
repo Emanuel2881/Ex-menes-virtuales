@@ -6,190 +6,281 @@
 <title>Examen Habilidad Numérica 1</title>
 
 <style>
-*{box-sizing:border-box;margin:0;padding:0;}
- 
+
+*{
+box-sizing:border-box;
+margin:0;
+padding:0;
+}
+
 body{
-  font-family: Arial, Helvetica, sans-serif;
-  background: linear-gradient(135deg,#eff6ff,#dbeafe,#bfdbfe);
-  color:#1e3a8a;
-  min-height:100vh;
-  padding:30px 15px;
+font-family:Arial, Helvetica, sans-serif;
+background:linear-gradient(135deg,#eff6ff,#dbeafe,#bfdbfe);
+color:#1e3a8a;
+min-height:100vh;
+padding:30px 15px;
 }
 
 .container{
-  max-width:950px;
-  margin:auto;
-  background:rgba(255,255,255,0.95);
-  padding:25px;
-  border-radius:24px;
-  box-shadow:0 12px 35px rgba(0,0,0,0.08);
+max-width:950px;
+margin:auto;
+background:rgba(255,255,255,0.95);
+padding:25px;
+border-radius:24px;
+box-shadow:0 12px 35px rgba(0,0,0,0.08);
 }
 
-.header{text-align:center;margin-bottom:20px;}
-.header h1{font-size:2.3rem;color:#1d4ed8;margin-bottom:10px;}
-.header p{color:#1e40af;}
+.header{
+text-align:center;
+margin-bottom:20px;
+}
+
+.header h1{
+font-size:2.3rem;
+color:#1d4ed8;
+margin-bottom:10px;
+}
+
+.header p{
+color:#1e40af;
+}
 
 .stats-bar{
-  display:flex;
-  gap:12px;
-  justify-content:center;
-  margin-bottom:20px;
+display:flex;
+gap:12px;
+justify-content:center;
+margin-bottom:20px;
+flex-wrap:wrap;
 }
 
 .stat-box{
-  background:#fff;
-  border:1px solid #93c5fd;
-  border-radius:14px;
-  padding:12px 18px;
-  min-width:150px;
-  text-align:center;
+background:#fff;
+border:1px solid #93c5fd;
+border-radius:14px;
+padding:12px 18px;
+min-width:150px;
+text-align:center;
 }
 
 .question{
-  display:none;
-  background:#eff6ff;
-  border:1px solid #93c5fd;
-  border-radius:20px;
-  padding:20px;
+display:none;
+background:#eff6ff;
+border:1px solid #93c5fd;
+border-radius:20px;
+padding:20px;
 }
 
-.question.active{display:block;}
+.question.active{
+display:block;
+}
 
 .option{
-  background:#dbeafe;
-  padding:12px;
-  margin:10px 0;
-  border-radius:12px;
-  cursor:pointer;
+background:#dbeafe;
+padding:12px;
+margin:10px 0;
+border-radius:12px;
+cursor:pointer;
+transition:0.2s;
 }
 
-.option.selected{background:#2563eb;color:white;}
-.option.correct-answer{background:#bbf7d0;}
-.option.wrong-answer{background:#fecaca;}
+.option:hover{
+background:#bfdbfe;
+}
 
-.navigation{text-align:center;margin-top:15px;}
+.option.selected{
+background:#2563eb;
+color:white;
+}
+
+.option.correct-answer{
+background:#bbf7d0;
+}
+
+.option.wrong-answer{
+background:#fecaca;
+}
+
+.navigation{
+text-align:center;
+margin-top:15px;
+}
 
 button{
-  border:none;
-  padding:10px 15px;
-  border-radius:10px;
-  margin:5px;
-  cursor:pointer;
+border:none;
+padding:10px 15px;
+border-radius:10px;
+margin:5px;
+cursor:pointer;
 }
 
-.next{background:#2563eb;color:white;}
-.prev{background:#93c5fd;}
-.finish{background:#1d4ed8;color:white;}
+.next{
+background:#2563eb;
+color:white;
+}
 
-.actions{text-align:center;margin-top:20px;}
+.prev{
+background:#93c5fd;
+}
+
+.finish{
+background:#1d4ed8;
+color:white;
+}
+
+.actions{
+text-align:center;
+margin-top:20px;
+}
 
 .result{
-  display:none;
-  margin-top:20px;
-  padding:20px;
-  background:#eff6ff;
-  border-radius:15px;
+display:none;
+margin-top:20px;
+padding:20px;
+background:#eff6ff;
+border-radius:15px;
 }
 
 .review-item{
-  background:white;
-  padding:10px;
-  margin:10px 0;
-  border-left:5px solid gray;
+background:white;
+padding:12px;
+margin:12px 0;
+border-left:5px solid gray;
+border-radius:10px;
 }
 
-.correcta{border-left-color:green;}
-.incorrecta{border-left-color:red;}
-.sin-responder{border-left-color:orange;}
+.correcta{
+border-left-color:green;
+}
+
+.incorrecta{
+border-left-color:red;
+}
+
+.sin-responder{
+border-left-color:orange;
+}
 
 .explicacion{
-  margin-top:5px;
-  font-size:0.9rem;
+margin-top:5px;
+font-size:0.9rem;
 }
+
 </style>
 </head>
 
 <body>
 
 <div class="container">
-  <div class="header">
-    <h1>🧠 Habilidad Numérica 1</h1>
-    <p>Examen interactivo</p>
-  </div>
 
-  <div class="stats-bar">
-    <div class="stat-box">
-      <span>Pregunta</span><br>
-      <b id="qNum">1</b> / 24
-    </div>
-    <div class="stat-box">
-      <span>Progreso</span><br>
-      <b id="progress">0 / 24</b>
-    </div>
-  </div>
+<div class="header">
+<h1>🧠 Habilidad Numérica 1</h1>
+<p>Examen interactivo</p>
+</div>
 
-  <div id="quiz"></div>
 
-  <div class="actions">
-    <button onclick="finish()">Calificar</button>
-    <button onclick="resetExam()">Reiniciar</button>
-  </div>
 
- <div class="result" id="resultado">
+<div class="stats-bar">
 
-  <h2 style="margin-bottom:20px;">
-    Resultado Final
-  </h2>
+<div class="stat-box">
+<span>Pregunta</span><br>
+<b id="qNum">1</b> / 24
+</div>
 
-  <div id="score"></div>
-
-  <div class="stats-bar" style="margin-top:20px;">
-
-    <div class="stat-box">
-      <span>Percentil</span><br>
-      <b id="percentil">0%</b>
-    </div>
-
-    <div class="stat-box">
-      <span>Promedio Global</span><br>
-      <b id="promedioGlobal">0</b>
-    </div>
-
-    <div class="stat-box">
-      <span>Nivel</span><br>
-      <b id="nivel">Promedio</b>
-    </div>
-
-  </div>
-
-  <div style="
-    background:white;
-    padding:15px;
-    border-radius:15px;
-    margin-top:20px;
-  ">
-
-    <h3 style="margin-bottom:15px;">
-      🏆 Ranking General
-    </h3>
-
-    <div id="ranking"></div>
-
-  </div>
-
-  <div style="margin-top:25px;">
-
-    <h3 style="margin-bottom:15px;">
-      📘 Revisión de respuestas
-    </h3>
-
-    <div id="review"></div>
-
-  </div>
+<div class="stat-box">
+<span>Progreso</span><br>
+<b id="progress">0 / 24</b>
+</div>
 
 </div>
 
+
+
+<div id="quiz"></div>
+
+
+
+<div class="actions">
+
+<button onclick="finish()">
+Calificar
+</button>
+
+<button onclick="location.reload()">
+Reiniciar
+</button>
+
+</div>
+
+
+
+<!-- RESULTADOS -->
+
+<div class="result" id="resultado">
+
+<h2 style="margin-bottom:20px;">
+Resultado Final
+</h2>
+
+<div id="score"></div>
+
+
+
+<div class="stats-bar" style="margin-top:20px;">
+
+<div class="stat-box">
+<span>Percentil</span><br>
+<b id="percentil">0%</b>
+</div>
+
+<div class="stat-box">
+<span>Promedio Global</span><br>
+<b id="promedioGlobal">0</b>
+</div>
+
+<div class="stat-box">
+<span>Nivel</span><br>
+<b id="nivel">Promedio</b>
+</div>
+
+</div>
+
+
+
+<div style="
+background:white;
+padding:15px;
+border-radius:15px;
+margin-top:20px;
+">
+
+<h3 style="margin-bottom:15px;">
+🏆 Ranking General
+</h3>
+
+<div id="ranking"></div>
+
+</div>
+
+
+
+<div style="margin-top:25px;">
+
+<h3 style="margin-bottom:15px;">
+📘 Revisión de respuestas
+</h3>
+
+<div id="review"></div>
+
+</div>
+
+</div>
+
+</div>
+
+
+
 <script>
+
 const questions = [
 
 {q:"Si 4x + 12 = 28, ¿cuál es el valor de x?",o:["2","3","4","5","Ninguna"],a:2,exp:"4x=16 → x=4"},
@@ -216,62 +307,184 @@ const questions = [
 {q:"x + 8 = 20",o:["10","11","12","13","Ninguna"],a:2,exp:"x=12"},
 {q:"No divisible entre 3",o:["123","456","789","100","Ninguna"],a:3,exp:"100 no cumple"},
 {q:"4m + 6m - 3m",o:["5m","6m","7m","8m","Ninguna"],a:2,exp:"=7m"}
+
 ];
 
-let current=0;
-let answers=new Array(questions.length).fill(null);
-let done=false;
+
+
+let current = 0;
+
+let answers =
+new Array(questions.length).fill(null);
+
+let done = false;
+
+
 
 function render(){
-const quiz=document.getElementById("quiz");
-quiz.innerHTML="";
+
+const quiz =
+document.getElementById("quiz");
+
+quiz.innerHTML = "";
 
 questions.forEach((q,i)=>{
-const div=document.createElement("div");
-div.className="question"+(i===current?" active":"");
 
-let opts="";
+const div =
+document.createElement("div");
+
+div.className =
+"question" + (i===current ? " active" : "");
+
+let opts = "";
+
 q.o.forEach((op,j)=>{
-let cls="";
-if(answers[i]===j) cls+=" selected";
-if(done){
-if(j===q.a) cls+=" correct-answer";
-if(answers[i]===j && j!==q.a) cls+=" wrong-answer";
+
+let cls = "";
+
+if(answers[i]===j){
+
+cls += " selected";
+
 }
-opts+=`<div class="option${cls}" onclick="select(${i},${j})">${op}</div>`;
+
+if(done){
+
+if(j===q.a){
+
+cls += " correct-answer";
+
+}
+
+if(
+answers[i]===j &&
+j!==q.a
+){
+
+cls += " wrong-answer";
+
+}
+
+}
+
+opts += `
+<div class="option${cls}"
+onclick="select(${i},${j})">
+${op}
+</div>
+`;
+
 });
 
-div.innerHTML=`
+div.innerHTML = `
+
 <h3>${q.q}</h3>
+
 ${opts}
+
 <div class="navigation">
-<button class="prev" onclick="prev()" ${i===0?"disabled":""}>Anterior</button>
-${i===questions.length-1
-? `<button class="finish" onclick="finish()">Finalizar</button>`
-: `<button class="next" onclick="next()">Siguiente</button>`}
-</div>`;
+
+<button class="prev"
+onclick="prev()"
+${i===0?"disabled":""}>
+Anterior
+</button>
+
+${
+i===questions.length-1
+
+?
+
+`<button class="finish"
+onclick="finish()">
+Finalizar
+</button>`
+
+:
+
+`<button class="next"
+onclick="next()">
+Siguiente
+</button>`
+
+}
+
+</div>
+
+`;
+
 quiz.appendChild(div);
+
 });
 
 update();
+
 }
 
-function select(i,j){if(done)return;answers[i]=j;render();}
+
+
+function select(i,j){
+
+if(done)return;
+
+answers[i]=j;
+
+render();
+
+}
+
+
 
 function next(){
-if(answers[current]===null){alert("Responde primero");return;}
-current++;
-render();
-window.scrollTo({top:0,behavior:"smooth"});
+
+if(answers[current]===null){
+
+alert("Responde primero");
+
+return;
+
 }
 
-function prev(){current--;render();}
+current++;
+
+render();
+
+window.scrollTo({
+
+top:0,
+behavior:"smooth"
+
+});
+
+}
+
+
+
+function prev(){
+
+current--;
+
+render();
+
+}
+
+
 
 function update(){
-document.getElementById("qNum").textContent=current+1;
-document.getElementById("progress").textContent=
-answers.filter(a=>a!==null).length+" / "+questions.length;
+
+document.getElementById("qNum")
+.textContent=current+1;
+
+document.getElementById("progress")
+.textContent=
+
+answers.filter(a=>a!==null).length
+
++" / "+questions.length;
+
 }
+
+
 
 function finish(){
 
@@ -283,9 +496,7 @@ let html = "";
 
 
 
-// ======================
 // CONTAR CORRECTAS
-// ======================
 
 questions.forEach((q,i)=>{
 
@@ -299,9 +510,7 @@ correct++;
 
 
 
-// ======================
 // PORCENTAJE
-// ======================
 
 let porcentaje = Math.round(
 
@@ -311,11 +520,11 @@ let porcentaje = Math.round(
 
 
 
-// ======================
-// GUARDAR NOTA
-// ======================
+// MOTOR GLOBAL
 
-localStorage.setItem(
+const resultados =
+
+window.procesarResultadosGlobales(
 
 "numerica-examen1",
 porcentaje
@@ -324,23 +533,10 @@ porcentaje
 
 
 
-// ======================
-// SISTEMA GLOBAL
-// ======================
+// SCORE
 
-if(window.calcularResultadosGlobales){
-
-window.calcularResultadosGlobales();
-
-}
-
-
-
-// ======================
-// MOSTRAR NOTA
-// ======================
-
-document.getElementById("score").innerHTML=
+document.getElementById("score")
+.innerHTML =
 
 `
 
@@ -350,8 +546,8 @@ ${correct}/${questions.length}
 
 <p style="
 font-size:22px;
-margin-top:10px;
 font-weight:bold;
+margin-top:10px;
 ">
 ${porcentaje}%
 </p>
@@ -360,9 +556,62 @@ ${porcentaje}%
 
 
 
-// ======================
+// DATOS GLOBALES
+
+document.getElementById("percentil")
+.textContent = resultados.percentil + "%";
+
+
+
+document.getElementById("promedioGlobal")
+.textContent = resultados.promedio;
+
+
+
+document.getElementById("nivel")
+.textContent = resultados.nivel;
+
+
+
+// RANKING
+
+let rankingHTML = "";
+
+resultados.ranking.forEach((p,i)=>{
+
+rankingHTML += `
+
+<div style="
+display:flex;
+justify-content:space-between;
+padding:10px;
+margin:6px 0;
+background:${p.usuario ? "#dbeafe" : "white"};
+border-radius:10px;
+">
+
+<span>
+#${i+1} - ${p.nombre}
+</span>
+
+<span>
+${p.nota}
+</span>
+
+</div>
+
+`;
+
+});
+
+
+
+document.getElementById("ranking")
+.innerHTML = rankingHTML;
+
+
+
 // REVIEW
-// ======================
 
 questions.forEach((q,i)=>{
 
@@ -392,9 +641,9 @@ html += `
 
 <div class="review-item ${estado}">
 
-<h3>
-Pregunta ${i+1}
-</h3>
+<p>
+<b>Pregunta ${i+1}</b>
+</p>
 
 <p style="margin-top:8px;">
 ${q.q}
@@ -444,10 +693,6 @@ document.getElementById("review")
 
 
 
-// ======================
-// MOSTRAR RESULTADO
-// ======================
-
 document.getElementById("resultado")
 .style.display = "block";
 
@@ -462,9 +707,7 @@ behavior:"smooth"
 
 
 
-// ======================
 // PARTY
-// ======================
 
 if(window.enviarResultadoFinal){
 
@@ -484,7 +727,10 @@ render();
 
 }
 
+
+
 // PARTY
+
 window.mostrarResultadosParty = function(data){
 
 const ranking=[...data].sort((a,b)=>b.porcentaje-a.porcentaje);
@@ -492,25 +738,61 @@ const ranking=[...data].sort((a,b)=>b.porcentaje-a.porcentaje);
 let html=`<div class="party-grid">`;
 
 ranking.forEach((j,i)=>{
+
 let medal=i===0?"🥇":i===1?"🥈":i===2?"🥉":"";
 
 html+=`
+
 <div class="party-card">
-<h3>${medal} Jugador ${i+1}</h3>
-<p>${j.correctas}/${j.total}</p>
-<p>${j.porcentaje}%</p>
-</div>`;
+
+<h3>
+${medal} Jugador ${i+1}
+</h3>
+
+<p>
+${j.correctas}/${j.total}
+</p>
+
+<p>
+${j.porcentaje}%
+</p>
+
+</div>
+
+`;
+
 });
 
 html+=`</div>`;
-html+=`<div class="party-winner">🏆 Mejor: ${ranking[0].porcentaje}%</div>`;
 
-document.getElementById("partyResultadoContenido").innerHTML=html;
-document.getElementById("resultadoParty").style.display="block";
+html+=`
+
+<div class="party-winner">
+
+🏆 Mejor:
+${ranking[0].porcentaje}%
+
+</div>
+
+`;
+
+document.getElementById("partyResultadoContenido")
+.innerHTML=html;
+
+document.getElementById("resultadoParty")
+.style.display="block";
+
 };
 
+
+
 render();
+
 </script>
+
+
+
+<script src="resultadosall.js"></script>
 
 <script type="module" src="../party/party-timer.js"></script>
 <script type="module" src="../party/party-resultados.js"></script>
