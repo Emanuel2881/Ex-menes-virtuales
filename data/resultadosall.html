@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Resultados Globales</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial,sans-serif;
+}
+
+body{
+    background:#101114;
+    color:#f5f5f5;
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    padding:25px;
+}
+
+.container{
+    width:100%;
+    max-width:1100px;
+    background:#181a20;
+    border:1px solid #252832;
+    border-radius:24px;
+    padding:35px;
+}
+
+.topo{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:20px;
+    flex-wrap:wrap;
+    margin-bottom:35px;
+}
+
+.info h1{
+    font-size:38px;
+    margin-bottom:8px;
+}
+
+.info p{
+    color:#9ca3af;
+    font-size:16px;
+}
+
+.badge{
+    background:#232733;
+    border:1px solid #303544;
+    padding:12px 18px;
+    border-radius:14px;
+    font-size:14px;
+    color:#d1d5db;
+}
+
+.grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:18px;
+    margin-bottom:35px;
+}
+
+.card{
+    background:#1d212b;
+    border:1px solid #2a2f3c;
+    border-radius:18px;
+    padding:22px;
+}
+
+.label{
+    color:#9ca3af;
+    font-size:15px;
+    margin-bottom:12px;
+}
+
+.valor{
+    font-size:40px;
+    font-weight:bold;
+}
+
+.valor.small{
+    font-size:32px;
+}
+
+.percentil{
+    color:#7dd3fc;
+}
+
+.promedio{
+    color:#86efac;
+}
+
+.verbal{
+    color:#fca5a5;
+}
+
+.numerica{
+    color:#c4b5fd;
+}
+
+.nivel-box{
+    background:#1d212b;
+    border:1px solid #2a2f3c;
+    border-radius:20px;
+    padding:30px;
+    margin-bottom:35px;
+    text-align:center;
+}
+
+.nivel-box h2{
+    margin-bottom:12px;
+    font-size:22px;
+}
+
+#nivel{
+    font-size:42px;
+    font-weight:bold;
+    color:#facc15;
+}
+
+.seccion{
+    margin-bottom:20px;
+}
+
+.seccion h2{
+    font-size:24px;
+}
+
+.ranking{
+    background:#1d212b;
+    border:1px solid #2a2f3c;
+    border-radius:20px;
+    overflow:hidden;
+}
+
+.fila{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:18px 20px;
+    border-bottom:1px solid #2b3140;
+}
+
+.fila:last-child{
+    border-bottom:none;
+}
+
+.posicion{
+    display:flex;
+    align-items:center;
+    gap:15px;
+}
+
+.numero{
+    width:34px;
+    height:34px;
+    border-radius:10px;
+    background:#252b38;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-size:14px;
+    color:#cbd5e1;
+}
+
+.usuario{
+    background:#263041;
+}
+
+.usuario .numero{
+    background:#3b82f6;
+    color:white;
+}
+
+.nombre{
+    font-size:16px;
+}
+
+.nota{
+    font-size:18px;
+    font-weight:bold;
+    color:#f8fafc;
+}
+
+.acciones{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:15px;
+    margin-top:30px;
+}
+
+button{
+    width:100%;
+    background:#2563eb;
+    border:none;
+    color:white;
+    padding:18px;
+    border-radius:18px;
+    font-size:17px;
+    cursor:pointer;
+    transition:0.2s;
+}
+
+button:hover{
+    opacity:0.9;
+    transform:translateY(-1px);
+}
+
+@media(max-width:700px){
+
+    .info h1{
+        font-size:30px;
+    }
+
+    .valor{
+        font-size:32px;
+    }
+
+    #nivel{
+        font-size:34px;
+    }
+
+    .fila{
+        padding:15px;
+    }
+
+    .acciones{
+        grid-template-columns:1fr;
+    }
+
+}
+
+</style>
+</head>
+<body>
+
+<div class="container">
+
+    <div class="topo">
+
+        <div class="info">
+            <h1>Resultados Globales</h1>
+
+            <p>
+                Sistema general de simulacros universitarios
+            </p>
+        </div>
+
+        <div class="badge">
+            Resultados sincronizados
+        </div>
+
+    </div>
+
+
+
+    <div class="grid">
+
+        <div class="card">
+
+            <div class="label">
+                Verbal
+            </div>
+
+            <div class="valor verbal" id="verbal">
+                0
+            </div>
+
+        </div>
+
+
+
+        <div class="card">
+
+            <div class="label">
+                Numérica
+            </div>
+
+            <div class="valor numerica" id="numerica">
+                0
+            </div>
+
+        </div>
+
+
+
+        <div class="card">
+
+            <div class="label">
+                Promedio
+            </div>
+
+            <div class="valor promedio" id="promedio">
+                0
+            </div>
+
+        </div>
+
+
+
+        <div class="card">
+
+            <div class="label">
+                Percentil
+            </div>
+
+            <div class="valor small percentil" id="percentil">
+                0%
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <div class="nivel-box">
+
+        <h2>
+            Nivel obtenido
+        </h2>
+
+        <p id="nivel">
+            Promedio
+        </p>
+
+    </div>
+
+
+
+    <div class="seccion">
+        <h2>Ranking Global</h2>
+    </div>
+
+
+
+    <div class="ranking" id="ranking">
+
+    </div>
+
+
+
+    <div class="acciones">
+
+        <button onclick="window.location.href='matematicas.html'">
+            Ir a Numérica
+        </button>
+
+        <button onclick="window.location.href='verbal.html'">
+            Ir a Verbal
+        </button>
+
+    </div>
+
+</div>
+
+<script type="module" src="resultadosall.js"></script>
+
+</body>
+</html>
