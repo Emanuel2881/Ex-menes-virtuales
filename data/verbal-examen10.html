@@ -6,222 +6,331 @@
 <title>Examen Verbal 10</title>
 
 <style>
+
 *{
-  box-sizing:border-box;
-  margin:0;
-  padding:0;
+box-sizing:border-box;
+margin:0;
+padding:0;
 }
 
 body{
-  font-family: Arial, Helvetica, sans-serif;
-  background: linear-gradient(135deg,#fff1f2,#ffe4e6,#fecdd3);
-  color:#7f1d1d;
-  min-height:100vh;
-  padding:30px 15px;
+font-family:Arial, Helvetica, sans-serif;
+background:linear-gradient(135deg,#fff1f2,#ffe4e6,#fecdd3);
+color:#7f1d1d;
+min-height:100vh;
+padding:30px 15px;
 }
 
 .container{
-  max-width:950px;
-  margin:auto;
-  background:rgba(255,255,255,0.95);
-  padding:25px;
-  border-radius:24px;
-  box-shadow:0 12px 35px rgba(0,0,0,0.08);
+max-width:950px;
+margin:auto;
+background:rgba(255,255,255,0.95);
+padding:25px;
+border-radius:24px;
+box-shadow:0 12px 35px rgba(0,0,0,0.08);
 }
 
 .header{
-  text-align:center;
-  margin-bottom:20px;
+text-align:center;
+margin-bottom:20px;
 }
 
 .header h1{
-  font-size: clamp(1.9rem, 4vw, 2.7rem);
-  margin-bottom:10px;
-  color:#9f1239;
+font-size:clamp(1.9rem,4vw,2.7rem);
+margin-bottom:10px;
+color:#9f1239;
 }
 
 .header p{
-  color:#881337;
-  opacity:0.9;
+color:#881337;
+opacity:0.9;
+line-height:1.5;
 }
 
 .top-link{
-  display:inline-block;
-  margin-top:12px;
-  color:#be123c;
-  text-decoration:none;
-  font-weight:bold;
+display:inline-block;
+margin-top:12px;
+color:#be123c;
+text-decoration:none;
+font-weight:bold;
+}
+
+.top-link:hover{
+text-decoration:underline;
 }
 
 .stats-bar{
-  display:flex;
-  flex-wrap:wrap;
-  gap:12px;
-  justify-content:center;
-  margin-bottom:20px;
+display:flex;
+flex-wrap:wrap;
+gap:12px;
+justify-content:center;
+margin-bottom:20px;
 }
 
 .stat-box{
-  background:#fff;
-  border:1px solid #fecdd3;
-  border-radius:14px;
-  padding:12px 18px;
-  min-width:150px;
-  text-align:center;
+background:#fff;
+border:1px solid #fecdd3;
+border-radius:14px;
+padding:12px 18px;
+min-width:160px;
+text-align:center;
+box-shadow:0 4px 12px rgba(0,0,0,0.05);
 }
 
 .stat-label{
-  display:block;
-  font-size:0.9rem;
-  color:#be123c;
-  margin-bottom:4px;
-  font-weight:bold;
+display:block;
+font-size:0.9rem;
+color:#be123c;
+margin-bottom:4px;
+font-weight:bold;
 }
 
 .stat-value{
-  display:block;
-  font-size:1.15rem;
-  color:#7f1d1d;
-  font-weight:bold;
-}
-
-.question{
-  display:none;
-  background:#fff7f8;
-  border:1px solid #fecdd3;
-  border-radius:20px;
-  padding:20px;
-  margin-bottom:18px;
-}
-
-.question.active{
-  display:block;
-}
-
-.question h3{
-  font-size:1.08rem;
-  line-height:1.6;
-  color:#9f1239;
-  margin-bottom:14px;
-}
-
-.option{
-  display:block;
-  background:#ffe4e6;
-  padding:12px 14px;
-  margin:10px 0;
-  border-radius:12px;
-  cursor:pointer;
-  transition:0.2s;
-}
-
-.option:hover{
-  background:#fecdd3;
-}
-
-.option.selected{
-  background:#f43f5e;
-  color:white;
-}
-
-.option.correct-answer{
-  background:#dcfce7 !important;
-  color:#166534 !important;
-}
-
-.option.wrong-answer{
-  background:#fee2e2 !important;
-  color:#991b1b !important;
-}
-
-.navigation{
-  display:flex;
-  justify-content:center;
-  gap:12px;
-  margin-top:18px;
-}
-
-button{
-  border:none;
-  border-radius:14px;
-  padding:12px 20px;
-  font-size:1rem;
-  font-weight:bold;
-  cursor:pointer;
-}
-
-.prev{
-  background:#fda4af;
-  color:#881337;
-}
-
-.next{
-  background:#fb7185;
-  color:white;
-}
-
-.finish{
-  background:#dc2626;
-  color:white;
-}
-
-.actions{
-  display:flex;
-  justify-content:center;
-  gap:12px;
-  margin-top:25px;
-}
-
-.btn-primary{
-  background:#e11d48;
-  color:white;
-}
-
-.btn-secondary{
-  background:#fecdd3;
-  color:#9f1239;
-}
-
-.result{
-  margin-top:25px;
-  padding:20px;
-  border-radius:18px;
-  background:#fff7f8;
-  border:1px solid #fecdd3;
-  display:none;
+display:block;
+font-size:1.15rem;
+color:#7f1d1d;
+font-weight:bold;
 }
 
 .timer{
-  font-size:1.3rem;
-  color:#be123c;
-  font-weight:bold;
+font-size:1.3rem;
+color:#dc2626;
+font-weight:bold;
+}
+
+.question{
+display:none;
+background:#fff7f8;
+border:1px solid #fecdd3;
+border-radius:20px;
+padding:20px;
+margin-bottom:18px;
+}
+
+.question.active{
+display:block;
+}
+
+.question h3{
+font-size:1.08rem;
+line-height:1.6;
+color:#9f1239;
+margin-bottom:14px;
+}
+
+.option{
+display:block;
+background:#ffe4e6;
+padding:12px 14px;
+margin:10px 0;
+border-radius:12px;
+cursor:pointer;
+border:1px solid transparent;
+transition:0.2s ease;
+color:#881337;
+}
+
+.option:hover{
+background:#fecdd3;
+border-color:#fb7185;
+}
+
+.option.selected{
+background:#f43f5e;
+color:white;
+border-color:#e11d48;
+}
+
+.option.correct-answer{
+background:#dcfce7 !important;
+color:#166534 !important;
+border-color:#86efac !important;
+}
+
+.option.wrong-answer{
+background:#fee2e2 !important;
+color:#991b1b !important;
+border-color:#fca5a5 !important;
+}
+
+.navigation{
+display:flex;
+flex-wrap:wrap;
+gap:12px;
+justify-content:center;
+margin-top:18px;
+}
+
+button{
+border:none;
+border-radius:14px;
+padding:12px 20px;
+font-size:1rem;
+font-weight:bold;
+cursor:pointer;
+transition:0.2s ease;
+}
+
+button:hover{
+transform:translateY(-1px);
+}
+
+.prev{
+background:#fda4af;
+color:#881337;
+}
+
+.next{
+background:#fb7185;
+color:white;
+}
+
+.finish{
+background:#dc2626;
+color:white;
+}
+
+.actions{
+display:flex;
+flex-wrap:wrap;
+gap:12px;
+justify-content:center;
+margin-top:25px;
+}
+
+.btn-primary{
+background:#e11d48;
+color:white;
+}
+
+.btn-secondary{
+background:#fecdd3;
+color:#9f1239;
+}
+
+.result{
+margin-top:25px;
+padding:20px;
+border-radius:18px;
+background:#fff7f8;
+border:1px solid #fecdd3;
+display:none;
+}
+
+.review{
+margin-top:18px;
+text-align:left;
+}
+
+.review-summary{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+gap:12px;
+margin:18px 0 14px;
+}
+
+.summary-box{
+background:#ffffff;
+border:1px solid #fecdd3;
+border-radius:14px;
+padding:14px;
+text-align:center;
+box-shadow:0 4px 12px rgba(0,0,0,0.05);
+}
+
+.summary-box h4{
+margin-bottom:6px;
+font-size:0.95rem;
+color:#be123c;
+}
+
+.summary-box p{
+font-size:1.2rem;
+font-weight:bold;
+color:#7f1d1d;
 }
 
 .review-item{
-  background:white;
-  border-radius:14px;
-  padding:14px;
-  margin-bottom:12px;
+background:#ffffff;
+border-radius:14px;
+padding:14px;
+margin-bottom:12px;
+border-left:6px solid #cbd5e1;
 }
 
 .review-item.correcta{
-  border-left:6px solid #22c55e;
+border-left-color:#22c55e;
+background:#f0fdf4;
 }
 
 .review-item.incorrecta{
-  border-left:6px solid #ef4444;
+border-left-color:#ef4444;
+background:#fef2f2;
 }
 
 .review-item.sin-responder{
-  border-left:6px solid #f59e0b;
+border-left-color:#f59e0b;
+background:#fffbeb;
 }
 
 .explicacion{
-  margin-top:8px;
-  padding:10px;
-  background:#f8fafc;
-  border-radius:10px;
+margin-top:8px;
+padding:10px;
+background:#f8fafc;
+border-radius:10px;
 }
+
+/* PANEL RANKING */
+
+.ranking-panel{
+position:fixed;
+left:0;
+top:0;
+width:320px;
+height:100vh;
+background:white;
+color:#111827;
+box-shadow:4px 0 20px rgba(0,0,0,0.12);
+padding:20px;
+overflow-y:auto;
+z-index:999;
+transition:transform 0.3s ease;
+}
+
+.ranking-panel.hidden{
+transform:translateX(-100%);
+}
+
+.toggle-ranking{
+position:fixed;
+left:15px;
+top:15px;
+z-index:1000;
+background:#e11d48;
+color:white;
+border:none;
+padding:10px 15px;
+border-radius:12px;
+cursor:pointer;
+font-weight:bold;
+}
+
+.ranking-content{
+margin-top:60px;
+}
+
+@media(max-width:768px){
+
+.ranking-panel{
+width:260px;
+}
+
+.container{
+padding:18px;
+}
+
+}
+
 </style>
 </head>
 
@@ -230,26 +339,49 @@ button{
 <div class="container">
 
 <div class="header">
+
 <h1>📖 Examen Verbal 10</h1>
-<p>Repaso general de los exámenes anteriores</p>
-<a class="top-link" href="../verbal.html">← Volver a Verbal</a>
+
+<p>
+Repaso general de los exámenes anteriores
+</p>
+
+<a class="top-link" href="../verbal.html">
+← Volver a Verbal
+</a>
+
 </div>
 
 <div class="stats-bar">
 
 <div class="stat-box">
-<span class="stat-label">Pregunta actual</span>
-<span class="stat-value"><span id="qNum">1</span> / 50</span>
+<span class="stat-label">
+Pregunta actual
+</span>
+
+<span class="stat-value">
+<span id="qNum">1</span> / 50
+</span>
 </div>
 
 <div class="stat-box">
-<span class="stat-label">Progreso</span>
-<span class="stat-value" id="progress">0 / 50</span>
+<span class="stat-label">
+Progreso
+</span>
+
+<span class="stat-value" id="progress">
+0 / 50
+</span>
 </div>
 
 <div class="stat-box">
-<span class="stat-label">Tiempo restante</span>
-<span class="stat-value timer" id="timer">20:00</span>
+<span class="stat-label">
+Tiempo restante
+</span>
+
+<span class="stat-value timer" id="timer">
+20:00
+</span>
 </div>
 
 </div>
@@ -257,14 +389,29 @@ button{
 <div id="quiz"></div>
 
 <div class="actions">
-<button class="btn-primary" onclick="finishQuiz()">Finalizar examen</button>
-<button class="btn-secondary" onclick="reiniciarExamen()">Reiniciar</button>
+
+<button class="btn-primary"
+onclick="finishQuiz()">
+Finalizar examen
+</button>
+
+<button class="btn-secondary"
+onclick="reiniciarExamen()">
+Reiniciar
+</button>
+
 </div>
 
 <div class="result" id="resultado">
-<h2>Resultado</h2>
+
+<h2>
+Resultado Final
+</h2>
+
 <p id="puntajeTexto"></p>
-<div id="revision"></div>
+
+<div class="review" id="revision"></div>
+
 </div>
 
 </div>
@@ -331,15 +478,26 @@ const questions = [
 ];
 
 let current = 0;
-let answers = new Array(questions.length).fill(null);
+
+let answers =
+new Array(questions.length).fill(null);
+
 let examenFinalizado = false;
 
-const quiz = document.getElementById("quiz");
+const quiz =
+document.getElementById("quiz");
 
 function actualizarProgreso(){
-const respondidas = answers.filter(a => a !== null).length;
-document.getElementById("progress").textContent = `${respondidas} / ${questions.length}`;
-document.getElementById("qNum").textContent = current + 1;
+
+const respondidas =
+answers.filter(a => a !== null).length;
+
+document.getElementById("progress").textContent =
+`${respondidas} / ${questions.length}`;
+
+document.getElementById("qNum").textContent =
+current + 1;
+
 }
 
 function render(){
@@ -349,7 +507,9 @@ quiz.innerHTML = "";
 questions.forEach((q,i)=>{
 
 let div = document.createElement("div");
-div.className = "question" + (i===current ? " active" : "");
+
+div.className =
+"question" + (i===current ? " active" : "");
 
 let opts = "";
 
@@ -357,39 +517,65 @@ q.o.forEach((op,j)=>{
 
 let extraClass = "";
 
-if(answers[i] === j) extraClass += " selected";
+if(answers[i] === j)
+extraClass += " selected";
 
 if(examenFinalizado){
 
-if(j === q.a) extraClass += " correct-answer";
+if(j === q.a)
+extraClass += " correct-answer";
 
 if(answers[i] === j && j !== q.a){
+
 extraClass += " wrong-answer";
-}
 
 }
 
-opts += `<div class="option${extraClass}" onclick="selectOption(${i},${j})">${String.fromCharCode(65+j)}. ${op}</div>`;
+}
+
+opts += `
+
+<div class="option${extraClass}"
+onclick="selectOption(${i},${j})">
+
+${String.fromCharCode(65+j)}. ${op}
+
+</div>
+
+`;
 
 });
 
 div.innerHTML = `
+
 <h3>${q.q}</h3>
 
 ${opts}
 
 <div class="navigation">
 
-<button class="prev" onclick="prevQuestion()" ${i===0 ? "disabled" : ""}>
+<button class="prev"
+onclick="prevQuestion()"
+${i===0 ? "disabled" : ""}>
 Anterior
 </button>
 
 ${i===questions.length-1
-? `<button class="finish" onclick="finishQuiz()">Finalizar</button>`
-: `<button class="next" onclick="nextQuestion()">Siguiente</button>`
+
+? `<button class="finish"
+onclick="finishQuiz()">
+Finalizar
+</button>`
+
+: `<button class="next"
+onclick="nextQuestion()">
+Siguiente
+</button>`
+
 }
 
 </div>
+
 `;
 
 quiz.appendChild(div);
@@ -418,6 +604,11 @@ current++;
 
 render();
 
+window.scrollTo({
+top:0,
+behavior:"smooth"
+});
+
 }
 
 }
@@ -443,24 +634,316 @@ examenFinalizado = true;
 clearInterval(timerInterval);
 
 let total = questions.length;
+
 let correctas = 0;
+let incorrectas = 0;
+let sinResponder = 0;
+
+let revisionHTML = "";
 
 questions.forEach((q,i)=>{
-if(answers[i] === q.a){
+
+const respuestaUsuario = answers[i];
+
+if(respuestaUsuario === q.a){
+
 correctas++;
+
 }
+else if(respuestaUsuario === null){
+
+sinResponder++;
+
+}
+else{
+
+incorrectas++;
+
+}
+
 });
 
-const porcentaje = ((correctas/total)*100).toFixed(1);
+const porcentaje =
+Math.round((correctas/total)*100);
 
-document.getElementById("puntajeTexto").innerHTML = `
-Obtuviste <strong>${correctas}</strong> de <strong>${total}</strong> correctas.<br>
-Nota final: <strong>${porcentaje}%</strong>
+const bots=[];
+
+for(let i=1;i<=30;i++){
+
+bots.push({
+
+nombre:`Bot_${i}`,
+
+nota:Math.floor(Math.random()*71)+30
+
+});
+
+}
+
+const ranking=[
+
+...bots,
+
+{
+nombre:"Tú",
+nota:porcentaje,
+usuario:true
+}
+
+];
+
+ranking.sort((a,b)=>b.nota-a.nota);
+
+let debajo=ranking.filter(
+p=>porcentaje>p.nota
+).length;
+
+let iguales=ranking.filter(
+p=>porcentaje===p.nota
+).length;
+
+let percentil=Math.round(
+(
+debajo+(0.5*iguales)
+)
+/ranking.length
+*100
+);
+
+if(percentil<1){
+percentil=1;
+}
+
+if(percentil>99){
+percentil=99;
+}
+
+let nivel="Muy bajo";
+
+if(percentil>=90){
+nivel="Excelente";
+}
+else if(percentil>=75){
+nivel="Muy bueno";
+}
+else if(percentil>=60){
+nivel="Bueno";
+}
+else if(percentil>=40){
+nivel="Promedio";
+}
+else if(percentil>=20){
+nivel="Bajo";
+}
+
+questions.forEach((q,i)=>{
+
+const respuestaUsuario = answers[i];
+
+const numero = i + 1;
+
+if(respuestaUsuario === q.a){
+
+revisionHTML += `
+
+<div class="review-item correcta">
+
+<h4>
+Pregunta ${numero}: ✅ Correcta
+</h4>
+
+<div class="explicacion">
+
+${q.exp}
+
+</div>
+
+</div>
+
 `;
 
-document.getElementById("resultado").style.display = "block";
+}
+else if(respuestaUsuario === null){
+
+revisionHTML += `
+
+<div class="review-item sin-responder">
+
+<h4>
+Pregunta ${numero}: ⚠️ Sin responder
+</h4>
+
+<div class="explicacion">
+
+Respuesta correcta:
+${q.o[q.a]}
+
+</div>
+
+</div>
+
+`;
+
+}
+else{
+
+revisionHTML += `
+
+<div class="review-item incorrecta">
+
+<h4>
+Pregunta ${numero}: ❌ Incorrecta
+</h4>
+
+<div class="explicacion">
+
+Correcta:
+${q.o[q.a]}
+
+<br><br>
+
+${q.exp}
+
+</div>
+
+</div>
+
+`;
+
+}
+
+});
+
+document.getElementById("puntajeTexto")
+.innerHTML = `
+
+<button class="toggle-ranking" onclick="toggleRanking()">
+☰ Ranking
+</button>
+
+<div id="rankingPanel" class="ranking-panel">
+
+<div class="ranking-content">
+
+<h3 style="margin-bottom:15px;">
+🏆 Ranking General
+</h3>
+
+${ranking.map((p,i)=>`
+
+<div style="
+display:flex;
+justify-content:space-between;
+padding:10px;
+margin:6px 0;
+background:${p.usuario ? "#ffe4e6" : "white"};
+border-radius:10px;
+">
+
+<span>
+#${i+1} - ${p.nombre}
+</span>
+
+<span>
+${p.nota}%
+</span>
+
+</div>
+
+`).join("")}
+
+</div>
+
+</div>
+
+<div style="
+background:white;
+padding:20px;
+border-radius:15px;
+margin-bottom:20px;
+">
+
+<h2>
+${correctas}/${total}
+</h2>
+
+<p style="
+font-size:26px;
+font-weight:bold;
+margin-top:10px;
+color:#e11d48;
+">
+
+${porcentaje}%
+
+</p>
+
+<div class="review-summary">
+
+<div class="summary-box">
+<h4>Correctas</h4>
+<p>${correctas}</p>
+</div>
+
+<div class="summary-box">
+<h4>Incorrectas</h4>
+<p>${incorrectas}</p>
+</div>
+
+<div class="summary-box">
+<h4>Sin responder</h4>
+<p>${sinResponder}</p>
+</div>
+
+<div class="summary-box">
+<h4>Percentil</h4>
+<p>${percentil}%</p>
+</div>
+
+<div class="summary-box">
+<h4>Nivel</h4>
+<p>${nivel}</p>
+</div>
+
+</div>
+
+</div>
+
+`;
+
+document.getElementById("revision")
+.innerHTML = revisionHTML;
+
+document.getElementById("resultado")
+.style.display = "block";
+
+document.getElementById("resultado")
+.scrollIntoView({
+behavior:"smooth"
+});
 
 render();
+
+if(window.enviarResultadoFinal){
+
+window.enviarResultadoFinal({
+
+correctas,
+incorrectas,
+sinResponder,
+total,
+porcentaje
+
+});
+
+}
+
+}
+
+function toggleRanking(){
+
+document.getElementById("rankingPanel")
+.classList.toggle("hidden");
 
 }
 
@@ -474,18 +957,24 @@ render();
 
 let tiempo = 20 * 60;
 
-const timer = document.getElementById("timer");
+const timer =
+document.getElementById("timer");
 
-const timerInterval = setInterval(()=>{
+const timerInterval =
+setInterval(()=>{
 
-let minutos = Math.floor(tiempo / 60);
-let segundos = tiempo % 60;
+let minutos =
+Math.floor(tiempo / 60);
+
+let segundos =
+tiempo % 60;
 
 if(segundos < 10){
 segundos = "0" + segundos;
 }
 
-timer.textContent = `${minutos}:${segundos}`;
+timer.textContent =
+`${minutos}:${segundos}`;
 
 tiempo--;
 
