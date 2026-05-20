@@ -6,384 +6,882 @@
 <title>Factor N</title>
 
 <style>
+
+*{
+box-sizing:border-box;
+margin:0;
+padding:0;
+}
+
 body{
-  font-family: Arial, sans-serif;
-  background: linear-gradient(135deg,#0f2027,#2c5364);
-  color:#fff;
-  padding:20px;
+font-family:Arial, sans-serif;
+background:linear-gradient(135deg,#0f2027,#2c5364);
+color:#fff;
+padding:20px;
+min-height:100vh;
 }
 
 .container{
-  max-width:850px;
-  margin:auto;
-  background:rgba(255,255,255,0.08);
-  padding:25px;
-  border-radius:20px;
+max-width:900px;
+margin:auto;
+background:rgba(255,255,255,0.08);
+padding:25px;
+border-radius:20px;
+backdrop-filter:blur(10px);
 }
 
-h1,p{text-align:center;}
+h1,p{
+text-align:center;
+}
 
 .config{
-  display:flex;
-  flex-wrap:wrap;
-  gap:15px;
-  justify-content:center;
-  margin:20px 0;
+display:flex;
+flex-wrap:wrap;
+gap:15px;
+justify-content:center;
+margin:20px 0;
 }
 
 .config-item{
-  display:flex;
-  flex-direction:column;
-  gap:8px;
-  min-width:180px;
+display:flex;
+flex-direction:column;
+gap:8px;
+min-width:180px;
 }
 
 label{
-  font-weight:bold;
+font-weight:bold;
 }
 
-select, input, button{
-  padding:10px;
-  border-radius:10px;
-  border:none;
-  font-size:1rem;
+select,
+input,
+button{
+padding:10px;
+border-radius:10px;
+border:none;
+font-size:1rem;
 }
 
 .start-btn{
-  background:#ffd54f;
-  font-weight:bold;
-  cursor:pointer;
+background:#ffd54f;
+font-weight:bold;
+cursor:pointer;
 }
 
 .topbar{
-  display:none;
-  justify-content:space-between;
-  gap:10px;
-  flex-wrap:wrap;
-  margin-bottom:20px;
-  background:rgba(255,255,255,.1);
-  padding:14px;
-  border-radius:14px;
-  font-weight:bold;
+display:none;
+justify-content:space-between;
+gap:10px;
+flex-wrap:wrap;
+margin-bottom:20px;
+background:rgba(255,255,255,.1);
+padding:14px;
+border-radius:14px;
+font-weight:bold;
 }
 
 .sum{
-  text-align:center;
-  font-size:1.7rem;
-  margin:20px 0;
-  line-height:1.8;
+text-align:center;
+font-size:1.8rem;
+margin:20px 0;
+line-height:1.8;
 }
 
 .line{
-  border-top:3px solid #fff;
-  width:120px;
-  margin:10px auto;
+border-top:3px solid #fff;
+width:120px;
+margin:10px auto;
 }
 
 .buttons{
-  display:flex;
-  justify-content:center;
-  gap:20px;
-  flex-wrap:wrap;
+display:flex;
+justify-content:center;
+gap:20px;
+flex-wrap:wrap;
+margin-top:20px;
 }
 
 .answer-btn{
-  padding:12px 20px;
-  border:none;
-  border-radius:12px;
-  font-weight:bold;
-  cursor:pointer;
-  font-size:1rem;
+padding:14px 22px;
+border:none;
+border-radius:12px;
+font-weight:bold;
+cursor:pointer;
+font-size:1rem;
+transition:0.2s;
 }
 
-.true{background:#4caf50;color:white;}
-.false{background:#f44336;color:white;}
+.answer-btn:hover{
+transform:scale(1.05);
+}
+
+.true{
+background:#4caf50;
+color:white;
+}
+
+.false{
+background:#f44336;
+color:white;
+}
 
 .result{
-  display:none;
-  text-align:center;
-  margin-top:20px;
-  background:rgba(255,255,255,.1);
-  padding:25px;
-  border-radius:16px;
+display:none;
+margin-top:20px;
+background:rgba(255,255,255,.1);
+padding:25px;
+border-radius:18px;
 }
 
-.result button{
-  margin-top:12px;
-  background:#90caf9;
-  color:#102030;
-  font-weight:bold;
-  cursor:pointer;
+.review-item{
+background:rgba(255,255,255,.08);
+padding:15px;
+margin:12px 0;
+border-left:5px solid gray;
+border-radius:12px;
+}
+
+.correcta{
+border-left-color:#4caf50;
+}
+
+.incorrecta{
+border-left-color:#f44336;
 }
 
 #status{
-  text-align:center;
-  margin-bottom:10px;
-  font-weight:bold;
+text-align:center;
+margin-bottom:10px;
+font-weight:bold;
 }
 
 .hint{
-  text-align:center;
-  opacity:.85;
-  font-size:.95rem;
-  margin-top:-5px;
-  margin-bottom:10px;
+text-align:center;
+opacity:.85;
+font-size:.95rem;
+margin-top:-5px;
+margin-bottom:10px;
+}
+
+.stat-box{
+background:rgba(255,255,255,.1);
+padding:12px;
+border-radius:12px;
+min-width:150px;
+text-align:center;
+}
+
+/* PANEL RANKING */
+
+.ranking-panel{
+position:fixed;
+left:0;
+top:0;
+width:320px;
+height:100vh;
+background:white;
+color:#102030;
+box-shadow:4px 0 20px rgba(0,0,0,0.2);
+padding:20px;
+overflow-y:auto;
+z-index:999;
+transition:transform 0.3s ease;
+}
+
+.ranking-panel.hidden{
+transform:translateX(-100%);
+}
+
+.toggle-ranking{
+position:fixed;
+left:15px;
+top:15px;
+z-index:1000;
+background:#ffd54f;
+color:#102030;
+border:none;
+padding:10px 15px;
+border-radius:12px;
+cursor:pointer;
+font-weight:bold;
+}
+
+.ranking-content{
+margin-top:60px;
 }
 
 @media(max-width:700px){
-  .sum{font-size:1.4rem;}
-  .buttons{flex-direction:column;}
-  .answer-btn{width:100%;}
-  .config{flex-direction:column;}
+
+.sum{
+font-size:1.4rem;
 }
+
+.buttons{
+flex-direction:column;
+}
+
+.answer-btn{
+width:100%;
+}
+
+.config{
+flex-direction:column;
+}
+
+.ranking-panel{
+width:260px;
+}
+
+}
+
 </style>
 </head>
 
 <body>
 
 <div class="container">
-  <h1>Factor N</h1>
-  <p>Verdadero o falso</p>
 
-  <div id="status">Cargando banco...</div>
+<h1>🧠 Factor N</h1>
+<p>Verdadero o falso</p>
 
-  <div class="config" id="config" style="display:none;">
-    <div class="config-item">
-      <label for="count">Cantidad de preguntas</label>
-      <select id="count">
-        <option value="5">5</option>
-        <option value="10" selected>10</option>
-        <option value="15">15</option>
-        <option value="20">20</option>
-        <option value="30">30</option>
-        <option value="40">40</option>
-        <option value="50">50</option>
-        <option value="60">60</option>
-        <option value="70">70</option>
-        <option value="80">80</option>
-        <option value="90">90</option>
-      </select>
-    </div>
+<div id="status">
+Cargando banco...
+</div>
 
-    <div class="config-item">
-      <label for="timeMinutes">Tiempo en minutos</label>
-      <input id="timeMinutes" type="number" min="0" step="1" value="5" placeholder="Ej. 5">
-    </div>
+<div class="config" id="config" style="display:none;">
 
-    <div class="config-item">
-      <label>&nbsp;</label>
-      <button class="start-btn" onclick="start()">Empezar</button>
-    </div>
-  </div>
+<div class="config-item">
 
-  <div class="hint" id="hintText" style="display:none;">
-    Escribe 0 en tiempo si quieres jugar sin límite.
-  </div>
+<label for="count">
+Cantidad de preguntas
+</label>
 
-  <div class="topbar" id="topbar">
-    <div id="progress"></div>
-    <div id="scoreLive"></div>
-    <div id="timer"></div>
-  </div>
+<select id="count">
+<option value="5">5</option>
+<option value="10" selected>10</option>
+<option value="15">15</option>
+<option value="20">20</option>
+<option value="30">30</option>
+<option value="40">40</option>
+<option value="50">50</option>
+<option value="60">60</option>
+<option value="70">70</option>
+<option value="80">80</option>
+<option value="90">90</option>
+</select>
 
-  <div id="quiz"></div>
+</div>
 
-  <div class="result" id="result">
-    <h2 id="score"></h2>
-    <p id="finalMessage"></p>
-    <button onclick="location.reload()">Reiniciar</button>
-  </div>
+<div class="config-item">
+
+<label for="timeMinutes">
+Tiempo en minutos
+</label>
+
+<input
+id="timeMinutes"
+type="number"
+min="0"
+step="1"
+value="5"
+placeholder="Ej. 5"
+>
+
+</div>
+
+<div class="config-item">
+
+<label>&nbsp;</label>
+
+<button class="start-btn" onclick="start()">
+Empezar
+</button>
+
+</div>
+
+</div>
+
+<div class="hint" id="hintText" style="display:none;">
+Escribe 0 en tiempo si quieres jugar sin límite.
+</div>
+
+<div class="topbar" id="topbar">
+
+<div class="stat-box" id="progress"></div>
+
+<div class="stat-box" id="scoreLive"></div>
+
+<div class="stat-box" id="timer"></div>
+
+</div>
+
+<div id="quiz"></div>
+
+<div class="result" id="result">
+
+<h2 id="score"></h2>
+
+<div id="statsResult"></div>
+
+<div id="review"></div>
+
+<p id="finalMessage" style="margin-top:15px;"></p>
+
+<button
+onclick="location.reload()"
+style="
+margin-top:15px;
+background:#90caf9;
+color:#102030;
+font-weight:bold;
+cursor:pointer;
+">
+Reiniciar
+</button>
+
+</div>
+
 </div>
 
 <script>
+
 let allQuestions = [];
 let questions = [];
 let current = 0;
 let score = 0;
 let timerInterval = null;
 let timeLeft = 0;
+let done = false;
+
+let userAnswers = [];
 
 async function load(){
-  try{
-    const res = await fetch("../banco/mate.json");
 
-    if(!res.ok){
-      throw new Error("No se pudo leer el archivo JSON");
-    }
+try{
 
-    const data = await res.json();
+const res = await fetch("../banco/mate.json");
 
-    if(!Array.isArray(data)){
-      throw new Error("El JSON no tiene formato de arreglo");
-    }
+if(!res.ok){
 
-    allQuestions = data.filter(q =>
-      q &&
-      Array.isArray(q.nums) &&
-      q.nums.length === 4 &&
-      typeof q.result === "number" &&
-      typeof q.isCorrect === "boolean"
-    );
+throw new Error("No se pudo leer el archivo JSON");
 
-    if(allQuestions.length === 0){
-      throw new Error("No hay preguntas válidas en el banco");
-    }
+}
 
-    document.getElementById("status").innerText =
-      "Banco cargado: " + allQuestions.length + " preguntas";
+const data = await res.json();
 
-    document.getElementById("config").style.display = "flex";
-    document.getElementById("hintText").style.display = "block";
+if(!Array.isArray(data)){
 
-    ajustarSelectorPreguntas();
-  }catch(e){
-    document.getElementById("status").innerText = "Error cargando ../banco/mate.json";
-    console.error(e);
-  }
+throw new Error("El JSON no tiene formato de arreglo");
+
+}
+
+allQuestions = data.filter(q =>
+
+q &&
+Array.isArray(q.nums) &&
+q.nums.length === 4 &&
+typeof q.result === "number" &&
+typeof q.isCorrect === "boolean"
+
+);
+
+if(allQuestions.length === 0){
+
+throw new Error("No hay preguntas válidas");
+
+}
+
+document.getElementById("status").innerText =
+"Banco cargado: " + allQuestions.length + " preguntas";
+
+document.getElementById("config").style.display = "flex";
+
+document.getElementById("hintText").style.display = "block";
+
+ajustarSelectorPreguntas();
+
+}catch(e){
+
+document.getElementById("status").innerText =
+"Error cargando ../banco/mate.json";
+
+console.error(e);
+
+}
+
 }
 
 function ajustarSelectorPreguntas(){
-  const select = document.getElementById("count");
-  const maxDisponibles = allQuestions.length;
 
-  Array.from(select.options).forEach(option => {
-    const value = parseInt(option.value, 10);
-    option.disabled = value > maxDisponibles;
-  });
+const select = document.getElementById("count");
 
-  if(parseInt(select.value, 10) > maxDisponibles){
-    select.value = String(maxDisponibles);
-  }
+const maxDisponibles = allQuestions.length;
+
+Array.from(select.options).forEach(option => {
+
+const value = parseInt(option.value, 10);
+
+option.disabled = value > maxDisponibles;
+
+});
+
+if(parseInt(select.value, 10) > maxDisponibles){
+
+select.value = String(maxDisponibles);
+
+}
+
 }
 
 function shuffle(arr){
-  const copy = [...arr];
-  for(let i = copy.length - 1; i > 0; i--){
-    const j = Math.floor(Math.random() * (i + 1));
-    [copy[i], copy[j]] = [copy[j], copy[i]];
-  }
-  return copy;
+
+const copy = [...arr];
+
+for(let i = copy.length - 1; i > 0; i--){
+
+const j = Math.floor(Math.random() * (i + 1));
+
+[copy[i], copy[j]] = [copy[j], copy[i]];
+
+}
+
+return copy;
+
 }
 
 function formatTime(totalSeconds){
-  const m = Math.floor(totalSeconds / 60);
-  const s = totalSeconds % 60;
-  return m + ":" + String(s).padStart(2,"0");
+
+const m = Math.floor(totalSeconds / 60);
+
+const s = totalSeconds % 60;
+
+return m + ":" + String(s).padStart(2,"0");
+
 }
 
 function start(){
-  const requestedCount = parseInt(document.getElementById("count").value, 10);
-  const minutesInput = parseInt(document.getElementById("timeMinutes").value, 10);
 
-  const safeCount = Math.min(
-    isNaN(requestedCount) ? 10 : requestedCount,
-    allQuestions.length
-  );
+const requestedCount =
+parseInt(document.getElementById("count").value, 10);
 
-  const safeMinutes = isNaN(minutesInput) || minutesInput < 0 ? 0 : minutesInput;
-  timeLeft = safeMinutes * 60;
+const minutesInput =
+parseInt(document.getElementById("timeMinutes").value, 10);
 
-  questions = shuffle(allQuestions).slice(0, safeCount);
-  current = 0;
-  score = 0;
+const safeCount = Math.min(
 
-  document.getElementById("config").style.display = "none";
-  document.getElementById("hintText").style.display = "none";
-  document.getElementById("status").style.display = "none";
-  document.getElementById("result").style.display = "none";
-  document.getElementById("topbar").style.display = "flex";
+isNaN(requestedCount) ? 10 : requestedCount,
 
-  document.getElementById("scoreLive").innerText = "Puntaje: 0";
+allQuestions.length
 
-  if(timerInterval){
-    clearInterval(timerInterval);
-    timerInterval = null;
-  }
+);
 
-  if(timeLeft > 0){
-    updateTimer();
-    timerInterval = setInterval(() => {
-      timeLeft--;
-      updateTimer();
+const safeMinutes =
+isNaN(minutesInput) || minutesInput < 0 ? 0 : minutesInput;
 
-      if(timeLeft <= 0){
-        finish(true);
-      }
-    }, 1000);
-  }else{
-    document.getElementById("timer").innerText = "Sin tiempo";
-  }
+timeLeft = safeMinutes * 60;
 
-  render();
+questions = shuffle(allQuestions).slice(0, safeCount);
+
+current = 0;
+score = 0;
+done = false;
+
+userAnswers = [];
+
+document.getElementById("config").style.display = "none";
+document.getElementById("hintText").style.display = "none";
+document.getElementById("status").style.display = "none";
+document.getElementById("result").style.display = "none";
+document.getElementById("topbar").style.display = "flex";
+
+document.getElementById("scoreLive").innerText =
+"Puntaje: 0";
+
+if(timerInterval){
+
+clearInterval(timerInterval);
+
+timerInterval = null;
+
+}
+
+if(timeLeft > 0){
+
+updateTimer();
+
+timerInterval = setInterval(() => {
+
+timeLeft--;
+
+updateTimer();
+
+if(timeLeft <= 0){
+
+finish(true);
+
+}
+
+}, 1000);
+
+}else{
+
+document.getElementById("timer").innerText =
+"Sin tiempo";
+
+}
+
+render();
+
 }
 
 function updateTimer(){
-  document.getElementById("timer").innerText = formatTime(timeLeft);
+
+document.getElementById("timer").innerText =
+formatTime(timeLeft);
+
 }
 
 function render(){
-  if(current >= questions.length){
-    finish(false);
-    return;
-  }
 
-  const q = questions[current];
-  const quiz = document.getElementById("quiz");
+if(current >= questions.length){
 
-  document.getElementById("progress").innerText =
-    "Pregunta " + (current + 1) + " / " + questions.length;
+finish(false);
 
-  document.getElementById("scoreLive").innerText =
-    "Puntaje: " + score;
+return;
 
-  let html = `<div class="sum">`;
+}
 
-  q.nums.forEach(n => {
-    html += n + "<br>";
-  });
+const q = questions[current];
 
-  html += `<div class="line"></div>${q.result}</div>`;
+const quiz = document.getElementById("quiz");
 
-  html += `
-    <div class="buttons">
-      <button class="answer-btn true" onclick="answer(true)">✔ Verdadero</button>
-      <button class="answer-btn false" onclick="answer(false)">❌ Falso</button>
-    </div>
-  `;
+document.getElementById("progress").innerText =
+"Pregunta " + (current + 1) + " / " + questions.length;
 
-  quiz.innerHTML = html;
+document.getElementById("scoreLive").innerText =
+"Puntaje: " + score;
+
+let html = `<div class="sum">`;
+
+q.nums.forEach(n => {
+
+html += n + "<br>";
+
+});
+
+html += `<div class="line"></div>${q.result}</div>`;
+
+html += `
+
+<div class="buttons">
+
+<button
+class="answer-btn true"
+onclick="answer(true)"
+>
+✔ Verdadero
+</button>
+
+<button
+class="answer-btn false"
+onclick="answer(false)"
+>
+❌ Falso
+</button>
+
+</div>
+
+`;
+
+quiz.innerHTML = html;
+
 }
 
 function answer(user){
-  const q = questions[current];
 
-  if(user === q.isCorrect){
-    score++;
-  }
+const q = questions[current];
 
-  current++;
-  render();
+userAnswers.push(user);
+
+if(user === q.isCorrect){
+
+score++;
+
+}
+
+current++;
+
+render();
+
 }
 
 function finish(timeUp){
-  if(timerInterval){
-    clearInterval(timerInterval);
-    timerInterval = null;
-  }
 
-  document.getElementById("quiz").innerHTML = "";
-  document.getElementById("topbar").style.display = "none";
-  document.getElementById("result").style.display = "block";
-  document.getElementById("score").innerText =
-    "Puntaje: " + score + " / " + questions.length;
+if(done)return;
 
-  document.getElementById("finalMessage").innerText =
-    timeUp ? "Se acabó el tiempo." : "Examen finalizado.";
+done = true;
+
+if(timerInterval){
+
+clearInterval(timerInterval);
+
+timerInterval = null;
+
+}
+
+document.getElementById("quiz").innerHTML = "";
+
+document.getElementById("topbar").style.display = "none";
+
+document.getElementById("result").style.display = "block";
+
+let porcentaje = Math.round(
+(score / questions.length) * 100
+);
+
+const bots = [];
+
+for(let i=1;i<=30;i++){
+
+bots.push({
+
+nombre:`Bot_${i}`,
+
+nota:Math.floor(Math.random()*71)+30
+
+});
+
+}
+
+const ranking = [
+
+...bots,
+
+{
+nombre:"Tú",
+nota:porcentaje,
+usuario:true
+}
+
+];
+
+ranking.sort((a,b)=>b.nota-a.nota);
+
+let debajo = ranking.filter(
+p=>porcentaje>p.nota
+).length;
+
+let iguales = ranking.filter(
+p=>porcentaje===p.nota
+).length;
+
+let percentil = Math.round(
+(
+debajo + (0.5 * iguales)
+)
+/ranking.length
+*100
+);
+
+if(percentil<1) percentil=1;
+if(percentil>99) percentil=99;
+
+let nivel="Muy bajo";
+
+if(percentil>=90){
+nivel="Excelente";
+}
+else if(percentil>=75){
+nivel="Muy bueno";
+}
+else if(percentil>=60){
+nivel="Bueno";
+}
+else if(percentil>=40){
+nivel="Promedio";
+}
+else if(percentil>=20){
+nivel="Bajo";
+}
+
+document.getElementById("score").innerHTML =
+
+`
+
+<button class="toggle-ranking" onclick="toggleRanking()">
+☰ Ranking
+</button>
+
+<div id="rankingPanel" class="ranking-panel">
+
+<div class="ranking-content">
+
+<h3 style="margin-bottom:15px;">
+🏆 Ranking General
+</h3>
+
+${ranking.map((p,i)=>`
+
+<div style="
+display:flex;
+justify-content:space-between;
+padding:10px;
+margin:6px 0;
+background:${p.usuario ? "#fde68a" : "white"};
+border-radius:10px;
+">
+
+<span>
+#${i+1} - ${p.nombre}
+</span>
+
+<span>
+${p.nota}%
+</span>
+
+</div>
+
+`).join("")}
+
+</div>
+
+</div>
+
+<div style="
+background:rgba(255,255,255,.1);
+padding:20px;
+border-radius:15px;
+margin-bottom:20px;
+">
+
+<h2>
+${score}/${questions.length}
+</h2>
+
+<p style="
+font-size:28px;
+font-weight:bold;
+margin-top:10px;
+color:#ffd54f;
+">
+${porcentaje}%
+</p>
+
+<div style="
+display:flex;
+flex-direction:column;
+gap:12px;
+margin-top:20px;
+max-width:250px;
+">
+
+<div class="stat-box">
+<span>Percentil</span><br>
+<b>${percentil}%</b>
+</div>
+
+<div class="stat-box">
+<span>Nivel</span><br>
+<b>${nivel}</b>
+</div>
+
+</div>
+
+</div>
+
+`;
+
+let reviewHTML = "";
+
+questions.forEach((q,i)=>{
+
+const user = userAnswers[i];
+
+const correcta = q.isCorrect;
+
+const estado =
+user === correcta
+? "correcta"
+: "incorrecta";
+
+reviewHTML += `
+
+<div class="review-item ${estado}">
+
+<h3>
+Pregunta ${i+1}
+</h3>
+
+<p style="margin-top:8px;">
+
+<b>Operación:</b><br>
+
+${q.nums.join("<br>")}
+
+<br><br>
+
+Resultado:
+<b>${q.result}</b>
+
+</p>
+
+<br>
+
+<p>
+<b>Tu respuesta:</b>
+${user ? "Verdadero" : "Falso"}
+</p>
+
+<p style="margin-top:6px;">
+<b>Correcta:</b>
+${correcta ? "Verdadero" : "Falso"}
+</p>
+
+<div class="explicacion">
+${q.explanation || "Revisa la suma cuidadosamente."}
+</div>
+
+</div>
+
+`;
+
+});
+
+document.getElementById("review").innerHTML =
+reviewHTML;
+
+document.getElementById("finalMessage").innerText =
+timeUp
+? "⏰ Se acabó el tiempo."
+: "✅ Examen finalizado.";
+
+if(window.enviarResultadoFinal){
+
+window.enviarResultadoFinal({
+
+correctas:score,
+total:questions.length,
+porcentaje
+
+});
+
+}
+
+}
+
+function toggleRanking(){
+
+document.getElementById("rankingPanel")
+.classList.toggle("hidden");
+
 }
 
 load();
+
 </script>
+
 <script type="module" src="../party/party-timer.js"></script>
+<script type="module" src="../party/party-resultados.js"></script>
 
 </body>
 </html>
