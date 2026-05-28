@@ -1,0 +1,308 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Habilidad Numérica 10</title>
+
+<style>
+*{
+box-sizing:border-box;
+margin:0;
+padding:0;
+}
+
+body{
+font-family:Arial, Helvetica, sans-serif;
+background:linear-gradient(135deg,#eff6ff,#dbeafe,#bfdbfe);
+color:#1e3a8a;
+min-height:100vh;
+padding:30px 15px;
+}
+
+.container{
+max-width:950px;
+margin:auto;
+background:rgba(255,255,255,0.95);
+padding:25px;
+border-radius:24px;
+box-shadow:0 12px 35px rgba(0,0,0,0.08);
+}
+
+.header{
+text-align:center;
+margin-bottom:20px;
+}
+
+.header h1{
+font-size:2.3rem;
+color:#1d4ed8;
+margin-bottom:10px;
+}
+
+.stats-bar{
+display:flex;
+gap:12px;
+justify-content:center;
+margin-bottom:20px;
+flex-wrap:wrap;
+}
+
+.stat-box{
+background:#fff;
+border:1px solid #93c5fd;
+border-radius:14px;
+padding:12px 18px;
+min-width:150px;
+text-align:center;
+}
+
+.question{
+display:none;
+background:#eff6ff;
+border:1px solid #93c5fd;
+border-radius:20px;
+padding:20px;
+}
+
+.question.active{
+display:block;
+}
+
+.option{
+background:#dbeafe;
+padding:12px;
+margin:10px 0;
+border-radius:12px;
+cursor:pointer;
+transition:0.2s;
+}
+
+.option:hover{
+background:#bfdbfe;
+}
+
+.option.selected{
+background:#2563eb;
+color:white;
+}
+
+.option.correct-answer{
+background:#bbf7d0;
+}
+
+.option.wrong-answer{
+background:#fecaca;
+}
+
+.navigation{
+text-align:center;
+margin-top:15px;
+}
+
+button{
+border:none;
+padding:10px 15px;
+border-radius:10px;
+margin:5px;
+cursor:pointer;
+}
+
+.next{
+background:#2563eb;
+color:white;
+}
+
+.prev{
+background:#93c5fd;
+}
+
+.finish{
+background:#1d4ed8;
+color:white;
+}
+
+.actions{
+text-align:center;
+margin-top:20px;
+}
+
+.result{
+display:none;
+margin-top:20px;
+padding:20px;
+background:#eff6ff;
+border-radius:15px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="header">
+<h1>🧠 Habilidad Numérica 10</h1>
+<p>Examen interactivo</p>
+</div>
+
+<div class="stats-bar">
+<div class="stat-box">
+<span>Pregunta</span><br>
+<b id="qNum">1</b> / 32
+</div>
+
+<div class="stat-box">
+<span>Progreso</span><br>
+<b id="progress">0 / 32</b>
+</div>
+</div>
+
+<div id="quiz"></div>
+
+<div class="actions">
+<button onclick="finish()">Calificar</button>
+<button onclick="location.reload()">Reiniciar</button>
+</div>
+
+<div class="result" id="resultado">
+<h2>Resultado Final</h2>
+<p id="score"></p>
+<div id="review"></div>
+</div>
+
+</div>
+
+<script>
+
+const questions = [
+
+{q:"14 × 3 = 6 × ?",o:["6","7","8","9","42"],a:1,exp:"42 ÷ 6 = 7"},
+{q:"(4 + 8) × 3 = (3 × 3) × ?",o:["2","3","4","6","9"],a:2,exp:"36 = 9 × 4"},
+{q:"100 ÷ 4 = ?²",o:["4","5","10","25","50"],a:1,exp:"100÷4=25 y 5²=25"},
+{q:"? − 12 = 16 + 7 − 13",o:["2","12","22","25","28"],a:2,exp:"16+7−13=10 entonces ?=22"},
+{q:"250 ÷ 5 = 5 × ?",o:["5","10","15","25","50"],a:1,exp:"250÷5=50 y 5×10=50"},
+
+{q:"Serie: 16, 8, 16, 20, 10, 20, 24, 12, ?",o:["4","6","14","24","25"],a:3,exp:"Patrón ÷2 y ×2"},
+{q:"Serie: 2, 3, 6, 7, 14, 15, 30, 31, ?",o:["32","34","38","61","62"],a:4,exp:"×2 luego +1"},
+{q:"Serie: 100, 50, 60, 30, 40, 20, ?",o:["5","7","10","15","30"],a:2,exp:"÷2 luego +10"},
+{q:"Serie: 2, 3, 2, 4, 3, 6, ?",o:["3","4","5","7","8"],a:2,exp:"Se duplican los pares"},
+{q:"Serie: 62, 68, 64, 32, 38, 34, 17, 23, ?",o:["11","17","19","21","29"],a:1,exp:"+6 -4 ÷2"},
+
+{q:"Tabla ejercicio 11",o:["30","45","55","65","90"],a:0,exp:"Respuesta correcta: 30"},
+{q:"Tabla ejercicio 12",o:["10","15","20","25","30"],a:2,exp:"Respuesta correcta: 20"},
+{q:"Tabla ejercicio 13",o:["10","15","25","40","45"],a:1,exp:"Respuesta correcta: 15"},
+{q:"Tabla ejercicio 14",o:["40","65","95","100","105"],a:2,exp:"Respuesta correcta: 95"},
+{q:"Tabla ejercicio 15",o:["4","5","15","30","45"],a:3,exp:"Respuesta correcta: 30"},
+
+{q:"(2 × 9) − 11 = [(9 + ?) ÷ 2] − 1",o:["3","5","7","9","16"],a:2,exp:"?=7"},
+{q:"[(? × 2) − 7] + 4 = (7 × 2) + 11",o:["6","7","9","14","16"],a:1,exp:"?=7"},
+{q:"[{(? × 4) ÷ 3] − 5} × 5 = (13 + 19 − 2) ÷ 2",o:["2","3","6","8","15"],a:2,exp:"?=6"},
+{q:"30 + 25 − 16 = [(? × 2) ÷ 4] − 1",o:["5","20","40","80","160"],a:3,exp:"?=80"},
+{q:"(? − 5)² ÷ 8 = 42 ÷ 21",o:["3","7","9","13","41"],a:2,exp:"?=9"},
+
+{q:"Serie: 1,2,4,3,6,7,14,13,26,27,54,?",o:["35","53","55","56","108"],a:1,exp:"×2 y −1 alternados"},
+{q:"Serie: 48,47,49,46,50,45,51,44,52,43,?",o:["42","50","51","52","53"],a:4,exp:"Sube y baja"},
+{q:"Serie: 3,2,6,4,12,8,24,16,48,32,96,?",o:["64","80","89","92","95"],a:0,exp:"×2 alternado"},
+{q:"Serie: 2,4,6,3,5,10,12,6,8,?",o:["4","5","10","13","16"],a:4,exp:"Patrón numérico"},
+{q:"Serie: 52,50,46,52,60,50,38,52,68,50,?",o:["14","30","48","52","70"],a:0,exp:"Patrón alterno"},
+{q:"Serie: 39,40,38,19,22,18,9,14,8,4,?",o:["2","5","7","10","11"],a:1,exp:"Respuesta correcta: 5"},
+
+{q:"Tabla ejercicio 27",o:["60","65","75","90","95"],a:2,exp:"Respuesta correcta: 75"},
+{q:"Tabla ejercicio 28",o:["10","15","20","30","60"],a:2,exp:"Respuesta correcta: 20"},
+{q:"Tabla ejercicio 29",o:["5","10","15","20","25"],a:0,exp:"Respuesta correcta: 5"},
+{q:"Tabla ejercicio 30",o:["26","265","270","280","1680"],a:2,exp:"Respuesta correcta: 270"},
+{q:"Tabla ejercicio 31",o:["25","35","40","45","50"],a:1,exp:"Respuesta correcta: 35"},
+{q:"Tabla ejercicio 32",o:["0.03","0.1","0.2","0.5","5"],a:1,exp:"Respuesta correcta: 0.1"}
+
+];
+
+let current=0;
+let answers=new Array(questions.length).fill(null);
+let done=false;
+
+function render(){
+const quiz=document.getElementById("quiz");
+quiz.innerHTML="";
+
+questions.forEach((q,i)=>{
+const div=document.createElement("div");
+div.className="question"+(i===current?" active":"");
+
+let opts="";
+
+q.o.forEach((op,j)=>{
+let cls="";
+
+if(answers[i]===j){
+cls+=" selected";
+}
+
+opts+=`<div class="option${cls}" onclick="select(${i},${j})">${op}</div>`;
+});
+
+ div.innerHTML=`
+ <h3>${q.q}</h3>
+ ${opts}
+ <div class="navigation">
+ <button class="prev" onclick="prev()" ${i===0?"disabled":""}>Anterior</button>
+ ${i===questions.length-1
+ ? `<button class="finish" onclick="finish()">Finalizar</button>`
+ : `<button class="next" onclick="next()">Siguiente</button>`}
+ </div>`;
+
+ quiz.appendChild(div);
+});
+
+update();
+}
+
+function select(i,j){
+if(done)return;
+answers[i]=j;
+render();
+}
+
+function next(){
+if(answers[current]===null){
+alert("Responde primero");
+return;
+}
+current++;
+render();
+}
+
+function prev(){
+current--;
+render();
+}
+
+function update(){
+document.getElementById("qNum").textContent=current+1;
+document.getElementById("progress").textContent=answers.filter(a=>a!==null).length+" / "+questions.length;
+}
+
+function finish(){
+done=true;
+let correct=0;
+
+questions.forEach((q,i)=>{
+if(answers[i]===q.a){
+correct++;
+}
+});
+
+let porcentaje=Math.round((correct/questions.length)*100);
+
+document.getElementById("resultado").style.display="block";
+document.getElementById("score").innerHTML=`<h2>${correct}/${questions.length} correctas</h2><h1>${porcentaje}%</h1>`;
+}
+
+render();
+
+</script>
+
+</body>
+</html>
+```
