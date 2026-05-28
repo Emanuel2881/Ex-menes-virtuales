@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -286,17 +285,74 @@ document.getElementById("progress").textContent=answers.filter(a=>a!==null).leng
 function finish(){
 done=true;
 let correct=0;
+let reviewHTML="";
 
 questions.forEach((q,i)=>{
 if(answers[i]===q.a){
 correct++;
 }
+
+let estado="incorrecta";
+
+if(answers[i]===q.a){
+estado="correcta";
+}
+
+reviewHTML += `
+<div style="
+background:white;
+padding:15px;
+margin-top:15px;
+border-radius:15px;
+border-left:6px solid ${answers[i]===q.a ? '#22c55e' : '#ef4444'};
+">
+
+<h3>Pregunta ${i+1}</h3>
+
+<p style="margin-top:10px;">
+${q.q}
+</p>
+
+<p style="margin-top:10px;">
+<b>Tu respuesta:</b>
+${answers[i]!==null ? q.o[answers[i]] : 'Sin responder'}
+</p>
+
+<p style="margin-top:8px;">
+<b>Respuesta correcta:</b>
+${q.o[q.a]}
+</p>
+
+<p style="margin-top:8px;color:#374151;">
+${q.exp}
+</p>
+
+</div>`;
+
 });
 
 let porcentaje=Math.round((correct/questions.length)*100);
 
 document.getElementById("resultado").style.display="block";
-document.getElementById("score").innerHTML=`<h2>${correct}/${questions.length} correctas</h2><h1>${porcentaje}%</h1>`;
+
+document.getElementById("score").innerHTML=`
+<div style="
+background:white;
+padding:20px;
+border-radius:20px;
+margin-bottom:20px;
+text-align:center;
+">
+<h2>${correct}/${questions.length} correctas</h2>
+<h1 style="font-size:50px;color:#2563eb;margin-top:10px;">
+${porcentaje}%
+</h1>
+</div>
+
+${reviewHTML}
+`;
+
+render();
 }
 
 render();
@@ -305,4 +361,3 @@ render();
 
 </body>
 </html>
-```
