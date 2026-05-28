@@ -1,6 +1,3 @@
-# Habilidad Numérica 10
-
-```html
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -137,10 +134,19 @@ padding:20px;
 background:#eff6ff;
 border-radius:15px;
 }
+
+.ranking-panel{position:fixed;left:0;top:0;width:320px;height:100vh;background:white;box-shadow:4px 0 20px rgba(0,0,0,.1);padding:20px;overflow-y:auto;z-index:999;transition:transform .3s ease;}
+.ranking-panel.hidden{transform:translateX(-100%);}
+.toggle-ranking{position:fixed;left:15px;top:15px;z-index:1000;background:#2563eb;color:white;border:none;padding:10px 15px;border-radius:12px;cursor:pointer;font-weight:bold;}
+
 </style>
 </head>
 
 <body>
+
+
+<button class="toggle-ranking" onclick="toggleRanking()">☰ Ranking</button>
+<div id="rankingPanel" class="ranking-panel hidden"><div id="rankingContent">Ranking general</div></div>
 
 <div class="container">
 
@@ -211,13 +217,13 @@ const questions = [
 {q:"Serie: 52,50,46,52,60,50,38,52,68,50,?",o:["14","30","48","52","70"],a:0,exp:"Patrón alterno"},
 {q:"Serie: 39,40,38,19,22,18,9,14,8,4,?",o:["2","5","7","10","11"],a:1,exp:"Respuesta correcta: 5"},
 
-{q:`<div><b>Ejercicio 27</b><br><br><table border="1" style="width:100%;border-collapse:collapse;text-align:center;background:white;"><tr><th></th><th>Libros</th><th>Revistas</th><th>Periódicos</th><th>Total</th></tr><tr><td>Lunes</td><td>20</td><td>15</td><td>X</td><td>60</td></tr><tr><td>Martes</td><td>X</td><td>20</td><td>25</td><td>75</td></tr><tr><td>Miércoles</td><td>30</td><td>X</td><td>15</td><td>70</td></tr><tr><td>Total</td><td>75</td><td>60</td><td>55</td><td>?</td></tr></table></div>`,o:["60","65","75","90","95"],a:2,exp:"Respuesta correcta: 75"},
-{q:`<div><b>Ejercicio 28</b><br><br><table border="1" style="width:100%;border-collapse:collapse;text-align:center;background:white;"><tr><th></th><th>Hornos</th><th>Microondas</th><th>Vitrocerámica</th><th>Total</th></tr><tr><td>Septiembre</td><td>25</td><td>40</td><td>5</td><td>70</td></tr><tr><td>Octubre</td><td>X</td><td>45</td><td>50</td><td>X</td></tr><tr><td>Noviembre</td><td>30</td><td>X</td><td>?</td><td>55</td></tr><tr><td>Total</td><td>50</td><td>55</td><td>55</td><td>?</td></tr></table></div>`,o:["10","15","20","30","60"],a:2,exp:"Respuesta correcta: 20"},
-{q:`<div><b>Ejercicio 29</b><br><br><table border="1" style="width:100%;border-collapse:collapse;text-align:center;background:white;"><tr><th></th><th>Niños</th><th>Niñas</th><th>Total</th></tr><tr><td>Grupo 1</td><td>15</td><td>?</td><td>25</td></tr><tr><td>Grupo 2</td><td>10</td><td>20</td><td>30</td></tr><tr><td>Grupo 3</td><td>?</td><td>15</td><td>20</td></tr><tr><td>Total</td><td>30</td><td>40</td><td>70</td></tr></table></div>`,o:["5","10","15","20","25"],a:0,exp:"Respuesta correcta: 5"},
-{q:`<div><b>Ejercicio 30</b><br><br><table border="1" style="width:100%;border-collapse:collapse;text-align:center;background:white;"><tr><th></th><th>Camiones</th><th>Autos</th><th>Motos</th><th>Total</th></tr><tr><td>Enero</td><td>100</td><td>120</td><td>50</td><td>270</td></tr><tr><td>Febrero</td><td>?</td><td>100</td><td>80</td><td>260</td></tr><tr><td>Marzo</td><td>90</td><td>?</td><td>60</td><td>250</td></tr><tr><td>Total</td><td>270</td><td>300</td><td>190</td><td>760</td></tr></table></div>`,o:["26","265","270","280","1680"],a:2,exp:"Respuesta correcta: 270"},
-{q:`<div><b>Ejercicio 31</b><br><br><table border="1" style="width:100%;border-collapse:collapse;text-align:center;background:white;"><tr><th></th><th>Pizza</th><th>Hamburguesa</th><th>Tacos</th><th>Total</th></tr><tr><td>Viernes</td><td>20</td><td>15</td><td>?</td><td>60</td></tr><tr><td>Sábado</td><td>25</td><td>?</td><td>20</td><td>80</td></tr><tr><td>Domingo</td><td>?</td><td>20</td><td>15</td><td>70</td></tr><tr><td>Total</td><td>70</td><td>55</td><td>50</td><td>175</td></tr></table></div>`,o:["25","35","40","45","50"],a:1,exp:"Respuesta correcta: 35"},
-{q:`<div><b>Ejercicio 32</b><br><br><table border="1" style="width:100%;border-collapse:collapse;text-align:center;background:white;"><tr><th></th><th>A</th><th>B</th><th>C</th><th>Total</th></tr><tr><td>Fila 1</td><td>0.2</td><td>0.3</td><td>?</td><td>0.6</td></tr><tr><td>Fila 2</td><td>0.1</td><td>?</td><td>0.2</td><td>0.4</td></tr><tr><td>Fila 3</td><td>?</td><td>0.1</td><td>0.3</td><td>0.5</td></tr><tr><td>Total</td><td>0.5</td><td>0.5</td><td>0.6</td><td>1.6</td></tr></table></div>`,o:["0.03","0.1","0.2","0.5","5"],a:1,exp:"Respuesta correcta: 0.1"}
+{q:`<div><b>Ejercicio 27</b><br><br><table border="1" style="width:100%;border-collapse:collapse;text-align:center;background:white;"><tr><th></th><th>Plancha</th><th>Depiladora</th><th>Afeitadoras</th><th>Total</th></tr><tr><td>Mayo</td><td>20</td><td>5</td><td>X</td><td>40</td></tr><tr><td>Junio</td><td>X</td><td>X</td><td>10</td><td>X</td></tr><tr><td>Abril</td><td>X</td><td>5</td><td>5</td><td>25</td></tr><tr><td>Total</td><td>40</td><td>20</td><td>X</td><td>?</td></tr></table></div>`,o:["60","65","75","90","95"],a:3,exp:"Respuesta correcta: 90"},
+{q:`<div><b>Ejercicio 28</b><br><br><table border="1" style="width:100%;border-collapse:collapse;text-align:center;background:white;"><tr><th></th><th>Hornos</th><th>Microondas</th><th>Vitrocerámica</th><th>Total</th></tr><tr><td>Septiembre</td><td>25</td><td>40</td><td>5</td><td>70</td></tr><tr><td>Octubre</td><td>X</td><td>45</td><td>50</td><td>X</td></tr><tr><td>Noviembre</td><td>30</td><td>X</td><td>?</td><td>90</td></tr><tr><td>Diciembre</td><td>35</td><td>30</td><td>X</td><td>105</td></tr><tr><td>Total</td><td>145</td><td>155</td><td>X</td><td>X</td></tr></table></div>`,o:["10","15","20","30","60"],a:1,exp:"Respuesta correcta: 15"},
 
+{q:`<div><b>Ejercicio 29</b><br><br><table border="1" style="width:100%;border-collapse:collapse;text-align:center;background:white;"><tr><th></th><th>Cafetera</th><th>Tostadora</th><th>Freidora</th><th>Total</th></tr><tr><td>Enero</td><td>X</td><td>5</td><td>20</td><td>35</td></tr><tr><td>Febrero</td><td>5</td><td>X</td><td>X</td><td>30</td></tr><tr><td>Marzo</td><td>15</td><td>30</td><td>?</td><td>X</td></tr><tr><td>Total</td><td>X</td><td>55</td><td>40</td><td>X</td></tr></table></div>`,o:["5","10","15","20","25"],a:2,exp:"Respuesta correcta: 15"},
+{q:`<div><b>Ejercicio 30</b><br><br><table border="1" style="width:100%;border-collapse:collapse;text-align:center;background:white;"><tr><th>Artículo</th><th>Unidades</th><th>Puntos/unidad</th><th>Total puntos</th></tr><tr><td>Chocolate</td><td>5</td><td>225</td><td>X</td></tr><tr><td>Harina</td><td>6</td><td>?</td><td>X</td></tr><tr><td>Nueces</td><td>8</td><td>140</td><td>X</td></tr><tr><td colspan="3"><b>Total</b></td><td>3925</td></tr></table></div>`,o:["26","265","270","280","1680"],a:3,exp:"Respuesta correcta: 280"},
+{q:`<div><b>Ejercicio 31</b><br><br><table border="1" style="width:100%;border-collapse:collapse;text-align:center;background:white;"><tr><th></th><th>Armarios</th><th>Mesas</th><th>Sillas</th><th>Total</th></tr><tr><td>Mayo</td><td>X</td><td>15</td><td>20</td><td>45</td></tr><tr><td>Junio</td><td>15</td><td>10</td><td>X</td><td>55</td></tr><tr><td>Julio</td><td>X</td><td>5</td><td>20</td><td>X</td></tr><tr><td>Agosto</td><td>10</td><td>X</td><td>10</td><td>25</td></tr><tr><td>Total</td><td>?</td><td>X</td><td>80</td><td>155</td></tr></table></div>`,o:["25","35","40","45","50"],a:2,exp:"Respuesta correcta: 40"},
+{q:`<div><b>Ejercicio 32</b><br><br><table border="1" style="width:100%;border-collapse:collapse;text-align:center;background:white;"><tr><th>Artículo</th><th>Unidades</th><th>Puntos/unidad</th><th>Total puntos</th></tr><tr><td>Grapa</td><td>2,500</td><td>0.05</td><td>125</td></tr><tr><td>Chincheta</td><td>3,000</td><td>?</td><td>X</td></tr><tr><td>Tornillo</td><td>1,200</td><td>0.1</td><td>120</td></tr><tr><td colspan="3"><b>Total</b></td><td>845</td></tr></table></div>`,o:["0.03","0.1","0.2","0.5","5"],a:2,exp:"Respuesta correcta: 0.2"},
 ];
 
 let current=0;
@@ -358,10 +364,64 @@ ${reviewHTML}
 render();
 }
 
+
+function toggleRanking(){
+ document.getElementById('rankingPanel').classList.toggle('hidden');
+}
+
 render();
 
+const oldFinish = finish;
+finish = function(){
+done=true;
+let correct=0;
+let reviewHTML='';
+
+questions.forEach((q,i)=>{
+ if(answers[i]===q.a) correct++;
+ reviewHTML += `<div style="background:white;padding:15px;margin-top:15px;border-radius:15px;border-left:6px solid ${answers[i]===q.a?'#22c55e':'#ef4444'};">
+ <h3>Pregunta ${i+1}</h3>
+ ${q.q}
+ <p><b>Tu respuesta:</b> ${answers[i]!==null ? q.o[answers[i]] : 'Sin responder'}</p>
+ <p><b>Respuesta correcta:</b> ${q.o[q.a]}</p>
+ <p>${q.exp}</p></div>`;
+});
+
+let porcentaje=Math.round((correct/questions.length)*100);
+
+const bots=[];
+for(let i=1;i<=30;i++){
+ bots.push({nombre:'Bot_'+i, nota:Math.floor(Math.random()*71)+30});
+}
+
+let ranking=[...bots,{nombre:'Tú',nota:porcentaje}];
+ranking.sort((a,b)=>b.nota-a.nota);
+
+let debajo=ranking.filter(x=>x.nota<porcentaje).length;
+let iguales=ranking.filter(x=>x.nota===porcentaje).length;
+let percentil=Math.round(((debajo+(0.5*iguales))/ranking.length)*100);
+
+let nivel='Muy bajo';
+if(percentil>=90) nivel='Excelente';
+else if(percentil>=75) nivel='Muy bueno';
+else if(percentil>=60) nivel='Bueno';
+else if(percentil>=40) nivel='Promedio';
+else if(percentil>=20) nivel='Bajo';
+
+document.getElementById('rankingContent').innerHTML =
+'<h2>Ranking General</h2>' +
+ ranking.map((r,i)=>`<div>${i+1}. ${r.nombre} - ${r.nota}%</div>`).join('');
+
+document.getElementById("resultado").style.display="block";
+document.getElementById("score").innerHTML=`
+<div style="background:white;padding:20px;border-radius:20px;text-align:center;">
+<h2>${correct}/${questions.length} correctas</h2>
+<h1>${porcentaje}%</h1>
+<h3>Percentil: ${percentil}</h3>
+<h3>Nivel: ${nivel}</h3>
+</div>${reviewHTML}`;
+};
 </script>
 
 </body>
 </html>
-```
