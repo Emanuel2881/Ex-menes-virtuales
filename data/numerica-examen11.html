@@ -935,6 +935,186 @@ const questions = [
     exp: "Recorriendo el diagrama: 2+6=8 (no >12)→8+6=14 (>12)→14/2=7 (1ª vez)→7/2=3.5 (2ª vez)→3.5/2=1.75 (3ª vez)→1.75≤3, fin. Se divide entre 2 exactamente 3 veces."
   }
 ];
+  let current = 0;
+let answers = new Array(questions.length).fill(null);
+
+
+function render(){
+
+const quiz=document.getElementById("quiz");
+
+quiz.innerHTML="";
+
+
+questions.forEach((q,i)=>{
+
+
+let div=document.createElement("div");
+
+
+div.className="question "+(i===current?"active":"");
+
+
+let opciones="";
+
+
+q.o.forEach((op,j)=>{
+
+
+opciones+=`
+
+<div class="option ${answers[i]===j?"selected":""}"
+onclick="selectAnswer(${i},${j})">
+
+${op}
+
+</div>
+
+`;
+
+
+});
+
+
+div.innerHTML=`
+
+<h3>${q.q}</h3>
+
+${opciones}
+
+
+<div style="text-align:center;margin-top:20px">
+
+<button onclick="previousQuestion()" 
+${i===0?"disabled":""}>
+
+Anterior
+
+</button>
+
+
+<button onclick="nextQuestion()">
+
+${i===questions.length-1?"Finalizar":"Siguiente"}
+
+</button>
+
+</div>
+
+`;
+
+
+quiz.appendChild(div);
+
+
+});
+
+
+update();
+
+}
+
+
+
+function selectAnswer(i,j){
+
+answers[i]=j;
+
+render();
+
+}
+
+
+
+function nextQuestion(){
+
+if(answers[current]===null){
+
+alert("Responde primero");
+
+return;
+
+}
+
+
+if(current<questions.length-1){
+
+current++;
+
+render();
+
+}
+
+else{
+
+finish();
+
+}
+
+}
+
+
+
+function previousQuestion(){
+
+if(current>0){
+
+current--;
+
+render();
+
+}
+
+}
+
+
+
+function update(){
+
+document.getElementById("qNum").textContent=current+1;
+
+
+document.getElementById("progress").textContent=
+answers.filter(a=>a!==null).length+" / "+questions.length;
+
+}
+
+
+
+function finish(){
+
+let correctas=0;
+
+
+questions.forEach((q,i)=>{
+
+if(answers[i]===q.a){
+
+correctas++;
+
+}
+
+});
+
+
+document.getElementById("resultado").style.display="block";
+
+
+document.getElementById("score").innerHTML=
+
+`
+
+<h2>${correctas}/${questions.length}</h2>
+
+<p>${Math.round(correctas/questions.length*100)}%</p>
+
+`;
+
+}
+
+
+
+render();
 
 </script>
 
