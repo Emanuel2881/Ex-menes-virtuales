@@ -218,14 +218,141 @@ padding:18px;
 
 
 /* DIAGRAMA */
-.diagram-wrapper{margin:20px 0;display:none;animation:fadeDiagram .25s}
-.diagram-wrapper.show{display:block}
-.diagram-card{background:white;border:1px solid #93c5fd;border-radius:18px;overflow:hidden;box-shadow:0 8px 20px rgba(0,0,0,.08)}
-.diagram-header{background:#2563eb;color:white;padding:14px 18px;font-weight:bold}
-.diagram-body{padding:18px;background:#eff6ff}
-.pre-diagram{background:#1e293b;color:#f8fafc;padding:18px;border-radius:12px;font-family:Consolas,monospace;font-size:14px;line-height:1.35;overflow-x:auto}
-.diagram-btn{background:#2563eb;color:#fff}
-@keyframes fadeDiagram{from{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:translateY(0)}}
+.diagram-wrapper{
+    display:none;
+    margin:25px auto;
+    max-width:900px;
+    animation:fadeIn .35s ease;
+}
+
+.diagram-card{
+    background:#fff;
+    border-radius:18px;
+    overflow:hidden;
+    box-shadow:0 10px 35px rgba(0,0,0,.12);
+    border:1px solid #dfe7f3;
+}
+
+.diagram-header{
+    background:linear-gradient(135deg,#2563eb,#3b82f6);
+    color:#fff;
+    padding:16px;
+    text-align:center;
+    font-size:22px;
+    font-weight:bold;
+}
+
+.flowchart{
+    padding:30px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:10px;
+}
+
+.flow-box{
+    min-width:240px;
+    padding:14px 20px;
+    border-radius:14px;
+    text-align:center;
+    font-weight:600;
+    border:3px solid;
+    transition:.25s;
+}
+
+.flow-box:hover{
+    transform:scale(1.04);
+}
+
+.start{
+    background:#dbeafe;
+    border-color:#2563eb;
+}
+
+.process{
+    background:#ecfdf5;
+    border-color:#10b981;
+}
+
+.decision{
+    background:#fff7ed;
+    border-color:#f59e0b;
+}
+
+.success{
+    background:#dcfce7;
+    border-color:#22c55e;
+}
+
+.end{
+    background:#f3f4f6;
+    border-color:#6b7280;
+}
+
+.arrow{
+    font-size:28px;
+    font-weight:bold;
+    color:#2563eb;
+}
+
+.decision-row{
+    width:100%;
+    display:flex;
+    justify-content:space-evenly;
+    align-items:flex-start;
+    margin-top:10px;
+}
+
+.decision-row-small{
+    display:flex;
+    justify-content:space-around;
+    gap:50px;
+    margin-top:15px;
+}
+
+.decision-option{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:8px;
+}
+
+.decision-label{
+    padding:5px 18px;
+    border-radius:20px;
+    color:#fff;
+    font-weight:bold;
+}
+
+.yes{
+    background:#22c55e;
+}
+
+.no{
+    background:#ef4444;
+}
+
+.loop-box{
+    background:#fee2e2;
+    border:2px dashed #ef4444;
+    padding:12px;
+    border-radius:12px;
+    color:#b91c1c;
+    font-size:14px;
+    text-align:center;
+    width:170px;
+}
+
+@keyframes fadeIn{
+    from{
+        opacity:0;
+        transform:translateY(10px);
+    }
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+}
 
 </style>
 </head>
@@ -255,38 +382,114 @@ padding:18px;
 
 
 <div style="text-align:center;margin-bottom:20px;">
-<button id="btnDiagrama" class="diagram-btn" onclick="toggleDiagrama()">📋 Mostrar diagrama de flujo</button>
+    <button id="btnDiagrama" class="diagram-btn" onclick="toggleDiagrama()">
+        📋 Mostrar diagrama de flujo
+    </button>
 </div>
-<div id="contenedorDiagrama" class="diagram-wrapper"><div class="diagram-card"><div class="diagram-header">Diagrama de flujo (Preguntas 39 y 40)</div><div class="diagram-body"><pre class="pre-diagram">
-     ┌──────────────────────┐
-     │ Introducir un número │
-     └──────────┬───────────┘
-                ▼
-     ┌──────────────────────┐
-     │      Sumar 6         │
-     └──────────┬───────────┘
-                ▼
-     ┌──────────────────────┐
-     │ ¿Número > 12?        │
-     └──────┬─────────┬─────┘
-            │Sí       │No
-            ▼         │
-     ┌──────────────────────┐
-     │   Dividir entre 2    │◄──────┐
-     └──────────┬───────────┘       │
-                ▼                   │
-     ┌──────────────────────┐       │
-     │ ¿Número ≤ 3?         │       │
-     └──────┬─────────┬─────┘       │
-            │Sí       │No───────────┘
-            ▼
-     ┌──────────────────────┐
-     │ Multiplicar por 4    │
-     └──────────┬───────────┘
-                ▼
-          Resultado final
-</pre></div></div></div>
 
+<div id="contenedorDiagrama" class="diagram-wrapper">
+
+    <div class="diagram-card">
+
+        <div class="diagram-header">
+            📋 Diagrama de flujo (Preguntas 39 y 40)
+        </div>
+
+        <div class="flowchart">
+
+            <div class="flow-box start">
+                <span>🚀</span>
+                Introducir un número
+            </div>
+
+            <div class="arrow">↓</div>
+
+            <div class="flow-box process">
+                ➕ Sumar 6
+            </div>
+
+            <div class="arrow">↓</div>
+
+            <div class="flow-box decision">
+                ¿Número > 12?
+            </div>
+
+            <div class="decision-row">
+
+                <div class="decision-option">
+                    <div class="decision-label yes">Sí</div>
+
+                    <div class="arrow">↓</div>
+
+                    <div class="flow-box process">
+                        ➗ Dividir entre 2
+                    </div>
+
+                    <div class="arrow">↓</div>
+
+                    <div class="flow-box decision">
+                        ¿Número ≤ 3?
+                    </div>
+
+                    <div class="decision-row-small">
+
+                        <div class="decision-option">
+
+                            <div class="decision-label yes">
+                                Sí
+                            </div>
+
+                            <div class="arrow">↓</div>
+
+                            <div class="flow-box process success">
+                                ✖ Multiplicar por 4
+                            </div>
+
+                            <div class="arrow">↓</div>
+
+                            <div class="flow-box end">
+                                ✅ Resultado final
+                            </div>
+
+                        </div>
+
+                        <div class="decision-option">
+
+                            <div class="decision-label no">
+                                No
+                            </div>
+
+                            <div class="loop-box">
+                                ↺ Regresar a<br>
+                                <strong>Dividir entre 2</strong>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="decision-option">
+
+                    <div class="decision-label no">
+                        No
+                    </div>
+
+                    <div class="loop-box">
+                        ↺ Regresar a<br>
+                        <strong>Sumar 6</strong>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
 <div id="quiz"></div>
 
 <div class="actions">
