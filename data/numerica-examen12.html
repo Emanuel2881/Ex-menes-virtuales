@@ -576,17 +576,18 @@ const questions = [
     "exp": "14 = ½·6y·h ⇒ 14 = 3y·h ⇒ h = 14/(3y). Ninguna opción coincide exactamente con 14/(3y)."
   },
   {
-    "q": "39. Si introduce el número 8, ¿cuántas veces pasará por el paso 4 para llegar al final?",
-    "o": ["8", "4", "2", "1", "Ninguna de ellas"],
-    "a": 1,
-    "exp": "Con 8: se duplica hasta superar 152 (8→16→32→64→128→256), luego se divide por 4 repetidamente (256→64→16→4→1). El paso 4 (dividir por 4) se aplica 4 veces."
-  },
-  {
-    "q": "40. Si introduce el número 3, ¿cuál será el número cuando llegue al final?",
-    "o": ["6", "5", "3", "2", "Ninguna de ellas"],
-    "a": 4,
-    "exp": "Con 3: duplicar hasta >152 (3→6→12→24→48→96→192), luego dividir hasta ≤3 (192→48→12→3) y finalmente ×4 (3→12). Resultado 12, que no está entre A-D."
-  }
+q: "39. Si introduce el número 8, ¿cuántas veces pasará por el paso 4 para llegar al final?",
+o: ["8", "4", "2", "1", "Ninguna de ellas"],
+a: 3,
+exp: "Con 8: 8×2=16. Como 16>15 pasa al paso 4: 16÷4=4. Como 4≤7 termina. Solo pasa una vez por el paso 4."
+},
+
+{
+q: "40. Si introduce el número 3, ¿cuál será el número cuando llegue al final?",
+o: ["6", "5", "3", "2", "Ninguna de ellas"],
+a: 1,
+exp: "Con 3: 3×2=6, 6×2=12, 12×2=24. Luego 24÷4=6 y como 6≤7 se resta 1: 6-1=5."
+}
 ];
 
 
