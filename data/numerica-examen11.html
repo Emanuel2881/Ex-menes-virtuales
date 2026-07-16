@@ -663,6 +663,36 @@ Regresar a:
 
 
 <script>
+
+function toggleDiagrama(){
+
+
+let d=document.getElementById("contenedorDiagrama");
+
+let b=document.getElementById("btnDiagrama");
+
+
+
+d.classList.toggle("show");
+
+
+
+if(d.classList.contains("show")){
+
+b.innerHTML="📋 Ocultar diagrama de flujo";
+
+}
+
+else{
+
+b.innerHTML="📋 Mostrar diagrama de flujo";
+
+}
+
+
+
+}
+
 const questions = [
   {
     q: "1. ¿Qué número continúa esta serie? 2 5 8 11 ?",
@@ -905,37 +935,6 @@ const questions = [
     exp: "Recorriendo el diagrama: 2+6=8 (no >12)→8+6=14 (>12)→14/2=7 (1ª vez)→7/2=3.5 (2ª vez)→3.5/2=1.75 (3ª vez)→1.75≤3, fin. Se divide entre 2 exactamente 3 veces."
   }
 ];
-
-function toggleDiagrama(){
-
-
-let d=document.getElementById("contenedorDiagrama");
-
-let b=document.getElementById("btnDiagrama");
-
-
-
-d.classList.toggle("show");
-
-
-
-if(d.classList.contains("show")){
-
-b.innerHTML="📋 Ocultar diagrama de flujo";
-
-}
-
-else{
-
-b.innerHTML="📋 Mostrar diagrama de flujo";
-
-}
-
-
-
-}
-
-
 
 </script>
 
