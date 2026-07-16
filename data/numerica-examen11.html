@@ -1,270 +1,145 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Examen Habilidad Numérica 11</title>
-
-<style>
-
-*{
-box-sizing:border-box;
-margin:0;
-padding:0;
-}
-
-body{
-font-family:Arial, Helvetica, sans-serif;
-background:linear-gradient(135deg,#eff6ff,#dbeafe,#bfdbfe);
-color:#1e3a8a;
-min-height:100vh;
-padding:30px 15px;
-}
-
-.container{
-max-width:950px;
-margin:auto;
-background:rgba(255,255,255,0.95);
-padding:25px;
-border-radius:24px;
-box-shadow:0 12px 35px rgba(0,0,0,0.08);
-}
-
-.header{
-text-align:center;
-margin-bottom:20px;
-}
-
-.header h1{
-font-size:2.3rem;
-color:#1d4ed8;
-margin-bottom:10px;
-}
-
-.header p{
-color:#1e40af;
-}
-
-.stats-bar{
-display:flex;
-gap:12px;
-justify-content:center;
-margin-bottom:20px;
-flex-wrap:wrap;
-}
-
-.stat-box{
-background:#fff;
-border:1px solid #93c5fd;
-border-radius:14px;
-padding:12px 18px;
-min-width:150px;
-text-align:center;
-}
-
-.question{
-display:none;
-background:#eff6ff;
-border:1px solid #93c5fd;
-border-radius:20px;
-padding:20px;
-}
-
-.question.active{
-display:block;
-}
-
-.option{
-background:#dbeafe;
-padding:12px;
-margin:10px 0;
-border-radius:12px;
-cursor:pointer;
-transition:0.2s;
-}
-
-.option:hover{
-background:#bfdbfe;
-}
-
-.option.selected{
-background:#2563eb;
-color:white;
-}
-
-.option.correct-answer{
-background:#bbf7d0;
-}
-
-.option.wrong-answer{
-background:#fecaca;
-}
-
-.navigation{
-text-align:center;
-margin-top:15px;
-}
-
-button{
-border:none;
-padding:10px 15px;
-border-radius:10px;
-margin:5px;
-cursor:pointer;
-}
-
-.next{
-background:#2563eb;
-color:white;
-}
-
-.prev{
-background:#93c5fd;
-}
-
-.finish{
-background:#1d4ed8;
-color:white;
-}
-
-.actions{
-text-align:center;
-margin-top:20px;
-}
-
-.result{
-display:none;
-margin-top:20px;
-padding:20px;
-background:#eff6ff;
-border-radius:15px;
-}
-
-.review-item{
-background:white;
-padding:14px;
-margin:12px 0;
-border-left:5px solid gray;
-border-radius:12px;
-}
-
-.correcta{
-border-left-color:green;
-}
-
-.incorrecta{
-border-left-color:red;
-}
-
-.sin-responder{
-border-left-color:orange;
-}
-
-.explicacion{
-margin-top:8px;
-font-size:0.92rem;
-color:#374151;
-}
-
-/* PANEL RANKING */
-
-.ranking-panel{
-position:fixed;
-left:0;
-top:0;
-width:320px;
-height:100vh;
-background:white;
-box-shadow:4px 0 20px rgba(0,0,0,0.1);
-padding:20px;
-overflow-y:auto;
-z-index:999;
-transition:transform 0.3s ease;
-}
-
-.ranking-panel.hidden{
-transform:translateX(-100%);
-}
-
-.toggle-ranking{
-position:fixed;
-left:15px;
-top:15px;
-z-index:1000;
-background:#2563eb;
-color:white;
-border:none;
-padding:10px 15px;
-border-radius:12px;
-cursor:pointer;
-font-weight:bold;
-}
-
-.ranking-content{
-margin-top:60px;
-}
-
-@media(max-width:768px){
-
-.ranking-panel{
-width:260px;
-}
-
-.container{
-padding:18px;
-}
-
-}
-
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Examen de Razonamiento y Habilidad Numérica</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f4f7f6;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .quiz-container {
+            max-width: 800px;
+            margin: 30px auto;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.05);
+        }
+        .pre-diagram {
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 14px;
+            line-height: 1.3;
+            background-color: #212529;
+            color: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            overflow-x: auto;
+            border: 1px solid #343a40;
+        }
+        .math-question {
+            white-space: pre-line;
+            font-weight: 500;
+            font-size: 1.1rem;
+            color: #2c3e50;
+        }
+        .option-btn {
+            text-align: left;
+            margin-bottom: 10px;
+            padding: 12px 20px;
+            font-size: 1rem;
+            transition: all 0.2s ease;
+        }
+        .option-btn:hover {
+            transform: translateX(5px);
+        }
+        .explanation-box {
+            background-color: #e8f4fd;
+            border-left: 5px solid #007bff;
+            padding: 15px;
+            border-radius: 4px;
+            margin-top: 15px;
+        }
+    </style>
 </head>
-
 <body>
 
 <div class="container">
+    <div class="quiz-container">
+        <h2 class="text-center mb-4 text-primary fw-bold">Prueba de Razonamiento Numérico</h2>
+        <p class="text-muted text-center">Resuelve los 40 problemas matemáticos del test. Utiliza el botón de abajo para ver el diagrama de flujo requerido en las últimas preguntas.</p>
 
-<div class="header">
-<h1>🧠 Habilidad Numérica 11</h1>
-<p>Examen interactivo</p>
-</div>
+        <div class="text-center mb-4">
+            <button id="btn-diagrama" onclick="toggleDiagrama()" class="btn btn-primary fw-bold px-4 py-2 shadow-sm">
+                Mostrar Diagrama de Flujo (Preguntas 39 y 40) ──▼
+            </button>
+        </div>
 
-<div class="stats-bar">
+        <div id="contenedor-diagrama" style="display: none; max-width: 550px; margin: 0 auto 25px auto;">
+            <div class="card shadow-sm">
+                <div class="card-header bg-dark text-white fw-bold">Diagrama de Flujo Lógico-Matemático</div>
+                <div class="card-body bg-light">
+                    <pre class="pre-diagram mb-0">
+  [ PASO 1: Introducir número ]
+                 │
+                 ▼
+  [ PASO 2: Sumar 6 ] ◄──────────────────────┐
+                 │                           │
+                 ▼                           │
+  [ PASO 3: ¿El número es > 12? ]            │
+                 │                           │ (NO)
+                 ├─(NO)──────────────────────┘
+                 │
+            (SÍ) │
+                 ▼
+  [ PASO 4: Dividir entre 2 ] ◄──────────────┐
+                 │                           │
+                 ▼                           │
+  [ PASO 5: ¿El número es <= 3? ]            │
+                 │                           │ (NO)
+                 ├─(NO)──────────────────────┘
+                 │
+            (SÍ) │
+                 ▼
+  [ PASO 6: Multiplicar por 4 ]
+                 │
+                 ▼
+  [ PASO 7: FINAL (Resultado) ]
+                    </pre>
+                </div>
+            </div>
+        </div>
 
-<div class="stat-box">
-<span>Pregunta</span><br>
-<b id="qNum">1</b> / 24
-</div>
+        <hr>
 
-<div class="stat-box">
-<span>Progreso</span><br>
-<b id="progress">0 / 24</b>
-</div>
+        <div id="quiz-flow">
+            <div class="progress mb-4" style="height: 10px;">
+                <div id="progress-bar" class="progress-bar bg-success" role="progressbar" style="width: 0%;"></div>
+            </div>
 
-</div>
+            <div id="question-block" class="mb-4">
+                <h5 class="text-muted mb-2">Pregunta <span id="current-index">1</span> de 40</h5>
+                <div id="question-text" class="math-question mb-4"></div>
+                <div id="options-block" class="d-grid gap-2"></div>
+            </div>
 
-<div id="quiz"></div>
+            <div id="feedback-block" style="display: none;" class="mb-4">
+                <div class="alert alert-info" id="feedback-alert"></div>
+                <div class="explanation-box">
+                    <strong>Explicación paso a paso:</strong>
+                    <p id="explanation-text" class="mb-0 mt-1"></p>
+                </div>
+                <button onclick="nextQuestion()" class="btn btn-dark mt-3 px-4 float-end">Siguiente Pregunta ──►</button>
+                <div class="clearfix"></div>
+            </div>
+        </div>
 
-<div class="actions">
-<button onclick="finish()">Calificar</button>
-<button onclick="location.reload()">Reiniciar</button>
-</div>
+        <div id="results-block" style="display: none;" class="text-center py-4">
+            <h3 class="fw-bold text-success">¡Prueba Finalizada!</h3>
+            <p class="fs-4 mt-3">Tu puntuación es de: <strong id="score-text">0</strong> de 40 aciertos</p>
+            <div class="progress my-4" style="height: 25px; max-width: 400px; margin: 0 auto;">
+                <div id="results-bar" class="progress-bar bg-success progress-bar-striped" role="progressbar" style="width: 0%"></div>
+            </div>
+            <button onclick="restartQuiz()" class="btn btn-primary btn-lg px-5 mt-3 shadow">Reiniciar Examen</button>
+        </div>
 
-<div class="result" id="resultado">
-
-<h2 style="margin-bottom:20px;">
-Resultado Final
-</h2>
-
-<p id="score"></p>
-
-<div id="review"></div>
-
-</div>
-
+    </div>
 </div>
 
 <script>
-
+// Las 40 preguntas reales de Razonamiento Numérico del test de tu PDF
 const questions = [
   {
     q: "1. ¿Qué número continúa esta serie? 2 5 8 11 ?",
@@ -495,481 +370,127 @@ const questions = [
     exp: "La suma da 123,204,532. Las dos últimas cifras ('32') son un múltiplo de 4, lo que indica divisibilidad exacta por 4."
   },
   {
-    q: "39. Utilice el diagrama para contestar: Si introduce el número 4, ¿cuál será el número cuando llegue al final?\n\n[Diagrama: Introducir(4) -> Sumar 6(10) -> ¿>12?(No) -> Duplicar(20) -> ¿<=3?(No)...]",
+    q: "39. Utilice el diagrama de flujo interactivo (disponible arriba de las preguntas) para contestar: Si introduce el número 4, ¿cuál será el número cuando llegue al final?",
     o: ["8", "4", "2", "1", "Ninguna de ellas"],
     a: 4,
-    exp: "Al seguir la ejecución detallada de las condiciones iterativas descritas por el diagrama, se llega a un valor final que no se halla en las opciones numéricas dadas. Se escoge 'Ninguna de ellas'."
+    exp: "Comenzamos con 4.\n1. Paso 2: 4 + 6 = 10.\n2. Paso 3: ¿10 > 12? NO. Volvemos al Paso 2.\n3. Paso 2: 10 + 6 = 16.\n4. Paso 3: ¿16 > 12? SÍ. Pasamos al Paso 4.\n5. Paso 4: 16 / 2 = 8.\n6. Paso 5: ¿8 <= 3? NO. Volvemos al Paso 4.\n7. Paso 4: 8 / 2 = 4.\n8. Paso 5: ¿4 <= 3? NO. Volvemos al Paso 4.\n9. Paso 4: 4 / 2 = 2.\n10. Paso 5: ¿2 <= 3? SÍ. Pasamos al Paso 6.\n11. Paso 6: 2 * 4 = 8.\n12. Paso 7: El resultado es 8. Al no estar entre las opciones A-D, se marca 'Ninguna de ellas'."
   },
   {
-    q: "40. Utilice el diagrama para contestar: Si introduce el número 2, ¿Cuántas veces pasará por el paso 4 para llegar al final?",
+    q: "40. Utilice el diagrama de flujo interactivo (disponible arriba de las preguntas) para contestar: Si introduce el número 2, ¿Cuántas veces pasará por el paso 4 para llegar al final?",
     o: ["1", "2", "3", "4", "Ninguna de ellas"],
     a: 2,
-    exp: "Realizando el recorrido secuencial y las iteraciones lógicas del sistema, el flujo evalúa el paso número 4 exactamente tres veces antes de cumplir la condición final de salida."
+    exp: "Comenzamos con 2.\n1. Paso 2: 2 + 6 = 8.\n2. Paso 3: ¿8 > 12? NO. Volvemos al Paso 2.\n3. Paso 2: 8 + 6 = 14.\n4. Paso 3: ¿14 > 12? SÍ.\n5. Paso 4: 14 / 2 = 7. (Paso 4 ejecutado 1ª vez)\n6. Paso 5: ¿7 <= 3? NO. Volvemos al Paso 4.\n7. Paso 4: 7 / 2 = 3.5. (Paso 4 ejecutado 2ª vez)\n8. Paso 5: ¿3.5 <= 3? NO. Volvemos al Paso 4.\n9. Paso 4: 3.5 / 2 = 1.75. (Paso 4 ejecutado 3ª vez)\n10. Paso 5: ¿1.75 <= 3? SÍ. Pasamos al Paso 6.\nSe ha ejecutado el Paso 4 exactamente 3 veces."
   }
 ];
 
-let current=0;
-let answers=new Array(questions.length).fill(null);
-let done=false;
+let currentIndex = 0;
+let score = 0;
 
-function render(){
-
-const quiz=document.getElementById("quiz");
-
-quiz.innerHTML="";
-
-questions.forEach((q,i)=>{
-
-const div=document.createElement("div");
-
-div.className="question"+(i===current?" active":"");
-
-let opts="";
-
-q.o.forEach((op,j)=>{
-
-let cls="";
-
-if(answers[i]===j){
-
-cls+=" selected";
-
+// Función para mostrar y ocultar el diagrama
+function toggleDiagrama() {
+    const contenedor = document.getElementById('contenedor-diagrama');
+    const boton = document.getElementById('btn-diagrama');
+    
+    if (contenedor.style.display === 'none') {
+        contenedor.style.display = 'block';
+        boton.innerText = 'Ocultar Diagrama de Flujo ──▲';
+        boton.classList.replace('btn-primary', 'btn-danger');
+    } else {
+        contenedor.style.display = 'none';
+        boton.innerText = 'Mostrar Diagrama de Flujo (Preguntas 39 y 40) ──▼';
+        boton.classList.replace('btn-danger', 'btn-primary');
+    }
 }
 
-if(done){
+// Cargar la pregunta actual en la interfaz
+function loadQuestion() {
+    const question = questions[currentIndex];
+    document.getElementById('current-index').innerText = currentIndex + 1;
+    document.getElementById('question-text').innerText = question.q;
+    
+    // Actualizar barra de progreso
+    const progressPercent = (currentIndex / questions.length) * 100;
+    document.getElementById('progress-bar').style.width = `${progressPercent}%`;
 
-if(j===q.a){
+    // Renderizar opciones como botones
+    const optionsBlock = document.getElementById('options-block');
+    optionsBlock.innerHTML = '';
+    document.getElementById('feedback-block').style.display = 'none';
 
-cls+=" correct-answer";
-
+    question.o.forEach((option, index) => {
+        const btn = document.createElement('button');
+        btn.className = 'btn btn-outline-secondary option-btn text-start';
+        btn.innerHTML = `<strong>${String.fromCharCode(65 + index)}.</strong> ${option}`;
+        btn.onclick = () => checkAnswer(index);
+        optionsBlock.appendChild(btn);
+    });
 }
 
-if(answers[i]===j && j!==q.a){
+// Validar la respuesta seleccionada
+function checkAnswer(selectedIndex) {
+    const question = questions[currentIndex];
+    const optionsBlock = document.getElementById('options-block');
+    const buttons = optionsBlock.getElementsByTagName('button');
 
-cls+=" wrong-answer";
+    // Deshabilitar todos los botones para que no cambie la opción seleccionada
+    for (let i = 0; i < buttons.length; i++) {
+        buttons[i].disabled = true;
+    }
 
+    const feedbackAlert = document.getElementById('feedback-alert');
+    const explanationText = document.getElementById('explanation-text');
+
+    if (selectedIndex === question.a) {
+        score++;
+        buttons[selectedIndex].className = 'btn btn-success option-btn text-start text-white';
+        feedbackAlert.className = 'alert alert-success fw-bold';
+        feedbackAlert.innerText = '¡Correcto!';
+    } else {
+        buttons[selectedIndex].className = 'btn btn-danger option-btn text-start text-white';
+        buttons[question.a].className = 'btn btn-success option-btn text-start text-white';
+        feedbackAlert.className = 'alert alert-danger fw-bold';
+        feedbackAlert.innerText = `Incorrecto. La opción correcta era la ${String.fromCharCode(65 + question.a)}.`;
+    }
+
+    explanationText.innerText = question.exp;
+    document.getElementById('feedback-block').style.display = 'block';
 }
 
+// Avanzar a la siguiente pregunta
+function nextQuestion() {
+    currentIndex++;
+    if (currentIndex < questions.length) {
+        loadQuestion();
+    } else {
+        showResults();
+    }
 }
 
-opts+=`
+// Mostrar pantalla de resultados
+function showResults() {
+    document.getElementById('quiz-flow').style.display = 'none';
+    document.getElementById('results-block').style.display = 'block';
+    document.getElementById('score-text').innerText = score;
 
-<div class="option${cls}" onclick="select(${i},${j})">
-${op}
-</div>
-
-`;
-
-});
-
-div.innerHTML=`
-
-<h3>${q.q}</h3>
-
-${opts}
-
-<div class="navigation">
-
-<button class="prev"
-onclick="prev()"
-${i===0?"disabled":""}>
-Anterior
-</button>
-
-${i===questions.length-1
-
-? `<button class="finish" onclick="finish()">Finalizar</button>`
-
-: `<button class="next" onclick="next()">Siguiente</button>`
-
+    const percent = (score / questions.length) * 100;
+    const resultsBar = document.getElementById('results-bar');
+    resultsBar.style.width = `${percent}%`;
+    resultsBar.innerText = `${Math.round(percent)}%`;
 }
 
-</div>
-
-`;
-
-quiz.appendChild(div);
-
-});
-
-update();
-
+// Reiniciar la evaluación
+function restartQuiz() {
+    currentIndex = 0;
+    score = 0;
+    document.getElementById('quiz-flow').style.display = 'block';
+    document.getElementById('results-block').style.display = 'none';
+    loadQuestion();
 }
 
-function select(i,j){
-
-if(done)return;
-
-answers[i]=j;
-
-render();
-
-}
-
-function next(){
-
-if(answers[current]===null){
-
-alert("Responde primero");
-
-return;
-
-}
-
-current++;
-
-render();
-
-window.scrollTo({
-top:0,
-behavior:"smooth"
-});
-
-}
-
-function prev(){
-
-current--;
-
-render();
-
-}
-
-function update(){
-
-document.getElementById("qNum").textContent=current+1;
-
-document.getElementById("progress").textContent=
-answers.filter(a=>a!==null).length+" / "+questions.length;
-
-}
-
-function finish(){
-
-done=true;
-
-let correct=0;
-let html="";
-
-questions.forEach((q,i)=>{
-
-if(answers[i]===q.a){
-
-correct++;
-
-}
-
-});
-
-let porcentaje=Math.round(
-(correct/questions.length)*100
-);
-
-const bots=[];
-
-for(let i=1;i<=30;i++){
-
-bots.push({
-nombre:`Bot_${i}`,
-nota:Math.floor(Math.random()*71)+30
-});
-
-}
-
-const ranking=[
-...bots,
-{
-nombre:"Tú",
-nota:porcentaje,
-usuario:true
-}
-];
-
-ranking.sort((a,b)=>b.nota-a.nota);
-
-let debajo=ranking.filter(
-p=>porcentaje>p.nota
-).length;
-
-let iguales=ranking.filter(
-p=>porcentaje===p.nota
-).length;
-
-let percentil=Math.round(
-(
-debajo+(0.5*iguales)
-)
-/ranking.length
-*100
-);
-
-if(percentil<1){
-percentil=1;
-}
-
-if(percentil>99){
-percentil=99;
-}
-
-let nivel="Muy bajo";
-
-if(percentil>=90){
-nivel="Excelente";
-}
-else if(percentil>=75){
-nivel="Muy bueno";
-}
-else if(percentil>=60){
-nivel="Bueno";
-}
-else if(percentil>=40){
-nivel="Promedio";
-}
-else if(percentil>=20){
-nivel="Bajo";
-}
-
-questions.forEach((q,i)=>{
-
-let estado="";
-
-if(answers[i]===null){
-estado="sin-responder";
-}
-else if(answers[i]===q.a){
-estado="correcta";
-}
-else{
-estado="incorrecta";
-}
-
-html+=`
-
-<div class="review-item ${estado}">
-
-<h3>
-Pregunta ${i+1}
-</h3>
-
-<p style="margin-top:8px;">
-${q.q}
-</p>
-
-<br>
-
-<p>
-<b>Tu respuesta:</b>
-
-${
-answers[i]!==null
-?
-q.o[answers[i]]
-:
-"Sin responder"
-}
-</p>
-
-<p style="margin-top:6px;">
-<b>Correcta:</b>
-${q.o[q.a]}
-</p>
-
-<div class="explicacion">
-${q.exp}
-</div>
-
-</div>
-
-`;
-
-});
-
-let rankingHTML="";
-
-ranking.forEach((p,i)=>{
-
-rankingHTML+=`
-
-<div style="
-display:flex;
-justify-content:space-between;
-padding:10px;
-margin:6px 0;
-background:${p.usuario ? "#dbeafe" : "white"};
-border-radius:10px;
-">
-
-<span>
-#${i+1} - ${p.nombre}
-</span>
-
-<span>
-${p.nota}%
-</span>
-
-</div>
-
-`;
-
-});
-
-document.getElementById("score").innerHTML=
-
-`
-
-<button class="toggle-ranking" onclick="toggleRanking()">
-☰ Ranking
-</button>
-
-<div id="rankingPanel" class="ranking-panel">
-
-<div class="ranking-content">
-
-<h3 style="margin-bottom:15px;">
-🏆 Ranking General
-</h3>
-
-${rankingHTML}
-
-</div>
-
-</div>
-
-<div style="
-background:white;
-padding:20px;
-border-radius:15px;
-margin-bottom:20px;
-">
-
-<h2>
-${correct}/${questions.length}
-</h2>
-
-<p style="
-font-size:26px;
-font-weight:bold;
-margin-top:10px;
-color:#1d4ed8;
-">
-${porcentaje}%
-</p>
-
-<div style="
-display:flex;
-flex-direction:column;
-gap:12px;
-margin-top:20px;
-max-width:250px;
-">
-
-<div class="stat-box">
-<span>Percentil</span><br>
-<b>${percentil}%</b>
-</div>
-
-<div class="stat-box">
-<span>Nivel</span><br>
-<b>${nivel}</b>
-</div>
-
-</div>
-
-</div>
-
-`;
-
-document.getElementById("review")
-.innerHTML=html;
-
-document.getElementById("resultado")
-.style.display="block";
-
-document.getElementById("resultado")
-.scrollIntoView({
-behavior:"smooth"
-});
-
-if(window.enviarResultadoFinal){
-
-window.enviarResultadoFinal({
-correctas:correct,
-total:questions.length,
-porcentaje
-});
-
-}
-
-render();
-
-}
-
-function toggleRanking(){
-
-document.getElementById("rankingPanel")
-.classList.toggle("hidden");
-
-}
-
-window.mostrarResultadosParty = function(data){
-
-const ranking=[...data].sort((a,b)=>b.porcentaje-a.porcentaje);
-
-let html=`<div class="party-grid">`;
-
-ranking.forEach((j,i)=>{
-
-let medal=i===0?"🥇":i===1?"🥈":i===2?"🥉":"";
-
-html+=`
-
-<div class="party-card">
-
-<h3>
-${medal} Jugador ${i+1}
-</h3>
-
-<p>
-${j.correctas}/${j.total}
-</p>
-
-<p>
-${j.porcentaje}%
-</p>
-
-</div>
-
-`;
-
-});
-
-html+=`</div>`;
-
-html+=`
-
-<div class="party-winner">
-
-🏆 Mejor:
-${ranking[0].porcentaje}%
-
-</div>
-
-`;
-
-document.getElementById("partyResultadoContenido")
-.innerHTML=html;
-
-document.getElementById("resultadoParty")
-.style.display="block";
-
-};
-
-render();
-
+// Inicializar al cargar la página
+window.onload = loadQuestion;
 </script>
 
-<script type="module" src="../party/party-timer.js"></script>
-<script type="module" src="../party/party-resultados.js"></script>
-
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
