@@ -6,7 +6,6 @@
 <title>Examen Habilidad Numérica 1</title>
 
 <style>
-
 *{
 box-sizing:border-box;
 margin:0;
@@ -167,7 +166,6 @@ color:#374151;
 }
 
 /* PANEL RANKING */
-
 .ranking-panel{
 position:fixed;
 left:0;
@@ -205,19 +203,15 @@ margin-top:60px;
 }
 
 @media(max-width:768px){
-
 .ranking-panel{
 width:260px;
 }
-
 .container{
 padding:18px;
 }
-
 }
 
 .flow-box{
-
 background:white;
 border:2px solid #2563eb;
 border-radius:15px;
@@ -225,17 +219,12 @@ padding:15px;
 margin:10px auto;
 max-width:280px;
 font-weight:bold;
-
 }
-
 
 .arrow{
-
 font-size:28px;
 color:#2563eb;
-
 }
-
 </style>
 </head>
 
@@ -249,44 +238,28 @@ color:#2563eb;
 </div>
 
 <div class="stats-bar">
-
 <div class="stat-box">
 <span>Pregunta</span><br>
-<b id="qNum">1</b> / 24
+<b id="qNum">1</b> / <span class="totalQuestions">40</span>
 </div>
 
 <div class="stat-box">
 <span>Progreso</span><br>
-<b id="progress">0 / 24</b>
+<b id="progress">0 / <span class="totalQuestions">40</span></b>
 </div>
+</div>
+
 <div style="text-align:center;margin-bottom:20px;">
-
-<button 
-class="next"
-onclick="toggleDiagrama()">
-
+<button class="next" onclick="toggleDiagrama(event)">
 📋 Mostrar diagrama de flujo
-
 </button>
-
 </div>
-
 
 <div id="contenedorDiagrama" style="display:none;margin-bottom:20px;">
-
-<div style="
-background:#eff6ff;
-border:1px solid #93c5fd;
-border-radius:20px;
-padding:20px;
-text-align:center;
-">
-
-
+<div style="background:#eff6ff;border:1px solid #93c5fd;border-radius:20px;padding:20px;text-align:center;">
 <h3 style="margin-bottom:20px;">
 Diagrama de flujo (Preguntas 39 y 40)
 </h3>
-
 
 <div class="flow-box">
 🔢 Introducir número
@@ -296,7 +269,6 @@ Diagrama de flujo (Preguntas 39 y 40)
 ⬇
 </div>
 
-
 <div class="flow-box">
 ➕ Sumar 6
 </div>
@@ -305,77 +277,52 @@ Diagrama de flujo (Preguntas 39 y 40)
 ⬇
 </div>
 
-
 <div class="flow-box">
 ❓ ¿Número > 12?
 </div>
-
 
 <div style="margin:10px;">
 <span style="color:green;font-weight:bold;">
 Sí ↓
 </span>
-
 &nbsp;&nbsp;&nbsp;&nbsp;
-
 <span style="color:red;font-weight:bold;">
 No ↩ volver a sumar 6
 </span>
-
 </div>
-
 
 <div class="flow-box">
 ➗ Dividir entre 2
 </div>
 
-
 <div class="arrow">
 ⬇
 </div>
-
 
 <div class="flow-box">
 ❓ ¿Número ≤ 3?
 </div>
 
-
 <div style="margin:10px;">
-
 <span style="color:green;font-weight:bold;">
 Sí ↓
 </span>
-
 &nbsp;&nbsp;&nbsp;&nbsp;
-
 <span style="color:red;font-weight:bold;">
 No ↩ dividir otra vez
 </span>
-
 </div>
-
-
 
 <div class="flow-box">
 ✖ Multiplicar por 4
 </div>
 
-
 <div class="arrow">
 ⬇
 </div>
 
-
-<div class="flow-box" style="
-background:#bbf7d0;
-border-color:green;
-">
-
+<div class="flow-box" style="background:#bbf7d0;border-color:green;">
 🏁 Resultado final
-
-</div>
-
-
 </div>
 
 </div>
@@ -384,26 +331,21 @@ border-color:green;
 <div id="quiz"></div>
 
 <div class="actions">
-<button onclick="finish()">Calificar</button>
-<button onclick="location.reload()">Reiniciar</button>
+<button class="finish" onclick="finish()">Calificar</button>
+<button class="prev" onclick="location.reload()">Reiniciar</button>
 </div>
 
 <div class="result" id="resultado">
-
 <h2 style="margin-bottom:20px;">
 Resultado Final
 </h2>
-
 <p id="score"></p>
-
 <div id="review"></div>
-
 </div>
 
 </div>
 
 <script>
-
 const questions = [
   {
     q: "1. ¿Qué número continúa esta serie? 2 5 8 11 ?",
@@ -454,7 +396,7 @@ const questions = [
     exp: "Multiplicando en cruz: P^2 = 3·12 = 36, luego P = 6."
   },
   {
-    q: "9. ¿Qué número debería sustituir a la R para que esta operación sea correcta?\n\n38 + R + 67 = 180",
+    q: "9. ¿Qué número debería sustituir a la R para que esta operation sea correcta?\n\n38 + R + 67 = 180",
     o: ["85", "95", "105", "285", "Ninguna de ellas"],
     a: 4,
     exp: "Sumamos 38 + 67 = 105. Luego R = 180 - 105 = 75. Como 75 no está en las opciones, la respuesta es 'Ninguna de ellas'."
@@ -647,489 +589,266 @@ const questions = [
   }
 ];
 
-];
-function toggleDiagrama(){
+// Actualizar totales de preguntas en el HTML dinámicamente
+document.querySelectorAll('.totalQuestions').forEach(el => {
+    el.textContent = questions.length;
+});
 
-let d=document.getElementById("contenedorDiagrama");
+function toggleDiagrama(event){
+    let d = document.getElementById("contenedorDiagrama");
+    let b = event.target;
 
-let b=event.target;
-
-
-if(d.style.display==="none"){
-
-d.style.display="block";
-
-b.innerHTML="📋 Ocultar diagrama de flujo";
-
-}
-else{
-
-d.style.display="none";
-
-b.innerHTML="📋 Mostrar diagrama de flujo";
-
-}
-
+    if(d.style.display === "none"){
+        d.style.display = "block";
+        b.innerHTML = "📋 Ocultar diagrama de flujo";
+    } else {
+        d.style.display = "none";
+        b.innerHTML = "📋 Mostrar diagrama de flujo";
+    }
 }
   
-let current=0;
-let answers=new Array(questions.length).fill(null);
-let done=false;
+let current = 0;
+let answers = new Array(questions.length).fill(null);
+let done = false;
 
 function render(){
+    const quiz = document.getElementById("quiz");
+    quiz.innerHTML = "";
 
-const quiz=document.getElementById("quiz");
+    questions.forEach((q, i) => {
+        const div = document.createElement("div");
+        div.className = "question" + (i === current ? " active" : "");
 
-quiz.innerHTML="";
+        let opts = "";
+        q.o.forEach((op, j) => {
+            let cls = "";
+            if (answers[i] === j) {
+                cls += " selected";
+            }
+            if (done) {
+                if (j === q.a) {
+                    cls += " correct-answer";
+                }
+                if (answers[i] === j && j !== q.a) {
+                    cls += " wrong-answer";
+                }
+            }
 
-questions.forEach((q,i)=>{
+            opts += `
+                <div class="option${cls}" onclick="select(${i},${j})">
+                    ${op}
+                </div>
+            `;
+        });
 
-const div=document.createElement("div");
+        div.innerHTML = `
+            <h3>${q.q}</h3>
+            ${opts}
+            <div class="navigation">
+                <button class="prev" onclick="prev()" ${i === 0 ? "disabled" : ""}>
+                    Anterior
+                </button>
+                ${i === questions.length - 1
+                    ? `<button class="finish" onclick="finish()">Finalizar</button>`
+                    : `<button class="next" onclick="next()">Siguiente</button>`
+                }
+            </div>
+        `;
+        quiz.appendChild(div);
+    });
 
-div.className="question"+(i===current?" active":"");
-
-let opts="";
-
-q.o.forEach((op,j)=>{
-
-let cls="";
-
-if(answers[i]===j){
-
-cls+=" selected";
-
+    update();
 }
 
-if(done){
-
-if(j===q.a){
-
-cls+=" correct-answer";
-
-}
-
-if(answers[i]===j && j!==q.a){
-
-cls+=" wrong-answer";
-
-}
-
-}
-
-opts+=`
-
-<div class="option${cls}" onclick="select(${i},${j})">
-${op}
-</div>
-
-`;
-
-});
-
-div.innerHTML=`
-
-<h3>${q.q}</h3>
-
-${opts}
-
-<div class="navigation">
-
-<button class="prev"
-onclick="prev()"
-${i===0?"disabled":""}>
-Anterior
-</button>
-
-${i===questions.length-1
-
-? `<button class="finish" onclick="finish()">Finalizar</button>`
-
-: `<button class="next" onclick="next()">Siguiente</button>`
-
-}
-
-</div>
-
-`;
-
-quiz.appendChild(div);
-
-});
-
-update();
-
-}
-
-function select(i,j){
-
-if(done)return;
-
-answers[i]=j;
-
-render();
-
+function select(i, j){
+    if (done) return;
+    answers[i] = j;
+    render();
 }
 
 function next(){
-
-if(answers[current]===null){
-
-alert("Responde primero");
-
-return;
-
-}
-
-current++;
-
-render();
-
-window.scrollTo({
-top:0,
-behavior:"smooth"
-});
-
+    if (answers[current] === null) {
+        alert("Responde primero");
+        return;
+    }
+    current++;
+    render();
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
 }
 
 function prev(){
-
-current--;
-
-render();
-
+    current--;
+    render();
 }
 
 function update(){
-
-document.getElementById("qNum").textContent=current+1;
-
-document.getElementById("progress").textContent=
-answers.filter(a=>a!==null).length+" / "+questions.length;
-
+    document.getElementById("qNum").textContent = current + 1;
+    document.getElementById("progress").textContent =
+        answers.filter(a => a !== null).length + " / " + questions.length;
 }
 
 function finish(){
-
-done=true;
-
-let correct=0;
-let html="";
-
-questions.forEach((q,i)=>{
-
-if(answers[i]===q.a){
-
-correct++;
-
-}
-
-});
-
-let porcentaje=Math.round(
-(correct/questions.length)*100
-);
-
-const bots=[];
-
-for(let i=1;i<=30;i++){
-
-bots.push({
-nombre:`Bot_${i}`,
-nota:Math.floor(Math.random()*71)+30
-});
-
-}
-
-const ranking=[
-...bots,
-{
-nombre:"Tú",
-nota:porcentaje,
-usuario:true
-}
-];
-
-ranking.sort((a,b)=>b.nota-a.nota);
-
-let debajo=ranking.filter(
-p=>porcentaje>p.nota
-).length;
-
-let iguales=ranking.filter(
-p=>porcentaje===p.nota
-).length;
-
-let percentil=Math.round(
-(
-debajo+(0.5*iguales)
-)
-/ranking.length
-*100
-);
-
-if(percentil<1){
-percentil=1;
-}
-
-if(percentil>99){
-percentil=99;
-}
-
-let nivel="Muy bajo";
-
-if(percentil>=90){
-nivel="Excelente";
-}
-else if(percentil>=75){
-nivel="Muy bueno";
-}
-else if(percentil>=60){
-nivel="Bueno";
-}
-else if(percentil>=40){
-nivel="Promedio";
-}
-else if(percentil>=20){
-nivel="Bajo";
-}
-
-questions.forEach((q,i)=>{
-
-let estado="";
-
-if(answers[i]===null){
-estado="sin-responder";
-}
-else if(answers[i]===q.a){
-estado="correcta";
-}
-else{
-estado="incorrecta";
-}
-
-html+=`
-
-<div class="review-item ${estado}">
-
-<h3>
-Pregunta ${i+1}
-</h3>
-
-<p style="margin-top:8px;">
-${q.q}
-</p>
-
-<br>
-
-<p>
-<b>Tu respuesta:</b>
-
-${
-answers[i]!==null
-?
-q.o[answers[i]]
-:
-"Sin responder"
-}
-</p>
-
-<p style="margin-top:6px;">
-<b>Correcta:</b>
-${q.o[q.a]}
-</p>
-
-<div class="explicacion">
-${q.exp}
-</div>
-
-</div>
-
-`;
-
-});
-
-let rankingHTML="";
-
-ranking.forEach((p,i)=>{
-
-rankingHTML+=`
-
-<div style="
-display:flex;
-justify-content:space-between;
-padding:10px;
-margin:6px 0;
-background:${p.usuario ? "#dbeafe" : "white"};
-border-radius:10px;
-">
-
-<span>
-#${i+1} - ${p.nombre}
-</span>
-
-<span>
-${p.nota}%
-</span>
-
-</div>
-
-`;
-
-});
-
-document.getElementById("score").innerHTML=
-
-`
-
-<button class="toggle-ranking" onclick="toggleRanking()">
-☰ Ranking
-</button>
-
-<div id="rankingPanel" class="ranking-panel">
-
-<div class="ranking-content">
-
-<h3 style="margin-bottom:15px;">
-🏆 Ranking General
-</h3>
-
-${rankingHTML}
-
-</div>
-
-</div>
-
-<div style="
-background:white;
-padding:20px;
-border-radius:15px;
-margin-bottom:20px;
-">
-
-<h2>
-${correct}/${questions.length}
-</h2>
-
-<p style="
-font-size:26px;
-font-weight:bold;
-margin-top:10px;
-color:#1d4ed8;
-">
-${porcentaje}%
-</p>
-
-<div style="
-display:flex;
-flex-direction:column;
-gap:12px;
-margin-top:20px;
-max-width:250px;
-">
-
-<div class="stat-box">
-<span>Percentil</span><br>
-<b>${percentil}%</b>
-</div>
-
-<div class="stat-box">
-<span>Nivel</span><br>
-<b>${nivel}</b>
-</div>
-
-</div>
-
-</div>
-
-`;
-
-document.getElementById("review")
-.innerHTML=html;
-
-document.getElementById("resultado")
-.style.display="block";
-
-document.getElementById("resultado")
-.scrollIntoView({
-behavior:"smooth"
-});
-
-if(window.enviarResultadoFinal){
-
-window.enviarResultadoFinal({
-correctas:correct,
-total:questions.length,
-porcentaje
-});
-
-}
-
-render();
-
+    done = true;
+
+    let correct = 0;
+    let html = "";
+
+    questions.forEach((q, i) => {
+        if (answers[i] === q.a) {
+            correct++;
+        }
+    });
+
+    let porcentaje = Math.round((correct / questions.length) * 100);
+
+    const bots = [];
+    for (let i = 1; i <= 30; i++) {
+        bots.push({
+            nombre: `Bot_${i}`,
+            nota: Math.floor(Math.random() * 71) + 30
+        });
+    }
+
+    const ranking = [
+        ...bots,
+        {
+            nombre: "Tú",
+            nota: porcentaje,
+            usuario: true
+        }
+    ];
+
+    ranking.sort((a, b) => b.nota - a.nota);
+
+    let debajo = ranking.filter(p => porcentaje > p.nota).length;
+    let iguales = ranking.filter(p => porcentaje === p.nota).length;
+
+    let percentil = Math.round(
+        ((debajo + (0.5 * iguales)) / ranking.length) * 100
+    );
+
+    if (percentil < 1) percentil = 1;
+    if (percentil > 99) percentil = 99;
+
+    let nivel = "Muy bajo";
+    if (percentil >= 90) {
+        nivel = "Excelente";
+    } else if (percentil >= 75) {
+        nivel = "Muy bueno";
+    } else if (percentil >= 60) {
+        nivel = "Bueno";
+    } else if (percentil >= 40) {
+        nivel = "Promedio";
+    } else if (percentil >= 20) {
+        nivel = "Bajo";
+    }
+
+    questions.forEach((q, i) => {
+        let estado = "";
+        if (answers[i] === null) {
+            estado = "sin-responder";
+        } else if (answers[i] === q.a) {
+            estado = "correcta";
+        } else {
+            estado = "incorrecta";
+        }
+
+        html += `
+            <div class="review-item ${estado}">
+                <h3>Pregunta ${i + 1}</h3>
+                <p style="margin-top:8px;">${q.q}</p>
+                <br>
+                <p><b>Tu respuesta:</b> ${answers[i] !== null ? q.o[answers[i]] : "Sin responder"}</p>
+                <p style="margin-top:6px;"><b>Correcta:</b> ${q.o[q.a]}</p>
+                <div class="explicacion">${q.exp}</div>
+            </div>
+        `;
+    });
+
+    let rankingHTML = "";
+    ranking.forEach((p, i) => {
+        rankingHTML += `
+            <div style="display:flex; justify-content:space-between; padding:10px; margin:6px 0; background:${p.usuario ? "#dbeafe" : "white"}; border-radius:10px;">
+                <span>#${i + 1} - ${p.nombre}</span>
+                <span>${p.nota}%</span>
+            </div>
+        `;
+    });
+
+    document.getElementById("score").innerHTML = `
+        <button class="toggle-ranking" onclick="toggleRanking()">
+            ☰ Ranking
+        </button>
+        <div id="rankingPanel" class="ranking-panel hidden">
+            <div class="ranking-content">
+                <h3 style="margin-bottom:15px;">🏆 Ranking General</h3>
+                ${rankingHTML}
+            </div>
+        </div>
+        <div style="background:white; padding:20px; border-radius:15px; margin-bottom:20px;">
+            <h2>${correct}/${questions.length}</h2>
+            <p style="font-size:26px; font-weight:bold; margin-top:10px; color:#1d4ed8;">${porcentaje}%</p>
+            <div style="display:flex; flex-direction:column; gap:12px; margin-top:20px; max-width:250px;">
+                <div class="stat-box">
+                    <span>Percentil</span><br>
+                    <b>${percentil}%</b>
+                </div>
+                <div class="stat-box">
+                    <span>Nivel</span><br>
+                    <b>${nivel}</b>
+                </div>
+            </div>
+        </div>
+    `;
+
+    document.getElementById("review").innerHTML = html;
+    document.getElementById("resultado").style.display = "block";
+    document.getElementById("resultado").scrollIntoView({
+        behavior: "smooth"
+    });
+
+    if (window.enviarResultadoFinal) {
+        window.enviarResultadoFinal({
+            correctas: correct,
+            total: questions.length,
+            porcentaje
+        });
+    }
+
+    render();
 }
 
 function toggleRanking(){
-
-document.getElementById("rankingPanel")
-.classList.toggle("hidden");
-
+    document.getElementById("rankingPanel").classList.toggle("hidden");
 }
 
 window.mostrarResultadosParty = function(data){
+    const ranking = [...data].sort((a, b) => b.porcentaje - a.porcentaje);
+    let html = `<div class="party-grid">`;
 
-const ranking=[...data].sort((a,b)=>b.porcentaje-a.porcentaje);
+    ranking.forEach((j, i) => {
+        let medal = i === 0 ? "🥇" : i === 1 ? "🥈" : i === 2 ? "🥉" : "";
+        html += `
+            <div class="party-card">
+                <h3>${medal} Jugador ${i + 1}</h3>
+                <p>${j.correctas}/${j.total}</p>
+                <p>${j.porcentaje}%</p>
+            </div>
+        `;
+    });
 
-let html=`<div class="party-grid">`;
+    html += `</div>`;
+    html += `<div class="party-winner">🏆 Mejor: ${ranking[0].porcentaje}%</div>`;
 
-ranking.forEach((j,i)=>{
-
-let medal=i===0?"🥇":i===1?"🥈":i===2?"🥉":"";
-
-html+=`
-
-<div class="party-card">
-
-<h3>
-${medal} Jugador ${i+1}
-</h3>
-
-<p>
-${j.correctas}/${j.total}
-</p>
-
-<p>
-${j.porcentaje}%
-</p>
-
-</div>
-
-`;
-
-});
-
-html+=`</div>`;
-
-html+=`
-
-<div class="party-winner">
-
-🏆 Mejor:
-${ranking[0].porcentaje}%
-
-</div>
-
-`;
-
-document.getElementById("partyResultadoContenido")
-.innerHTML=html;
-
-document.getElementById("resultadoParty")
-.style.display="block";
-
+    document.getElementById("partyResultadoContenido").innerHTML = html;
+    document.getElementById("resultadoParty").style.display = "block";
 };
 
+// Carga inicial
 render();
-
 </script>
 
 <script type="module" src="../party/party-timer.js"></script>
