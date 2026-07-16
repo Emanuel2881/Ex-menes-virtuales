@@ -1,12 +1,9 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Habilidad Numérica 11</title>
+<title>Examen Habilidad Numérica 1</title>
 
 <style>
 
@@ -17,186 +14,216 @@ padding:0;
 }
 
 body{
-
 font-family:Arial, Helvetica, sans-serif;
-
-background:linear-gradient(
-135deg,
-#eff6ff,
-#dbeafe,
-#bfdbfe
-);
-
+background:linear-gradient(135deg,#eff6ff,#dbeafe,#bfdbfe);
 color:#1e3a8a;
-
 min-height:100vh;
-
 padding:30px 15px;
-
 }
-
 
 .container{
-
 max-width:950px;
-
 margin:auto;
-
-background:white;
-
+background:rgba(255,255,255,0.95);
 padding:25px;
-
 border-radius:24px;
-
-box-shadow:0 12px 35px rgba(0,0,0,.08);
-
+box-shadow:0 12px 35px rgba(0,0,0,0.08);
 }
-
 
 .header{
-
 text-align:center;
-
 margin-bottom:20px;
-
 }
-
 
 .header h1{
-
 font-size:2.3rem;
-
 color:#1d4ed8;
-
+margin-bottom:10px;
 }
 
+.header p{
+color:#1e40af;
+}
 
 .stats-bar{
-
 display:flex;
-
+gap:12px;
 justify-content:center;
-
-gap:15px;
-
 margin-bottom:20px;
-
+flex-wrap:wrap;
 }
-
 
 .stat-box{
-
-background:#eff6ff;
-
+background:#fff;
 border:1px solid #93c5fd;
-
-padding:15px;
-
-border-radius:15px;
-
-text-align:center;
-
-min-width:150px;
-
-}
-
-
-
-/* BOTON DIAGRAMA */
-
-.diagram-btn{
-
-background:#2563eb;
-
-color:white;
-
-border:none;
-
+border-radius:14px;
 padding:12px 18px;
-
-border-radius:12px;
-
-cursor:pointer;
-
-font-weight:bold;
-
+min-width:150px;
+text-align:center;
 }
 
-
-
-/* CONTENEDOR DIAGRAMA */
-
-
-.diagram-wrapper{
-
+.question{
 display:none;
-
-margin-top:20px;
-
-}
-
-
-.diagram-wrapper.show{
-
-display:block;
-
-animation:fade .3s;
-
-}
-
-
-.diagram-card{
-
 background:#eff6ff;
-
 border:1px solid #93c5fd;
-
 border-radius:20px;
-
-overflow:hidden;
-
-}
-
-
-.diagram-header{
-
-background:#2563eb;
-
-color:white;
-
-padding:15px;
-
-font-weight:bold;
-
-text-align:center;
-
-}
-
-
-.diagram-body{
-
 padding:20px;
-
-text-align:center;
-
 }
 
+.question.active{
+display:block;
+}
 
+.option{
+background:#dbeafe;
+padding:12px;
+margin:10px 0;
+border-radius:12px;
+cursor:pointer;
+transition:0.2s;
+}
+
+.option:hover{
+background:#bfdbfe;
+}
+
+.option.selected{
+background:#2563eb;
+color:white;
+}
+
+.option.correct-answer{
+background:#bbf7d0;
+}
+
+.option.wrong-answer{
+background:#fecaca;
+}
+
+.navigation{
+text-align:center;
+margin-top:15px;
+}
+
+button{
+border:none;
+padding:10px 15px;
+border-radius:10px;
+margin:5px;
+cursor:pointer;
+}
+
+.next{
+background:#2563eb;
+color:white;
+}
+
+.prev{
+background:#93c5fd;
+}
+
+.finish{
+background:#1d4ed8;
+color:white;
+}
+
+.actions{
+text-align:center;
+margin-top:20px;
+}
+
+.result{
+display:none;
+margin-top:20px;
+padding:20px;
+background:#eff6ff;
+border-radius:15px;
+}
+
+.review-item{
+background:white;
+padding:14px;
+margin:12px 0;
+border-left:5px solid gray;
+border-radius:12px;
+}
+
+.correcta{
+border-left-color:green;
+}
+
+.incorrecta{
+border-left-color:red;
+}
+
+.sin-responder{
+border-left-color:orange;
+}
+
+.explicacion{
+margin-top:8px;
+font-size:0.92rem;
+color:#374151;
+}
+
+/* PANEL RANKING */
+
+.ranking-panel{
+position:fixed;
+left:0;
+top:0;
+width:320px;
+height:100vh;
+background:white;
+box-shadow:4px 0 20px rgba(0,0,0,0.1);
+padding:20px;
+overflow-y:auto;
+z-index:999;
+transition:transform 0.3s ease;
+}
+
+.ranking-panel.hidden{
+transform:translateX(-100%);
+}
+
+.toggle-ranking{
+position:fixed;
+left:15px;
+top:15px;
+z-index:1000;
+background:#2563eb;
+color:white;
+border:none;
+padding:10px 15px;
+border-radius:12px;
+cursor:pointer;
+font-weight:bold;
+}
+
+.ranking-content{
+margin-top:60px;
+}
+
+@media(max-width:768px){
+
+.ranking-panel{
+width:260px;
+}
+
+.container{
+padding:18px;
+}
+
+}
 
 .flow-box{
 
 background:white;
-
 border:2px solid #2563eb;
-
 border-radius:15px;
-
 padding:15px;
-
-margin:12px auto;
-
+margin:10px auto;
 max-width:280px;
-
 font-weight:bold;
 
 }
@@ -204,254 +231,38 @@ font-weight:bold;
 
 .arrow{
 
-font-size:30px;
-
+font-size:28px;
 color:#2563eb;
 
 }
 
-
-.flow-line{
-
-margin:10px;
-
-font-weight:bold;
-
-}
-
-
-.yes{
-
-color:green;
-
-}
-
-
-.no{
-
-color:red;
-
-}
-
-
-.flow-result{
-
-background:#bbf7d0;
-
-border:2px solid green;
-
-border-radius:15px;
-
-padding:15px;
-
-margin:15px auto;
-
-max-width:220px;
-
-font-weight:bold;
-
-}
-
-
-.return-box{
-
-background:#fee2e2;
-
-border:2px dashed red;
-
-border-radius:15px;
-
-padding:15px;
-
-margin:20px auto;
-
-max-width:300px;
-
-font-weight:bold;
-
-}
-
-
-/* PREGUNTAS */
-
-
-.question{
-
-display:none;
-
-background:#eff6ff;
-
-border-radius:20px;
-
-padding:20px;
-
-}
-
-
-.question.active{
-
-display:block;
-
-}
-
-
-.option{
-
-background:#dbeafe;
-
-padding:12px;
-
-margin:10px 0;
-
-border-radius:12px;
-
-cursor:pointer;
-
-}
-
-
-.option:hover{
-
-background:#bfdbfe;
-
-}
-
-
-.selected{
-
-background:#2563eb;
-
-color:white;
-
-}
-
-
-button{
-
-padding:10px 15px;
-
-border:none;
-
-border-radius:10px;
-
-cursor:pointer;
-
-margin:5px;
-
-}
-
-
-.next{
-
-background:#2563eb;
-
-color:white;
-
-}
-
-
-.finish{
-
-background:#1d4ed8;
-
-color:white;
-
-}
-
-
-.result{
-
-display:none;
-
-margin-top:20px;
-
-background:#eff6ff;
-
-padding:20px;
-
-border-radius:15px;
-
-}
-
-
-
-@keyframes fade{
-
-from{
-
-opacity:0;
-
-transform:translateY(-10px);
-
-}
-
-to{
-
-opacity:1;
-
-transform:translateY(0);
-
-}
-
-}
-
-
 </style>
-
-
 </head>
-
 
 <body>
 
-
 <div class="container">
 
-
 <div class="header">
-
-<h1>🧠 Habilidad Numérica 11</h1>
-
+<h1>🧠 Habilidad Numérica 1</h1>
 <p>Examen interactivo</p>
-
 </div>
-
-
 
 <div class="stats-bar">
 
+<div class="stat-box">
+<span>Pregunta</span><br>
+<b id="qNum">1</b> / 24
+</div>
 
 <div class="stat-box">
-
-Pregunta
-
-<br>
-
-<b id="qNum">1</b> / 40
-
+<span>Progreso</span><br>
+<b id="progress">0 / 24</b>
 </div>
-
-
-<div class="stat-box">
-
-Progreso
-
-<br>
-
-<b id="progress">0 / 40</b>
-
-</div>
-
-
-</div>
-
-
-
-<div style="text-align:center">
+<div style="text-align:center;margin-bottom:20px;">
 
 <button 
-class="diagram-btn"
-id="btnDiagrama"
+class="next"
 onclick="toggleDiagrama()">
 
 📋 Mostrar diagrama de flujo
@@ -461,124 +272,84 @@ onclick="toggleDiagrama()">
 </div>
 
 
+<div id="contenedorDiagrama" style="display:none;margin-bottom:20px;">
+
+<div style="
+background:#eff6ff;
+border:1px solid #93c5fd;
+border-radius:20px;
+padding:20px;
+text-align:center;
+">
 
 
-
-<!-- DIAGRAMA CORREGIDO -->
-
-
-<div id="contenedorDiagrama" class="diagram-wrapper">
-
-
-<div class="diagram-card">
-
-
-<div class="diagram-header">
-
+<h3 style="margin-bottom:20px;">
 Diagrama de flujo (Preguntas 39 y 40)
-
-</div>
-
-
-
-<div class="diagram-body">
-
+</h3>
 
 
 <div class="flow-box">
-
-🔢 Introducir un número
-
+🔢 Introducir número
 </div>
-
 
 <div class="arrow">
-
 ⬇
-
 </div>
 
 
 <div class="flow-box">
-
 ➕ Sumar 6
-
 </div>
-
 
 <div class="arrow">
-
 ⬇
-
 </div>
-
 
 
 <div class="flow-box">
-
-❓ ¿Número mayor que 12?
-
+❓ ¿Número > 12?
 </div>
 
 
-
-<div class="flow-line">
-
-<span class="yes">
-
+<div style="margin:10px;">
+<span style="color:green;font-weight:bold;">
 Sí ↓
-
 </span>
 
 &nbsp;&nbsp;&nbsp;&nbsp;
 
-<span class="no">
-
-No ↩
-
+<span style="color:red;font-weight:bold;">
+No ↩ volver a sumar 6
 </span>
 
 </div>
 
 
-
 <div class="flow-box">
-
 ➗ Dividir entre 2
-
 </div>
 
 
 <div class="arrow">
-
 ⬇
-
 </div>
-
 
 
 <div class="flow-box">
-
 ❓ ¿Número ≤ 3?
-
 </div>
 
 
+<div style="margin:10px;">
 
-<div class="flow-line">
-
-<span class="yes">
-
+<span style="color:green;font-weight:bold;">
 Sí ↓
-
 </span>
 
 &nbsp;&nbsp;&nbsp;&nbsp;
 
-<span class="no">
-
-No ↩
-
+<span style="color:red;font-weight:bold;">
+No ↩ dividir otra vez
 </span>
 
 </div>
@@ -586,112 +357,52 @@ No ↩
 
 
 <div class="flow-box">
-
-✖️ Multiplicar por 4
-
+✖ Multiplicar por 4
 </div>
-
 
 
 <div class="arrow">
-
 ⬇
-
 </div>
 
 
-
-<div class="flow-result">
+<div class="flow-box" style="
+background:#bbf7d0;
+border-color:green;
+">
 
 🏁 Resultado final
 
 </div>
 
 
-
-
-<div class="return-box">
-
-↩ Si es NO:
-
-<br>
-
-Regresar a:
-
-<br>
-
-➗ Dividir entre 2
-
 </div>
 
-
-
+</div>
 </div>
 
+<div id="quiz"></div>
 
+<div class="actions">
+<button onclick="finish()">Calificar</button>
+<button onclick="location.reload()">Reiniciar</button>
 </div>
-
-
-</div>
-
-
-
-
-
-<div id="quiz">
-
-<!-- AQUÍ VA TU BANCO DE PREGUNTAS -->
-
-</div>
-
-
 
 <div class="result" id="resultado">
 
-<h2>Resultado Final</h2>
+<h2 style="margin-bottom:20px;">
+Resultado Final
+</h2>
 
 <p id="score"></p>
 
-</div>
-
-
+<div id="review"></div>
 
 </div>
 
-
-
-
+</div>
 
 <script>
-
-function toggleDiagrama(){
-
-
-let d=document.getElementById("contenedorDiagrama");
-
-let b=document.getElementById("btnDiagrama");
-
-
-
-d.classList.toggle("show");
-
-
-
-if(d.classList.contains("show")){
-
-b.innerHTML="📋 Ocultar diagrama de flujo";
-
-}
-
-else{
-
-b.innerHTML="📋 Mostrar diagrama de flujo";
-
-}
-
-
-
-}
 
 const questions = [
   {
@@ -935,6 +646,32 @@ const questions = [
     exp: "Recorriendo el diagrama: 2+6=8 (no >12)→8+6=14 (>12)→14/2=7 (1ª vez)→7/2=3.5 (2ª vez)→3.5/2=1.75 (3ª vez)→1.75≤3, fin. Se divide entre 2 exactamente 3 veces."
   }
 ];
+
+];
+function toggleDiagrama(){
+
+let d=document.getElementById("contenedorDiagrama");
+
+let b=event.target;
+
+
+if(d.style.display==="none"){
+
+d.style.display="block";
+
+b.innerHTML="📋 Ocultar diagrama de flujo";
+
+}
+else{
+
+d.style.display="none";
+
+b.innerHTML="📋 Mostrar diagrama de flujo";
+
+}
+
+}
+  
 let current=0;
 let answers=new Array(questions.length).fill(null);
 let done=false;
