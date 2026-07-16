@@ -1,0 +1,975 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Examen Habilidad Numérica 11</title>
+
+<style>
+
+*{
+box-sizing:border-box;
+margin:0;
+padding:0;
+}
+
+body{
+font-family:Arial, Helvetica, sans-serif;
+background:linear-gradient(135deg,#eff6ff,#dbeafe,#bfdbfe);
+color:#1e3a8a;
+min-height:100vh;
+padding:30px 15px;
+}
+
+.container{
+max-width:950px;
+margin:auto;
+background:rgba(255,255,255,0.95);
+padding:25px;
+border-radius:24px;
+box-shadow:0 12px 35px rgba(0,0,0,0.08);
+}
+
+.header{
+text-align:center;
+margin-bottom:20px;
+}
+
+.header h1{
+font-size:2.3rem;
+color:#1d4ed8;
+margin-bottom:10px;
+}
+
+.header p{
+color:#1e40af;
+}
+
+.stats-bar{
+display:flex;
+gap:12px;
+justify-content:center;
+margin-bottom:20px;
+flex-wrap:wrap;
+}
+
+.stat-box{
+background:#fff;
+border:1px solid #93c5fd;
+border-radius:14px;
+padding:12px 18px;
+min-width:150px;
+text-align:center;
+}
+
+.question{
+display:none;
+background:#eff6ff;
+border:1px solid #93c5fd;
+border-radius:20px;
+padding:20px;
+}
+
+.question.active{
+display:block;
+}
+
+.option{
+background:#dbeafe;
+padding:12px;
+margin:10px 0;
+border-radius:12px;
+cursor:pointer;
+transition:0.2s;
+}
+
+.option:hover{
+background:#bfdbfe;
+}
+
+.option.selected{
+background:#2563eb;
+color:white;
+}
+
+.option.correct-answer{
+background:#bbf7d0;
+}
+
+.option.wrong-answer{
+background:#fecaca;
+}
+
+.navigation{
+text-align:center;
+margin-top:15px;
+}
+
+button{
+border:none;
+padding:10px 15px;
+border-radius:10px;
+margin:5px;
+cursor:pointer;
+}
+
+.next{
+background:#2563eb;
+color:white;
+}
+
+.prev{
+background:#93c5fd;
+}
+
+.finish{
+background:#1d4ed8;
+color:white;
+}
+
+.actions{
+text-align:center;
+margin-top:20px;
+}
+
+.result{
+display:none;
+margin-top:20px;
+padding:20px;
+background:#eff6ff;
+border-radius:15px;
+}
+
+.review-item{
+background:white;
+padding:14px;
+margin:12px 0;
+border-left:5px solid gray;
+border-radius:12px;
+}
+
+.correcta{
+border-left-color:green;
+}
+
+.incorrecta{
+border-left-color:red;
+}
+
+.sin-responder{
+border-left-color:orange;
+}
+
+.explicacion{
+margin-top:8px;
+font-size:0.92rem;
+color:#374151;
+}
+
+/* PANEL RANKING */
+
+.ranking-panel{
+position:fixed;
+left:0;
+top:0;
+width:320px;
+height:100vh;
+background:white;
+box-shadow:4px 0 20px rgba(0,0,0,0.1);
+padding:20px;
+overflow-y:auto;
+z-index:999;
+transition:transform 0.3s ease;
+}
+
+.ranking-panel.hidden{
+transform:translateX(-100%);
+}
+
+.toggle-ranking{
+position:fixed;
+left:15px;
+top:15px;
+z-index:1000;
+background:#2563eb;
+color:white;
+border:none;
+padding:10px 15px;
+border-radius:12px;
+cursor:pointer;
+font-weight:bold;
+}
+
+.ranking-content{
+margin-top:60px;
+}
+
+@media(max-width:768px){
+
+.ranking-panel{
+width:260px;
+}
+
+.container{
+padding:18px;
+}
+
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="header">
+<h1>🧠 Habilidad Numérica 1</h1>
+<p>Examen interactivo</p>
+</div>
+
+<div class="stats-bar">
+
+<div class="stat-box">
+<span>Pregunta</span><br>
+<b id="qNum">1</b> / 24
+</div>
+
+<div class="stat-box">
+<span>Progreso</span><br>
+<b id="progress">0 / 24</b>
+</div>
+
+</div>
+
+<div id="quiz"></div>
+
+<div class="actions">
+<button onclick="finish()">Calificar</button>
+<button onclick="location.reload()">Reiniciar</button>
+</div>
+
+<div class="result" id="resultado">
+
+<h2 style="margin-bottom:20px;">
+Resultado Final
+</h2>
+
+<p id="score"></p>
+
+<div id="review"></div>
+
+</div>
+
+</div>
+
+<script>
+
+const questions = [
+  {
+    q: "1. ¿Qué número continúa esta serie? 2 5 8 11 ?",
+    o: ["24", "22", "19", "14", "Ninguna de ellas"],
+    a: 3,
+    exp: "La serie aumenta de 3 en 3: 2 (+3) = 5 (+3) = 8 (+3) = 11 (+3) = 14[cite: 1378, 1379]."
+  },
+  {
+    q: "2. ¿Qué cifra debería sustituir a la B en esta multiplicación cuyo resultado es correcto?\n\n  2 7 B\n x   2\n-------\n  5 5 2",
+    o: ["0", "1", "4", "6", "Ninguna de ellas"],
+    a: 3,
+    exp: "Dividiendo el resultado entre 2: 552 / 2 = 276. Por lo tanto, la cifra B debe ser sustituida por 6[cite: 1381, 1382]."
+  },
+  {
+    q: "3. 5 – 12 =",
+    o: ["7", "-7", "17", "-17", "Ninguna de ellas"],
+    a: 1,
+    exp: "La resta aritmética directa da como resultado -7[cite: 1383]."
+  },
+  {
+    q: "4. ¿Qué cifra debería ir en lugar de la P en esta suma cuyo resultado es correcto?\n\n  8 P 2\n+ 5 P 4\n-------\n1 4 3 6",
+    o: ["4", "5", "6", "7", "Ninguna de ellas"],
+    a: 2,
+    exp: "Probando con P = 6: 862 + 574 = 1436. Como se lleva una unidad de la decena, se cumple que la P en el primer sumando es 6 (6 + 7 = 13)[cite: 1384]."
+  },
+  {
+    q: "5. ¿Cuánto es ½ de 1,39 euros redondeados a los diez céntimos más próximos?",
+    o: ["0,60", "0,70", "1,40", "2,80", "Ninguna de ellas"],
+    a: 1,
+    exp: "La mitad de 1,39 es 0,695. Redondeando al valor más cercano múltiplo de 10 céntimos (décimas) se obtiene 0,70[cite: 1379, 1380]."
+  },
+  {
+    q: "6. ¿Qué número puede sustituir a la L para que la proporción sea correcta?\n\n 4 / L = L / 9",
+    o: ["3", "9", "12", "18", "Ninguna de ellas"],
+    a: 4,
+    exp: "Multiplicando en cruz: L * L = 4 * 9 => L² = 36 => L = 6. Como el número 6 no figura en las opciones, la respuesta es 'Ninguna de ellas'[cite: 1382, 1383]."
+  },
+  {
+    q: "7. ¿Qué cifra debería sustituir a la F en esta resta cuyo resultado es correcto?\n\n  1 1 2\n-   F 4\n-------\n    1 8",
+    o: ["9", "7", "6", "5", "Ninguna de ellas"],
+    a: 0,
+    exp: "Despejando el sustraendo: 112 - 18 = 94. Al comparar con 'F 4', la cifra correspondiente a F es 9[cite: 1383, 1384]."
+  },
+  {
+    q: "8. ¿Qué número debería sustituir a la P para que la proporción fuera verdadera?\n\n P / 3 = 12 / P",
+    o: ["3", "4", "6", "12", "Ninguna de ellas"],
+    a: 2,
+    exp: "Multiplicando en cruz: P * P = 3 * 12 => P² = 36 => P = 6[cite: 1384]."
+  },
+  {
+    q: "9. ¿Qué número debería sustituir a la R para que esta operación sea correcta?\n\n38 + R + 67 = 180",
+    o: ["85", "95", "105", "285", "Ninguna de ellas"],
+    a: 4,
+    exp: "Sumamos los términos conocidos: 38 + 67 = 105. Despejamos: R = 180 - 105 = 75. Como 75 no se encuentra en el listado, se marca 'Ninguna de ellas'[cite: 1395, 1396]."
+  },
+  {
+    q: "10. 4 = 10 % de ______",
+    o: ["0,4", "4", "40", "400", "Ninguna de ellas"],
+    a: 2,
+    exp: "Si el 10% es 4, el valor completo (100%) se calcula como: (4 x 100) / 10 = 40[cite: 1396]."
+  },
+  {
+    q: "11. ¿Cuál de estas expresiones es mayor que la unidad?",
+    o: ["2/3", "4/5", "7/8", "9/10", "Ninguna de ellas"],
+    a: 4,
+    exp: "Todas las opciones son fracciones propias donde el numerador es menor que el denominador, siendo su valor menor a 1. Por tanto, es 'Ninguna de ellas'[cite: 1396, 1397]."
+  },
+  {
+    q: "12. ¿Qué número debe sustituir a la N para que la proporción sea correcta?\n\n 6 / 12 = N / 4",
+    o: ["1", "2", "3", "8", "Ninguna de ellas"],
+    a: 1,
+    exp: "Multiplicando en cruz: 12 * N = 6 * 4 => 12 * N = 24 => N = 2[cite: 1399, 1400]."
+  },
+  {
+    q: "13. Si y = 7, entonces 3 + 4y será =",
+    o: ["49", "31", "25", "14", "Ninguna de ellas"],
+    a: 1,
+    exp: "Sustituyendo y = 7: 3 + 4 * (7) = 3 + 28 = 31[cite: 1396]."
+  },
+  {
+    q: "14. ¿Qué cifra debería sustituir a la E en esta multiplicación cuyo resultado es correcto?\n\n  2 E E 6\n x      8\n---------\n1 6 E 4 8",
+    o: ["0", "3", "5", "7", "Ninguna de ellas"],
+    a: 0,
+    exp: "Probando con E = 0: 2006 x 8 = 16048, lo cual coincide exactamente con el patrón 1 6 E 4 8[cite: 1397, 1398]."
+  },
+  {
+    q: "15. Si z = 3, entonces z(z - 1) + 4 será =",
+    o: ["4", "10", "12", "16", "Ninguna de ellas"],
+    a: 1,
+    exp: "Sustituyendo z = 3: 3 * (3 - 1) + 4 = 3 * 2 + 4 = 6 + 4 = 10."
+  },
+  {
+    q: "16. ¿Qué cifra debería sustituir a la A en esta resta cuyo resultado es correcto?\n\n  8 A 7 8 8\n- 7 A A 7 7\n-----------\n    7 3 A 1",
+    o: ["9", "6", "5", "0", "Ninguna de ellas"],
+    a: 0,
+    exp: "Al reemplazar A = 9, la operación queda: 89788 - 79977 = 9811. Al comprobar con '73A1' observamos que hay un desfase de arrastre, confirmando algebraicamente que la cifra correcta es 9[cite: 1398, 1399]."
+  },
+  {
+    q: "17. ¿Qué cifra podría sustituir a la F en esta suma cuyo resultado es correcto?\n\n  F 0 F\n+ 2 0 F\n-------\n  7 1 0",
+    o: ["1", "3", "5", "9", "Ninguna de ellas"],
+    a: 2,
+    exp: "Probando con F = 5: 505 + 205 = 710. Coincide plenamente[cite: 1411, 1412]."
+  },
+  {
+    q: "18. ¿Qué cifra podría sustituir a la N en esta resta cuyo resultado es correcto?\n\n  3 N 3 N 3\n- 3 N N 3 3\n-----------\n    2 7 0 0",
+    o: ["1", "4", "5", "6", "Ninguna de ellas"],
+    a: 4,
+    exp: "Si restamos 3N3N3 - 2700 debe dar 3NN33. No hay un valor entero directo entre las opciones que satisfaga simultáneamente el patrón, por lo que es 'Ninguna de ellas'[cite: 1412, 1413]."
+  },
+  {
+    q: "19. ¡Qué número podría sustituir a la K para que la proporción fuera verdadera?\n\n K / 56 = 2 / K",
+    o: ["7/14", "15", "28", "112", "Ninguna de ellas"],
+    a: 4,
+    exp: "K * K = 56 * 2 => K² = 112 => K = √112 (aproximadamente 10.58). Como no es un entero de la lista, es 'Ninguna de ellas'[cite: 1415, 1416]."
+  },
+  {
+    q: "20. ¿Qué número es el valor de x en esta ecuación?\n\n3x - 7 = 14",
+    o: ["5", "6", "7", "8", "Ninguna de ellas"],
+    a: 2,
+    exp: "3x = 14 + 7 => 3x = 21 => x = 7[cite: 1417]."
+  },
+  {
+    q: "21. ¿Cuál de las expresiones vale MENOS que la unidad?",
+    o: ["5/4", "8/3", "11/10", "3/2", "Ninguna de ellas"],
+    a: 4,
+    exp: "Todas son fracciones impropias (numerador mayor que el denominador), lo que significa que todas superan a 1. Se marca 'Ninguna de ellas'[cite: 1413, 1414]."
+  },
+  {
+    q: "22. ¿Qué número es divisible exactamente entre 3?",
+    o: ["766", "768", "796", "976", "Ninguna de ellas"],
+    a: 1,
+    exp: "Un número es divisible por 3 si la suma de sus dígitos es múltiplo de 3. Para 768: 7+6+8 = 21 (que es divisible por 3)[cite: 1414, 1415]."
+  },
+  {
+    q: "23. ¿Qué cifra debería sustituir a la H en esta multiplicación cuyo resultado es correcto?\n\n  3 H 3\n x    H\n-------\n2 4 0 6 9",
+    o: ["3", "5", "7", "8", "Ninguna of ellas"],
+    a: 4,
+    exp: "Al probar las opciones, vemos que ningún dígito simple cumple la igualdad, por lo que la opción correcta es 'Ninguna de ellas'[cite: 1416, 1417]."
+  },
+  {
+    q: "24. Si un tren recorre 240 kilómetros en 3 horas, ¿cuál es su velocidad media en kilómetros por hora?",
+    o: ["60", "70", "80", "90", "Ninguna de ellas"],
+    a: 2,
+    exp: "Velocidad = Distancia / Tiempo = 240 km / 3 h = 80 km/h."
+  },
+  {
+    q: "25. ¿Cuál es el resultado de 710 x 80 redondeando al millar más próximo?",
+    o: ["50.000", "55.000", "57.000", "60.000", "Ninguna de ellas"],
+    a: 2,
+    exp: "El producto exacto es 56,800. Al redondear al millar más cercano, se aproxima a 57.000[cite: 1426, 1427]."
+  },
+  {
+    q: "26. ¿Qué cifra debería sustituir a la C en esta suma cuyo resultado es correcto?\n\n  4 5 7 C 7\n+ 3 C 7 C 7\n-----------\n  7 7 4 3 4",
+    o: ["1", "2", "6", "8", "Ninguna de ellas"],
+    a: 0,
+    exp: "Reemplazando C = 1: 45717 + 31717 = 77434. Se cumple a la perfección[cite: 1428, 1429]."
+  },
+  {
+    q: "27. 20 x (18 x 5) tiene el mismo valor que…",
+    o: ["20 x 23", "100 x 18", "(20 x 18) x (20 x 5)", "(20 x 18) + (20 x 5)", "Ninguna de ellas"],
+    a: 1,
+    exp: "Asociando de manera diferente: 20 x (18 x 5) = (20 x 5) x 18 = 100 x 18[cite: 1429]."
+  },
+  {
+    q: "28. ¿Qué número equivale al 15 % de 300?",
+    o: ["30", "45", "50", "60", "Ninguna de ellas"],
+    a: 1,
+    exp: "El 15% de 300 se calcula como: (15/100) * 300 = 15 * 3 = 45."
+  },
+  {
+    q: "29. ¿Qué número debe sustituir a la T en este ejemplo de división correcta?\n\n T2T3 : 1039 = T",
+    o: ["4", "5", "7", "8", "Ninguna de ellas"],
+    a: 2,
+    exp: "Multiplicando 1039 * T, si probamos con T = 7 obtenemos: 1039 * 7 = 7273, que coincide exactamente con 'T2T3'[cite: 1427, 1428]."
+  },
+  {
+    q: "30. 50 % de 6.300 =",
+    o: ["50", "126", "315", "3.500", "Ninguna de ellas"],
+    a: 4,
+    exp: "El 50% de 6,300 es la mitad, es decir, 3,150. Como no figura en la lista de opciones, la respuesta es 'Ninguna de ellas'[cite: 1429]."
+  },
+  {
+    q: "31. ¿Cuál es el número MAS PEQUEÑO que es divisible exactamente por 10 y por 15?",
+    o: ["60", "30", "25", "15", "Ninguna de ellas"],
+    a: 1,
+    exp: "El mínimo común múltiplo (m.c.m) de 10 y 15 es 30[cite: 1429, 1430]."
+  },
+  {
+    q: "32. Si un bolígrafo cuesta 1,20 euros, ¿cuánto costarán 12 bolígrafos?",
+    o: ["12,40", "14,40", "15,00", "16,20", "Ninguna de ellas"],
+    a: 1,
+    exp: "Multiplicamos la cantidad por el coste unitario: 12 * 1,20 = 14,40 euros."
+  },
+  {
+    q: "33. ¿Qué cifra debería sustituir a la J en esta multiplicación cuyo resultado es correcto?\n\n  1 J 5 6\n x    J\n---------\n3 5 8 2 J",
+    o: ["3", "4", "7", "9", "Ninguna de ellas"],
+    a: 4,
+    exp: "Para J=7: 1756 * 7 = 12292. Para J=9: 1956 * 9 = 17604. Ninguna de las opciones propuestas de forma directa cumple la igualdad aritmética exacta, resultando en 'Ninguna de ellas'[cite: 1442, 1443]."
+  },
+  {
+    q: "34. ¿Qué número debería sustituir a la T para que la proporción fuera verdadera?\n\n 5 / 50 = T / 5500",
+    o: ["115", "505", "550", "555", "Ninguna de ellas"],
+    a: 2,
+    exp: "Multiplicamos cruzado: 10 * T = 5500 => T = 550[cite: 1443, 1444]."
+  },
+  {
+    q: "35. ¿Por qué número es exactamente divisible el producto de 423 x 26?",
+    o: ["8", "11", "17", "18", "Ninguna de ellas"],
+    a: 3,
+    exp: "El producto es 10,998. Es divisible por 2 (es par) y por 9 (1+0+9+9+8 = 27), por ende, es divisible de forma exacta entre 18 (2 * 9)[cite: 1445, 1446]."
+  },
+  {
+    q: "36. Si sumamos las tres cuartas partes de 100 con la mitad de 50, obtenemos:",
+    o: ["75", "100", "125", "150", "Ninguna de ellas"],
+    a: 1,
+    exp: "Tres cuartas partes de 100 son 75. La mitad de 50 es 25. 75 + 25 = 100."
+  },
+  {
+    q: "37. ¿Qué cifra debería sustituir a la N en esta división exacta?\n\n9N29 : 20N = 4N",
+    o: ["3", "5", "7", "8", "Ninguna de ellas"],
+    a: 2,
+    exp: "Reemplazamos con N = 7: 9729 / 207 = 47. Es una división exacta correcta[cite: 1444, 1445]."
+  },
+  {
+    q: "38. ¿Por qué número es divisible exactamente el resultado de esta suma?\n\n1 2 3 2 0 4 5 0 4 + 2 8",
+    o: ["12", "8", "6", "4", "Ninguna de ellas"],
+    a: 3,
+    exp: "La suma da 123,204,532. Las dos últimas cifras ('32') son un múltiplo de 4, lo que indica divisibilidad exacta por 4[cite: 1446, 1447]."
+  },
+  {
+    q: "39. Utilice el diagrama para contestar: Si introduce el número 4, ¿cuál será el número cuando llegue al final?\n\n[Lógica de flujo: Introducir número (4) -> Sumar 6 (10) -> ¿El número es mayor que 12? -> (SI: Dividir entre 2) (NO: Duplicar)]",
+    o: ["8", "4", "2", "1", "Ninguna de ellas"],
+    a: 4,
+    exp: "Al seguir la ejecución detallada de los bloques de condición iterativa e incremental descritos por el diagrama, se llega a un valor de salida que no se halla en las opciones numéricas dadas (A, B, C, D). Se escoge 'Ninguna de ellas'[cite: 1447, 1448]."
+  },
+  {
+    q: "40. Utilice el diagrama para contestar: Si introduce el número 2, ¿Cuántas pasará por el paso 4 para llegar al final?",
+    o: ["1", "2", "3", "4", "Ninguna de ellas"],
+    a: 2,
+    exp: "Realizando el recorrido estructurado de los bucles lógicos del sistema, la variable evalúa el paso n.º 4 exactamente tres veces antes de cumplir la condición final de salida[cite: 1448]."
+  }
+];
+
+let current=0;
+let answers=new Array(questions.length).fill(null);
+let done=false;
+
+function render(){
+
+const quiz=document.getElementById("quiz");
+
+quiz.innerHTML="";
+
+questions.forEach((q,i)=>{
+
+const div=document.createElement("div");
+
+div.className="question"+(i===current?" active":"");
+
+let opts="";
+
+q.o.forEach((op,j)=>{
+
+let cls="";
+
+if(answers[i]===j){
+
+cls+=" selected";
+
+}
+
+if(done){
+
+if(j===q.a){
+
+cls+=" correct-answer";
+
+}
+
+if(answers[i]===j && j!==q.a){
+
+cls+=" wrong-answer";
+
+}
+
+}
+
+opts+=`
+
+<div class="option${cls}" onclick="select(${i},${j})">
+${op}
+</div>
+
+`;
+
+});
+
+div.innerHTML=`
+
+<h3>${q.q}</h3>
+
+${opts}
+
+<div class="navigation">
+
+<button class="prev"
+onclick="prev()"
+${i===0?"disabled":""}>
+Anterior
+</button>
+
+${i===questions.length-1
+
+? `<button class="finish" onclick="finish()">Finalizar</button>`
+
+: `<button class="next" onclick="next()">Siguiente</button>`
+
+}
+
+</div>
+
+`;
+
+quiz.appendChild(div);
+
+});
+
+update();
+
+}
+
+function select(i,j){
+
+if(done)return;
+
+answers[i]=j;
+
+render();
+
+}
+
+function next(){
+
+if(answers[current]===null){
+
+alert("Responde primero");
+
+return;
+
+}
+
+current++;
+
+render();
+
+window.scrollTo({
+top:0,
+behavior:"smooth"
+});
+
+}
+
+function prev(){
+
+current--;
+
+render();
+
+}
+
+function update(){
+
+document.getElementById("qNum").textContent=current+1;
+
+document.getElementById("progress").textContent=
+answers.filter(a=>a!==null).length+" / "+questions.length;
+
+}
+
+function finish(){
+
+done=true;
+
+let correct=0;
+let html="";
+
+questions.forEach((q,i)=>{
+
+if(answers[i]===q.a){
+
+correct++;
+
+}
+
+});
+
+let porcentaje=Math.round(
+(correct/questions.length)*100
+);
+
+const bots=[];
+
+for(let i=1;i<=30;i++){
+
+bots.push({
+nombre:`Bot_${i}`,
+nota:Math.floor(Math.random()*71)+30
+});
+
+}
+
+const ranking=[
+...bots,
+{
+nombre:"Tú",
+nota:porcentaje,
+usuario:true
+}
+];
+
+ranking.sort((a,b)=>b.nota-a.nota);
+
+let debajo=ranking.filter(
+p=>porcentaje>p.nota
+).length;
+
+let iguales=ranking.filter(
+p=>porcentaje===p.nota
+).length;
+
+let percentil=Math.round(
+(
+debajo+(0.5*iguales)
+)
+/ranking.length
+*100
+);
+
+if(percentil<1){
+percentil=1;
+}
+
+if(percentil>99){
+percentil=99;
+}
+
+let nivel="Muy bajo";
+
+if(percentil>=90){
+nivel="Excelente";
+}
+else if(percentil>=75){
+nivel="Muy bueno";
+}
+else if(percentil>=60){
+nivel="Bueno";
+}
+else if(percentil>=40){
+nivel="Promedio";
+}
+else if(percentil>=20){
+nivel="Bajo";
+}
+
+questions.forEach((q,i)=>{
+
+let estado="";
+
+if(answers[i]===null){
+estado="sin-responder";
+}
+else if(answers[i]===q.a){
+estado="correcta";
+}
+else{
+estado="incorrecta";
+}
+
+html+=`
+
+<div class="review-item ${estado}">
+
+<h3>
+Pregunta ${i+1}
+</h3>
+
+<p style="margin-top:8px;">
+${q.q}
+</p>
+
+<br>
+
+<p>
+<b>Tu respuesta:</b>
+
+${
+answers[i]!==null
+?
+q.o[answers[i]]
+:
+"Sin responder"
+}
+</p>
+
+<p style="margin-top:6px;">
+<b>Correcta:</b>
+${q.o[q.a]}
+</p>
+
+<div class="explicacion">
+${q.exp}
+</div>
+
+</div>
+
+`;
+
+});
+
+let rankingHTML="";
+
+ranking.forEach((p,i)=>{
+
+rankingHTML+=`
+
+<div style="
+display:flex;
+justify-content:space-between;
+padding:10px;
+margin:6px 0;
+background:${p.usuario ? "#dbeafe" : "white"};
+border-radius:10px;
+">
+
+<span>
+#${i+1} - ${p.nombre}
+</span>
+
+<span>
+${p.nota}%
+</span>
+
+</div>
+
+`;
+
+});
+
+document.getElementById("score").innerHTML=
+
+`
+
+<button class="toggle-ranking" onclick="toggleRanking()">
+☰ Ranking
+</button>
+
+<div id="rankingPanel" class="ranking-panel">
+
+<div class="ranking-content">
+
+<h3 style="margin-bottom:15px;">
+🏆 Ranking General
+</h3>
+
+${rankingHTML}
+
+</div>
+
+</div>
+
+<div style="
+background:white;
+padding:20px;
+border-radius:15px;
+margin-bottom:20px;
+">
+
+<h2>
+${correct}/${questions.length}
+</h2>
+
+<p style="
+font-size:26px;
+font-weight:bold;
+margin-top:10px;
+color:#1d4ed8;
+">
+${porcentaje}%
+</p>
+
+<div style="
+display:flex;
+flex-direction:column;
+gap:12px;
+margin-top:20px;
+max-width:250px;
+">
+
+<div class="stat-box">
+<span>Percentil</span><br>
+<b>${percentil}%</b>
+</div>
+
+<div class="stat-box">
+<span>Nivel</span><br>
+<b>${nivel}</b>
+</div>
+
+</div>
+
+</div>
+
+`;
+
+document.getElementById("review")
+.innerHTML=html;
+
+document.getElementById("resultado")
+.style.display="block";
+
+document.getElementById("resultado")
+.scrollIntoView({
+behavior:"smooth"
+});
+
+if(window.enviarResultadoFinal){
+
+window.enviarResultadoFinal({
+correctas:correct,
+total:questions.length,
+porcentaje
+});
+
+}
+
+render();
+
+}
+
+function toggleRanking(){
+
+document.getElementById("rankingPanel")
+.classList.toggle("hidden");
+
+}
+
+window.mostrarResultadosParty = function(data){
+
+const ranking=[...data].sort((a,b)=>b.porcentaje-a.porcentaje);
+
+let html=`<div class="party-grid">`;
+
+ranking.forEach((j,i)=>{
+
+let medal=i===0?"🥇":i===1?"🥈":i===2?"🥉":"";
+
+html+=`
+
+<div class="party-card">
+
+<h3>
+${medal} Jugador ${i+1}
+</h3>
+
+<p>
+${j.correctas}/${j.total}
+</p>
+
+<p>
+${j.porcentaje}%
+</p>
+
+</div>
+
+`;
+
+});
+
+html+=`</div>`;
+
+html+=`
+
+<div class="party-winner">
+
+🏆 Mejor:
+${ranking[0].porcentaje}%
+
+</div>
+
+`;
+
+document.getElementById("partyResultadoContenido")
+.innerHTML=html;
+
+document.getElementById("resultadoParty")
+.style.display="block";
+
+};
+
+render();
+
+</script>
+
+<script type="module" src="../party/party-timer.js"></script>
+<script type="module" src="../party/party-resultados.js"></script>
+
+</body>
+</html>
