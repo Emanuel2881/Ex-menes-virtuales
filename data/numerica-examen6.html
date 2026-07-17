@@ -94,10 +94,12 @@ color:white;
 
 .option.correct-answer{
 background:#bbf7d0;
+color:#166534;
 }
 
 .option.wrong-answer{
 background:#fecaca;
+color:#991b1b;
 }
 
 .navigation{
@@ -112,6 +114,11 @@ border-radius:10px;
 margin:5px;
 cursor:pointer;
 font-weight:bold;
+transition: background 0.2s;
+}
+
+button:hover{
+opacity: 0.9;
 }
 
 .next{
@@ -121,6 +128,7 @@ color:white;
 
 .prev{
 background:#c4b5fd;
+color:#5b21b6;
 }
 
 .finish{
@@ -272,7 +280,7 @@ const questions = [
 
 {q:"Serie: 4, 6, 9, 13, 18, ?",o:["22","23","24","25","Ninguna"],a:2,exp:"Se suma 2,3,4,5,6 → 18+6=24"},
 
-{q:"Serie: 1, 2, 6, 24, 120, ?",o:["240","360","600","720","Ninguna"],a:3,exp:"Serie factorial: 1!,2!,3!,4!,5!,6! → 6!=720",
+{q:"Serie: 1, 2, 6, 24, 120, ?",o:["240","360","600","720","Ninguna"],a:3,exp:"Serie factorial: 1!,2!,3!,4!,5!,6! → 6!=720"},
 
 {q:"Serie: 100, 90, 70, 40, 0, ?",o:["-20","-30","-40","-50","Ninguna"],a:3,exp:"Se resta 10,20,30,40,50 → 0-50=-50"},
 
@@ -296,7 +304,7 @@ const questions = [
 
 {q:"(12×3)+(15÷5)",o:["30","33","36","39","Ninguna"],a:3,exp:"36+3=39"},
 
-{q:"Serie: 5, 7, 11, 19, 35, ?",o:["51","57","67","75","Ninguna"],a:2,exp:"Se suma 2, 4, 8, 16 y luego 32 → 35+32=67",
+{q:"Serie: 5, 7, 11, 19, 35, ?",o:["51","57","67","75","Ninguna"],a:2,exp:"Se suma 2, 4, 8, 16 y luego 32 → 35+32=67"},
 
 {q:"Si x² = 49, ¿x?",o:["5","6","7","8","Ninguna"],a:2,exp:"x=7"},
 
@@ -642,7 +650,7 @@ document.getElementById("score").innerHTML=
 ☰ Ranking
 </button>
 
-<div id="rankingPanel" class="ranking-panel">
+<div id="rankingPanel" class="ranking-panel hidden">
 
 <div class="ranking-content">
 
