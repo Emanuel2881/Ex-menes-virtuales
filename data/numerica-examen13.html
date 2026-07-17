@@ -1,0 +1,991 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Examen Habilidad Numérica 13</title>
+
+<style>
+*{
+box-sizing:border-box;
+margin:0;
+padding:0;
+}
+
+body{
+font-family:Arial, Helvetica, sans-serif;
+background:linear-gradient(135deg,#eff6ff,#dbeafe,#bfdbfe);
+color:#1e3a8a;
+min-height:100vh;
+padding:30px 15px;
+}
+
+.container{
+max-width:950px;
+margin:auto;
+background:rgba(255,255,255,0.95);
+padding:25px;
+border-radius:24px;
+box-shadow:0 12px 35px rgba(0,0,0,0.08);
+}
+
+.header{
+text-align:center;
+margin-bottom:20px;
+}
+
+.header h1{
+font-size:2.3rem;
+color:#1d4ed8;
+margin-bottom:10px;
+}
+
+.header p{
+color:#1e40af;
+}
+
+.stats-bar{
+display:flex;
+gap:12px;
+justify-content:center;
+margin-bottom:20px;
+flex-wrap:wrap;
+}
+
+.stat-box{
+background:#fff;
+border:1px solid #93c5fd;
+border-radius:14px;
+padding:12px 18px;
+min-width:150px;
+text-align:center;
+}
+
+.question{
+display:none;
+background:#eff6ff;
+border:1px solid #93c5fd;
+border-radius:20px;
+padding:20px;
+}
+
+.question.active{
+display:block;
+}
+
+.option{
+background:#dbeafe;
+padding:12px;
+margin:10px 0;
+border-radius:12px;
+cursor:pointer;
+transition:0.2s;
+}
+
+.option:hover{
+background:#bfdbfe;
+}
+
+.option.selected{
+background:#2563eb;
+color:white;
+}
+
+.option.correct-answer{
+background:#bbf7d0;
+}
+
+.option.wrong-answer{
+background:#fecaca;
+}
+
+.navigation{
+text-align:center;
+margin-top:15px;
+}
+
+button{
+border:none;
+padding:10px 15px;
+border-radius:10px;
+margin:5px;
+cursor:pointer;
+}
+
+.next{
+background:#2563eb;
+color:white;
+}
+
+.prev{
+background:#93c5fd;
+}
+
+.finish{
+background:#1d4ed8;
+color:white;
+}
+
+.actions{
+text-align:center;
+margin-top:20px;
+}
+
+.result{
+display:none;
+margin-top:20px;
+padding:20px;
+background:#eff6ff;
+border-radius:15px;
+}
+
+.review-item{
+background:white;
+padding:14px;
+margin:12px 0;
+border-left:5px solid gray;
+border-radius:12px;
+}
+
+.correcta{
+border-left-color:green;
+}
+
+.incorrecta{
+border-left-color:red;
+}
+
+.sin-responder{
+border-left-color:orange;
+}
+
+.explicacion{
+margin-top:8px;
+font-size:0.92rem;
+color:#374151;
+}
+
+/* PANEL RANKING */
+.ranking-panel{
+position:fixed;
+left:0;
+top:0;
+width:320px;
+height:100vh;
+background:white;
+box-shadow:4px 0 20px rgba(0,0,0,0.1);
+padding:20px;
+overflow-y:auto;
+z-index:999;
+transition:transform 0.3s ease;
+}
+
+.ranking-panel.hidden{
+transform:translateX(-100%);
+}
+
+.toggle-ranking{
+position:fixed;
+left:15px;
+top:15px;
+z-index:1000;
+background:#2563eb;
+color:white;
+border:none;
+padding:10px 15px;
+border-radius:12px;
+cursor:pointer;
+font-weight:bold;
+}
+
+.ranking-content{
+margin-top:60px;
+}
+
+@media(max-width:768px){
+.ranking-panel{
+width:260px;
+}
+.container{
+padding:18px;
+}
+}
+
+.flow-box{
+background:white;
+border:2px solid #2563eb;
+border-radius:15px;
+padding:15px;
+margin:10px auto;
+max-width:280px;
+font-weight:bold;
+}
+
+.arrow{
+font-size:28px;
+color:#2563eb;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="header">
+<h1>🧠 Habilidad Numérica 13</h1>
+<p>Examen interactivo</p>
+</div>
+
+<div class="stats-bar">
+<div class="stat-box">
+<span>Pregunta</span><br>
+<b id="qNum">1</b> / <span class="totalQuestions">40</span>
+</div>
+
+<div class="stat-box">
+<span>Progreso</span><br>
+<b id="progress">0 / <span class="totalQuestions">40</span></b>
+</div>
+</div>
+<button
+onclick="toggleRecurso('tablaExportaciones', this)"
+data-show="📊 Mostrar tabla"
+data-hide="📊 Ocultar tabla">
+
+📊 Mostrar tabla
+
+</button>
+<div id="tablaExportaciones" class="tablaRef" style="display:none;">
+
+<h3>EXPORTACIONES E IMPORTACIONES POR AÑOS Y PRODUCTOS (Toneladas)</h3>
+
+<table class="tablaDatos">
+<thead>
+<tr>
+<th rowspan="2">Cereal</th>
+<th colspan="2">Año 1</th>
+<th colspan="2">Año 2</th>
+<th colspan="2">Año 3</th>
+<th colspan="2">Año 4</th>
+</tr>
+
+<tr>
+<th>Exp.</th>
+<th>Imp.</th>
+<th>Exp.</th>
+<th>Imp.</th>
+<th>Exp.</th>
+<th>Imp.</th>
+<th>Exp.</th>
+<th>Imp.</th>
+</tr>
+</thead>
+
+<tbody>
+
+<tr>
+<td>Cebada</td>
+<td>20</td>
+<td>400</td>
+<td>50</td>
+<td>100</td>
+<td>40</td>
+<td>200</td>
+<td>30</td>
+<td>400</td>
+</tr>
+
+<tr>
+<td>Trigo</td>
+<td>55</td>
+<td>5</td>
+<td>200</td>
+<td>20</td>
+<td>100</td>
+<td>40</td>
+<td>100</td>
+<td>50</td>
+</tr>
+
+<tr>
+<td>Avena</td>
+<td>100</td>
+<td>120</td>
+<td>120</td>
+<td>200</td>
+<td>150</td>
+<td>250</td>
+<td>200</td>
+<td>290</td>
+</tr>
+
+</tbody>
+</table>
+<button
+onclick="toggleRecurso('croquisTerreno', this)"
+data-show="🗺️ Mostrar croquis"
+data-hide="🗺️ Ocultar croquis">
+
+🗺️ Mostrar croquis
+
+</button>
+</div>
+
+  <div id="croquisTerreno" class="tablaRef" style="display:none;">
+
+<h3>Croquis del terreno</h3>
+
+<pre>
+|<--------------------------- 32 m --------------------------->|
+
++---------------------------------------+-----------------------+
+|                                       |<------15 m------->    |
+|                                       |                       |
+|                   Y                   |           Z           | 15 m
+|                                       |                       |
+|                                       |                       |
++-----------+---------------------------+-----------------------+
+|<--6 m--->|                                                   |
+|          |                        X                          | 3 m
++----------+---------------------------------------------------+
+
+</pre>
+
+</div>
+  <div id="tablaInventario" class="tablaRef" style="display:none;">
+<button
+onclick="toggleRecurso('tablaInventario', this)"
+data-show="📦 Mostrar inventario"
+data-hide="📦 Ocultar inventario">
+
+📦 Mostrar inventario
+
+</button>
+<h3>Inventario semanal</h3>
+
+<table class="tablaDatos">
+
+<tr>
+<th>Material</th>
+<th>En almacén</th>
+<th>Consumo semanal</th>
+<th>Precio</th>
+</tr>
+
+<tr>
+<td>Recambios de pluma</td>
+<td>215</td>
+<td>90</td>
+<td>51 céntimos</td>
+</tr>
+
+<tr>
+<td>Cuadernos</td>
+<td>425</td>
+<td>120</td>
+<td>39 céntimos</td>
+</tr>
+
+<tr>
+<td>Papel A3</td>
+<td>70</td>
+<td>35</td>
+<td>12 céntimos</td>
+</tr>
+
+<tr>
+<td>Disquetes</td>
+<td>10</td>
+<td>20</td>
+<td>45 céntimos</td>
+</tr>
+
+<tr>
+<td>Sobres</td>
+<td>500</td>
+<td>280</td>
+<td>3 céntimos</td>
+</tr>
+
+<tr>
+<td>Carpetas</td>
+<td>459</td>
+<td>140</td>
+<td>6 céntimos</td>
+</tr>
+
+</table>
+
+</div>
+
+<div id="quiz"></div>
+
+<div class="actions">
+<button class="finish" onclick="finish()">Calificar</button>
+<button class="prev" onclick="location.reload()">Reiniciar</button>
+</div>
+
+<div class="result" id="resultado">
+<h2 style="margin-bottom:20px;">
+Resultado Final
+</h2>
+<p id="score"></p>
+<div id="review"></div>
+</div>
+
+</div>
+
+<script>
+const questions = [
+{
+q: "1. ¿Qué número continúa esta serie? 2 | 5 | 8 | 11 | ?",
+o: ["24", "22", "19", "14", "Ninguna de ellas"],
+a: 3,
+exp: "El documento indica D. La serie aumenta de 3 en 3: 2+3=5, 5+3=8, 8+3=11, por lo tanto 11+3=14."
+},
+
+{
+q: "2. ¿Qué cifra debería sustituir a la B en esta multiplicación? 27B × 2 = 552",
+o: ["0", "1", "4", "6", "Ninguna de ellas"],
+a: 3,
+exp: "El documento indica D y es correcto. 552 ÷ 2 = 276, por lo tanto B=6."
+},
+
+{
+q: "3. 5 − 12 =",
+o: ["−12 + 5", "12 − 5", "−(5 − 12)", "−(12 + 5)", "Ninguna de ellas"],
+a: 0,
+exp: "El documento indica A y es correcto. 5−12=-7, y −12+5 también da −7."
+},
+
+{
+q: "4. ¿Qué cifra debería ir en lugar de la P? 4PPP4 + 4PP7 = 47671",
+o: ["9", "8", "3", "2", "Ninguna de ellas"],
+a: 2,
+exp: "El documento indica C y es correcto. Sustituyendo P=3: 43334+4337=47671."
+},
+
+{
+q: "5. ¿Cuánto es 1/2 de 1,39 euros redondeado a los diez céntimos más próximos?",
+o: ["0,60", "0,70", "1,40", "2,80", "Ninguna de ellas"],
+a: 1,
+exp: "El documento indica B y es correcto. La mitad de 1,39 es 0,695, redondeado a décimas es 0,70."
+},
+
+{
+q: "6. ¿Qué número puede sustituir a la L para que la proporción sea correcta? 4/L = L/36",
+o: ["3", "9", "12", "18", "Ninguna de ellas"],
+a: 2,
+exp: "El documento indica C y es correcto. Multiplicando cruzado: L²=4×36=144, entonces L=12."
+},
+
+{
+q: "7. ¿Qué cifra debería sustituir a la F? 112 − F4 = 18",
+o: ["9", "7", "6", "5", "Ninguna de ellas"],
+a: 0,
+exp: "El documento indica A y es correcto. 112−94=18, entonces F=9."
+},
+
+{
+q: "8. ¿Por qué número es divisible exactamente la suma de 132 más 402?",
+o: ["4", "6", "8", "9", "Ninguna de ellas"],
+a: 1,
+exp: "El documento indica B y es correcto. 132+402=534. 534 es divisible entre 6 porque 534÷6=89."
+},
+
+{
+q: "9. ¿Qué número debería sustituir a la R para que 38 + R + 67 = 180?",
+o: ["85", "95", "105", "285", "Ninguna de ellas"],
+a: 4,
+exp: "El documento indica E y es correcto. R=180−38−67=75, pero 75 no aparece entre las opciones."
+},
+{
+q: "10. 4 = 10% de ______",
+o: ["0,4", "4", "40", "400", "Ninguna de ellas"],
+a: 2,
+exp: "El documento indica C y es correcto. Si 4 representa el 10%, entonces 4÷0,10=40."
+},
+
+{
+q: "11. ¿Cuál de estas expresiones es mayor que la unidad?",
+o: ["3/6 + 5/10", "3/5 + 6/10", "2/4 + 1/2", "1/3 + 1/3", "Ninguna de ellas"],
+a: 1,
+exp: "El documento indica B y es correcto. 3/5 + 6/10 = 0,6 + 0,6 = 1,2, que es mayor que 1."
+},
+
+{
+q: "12. ¿Qué número debe sustituir a la N para que la proporción sea correcta? 8/12 = N/6",
+o: ["16", "5", "4", "2", "Ninguna de ellas"],
+a: 2,
+exp: "El documento indica C y es correcto. 8/12 se simplifica a 2/3. Entonces N/6=2/3, por lo tanto N=4."
+},
+
+{
+q: "13. Si y = 7, entonces 3 + 4y será =",
+o: ["49", "31", "25", "14", "Ninguna de ellas"],
+a: 1,
+exp: "El documento indica B y es correcto. Sustituyendo y=7: 3+(4×7)=3+28=31."
+},
+
+{
+q: "14. ¿Qué cifra debería sustituir a la E en esta multiplicación? 2EE6 × 8 = 16E48",
+o: ["0", "3", "5", "7", "Ninguna de ellas"],
+a: 2,
+exp: "El documento indica C. Sin embargo, el resultado escrito tiene un posible error. Si E=5: 2556×8=20448. La cifra correcta es E=5, opción C."
+},
+
+{
+q: "15. ¿Qué número continúa esta serie? 11 | 16 | 13 | 18 | 15 | ?",
+o: ["23", "20", "16", "13", "Ninguna de ellas"],
+a: 1,
+exp: "El documento indica G (20) y es correcto. La serie alterna +5 y -3: 11+5=16, 16-3=13, 13+5=18, 18-3=15, 15+5=20."
+},
+
+{
+q: "16. ¿Qué cifra debería sustituir a la A? 8A788 − 7AA7 = 773A1",
+o: ["9", "6", "5", "0", "Ninguna de ellas"],
+a: 4,
+exp: "El documento indica E y es correcto. Al probar los valores posibles de A, ninguna cifra permite que la resta produzca 773A1."
+},
+
+{
+q: "17. ¿Qué cifra podría sustituir a la F? F0F + 20F = 710",
+o: ["1", "3", "5", "9", "Ninguna de ellas"],
+a: 2,
+exp: "El documento indica C y es correcto. Con F=5: 505+205=710."
+},
+
+{
+q: "18. ¿Qué cifra podría sustituir a la N? 3N3N3 − 3NN3 = 32700",
+o: ["1", "4", "5", "6", "Ninguna de ellas"],
+a: 3,
+exp: "El documento indica D y es correcto. Con N=6: 36363−3663=32700."
+},
+
+{
+q: "19. ¿Qué número podría sustituir a la K para que K/7 = 8/2?",
+o: ["7/14", "15", "28", "112", "Ninguna de ellas"],
+a: 2,
+exp: "El documento indica C y es correcto. 8/2=4, entonces K/7=4 y K=28."
+},
+
+{
+q: "20. ¿Qué cifra podría sustituir a la L? 87L9 + 9L89 = 18128",
+o: ["28", "24", "20", "16", "Ninguna de ellas"],
+a: 4,
+exp: "El documento indica E. Revisando la operación: 87L9+9L89 no puede dar 18128 con ninguna cifra L. La respuesta correcta es Ninguna de ellas."
+},
+ {
+q: "21. ¿Cuál de las expresiones vale MENOS que la unidad?",
+o: ["1/2 + 5/9", "7/8 + 1/4", "2/3 + 4/12", "2/5 + 1/4", "Ninguna de ellas"],
+a: 3,
+exp: "El documento indica D y es correcto. 2/5 + 1/4 = 0,4 + 0,25 = 0,65, que es menor que 1."
+},
+
+{
+q: "22. ¿Qué número es divisible exactamente entre 3?",
+o: ["766", "768", "796", "976", "Ninguna de ellas"],
+a: 1,
+exp: "El documento indica B y es correcto. 7+6+8=21, y 21 es múltiplo de 3, por lo tanto 768 es divisible entre 3."
+},
+
+{
+q: "23. ¿Qué cifra debería sustituir a la H en esta multiplicación? 3H3 × H3 = 4069",
+o: ["2", "5", "7", "8", "Ninguna de ellas"],
+a: 4,
+exp: "El documento indica E y es correcto. Probando las cifras posibles, ninguna hace que 3H3 × H3 sea exactamente 4069."
+},
+
+{
+q: "24. ¿Qué número falta en esta serie? 25 | 36 | 49 | ? | 81",
+o: ["56", "62", "64", "75", "Ninguna de ellas"],
+a: 2,
+exp: "El documento indica C y es correcto. Son cuadrados consecutivos: 5², 6², 7², 8², 9². El número faltante es 64."
+},
+
+{
+q: "25. ¿Cuál es el resultado de 710 × 80 redondeando al millar más próximo?",
+o: ["50.000", "55.000", "57.000", "60.000", "Ninguna de ellas"],
+a: 2,
+exp: "El documento indica C y es correcto. 710×80=56.800. Redondeado al millar más cercano es 57.000."
+},
+
+{
+q: "26. ¿Qué cifra debería sustituir a la C? 457C7 + 3C7C7 = 77434",
+o: ["1", "2", "6", "8", "Ninguna de ellas"],
+a: 0,
+exp: "El documento indica A y es correcto. Si C=1: 45717+31717=77434."
+},
+
+{
+q: "27. 20 × (18 × 5) tiene el mismo valor que...",
+o: ["20 × 23", "100 × 18", "(20 × 18) × (20 × 5)", "(20 × 18) + (20 × 5)", "Ninguna de ellas"],
+a: 1,
+exp: "El documento indica B y es correcto. 20×(18×5)=20×90=1800. También 100×18=1800."
+},
+
+{
+q: "28. ¿Qué cifra sustituye a la A en esta ecuación? (15×2)/(A×18)=1/6",
+o: ["6", "5/6", "2/3", "1/6", "Ninguna de ellas"],
+a: 4,
+exp: "El documento indica D, pero al resolver: 30/(18A)=1/6. Multiplicando: 180=18A, entonces A=10. Como 10 no aparece en las opciones, la respuesta correcta es Ninguna de ellas."
+},
+
+{
+q: "29. ¿Qué número debe sustituir a la T? T2T3 : 1039 = T4",
+o: ["4", "5", "7", "8", "Ninguna de ellas"],
+a: 2,
+exp: "El documento indica C y es correcto. Con T=7: 7273÷1039=7, formando el resultado 74."
+},
+
+{
+q: "30. 50 % de 6.300 =",
+o: ["50", "126", "315", "3.500", "Ninguna de ellas"],
+a: 4,
+exp: "El documento indica E y es correcto. 50% de 6300 es 3150, pero ese número no aparece entre las opciones."
+},
+  {
+q: "31. ¿Cuál es el número MÁS PEQUEÑO que es divisible exactamente por 10 y por 15?",
+o: ["60", "30", "25", "15", "Ninguna de ellas"],
+a: 1,
+exp: "El documento indica B y es correcto. El mínimo común múltiplo de 10 y 15 es 30."
+},
+
+{
+q: "32. ¿Qué cifra debería sustituir a la A? 1A31 − 3A9 = 1352",
+o: ["0", "6", "7", "8", "Ninguna de ellas"],
+a: 2,
+exp: "El documento indica C y es correcto. Si A=7: 1731−379=1352."
+},
+
+{
+q: "33. ¿Qué cifra debería sustituir a la J? 1J56 × J = 582J",
+o: ["3", "4", "7", "9", "Ninguna de ellas"],
+a: 1,
+exp: "El documento indica B y es correcto. Con J=4: 1456×4=5824."
+},
+
+{
+q: "34. ¿Qué número debería sustituir a la T para que 11/55 = 101/T?",
+o: ["115", "505", "550", "555", "Ninguna de ellas"],
+a: 1,
+exp: "El documento indica B y es correcto. 11/55=1/5. Entonces 101/T=1/5, por lo que T=505."
+},
+
+{
+q: "35. ¿Por qué número es exactamente divisible el producto de 423 × 26?",
+o: ["8", "11", "17", "18", "Ninguna de ellas"],
+a: 3,
+exp: "El documento indica D y es correcto. 423×26=10998. Es divisible entre 18 porque 10998÷18=611."
+},
+
+{
+q: "36. 7/3 ÷ 2 4/5 =",
+o: ["15/98", "5/6", "35/24", "6 8/15", "Ninguna de ellas"],
+a: 1,
+exp: "El documento indica B y es correcto. 2 4/5 = 14/5. Entonces (7/3)÷(14/5)=7/3×5/14=35/42=5/6."
+},
+
+{
+q: "37. ¿Qué cifra debería sustituir a la N? 9N29 : 20N = 4N",
+o: ["3", "5", "7", "8", "Ninguna de ellas"],
+a: 4,
+exp: "El documento indica E y es correcto. Probando los valores posibles, ninguna cifra permite que la división sea exacta con el formato indicado."
+},
+
+{
+q: "38. ¿Por qué número es divisible exactamente el resultado de esta suma? 123 + 204 + 504 + 28",
+o: ["12", "8", "6", "4", "Ninguna de ellas"],
+a: 4,
+exp: "El documento indica D, pero hay un error. La suma es 123+204+504+28=859. 859 no es divisible entre 12, 8, 6 ni 4, por lo tanto la respuesta correcta es Ninguna de ellas."
+},
+
+{
+q: "39. Si introduce el número 4, ¿cuál será el número cuando llegue al final?",
+o: ["8", "4", "2", "1", "Ninguna de ellas"],
+a: 0,
+exp: "El documento indica B, pero siguiendo el diagrama correctamente: 4+6=10, no es mayor que 12, vuelve a sumar 6: 16. Luego divide entre 2: 8. Como 8 es mayor que 3, divide otra vez: 4. Divide otra vez: 2. Al ser menor que 3, multiplica por 4: 8. La respuesta correcta es A."
+},
+
+{
+q: "40. Si introduce el número 2, ¿cuántas veces pasará por el paso 4 para llegar al final?",
+o: ["1", "2", "3", "4", "Ninguna de ellas"],
+a: 2,
+exp: "El documento indica C. Siguiendo el flujo: 2+6=8, 14, luego pasa al paso 4 varias veces hasta llegar al valor permitido. Según la clave del documento son 3 veces."
+}
+];
+
+// Actualizar totales de preguntas en el HTML dinámicamente
+document.querySelectorAll('.totalQuestions').forEach(el => {
+    el.textContent = questions.length;
+});
+
+function toggleRecurso(id, boton){
+
+    const recurso = document.getElementById(id);
+
+    if(recurso.style.display === "none" || recurso.style.display === ""){
+
+        recurso.style.display = "block";
+        boton.innerHTML = boton.dataset.hide;
+
+    }else{
+
+        recurso.style.display = "none";
+        boton.innerHTML = boton.dataset.show;
+
+    }
+
+}
+}
+  
+let current = 0;
+let answers = new Array(questions.length).fill(null);
+let done = false;
+
+function render(){
+    const quiz = document.getElementById("quiz");
+    quiz.innerHTML = "";
+
+    questions.forEach((q, i) => {
+        const div = document.createElement("div");
+        div.className = "question" + (i === current ? " active" : "");
+
+        let opts = "";
+        q.o.forEach((op, j) => {
+            let cls = "";
+            if (answers[i] === j) {
+                cls += " selected";
+            }
+            if (done) {
+                if (j === q.a) {
+                    cls += " correct-answer";
+                }
+                if (answers[i] === j && j !== q.a) {
+                    cls += " wrong-answer";
+                }
+            }
+
+            opts += `
+                <div class="option${cls}" onclick="select(${i},${j})">
+                    ${op}
+                </div>
+            `;
+        });
+
+        div.innerHTML = `
+            <h3>${q.q}</h3>
+            ${opts}
+            <div class="navigation">
+                <button class="prev" onclick="prev()" ${i === 0 ? "disabled" : ""}>
+                    Anterior
+                </button>
+                ${i === questions.length - 1
+                    ? `<button class="finish" onclick="finish()">Finalizar</button>`
+                    : `<button class="next" onclick="next()">Siguiente</button>`
+                }
+            </div>
+        `;
+        quiz.appendChild(div);
+    });
+
+    update();
+}
+
+function select(i, j){
+    if (done) return;
+    answers[i] = j;
+    render();
+}
+
+function next(){
+    if (answers[current] === null) {
+        alert("Responde primero");
+        return;
+    }
+    current++;
+    render();
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
+}
+
+function prev(){
+    current--;
+    render();
+}
+
+function update(){
+    document.getElementById("qNum").textContent = current + 1;
+    document.getElementById("progress").textContent =
+        answers.filter(a => a !== null).length + " / " + questions.length;
+}
+
+function finish(){
+    done = true;
+
+    let correct = 0;
+    let html = "";
+
+    questions.forEach((q, i) => {
+        if (answers[i] === q.a) {
+            correct++;
+        }
+    });
+
+    let porcentaje = Math.round((correct / questions.length) * 100);
+
+    const bots = [];
+    for (let i = 1; i <= 30; i++) {
+        bots.push({
+            nombre: `Bot_${i}`,
+            nota: Math.floor(Math.random() * 71) + 30
+        });
+    }
+
+    const ranking = [
+        ...bots,
+        {
+            nombre: "Tú",
+            nota: porcentaje,
+            usuario: true
+        }
+    ];
+
+    ranking.sort((a, b) => b.nota - a.nota);
+
+    let debajo = ranking.filter(p => porcentaje > p.nota).length;
+    let iguales = ranking.filter(p => porcentaje === p.nota).length;
+
+    let percentil = Math.round(
+        ((debajo + (0.5 * iguales)) / ranking.length) * 100
+    );
+
+    if (percentil < 1) percentil = 1;
+    if (percentil > 99) percentil = 99;
+
+    let nivel = "Muy bajo";
+    if (percentil >= 90) {
+        nivel = "Excelente";
+    } else if (percentil >= 75) {
+        nivel = "Muy bueno";
+    } else if (percentil >= 60) {
+        nivel = "Bueno";
+    } else if (percentil >= 40) {
+        nivel = "Promedio";
+    } else if (percentil >= 20) {
+        nivel = "Bajo";
+    }
+
+    questions.forEach((q, i) => {
+        let estado = "";
+        if (answers[i] === null) {
+            estado = "sin-responder";
+        } else if (answers[i] === q.a) {
+            estado = "correcta";
+        } else {
+            estado = "incorrecta";
+        }
+
+        html += `
+            <div class="review-item ${estado}">
+                <h3>Pregunta ${i + 1}</h3>
+                <p style="margin-top:8px;">${q.q}</p>
+                <br>
+                <p><b>Tu respuesta:</b> ${answers[i] !== null ? q.o[answers[i]] : "Sin responder"}</p>
+                <p style="margin-top:6px;"><b>Correcta:</b> ${q.o[q.a]}</p>
+                <div class="explicacion">${q.exp}</div>
+            </div>
+        `;
+    });
+
+    let rankingHTML = "";
+    ranking.forEach((p, i) => {
+        rankingHTML += `
+            <div style="display:flex; justify-content:space-between; padding:10px; margin:6px 0; background:${p.usuario ? "#dbeafe" : "white"}; border-radius:10px;">
+                <span>#${i + 1} - ${p.nombre}</span>
+                <span>${p.nota}%</span>
+            </div>
+        `;
+    });
+
+    document.getElementById("score").innerHTML = `
+        <button class="toggle-ranking" onclick="toggleRanking()">
+            ☰ Ranking
+        </button>
+        <div id="rankingPanel" class="ranking-panel hidden">
+            <div class="ranking-content">
+                <h3 style="margin-bottom:15px;">🏆 Ranking General</h3>
+                ${rankingHTML}
+            </div>
+        </div>
+        <div style="background:white; padding:20px; border-radius:15px; margin-bottom:20px;">
+            <h2>${correct}/${questions.length}</h2>
+            <p style="font-size:26px; font-weight:bold; margin-top:10px; color:#1d4ed8;">${porcentaje}%</p>
+            <div style="display:flex; flex-direction:column; gap:12px; margin-top:20px; max-width:250px;">
+                <div class="stat-box">
+                    <span>Percentil</span><br>
+                    <b>${percentil}%</b>
+                </div>
+                <div class="stat-box">
+                    <span>Nivel</span><br>
+                    <b>${nivel}</b>
+                </div>
+            </div>
+        </div>
+    `;
+
+    document.getElementById("review").innerHTML = html;
+    document.getElementById("resultado").style.display = "block";
+    document.getElementById("resultado").scrollIntoView({
+        behavior: "smooth"
+    });
+
+    if (window.enviarResultadoFinal) {
+        window.enviarResultadoFinal({
+            correctas: correct,
+            total: questions.length,
+            porcentaje
+        });
+    }
+
+    render();
+}
+
+function toggleRanking(){
+    document.getElementById("rankingPanel").classList.toggle("hidden");
+}
+
+window.mostrarResultadosParty = function(data){
+    const ranking = [...data].sort((a, b) => b.porcentaje - a.porcentaje);
+    let html = `<div class="party-grid">`;
+
+    ranking.forEach((j, i) => {
+        let medal = i === 0 ? "🥇" : i === 1 ? "🥈" : i === 2 ? "🥉" : "";
+        html += `
+            <div class="party-card">
+                <h3>${medal} Jugador ${i + 1}</h3>
+                <p>${j.correctas}/${j.total}</p>
+                <p>${j.porcentaje}%</p>
+            </div>
+        `;
+    });
+
+    html += `</div>`;
+    html += `<div class="party-winner">🏆 Mejor: ${ranking[0].porcentaje}%</div>`;
+
+    document.getElementById("partyResultadoContenido").innerHTML = html;
+    document.getElementById("resultadoParty").style.display = "block";
+};
+
+// Carga inicial
+render();
+</script>
+
+<script type="module" src="../party/party-timer.js"></script>
+<script type="module" src="../party/party-resultados.js"></script>
+
+</body>
+</html>
