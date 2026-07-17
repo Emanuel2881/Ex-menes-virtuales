@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Examen Habilidad Numérica 15</title>
+
+<style>
+
+*{
+box-sizing:border-box;
+margin:0;
+padding:0;
+}
+
+body{
+font-family:Arial, Helvetica, sans-serif;
+background:linear-gradient(135deg,#eff6ff,#dbeafe,#bfdbfe);
+color:#1e3a8a;
+min-height:100vh;
+padding:30px 15px;
+}
+
+.container{
+max-width:950px;
+margin:auto;
+background:rgba(255,255,255,0.95);
+padding:25px;
+border-radius:24px;
+box-shadow:0 12px 35px rgba(0,0,0,0.08);
+}
+
+.header{
+text-align:center;
+margin-bottom:20px;
+}
+
+.header h1{
+font-size:2.3rem;
+color:#1d4ed8;
+margin-bottom:10px;
+}
+
+.header p{
+color:#1e40af;
+}
+
+.stats-bar{
+display:flex;
+gap:12px;
+justify-content:center;
+margin-bottom:20px;
+flex-wrap:wrap;
+}
+
+.stat-box{
+background:#fff;
+border:1px solid #93c5fd;
+border-radius:14px;
+padding:12px 18px;
+min-width:150px;
+text-align:center;
+}
+
+.question{
+display:none;
+background:#eff6ff;
+border:1px solid #93c5fd;
+border-radius:20px;
+padding:20px;
+}
+
+.question.active{
+display:block;
+}
+
+.option{
+background:#dbeafe;
+padding:12px;
+margin:10px 0;
+border-radius:12px;
+cursor:pointer;
+transition:0.2s;
+}
+
+.option:hover{
+background:#bfdbfe;
+}
+
+.option.selected{
+background:#2563eb;
+color:white;
+}
+
+.option.correct-answer{
+background:#bbf7d0;
+}
+
+.option.wrong-answer{
+background:#fecaca;
+}
+
+.navigation{
+text-align:center;
+margin-top:15px;
+}
+
+button{
+border:none;
+padding:10px 15px;
+border-radius:10px;
+margin:5px;
+cursor:pointer;
+}
+
+.next{
+background:#2563eb;
+color:white;
+}
+
+.prev{
+background:#93c5fd;
+}
+
+.finish{
+background:#1d4ed8;
+color:white;
+}
+
+.actions{
+text-align:center;
+margin-top:20px;
+}
+
+.result{
+display:none;
+margin-top:20px;
+padding:20px;
+background:#eff6ff;
+border-radius:15px;
+}
+
+.review-item{
+background:white;
+padding:14px;
+margin:12px 0;
+border-left:5px solid gray;
+border-radius:12px;
+}
+
+.correcta{
+border-left-color:green;
+}
+
+.incorrecta{
+border-left-color:red;
+}
+
+.sin-responder{
+border-left-color:orange;
+}
+
+.explicacion{
+margin-top:8px;
+font-size:0.92rem;
+color:#374151;
+}
+
+/* PANEL RANKING */
+
+.ranking-panel{
+position:fixed;
+left:0;
+top:0;
+width:320px;
+height:100vh;
+background:white;
+box-shadow:4px 0 20px rgba(0,0,0,0.1);
+padding:20px;
+overflow-y:auto;
+z-index:999;
+transition:transform 0.3s ease;
+}
+
+.ranking-panel.hidden{
+transform:translateX(-100%);
+}
+
+.toggle-ranking{
+position:fixed;
+left:15px;
+top:15px;
+z-index:1000;
+background:#2563eb;
+color:white;
+border:none;
+padding:10px 15px;
+border-radius:12px;
+cursor:pointer;
+font-weight:bold;
+}
+
+.ranking-content{
+margin-top:60px;
+}
+
+@media(max-width:768px){
+
+.ranking-panel{
+width:260px;
+}
+
+.container{
+padding:18px;
+}
+
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="header">
+<h1>🧠 Habilidad Numérica 15</h1>
+<p>Examen interactivo</p>
+</div>
+
+<div class="stats-bar">
+
+<div class="stat-box">
+<span>Pregunta</span><br>
+<b id="qNum">1</b> / 32
+</div>
+
+<div class="stat-box">
+<span>Progreso</span><br>
+<b id="progress">0 / 32</b>
+</div>
+
+</div>
+
+<div id="quiz"></div>
+
+<div class="actions">
+<button onclick="finish()">Calificar</button>
+<button onclick="location.reload()">Reiniciar</button>
+</div>
+
+<div class="result" id="resultado">
+
+<h2 style="margin-bottom:20px;">
+Resultado Final
+</h2>
+
+<p id="score"></p>
+
+<div id="review"></div>
+
+</div>
+
+</div>
+
+<script>
+
+const questions = [
+  {q:"6+7+9=11×2",o:["2","5","6","7","8"],a:3,exp:"Respuesta correcta: 7 (6+7+9=22 y 11×2=22)."},
+  {q:"(3×?)−5=(5+7+14):2",o:["2","4","6","7","10"],a:2,exp:"Respuesta correcta: 6 (3×6−5=13 y (5+7+14)/2=13)."},
+  {q:"(30:5):(14:7)=[(?×5)+3]:11",o:["1","2","3","4","6"],a:4,exp:"Respuesta correcta: 6 ((30:5):(14:7) = 6:2 = 3, y ((6×5)+3):11 = 33:11 = 3)."},
+  {q:"(3+?)×4=(2×3)×6",o:["2","3","4","6","9"],a:3,exp:"Respuesta correcta: 6 ((3+6)×4=36 y (2×3)×6=36)."},
+  {q:"(2+1)^2 × ? = 6×3",o:["2","3","4","6","9"],a:0,exp:"Respuesta correcta: 2 ((2+1)^2=9, 9×2=18 y 6×3=18)."},
+  {q:"2⋅3⋅6⋅7⋅14⋅15⋅30⋅31⋅?",o:["32","34","38","61","62"],a:4,exp:"Respuesta correcta: 62 (patrón alterna +1 y ×2: 31×2=62)."},
+  {q:"3⋅2⋅4⋅3⋅6⋅?",o:["3","4","5","7","8"],a:2,exp:"Respuesta correcta: 5 (patrón: -1, +2, -1, +3, -1: 6−1=5)."},
+  {q:"20⋅17⋅21⋅19⋅24⋅23⋅29⋅26⋅30⋅28⋅?",o:["25","31","32","33","34"],a:3,exp:"Respuesta correcta: 33 (patrón: -3,+4,-2,+5,-1,+6,-3,+4,-2,+5)."},
+  {q:"6⋅4⋅8⋅6⋅12⋅10⋅20⋅18⋅?",o:["16","22","30","32","36"],a:4,exp:"Respuesta correcta: 36 (patrón: ÷2,×2 repetido: 18×2=36)."},
+  {q:"18⋅12⋅24⋅18⋅36⋅30⋅60⋅54⋅?",o:["48","50","66","90","108"],a:4,exp:"Respuesta correcta: 108 (patrón: -6,×2 repetido: 54×2=108)."},
+  
+  {q:`<div><b>Ejercicio 11</b><br><br><table border="1" style="width:100%;border-collapse:collapse;text-align:center;background:white;">
+    <tr><th></th><th>Televisión</th><th>Altavoces</th><th>Auriculares</th><th>Total</th></tr>
+    <tr><td>Julio</td><td>X</td><td>X</td><td>5</td><td>35</td></tr>
+    <tr><td>Agosto</td><td>5</td><td>X</td><td>10</td><td>30</td></tr>
+    <tr><td>Septiembre</td><td>15</td><td>5</td><td>X</td><td>X</td></tr>
+    <tr><td>Total</td><td>30</td><td>X</td><td>35</td><td>X</td></tr>
+    </table></div>`,o:["40","65","95","100","105"],a:4,exp:"Respuesta correcta: 105"},
+  {q:`<div><b>Ejercicio 12</b><br><br><table border="1" style="width:100%;border-collapse:collapse;text-align:center;background:white;">
+    <tr><th></th><th>Televisión</th><th>Altavoces</th><th>Auriculares</th><th>Total</th></tr>
+    <tr><td>Octubre</td><td>X</td><td>?</td><td>15</td><td>60</td></tr>
+    <tr><td>Noviembre</td><td>X</td><td>10</td><td>10</td><td>30</td></tr>
+    <tr><td>Diciembre</td><td>20</td><td>20</td><td>X</td><td>X</td></tr>
+    <tr><td>Total</td><td>45</td><td>X</td><td>30</td><td>X</td></tr>
+    </table></div>`,o:["4","5","15","30","45"],a:3,exp:"Respuesta correcta: 30"},
+  {q:`<div><b>Ejercicio 13</b><br><br><table border="1" style="width:100%;border-collapse:collapse;text-align:center;background:white;">
+    <tr><th></th><th>Batidoras</th><th>Tostadoras</th><th>Freidoras</th><th>Total</th></tr>
+    <tr><td>Junio</td><td>X</td><td>15</td><td>10</td><td>30</td></tr>
+    <tr><td>Julio</td><td>10</td><td>10</td><td>5</td><td>25</td></tr>
+    <tr><td>Agosto</td><td>5</td><td>X</td><td>15</td><td>X</td></tr>
+    <tr><td>Septiembre</td><td>X</td><td>15</td><td>X</td><td>45</td></tr>
+    <tr><td>Total</td><td>X</td><td>45</td><td>50</td><td>X</td></tr>
+    </table></div>`,o:["10","15","25","40","45"],a:1,exp:"Respuesta correcta: 15"},
+  {q:`<div><b>Ejercicio 14</b><br><br><table border="1" style="width:100%;border-collapse:collapse;text-align:center;background:white;">
+    <tr><th></th><th>Artículo</th><th>Unidades</th><th>Puntos/Unidad</th><th>Total puntos</th></tr>
+    <tr><td>Leche</td><td>23</td><td>X</td><td>X</td><td></td></tr>
+    <tr><td>Mayonesa</td><td>18</td><td>4</td><td>X</td><td></td></tr>
+    <tr><td>Mermelada</td><td>10</td><td>6</td><td>60</td><td></td></tr>
+    <tr><td>Total (Fila inferior)</td><td></td><td></td><td>247</td><td></td></tr>
+    </table></div>`,o:["5","8","92","115","142"],a:0,exp:"Respuesta correcta: 5"},
+  {q:`<div><b>Ejercicio 15</b><br><br><table border="1" style="width:100%;border-collapse:collapse;text-align:center;background:white;">
+    <tr><th></th><th>Televisión</th><th>Altavoces</th><th>Auriculares</th><th>Total</th></tr>
+    <tr><td>Abril</td><td>X</td><td>X</td><td>10</td><td>25</td></tr>
+    <tr><td>Mayo</td><td>15</td><td>?</td><td>X</td><td>35</td></tr>
+    <tr><td>Junio</td><td>30</td><td>20</td><td>5</td><td>X</td></tr>
+    <tr><td>Total</td><td>50</td><td>X</td><td>30</td><td>X</td></tr>
+    </table></div>`,o:["5","10","15","20","25"],a:0,exp:"Respuesta correcta: 5"},
+  
+  {q:"[(?−12):8]×3=35−23",o:["20","24","32","44","48"],a:3,exp:"Respuesta correcta: 44 ((?−12)/8×3 = 12 ⇒ (?−12)/8 = 4 ⇒ ?−12 = 32 ⇒ ? = 44)."},
+  {q:"750:5=5×?",o:["3","15","30","50","150"],a:2,exp:"Respuesta correcta: 30 (750/5=150, y 5×30=150)."},
+  {q:"30+25−16=[(?×2):4]−1",o:["5","20","40","80","160"],a:3,exp:"Respuesta correcta: 80 (30+25−16=39, y ((80×2)/4)−1 = (160/4)−1 = 40−1 = 39)."},
+  {q:"(?−5)^2:8=42:21",o:["3","7","9","13","41"],a:2,exp:"Respuesta correcta: 9 ((?−5)^2/8 = 2 ⇒ (?−5)^2 = 16 ⇒ ?−5=±4 ⇒ ?=9 o ?=1, la opción válida es 9)."},
+  {q:"230−(15×4)+(135:5)=[(?+56)×3]−7",o:["2","4","7","12","15"],a:3,exp:"Respuesta correcta: 12 (230−60+27 = 197, y ((?+56)×3)−7 = 197 ⇒ (?+56)×3 = 204 ⇒ ?+56 = 68 ⇒ ? = 12)."},
+  {q:"48⋅47⋅49⋅46⋅50⋅45⋅51⋅44⋅52⋅43⋅?",o:["42","50","51","52","53"],a:4,exp:"Respuesta correcta: 53 (patrón alterna -1,+2,-3,+4,... final +10: 43+10=53)."},
+  {q:"4⋅12⋅6⋅24⋅12⋅60⋅30⋅?",o:["12","38","90","120","180"],a:4,exp:"Respuesta correcta: 180 (patrón ×3, ÷2 alternado: 30×6=180)."},
+  {q:"3⋅2⋅6⋅4⋅12⋅8⋅24⋅16⋅48⋅32⋅96⋅?",o:["64","80","89","92","95"],a:0,exp:"Respuesta correcta: 64 (patrón: cada par se duplica: ...48,32, next 96, then 96×2=192, but since sequence shows pairs, 96→192; sin embargo, las opciones indican 64; posiblemente cada segundo término doble del anterior, por lo tanto 32→64)."},
+  {q:"2⋅4⋅6⋅3⋅5⋅10⋅12⋅6⋅8⋅?",o:["4","5","10","13","16"],a:0,exp:"Respuesta correcta: 4 (patrón: ×2, +2, ÷2, +2, ...: 8/2=4)."},
+  {q:"52⋅50⋅46⋅52⋅60⋅50⋅38⋅52⋅68⋅50⋅?",o:["14","30","48","52","70"],a:4,exp:"Respuesta correcta: 70 (patrón: -2,-4,+6,+8,-10,-12,+14,+16,-18,+20: 50+20=70)."},
+  {q:"39⋅40⋅38⋅19⋅22⋅18⋅9⋅14⋅8⋅4⋅?",o:["2","5","7","10","11"],a:4,exp:"Respuesta correcta: 11 (patrón: +1, -2, ÷2, +3, -4, ÷2, +5, -6, ÷2, +7: 4+7=11)."},
+  
+  {q:`<div><b>Ejercicio 27</b><br><br><table border="1" style="width:100%;border-collapse:collapse;text-align:center;background:white;">
+    <tr><th></th><th>Plancha</th><th>Depiladora</th><th>Afeitadora</th><th>Total</th></tr>
+    <tr><td>Mayo</td><td>20</td><td>5</td><td>X</td><td>40</td></tr>
+    <tr><td>Junio</td><td>X</td><td>X</td><td>10</td><td>X</td></tr>
+    <tr><td>Abril</td><td>X</td><td>5</td><td>5</td><td>25</td></tr>
+    <tr><td>Total</td><td>40</td><td>20</td><td>X</td><td>X</td></tr>
+    </table></div>`,o:["60","65","75","90","95"],a:3,exp:"Respuesta correcta: 90"},
+  {q:`<div><b>Ejercicio 28</b><br><br><table border="1" style="width:100%;border-collapse:collapse;text-align:center;background:white;">
+    <tr><th></th><th>Hornos</th><th>Microondas</th><th>Vitrocerámica</th><th>Total</th></tr>
+    <tr><td>Septiembre</td><td>25</td><td>40</td><td>5</td><td>70</td></tr>
+    <tr><td>Octubre</td><td>X</td><td>45</td><td>50</td><td>X</td></tr>
+    <tr><td>Noviembre</td><td>30</td><td>X</td><td>?</td><td>90</td></tr>
+    <tr><td>Diciembre</td><td>35</td><td>30</td><td>X</td><td>105</td></tr>
+    <tr><td>Total</td><td>145</td><td>155</td><td>X</td><td>X</td></tr>
+    </table></div>`,o:["10","15","20","30","60"],a:2,exp:"Respuesta correcta: 20"},
+  {q:`<div><b>Ejercicio 29</b><br><br><table border="1" style="width:100%;border-collapse:collapse;text-align:center;background:white;">
+    <tr><th></th><th>Cafetera</th><th>Tostadora</th><th>Freidora</th><th>Total</th></tr>
+    <tr><td>Enero</td><td>X</td><td>5</td><td>20</td><td>35</td></tr>
+    <tr><td>Febrero</td><td>5</td><td>X</td><td>X</td><td>30</td></tr>
+    <tr><td>Marzo</td><td>15</td><td>30</td><td>?</td><td>X</td></tr>
+    <tr><td>Total</td><td>X</td><td>55</td><td>40</td><td>X</td></tr>
+    </table></div>`,o:["5","10","15","20","25"],a:2,exp:"Respuesta correcta: 15"},
+  {q:`<div><b>Ejercicio 30</b><br><br><table border="1" style="width:100%;border-collapse:collapse;text-align:center;background:white;">
+    <tr><th></th><th>Unidades</th><th>Puntos/Unidad</th><th>Total puntos</th></tr>
+    <tr><td>Chocolate</td><td>5</td><td>225</td><td>X</td></tr>
+    <tr><td>Harina</td><td>6</td><td>X</td><td>X</td></tr>
+    <tr><td>Nueces</td><td>8</td><td>140</td><td>X</td></tr>
+    <tr><td>Total (Fila inferior)</td><td></td><td></td><td>3925</td></tr>
+    </table></div>`,o:["26","265","270","280","1680"],a:3,exp:"Respuesta correcta: 280"},
+  {q:`<div><b>Ejercicio 31</b><br><br><table border="1" style="width:100%;border-collapse:collapse;text-align:center;background:white;">
+    <tr><th></th><th>Armarios</th><th>Mesas</th><th>Sillas</th><th>Total</th></tr>
+    <tr><td>Mayo</td><td>X</td><td>15</td><td>20</td><td>45</td></tr>
+    <tr><td>Junio</td><td>15</td><td>10</td><td>X</td><td>55</td></tr>
+    <tr><td>Julio</td><td>X</td><td>5</td><td>20</td><td>X</td></tr>
+    <tr><td>Agosto</td><td>10</td><td>X</td><td>10</td><td>25</td></tr>
+    <tr><td>Total</td><td>X</td><td>X</td><td>80</td><td>155</td></tr>
+    </table></div>`,o:["25","35","40","45","50"],a:2,exp:"Respuesta correcta: 40"},
+  {q:`<div><b>Ejercicio 32</b><br><br><table border="1" style="width:100%;border-collapse:collapse;text-align:center;background:white;">
+    <tr><th></th><th>Unidades</th><th>Puntos/Unidad</th><th>Total puntos</th></tr>
+    <tr><td>Grapa</td><td>2500</td><td>0,05</td><td>125</td></tr>
+    <tr><td>Chincheta</td><td>3000</td><td>X</td><td>X</td></tr>
+    <tr><td>Tornillo</td><td>1200</td><td>0,1</td><td>X</td></tr>
+    <tr><td>Total (Fila inferior)</td><td></td><td></td><td>845</td></tr>
+    </table></div>`,o:["0,03","0,1","0,2","0,5","5"],a:2,exp:"Respuesta correcta: 0,2"}
+];
+
+
+let current=0;
+let answers=new Array(questions.length).fill(null);
+let done=false;
+
+function render(){
+
+const quiz=document.getElementById("quiz");
+
+quiz.innerHTML="";
+
+questions.forEach((q,i)=>{
+
+const div=document.createElement("div");
+
+div.className="question"+(i===current?" active":"");
+
+let opts="";
+
+q.o.forEach((op,j)=>{
+
+let cls="";
+
+if(answers[i]===j){
+
+cls+=" selected";
+
+}
+
+if(done){
+
+if(j===q.a){
+
+cls+=" correct-answer";
+
+}
+
+if(answers[i]===j && j!==q.a){
+
+cls+=" wrong-answer";
+
+}
+
+}
+
+opts+=`
+
+<div class="option${cls}" onclick="select(${i},${j})">
+${op}
+</div>
+
+`;
+
+});
+
+div.innerHTML=`
+
+<h3>${q.q}</h3>
+
+${opts}
+
+<div class="navigation">
+
+<button class="prev"
+onclick="prev()"
+${i===0?"disabled":""}>
+Anterior
+</button>
+
+${i===questions.length-1
+
+? `<button class="finish" onclick="finish()">Finalizar</button>`
+
+: `<button class="next" onclick="next()">Siguiente</button>`
+
+}
+
+</div>
+
+`;
+
+quiz.appendChild(div);
+
+});
+
+update();
+
+}
+
+function select(i,j){
+
+if(done)return;
+
+answers[i]=j;
+
+render();
+
+}
+
+function next(){
+
+if(answers[current]===null){
+
+alert("Responde primero");
+
+return;
+
+}
+
+current++;
+
+render();
+
+window.scrollTo({
+top:0,
+behavior:"smooth"
+});
+
+}
+
+function prev(){
+
+current--;
+
+render();
+
+}
+
+function update(){
+
+document.getElementById("qNum").textContent=current+1;
+
+document.getElementById("progress").textContent=
+answers.filter(a=>a!==null).length+" / "+questions.length;
+
+}
+
+function finish(){
+
+done=true;
+
+let correct=0;
+let html="";
+
+questions.forEach((q,i)=>{
+
+if(answers[i]===q.a){
+
+correct++;
+
+}
+
+});
+
+let porcentaje=Math.round(
+(correct/questions.length)*100
+);
+
+const bots=[];
+
+for(let i=1;i<=30;i++){
+
+bots.push({
+nombre:`Bot_${i}`,
+nota:Math.floor(Math.random()*71)+30
+});
+
+}
+
+const ranking=[
+...bots,
+{
+nombre:"Tú",
+nota:porcentaje,
+usuario:true
+}
+];
+
+ranking.sort((a,b)=>b.nota-a.nota);
+
+let debajo=ranking.filter(
+p=>porcentaje>p.nota
+).length;
+
+let iguales=ranking.filter(
+p=>porcentaje===p.nota
+).length;
+
+let percentil=Math.round(
+(
+debajo+(0.5*iguales)
+)
+/ranking.length
+*100
+);
+
+if(percentil<1){
+percentil=1;
+}
+
+if(percentil>99){
+percentil=99;
+}
+
+let nivel="Muy bajo";
+
+if(percentil>=90){
+nivel="Excelente";
+}
+else if(percentil>=75){
+nivel="Muy bueno";
+}
+else if(percentil>=60){
+nivel="Bueno";
+}
+else if(percentil>=40){
+nivel="Promedio";
+}
+else if(percentil>=20){
+nivel="Bajo";
+}
+
+questions.forEach((q,i)=>{
+
+let estado="";
+
+if(answers[i]===null){
+estado="sin-responder";
+}
+else if(answers[i]===q.a){
+estado="correcta";
+}
+else{
+estado="incorrecta";
+}
+
+html+=`
+
+<div class="review-item ${estado}">
+
+<h3>
+Pregunta ${i+1}
+</h3>
+
+<p style="margin-top:8px;">
+${q.q}
+</p>
+
+<br>
+
+<p>
+<b>Tu respuesta:</b>
+
+${
+answers[i]!==null
+?
+q.o[answers[i]]
+:
+"Sin responder"
+}
+</p>
+
+<p style="margin-top:6px;">
+<b>Correcta:</b>
+${q.o[q.a]}
+</p>
+
+<div class="explicacion">
+${q.exp}
+</div>
+
+</div>
+
+`;
+
+});
+
+let rankingHTML="";
+
+ranking.forEach((p,i)=>{
+
+rankingHTML+=`
+
+<div style="
+display:flex;
+justify-content:space-between;
+padding:10px;
+margin:6px 0;
+background:${p.usuario ? "#dbeafe" : "white"};
+border-radius:10px;
+">
+
+<span>
+#${i+1} - ${p.nombre}
+</span>
+
+<span>
+${p.nota}%
+</span>
+
+</div>
+
+`;
+
+});
+
+document.getElementById("score").innerHTML=
+
+`
+
+<button class="toggle-ranking" onclick="toggleRanking()">
+☰ Ranking
+</button>
+
+<div id="rankingPanel" class="ranking-panel">
+
+<div class="ranking-content">
+
+<h3 style="margin-bottom:15px;">
+🏆 Ranking General
+</h3>
+
+${rankingHTML}
+
+</div>
+
+</div>
+
+<div style="
+background:white;
+padding:20px;
+border-radius:15px;
+margin-bottom:20px;
+">
+
+<h2>
+${correct}/${questions.length}
+</h2>
+
+<p style="
+font-size:26px;
+font-weight:bold;
+margin-top:10px;
+color:#1d4ed8;
+">
+${porcentaje}%
+</p>
+
+<div style="
+display:flex;
+flex-direction:column;
+gap:12px;
+margin-top:20px;
+max-width:250px;
+">
+
+<div class="stat-box">
+<span>Percentil</span><br>
+<b>${percentil}%</b>
+</div>
+
+<div class="stat-box">
+<span>Nivel</span><br>
+<b>${nivel}</b>
+</div>
+
+</div>
+
+</div>
+
+`;
+
+document.getElementById("review")
+.innerHTML=html;
+
+document.getElementById("resultado")
+.style.display="block";
+
+document.getElementById("resultado")
+.scrollIntoView({
+behavior:"smooth"
+});
+
+if(window.enviarResultadoFinal){
+
+window.enviarResultadoFinal({
+correctas:correct,
+total:questions.length,
+porcentaje
+});
+
+}
+
+render();
+
+}
+
+function toggleRanking(){
+
+document.getElementById("rankingPanel")
+.classList.toggle("hidden");
+
+}
+
+window.mostrarResultadosParty = function(data){
+
+const ranking=[...data].sort((a,b)=>b.porcentaje-a.porcentaje);
+
+let html=`<div class="party-grid">`;
+
+ranking.forEach((j,i)=>{
+
+let medal=i===0?"🥇":i===1?"🥈":i===2?"🥉":"";
+
+html+=`
+
+<div class="party-card">
+
+<h3>
+${medal} Jugador ${i+1}
+</h3>
+
+<p>
+${j.correctas}/${j.total}
+</p>
+
+<p>
+${j.porcentaje}%
+</p>
+
+</div>
+
+`;
+
+});
+
+html+=`</div>`;
+
+html+=`
+
+<div class="party-winner">
+
+🏆 Mejor:
+${ranking[0].porcentaje}%
+
+</div>
+
+`;
+
+document.getElementById("partyResultadoContenido")
+.innerHTML=html;
+
+document.getElementById("resultadoParty")
+.style.display="block";
+
+};
+
+render();
+
+</script>
+
+<script type="module" src="../party/party-timer.js"></script>
+<script type="module" src="../party/party-resultados.js"></script>
+
+</body>
+</html>
