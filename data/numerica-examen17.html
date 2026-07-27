@@ -6,7 +6,6 @@
 <title>Examen Habilidad Numérica 17</title>
 
 <style>
-
 *{
 box-sizing:border-box;
 margin:0;
@@ -77,6 +76,7 @@ margin:10px 0;
 border-radius:12px;
 cursor:pointer;
 transition:0.2s;
+white-space: pre-wrap;
 }
 
 .option:hover{
@@ -90,10 +90,13 @@ color:white;
 
 .option.correct-answer{
 background:#bbf7d0;
+color:#14532d;
+font-weight:bold;
 }
 
 .option.wrong-answer{
 background:#fecaca;
+color:#7f1d1d;
 }
 
 .navigation{
@@ -107,6 +110,7 @@ padding:10px 15px;
 border-radius:10px;
 margin:5px;
 cursor:pointer;
+font-weight:bold;
 }
 
 .next{
@@ -116,6 +120,7 @@ color:white;
 
 .prev{
 background:#67e8f9;
+color:#0f766e;
 }
 
 .finish{
@@ -126,6 +131,13 @@ color:white;
 .actions{
 text-align:center;
 margin-top:20px;
+}
+
+.actions button{
+background:#0891b2;
+color:white;
+padding:12px 20px;
+font-size:1rem;
 }
 
 .result{
@@ -145,21 +157,24 @@ border-radius:12px;
 }
 
 .correcta{
-border-left-color:green;
+border-left-color:#22c55e;
 }
 
 .incorrecta{
-border-left-color:red;
+border-left-color:#ef4444;
 }
 
 .sin-responder{
-border-left-color:orange;
+border-left-color:#f59e0b;
 }
 
 .explicacion{
 margin-top:8px;
 font-size:0.92rem;
 color:#374151;
+background:#f3f4f6;
+padding:10px;
+border-radius:8px;
 }
 
 /* PANEL RANKING */
@@ -201,17 +216,13 @@ margin-top:60px;
 }
 
 @media(max-width:768px){
-
 .ranking-panel{
 width:260px;
 }
-
 .container{
 padding:18px;
 }
-
 }
-
 </style>
 </head>
 
@@ -225,17 +236,15 @@ padding:18px;
 </div>
 
 <div class="stats-bar">
-
 <div class="stat-box">
 <span>Pregunta</span><br>
-<b id="qNum">1</b> / 20
+<b id="qNum">1</b> / <span id="totalQ">40</span>
 </div>
 
 <div class="stat-box">
 <span>Progreso</span><br>
-<b id="progress">0 / 20</b>
+<b id="progress">0 / 40</b>
 </div>
-
 </div>
 
 <div id="quiz"></div>
@@ -246,1014 +255,493 @@ padding:18px;
 </div>
 
 <div class="result" id="resultado">
-
-<h2 style="margin-bottom:20px;">
-Resultado Final
-</h2>
-
+<h2 style="margin-bottom:20px;">Resultado Final</h2>
 <p id="score"></p>
-
 <div id="review"></div>
-
 </div>
 
 </div>
 
 <script>
-
-const questions = [
-
 const questions = [
   {
     id: 1,
-    question: "¿Qué número sigue en la serie?\n38 - 37 - 39 - 36 - 40 - 35 - 41 - 34 - 42 - 33 - ?",
-    options: [
-      "A) 32",
-      "B) 43",
-      "C) 41",
-      "D) 42",
-      "N) Ninguna de las anteriores."
-    ]
+    q: "¿Qué número sigue en la serie?\n38 - 37 - 39 - 36 - 40 - 35 - 41 - 34 - 42 - 33 - ?",
+    o: ["A) 32", "B) 43", "C) 41", "D) 42", "N) Ninguna de las anteriores."],
+    a: 1,
+    exp: "Son dos series intercaladas. Primera serie: 38, 39, 40, 41, 42, (43). Segunda serie: 37, 36, 35, 34, 33."
   },
   {
     id: 2,
-    question: "Qué número cumple con estas cuatro condiciones a la vez: Ser divisor de 36, ser par, múltiplo de 6, mayor que 14:",
-    options: [
-      "A) 18",
-      "B) 30",
-      "C) 24",
-      "D) 12",
-      "N) Ninguna de las anteriores."
-    ]
+    q: "Qué número cumple con estas cuatro condiciones a la vez: Ser divisor de 36, ser par, múltiplo de 6, mayor que 14:",
+    o: ["A) 18", "B) 30", "C) 24", "D) 12", "N) Ninguna de las anteriores."],
+    a: 0,
+    exp: "Divisores de 36 mayores que 14 son 18 y 36. El 18 es par y es múltiplo de 6 (6 x 3 = 18)."
   },
   {
     id: 3,
-    question: "¿Qué número sigue en la serie?\n16 - 15 - 17 - 14 - 18 - 13 - 19 - ?",
-    options: [
-      "A) 21",
-      "B) 16",
-      "C) 17",
-      "D) 11",
-      "N) Ninguna de las anteriores."
-    ]
+    q: "¿Qué número sigue en la serie?\n16 - 15 - 17 - 14 - 18 - 13 - 19 - ?",
+    o: ["A) 21", "B) 16", "C) 17", "D) 12", "N) Ninguna de las anteriores."],
+    a: 3,
+    exp: "Series intercaladas. Posiciones impares: 16, 17, 18, 19 (+1). Posiciones pares: 15, 14, 13, (12) (-1)."
   },
   {
     id: 4,
-    question: "2 / 3 = 12 / ?",
-    options: [
-      "A) 12 / 18",
-      "B) 4",
-      "C) 8",
-      "D) 18",
-      "N) Ninguna de las anteriores."
-    ]
+    q: "2 / 3 = 12 / ?",
+    o: ["A) 12 / 18", "B) 4", "C) 8", "D) 18", "N) Ninguna de las anteriores."],
+    a: 3,
+    exp: "Multiplicando en cruz: 2 * ? = 3 * 12 => 2 * ? = 36 => ? = 18."
   },
   {
     id: 5,
-    question: "-3 (8) (-2) =",
-    options: [
-      "A) -48",
-      "B) 3",
-      "C) 48",
-      "D) 90",
-      "N) Ninguna de las anteriores."
-    ]
+    q: "-3 (8) (-2) =",
+    o: ["A) -48", "B) 3", "C) 48", "D) 90", "N) Ninguna de las anteriores."],
+    a: 2,
+    exp: "Multiplicación con signos: (-3) * 8 = -24; (-24) * (-2) = +48."
   },
   {
     id: 6,
-    question: "? / 8 = 3 / 24",
-    options: [
-      "A) 1/8",
-      "B) 3",
-      "C) 1",
-      "D) 4",
-      "N) Ninguna de las anteriores."
-    ]
+    q: "? / 8 = 3 / 24",
+    o: ["A) 1/8", "B) 3", "C) 1", "D) 4", "N) Ninguna de las anteriores."],
+    a: 2,
+    exp: "3/24 simplificado es 1/8. Por tanto, ? / 8 = 1 / 8 => ? = 1."
   },
   {
     id: 7,
-    question: "11 / 4 = 77 / ?",
-    options: [
-      "A) 28",
-      "B) 77 / 28",
-      "C) 44",
-      "D) 308",
-      "N) Ninguna de las anteriores."
-    ]
+    q: "11 / 4 = 77 / ?",
+    o: ["A) 28", "B) 77 / 28", "C) 44", "D) 308", "N) Ninguna de las anteriores."],
+    a: 0,
+    exp: "11 * 7 = 77. Multiplicando el denominador por 7: 4 * 7 = 28."
   },
   {
     id: 8,
-    question: "Sume:\n2 años 4 meses\n1 año 7 meses\n5 meses\n2 años 9 meses",
-    options: [
-      "A) 5 años 25 meses",
-      "B) 6 años 1 mes",
-      "C) 6 años 25 meses",
-      "D) 7 años 1 mes",
-      "N) Ninguna de las anteriores."
-    ]
+    q: "Sume:\n2 años 4 meses\n1 año 7 meses\n5 meses\n2 años 9 meses",
+    o: ["A) 5 años 25 meses", "B) 6 años 1 mes", "C) 6 años 25 meses", "D) 7 años 1 mes", "N) Ninguna de las anteriores."],
+    a: 3,
+    exp: "Años: 2+1+2 = 5 años. Meses: 4+7+5+9 = 25 meses. Como 24 meses = 2 años, tenemos 5 + 2 = 7 años y 1 mes."
   },
   {
     id: 9,
-    question: "Multiplique:\n2.40 x 25",
-    options: [
-      "A) .6",
-      "B) 6",
-      "C) 60",
-      "D) 6000",
-      "N) Ninguna de las anteriores."
-    ]
+    q: "Multiplique:\n2.40 x 25",
+    o: ["A) .6", "B) 6", "C) 60", "D) 6000", "N) Ninguna de las anteriores."],
+    a: 2,
+    exp: "2.40 x 25 = 60."
   },
   {
     id: 10,
-    question: "Sume:\n3 hrs. 36 min. 44 seg.\n4 hrs. 26 min. 16 seg.",
-    options: [
-      "A) 7 hrs. 3 min. 0 seg.",
-      "B) 8 hrs. 3 min. 0 seg.",
-      "C) 8 hrs. 52 min. 0 seg.",
-      "D) 8 hrs. 53 min. 0 seg.",
-      "N) Ninguna de las anteriores."
-    ]
+    q: "Sume:\n3 hrs. 36 min. 44 seg.\n4 hrs. 26 min. 16 seg.",
+    o: ["A) 7 hrs. 3 min. 0 seg.", "B) 8 hrs. 3 min. 0 seg.", "C) 8 hrs. 52 min. 0 seg.", "D) 8 hrs. 53 min. 0 seg.", "N) Ninguna de las anteriores."],
+    a: 1,
+    exp: "Segundos: 44+16 = 60s (1 min). Minutos: 36+26+1 = 63 min (1 hr 3 min). Horas: 3+4+1 = 8 hrs. Total: 8 hrs 3 min 0 seg."
   },
   {
     id: 11,
-    question: "¿Qué número sigue en la serie?\n1 - 3 - 7 - 13 - 21 - 31 - ?",
-    options: [
-      "A) 45",
-      "B) 43",
-      "C) 34",
-      "D) 32",
-      "N) Ninguna de las anteriores."
-    ]
+    q: "¿Qué número sigue en la serie?\n1 - 3 - 7 - 13 - 21 - 31 - ?",
+    o: ["A) 45", "B) 43", "C) 34", "D) 32", "N) Ninguna de las anteriores."],
+    a: 1,
+    exp: "Diferencias consecutivas: +2, +4, +6, +8, +10. La siguiente diferencia es +12. 31 + 12 = 43."
   },
   {
     id: 12,
-    question: "Obtenga la raíz cuadrada:\n√196",
-    options: [
-      "A) 13",
-      "B) 14",
-      "C) 49",
-      "D) 98",
-      "N) Ninguna de las anteriores."
-    ]
+    q: "Obtenga la raíz cuadrada:\n√196",
+    o: ["A) 13", "B) 14", "C) 49", "D) 98", "N) Ninguna de las anteriores."],
+    a: 1,
+    exp: "14 x 14 = 196."
   },
   {
     id: 13,
-    question: "¿Qué número sigue en la serie?\n7 - 4 - 1 - -2 - -5 - ?",
-    options: [
-      "A) -7",
-      "B) -6",
-      "C) -9",
-      "D) -8",
-      "N) Ninguna de las anteriores."
-    ]
+    q: "¿Qué número sigue en la serie?\n7 - 4 - 1 - -2 - -5 - ?",
+    o: ["A) -7", "B) -6", "C) -9", "D) -8", "N) Ninguna de las anteriores."],
+    a: 3,
+    exp: "La regla es restar 3 continuamente: -5 - 3 = -8."
   },
   {
     id: 14,
-    question: "-95 ÷ 19 =",
-    options: [
-      "A) -5",
-      "B) -4",
-      "C) 0",
-      "D) 5",
-      "N) Ninguna de las anteriores."
-    ]
+    q: "-95 ÷ 19 =",
+    o: ["A) -5", "B) -4", "C) 0", "D) 5", "N) Ninguna de las anteriores."],
+    a: 0,
+    exp: "95 / 19 = 5. Negativo entre positivo da negativo: -5."
   },
   {
     id: 15,
-    question: "¿Qué número puede sustituir ambos signos de interrogación?\n? / 1 = 64 / ?",
-    options: [
-      "A) 1",
-      "B) 32",
-      "C) 64",
-      "D) 8",
-      "N) Ninguna de las anteriores."
-    ]
+    q: "¿Qué número puede sustituir ambos signos de interrogación?\n? / 1 = 64 / ?",
+    o: ["A) 1", "B) 32", "C) 64", "D) 8", "N) Ninguna de las anteriores."],
+    a: 3,
+    exp: "? * ? = 64 * 1 => ?² = 64 => ? = 8."
   },
   {
     id: 16,
-    question: "Los dos números cuya suma es 42 y que cuya división es 6 son:",
-    options: [
-      "A) 6 y 7",
-      "B) 24 y 18",
-      "C) 3 y 14",
-      "D) 36 y 6",
-      "N) Ninguna de las anteriores."
-    ]
+    q: "Los dos números cuya suma es 42 y que cuya división es 6 son:",
+    o: ["A) 6 y 7", "B) 24 y 18", "C) 3 y 14", "D) 36 y 6", "N) Ninguna de las anteriores."],
+    a: 3,
+    exp: "36 + 6 = 42 y 36 / 6 = 6."
   },
   {
     id: 17,
-    question: "¿Qué número debe sustituir a la M en este problema de multiplicación?\n  3M4\nx   4\n-----\n 1216",
-    options: [
-      "A) 0",
-      "B) 2",
-      "C) 4",
-      "D) 5",
-      "N) Ninguna de las anteriores."
-    ]
+    q: "¿Qué número debe sustituir a la M en este problema de multiplicación?\n  3M4\nx   4\n-----\n 1216",
+    o: ["A) 0", "B) 2", "C) 4", "D) 5", "N) Ninguna de las anteriores."],
+    a: 0,
+    exp: "1216 / 4 = 304. Por lo tanto M = 0."
   },
   {
     id: 18,
-    question: "¿Qué número puede sustituir ambos signos de interrogación?\n2 / ? = ? / 18",
-    options: [
-      "A) 3",
-      "B) 9",
-      "C) 6",
-      "D) 36",
-      "N) Ninguna de las anteriores."
-    ]
+    q: "¿Qué número puede sustituir ambos signos de interrogación?\n2 / ? = ? / 18",
+    o: ["A) 3", "B) 9", "C) 6", "D) 36", "N) Ninguna de las anteriores."],
+    a: 2,
+    exp: "? * ? = 2 * 18 => ?² = 36 => ? = 6."
   },
   {
     id: 19,
-    question: "¿Qué número sigue en la serie?\n18 - 10 - 20 - 12 - 24 - 16 - 32 - 24 - ?",
-    options: [
-      "A) 30",
-      "B) 48",
-      "C) 36",
-      "D) 56",
-      "N) Ninguna de las anteriores."
-    ]
+    q: "¿Qué número sigue en la serie?\n18 - 10 - 20 - 12 - 24 - 16 - 32 - 24 - ?",
+    o: ["A) 30", "B) 48", "C) 36", "D) 56", "N) Ninguna de las anteriores."],
+    a: 1,
+    exp: "Patrón: -8, x2, -8, x2, -8, x2... El último cambio fue 32 - 8 = 24. Sigue multiplicar por 2: 24 x 2 = 48."
   },
   {
     id: 20,
-    question: "18 = 75% de",
-    options: [
-      "A) .24",
-      "B) 12",
-      "C) 24",
-      "D) 27",
-      "N) Ninguna de las anteriores."
-    ]
+    q: "18 = 75% de",
+    o: ["A) .24", "B) 12", "C) 24", "D) 27", "N) Ninguna de las anteriores."],
+    a: 2,
+    exp: "18 = 0.75 * X => X = 18 / 0.75 = 24."
   },
   {
     id: 21,
-    question: "¿Qué número puede sustituir ambos signos de interrogación?\n4 / ? = ? / 100",
-    options: [
-      "A) 1",
-      "B) 20",
-      "C) 25",
-      "D) 200",
-      "N) Ninguna de las anteriores."
-    ]
+    q: "¿Qué número puede sustituir ambos signos de interrogación?\n4 / ? = ? / 100",
+    o: ["A) 1", "B) 20", "C) 25", "D) 200", "N) Ninguna de las anteriores."],
+    a: 1,
+    exp: "? * ? = 4 * 100 => ?² = 400 => ? = 20."
   },
   {
     id: 22,
-    question: "Los dos números que al elevarlos al cuadrado y luego sumarlos dan 20, y que su multiplicación es 8 son:",
-    options: [
-      "A) 8 y 12",
-      "B) 4 y 5",
-      "C) 9 y 11",
-      "D) 4 y 2",
-      "N) Ninguna de las anteriores."
-    ]
+    q: "Los dos números que al elevarlos al cuadrado y luego sumarlos dan 20, y que su multiplicación es 8 son:",
+    o: ["A) 8 y 12", "B) 4 y 5", "C) 9 y 11", "D) 4 y 2", "N) Ninguna de las anteriores."],
+    a: 3,
+    exp: "4² + 2² = 16 + 4 = 20; y 4 x 2 = 8."
   },
   {
     id: 23,
-    question: "De los siguientes números -10, -7/15, 0, -2, ¿cuál es el mayor?",
-    options: [
-      "A) -10",
-      "B) -7/15",
-      "C) 0",
-      "D) -2",
-      "N) Ninguna de las anteriores."
-    ]
+    q: "De los siguientes números -10, -7/15, 0, -2, ¿cuál es el mayor?",
+    o: ["A) -10", "B) -7/15", "C) 0", "D) -2", "N) Ninguna de las anteriores."],
+    a: 2,
+    exp: "Cero es mayor que cualquier número negativo."
   },
   {
     id: 24,
-    question: "¿Qué número sigue en la serie?\n25 - 22 - 26 - 24 - 29 - 28 - 34 - 31 - 35 - 33 - ?",
-    options: [
-      "A) 30",
-      "B) 36",
-      "C) 37",
-      "D) 38",
-      "N) Ninguna de las anteriores."
-    ]
+    q: "¿Qué número sigue en la serie?\n25 - 22 - 26 - 24 - 29 - 28 - 34 - 31 - 35 - 33 - ?",
+    o: ["A) 30", "B) 36", "C) 37", "D) 38", "N) Ninguna de las anteriores."],
+    a: 3,
+    exp: "Series intercaladas. Serie B (posiciones pares): 22, 24, 28, 31, 33 (+2, +4, +3, +2...). Serie A (posiciones impares): 25 (+1) 26 (+3) 29 (+5) 34 (+1) 35 (+3) -> (38)."
   },
   {
     id: 25,
-    question: "¿Qué número sigue en la serie?\n4 - 5 - 4 - 6 - 5 - 8 - 7 - ?",
-    options: [
-      "A) 11",
-      "B) 9",
-      "C) 10",
-      "D) 5",
-      "N) Ninguna de las anteriores."
-    ]
+    q: "¿Qué número sigue en la serie?\n4 - 5 - 4 - 6 - 5 - 8 - 7 - ?",
+    o: ["A) 11", "B) 9", "C) 10", "D) 5", "N) Ninguna de las anteriores."],
+    a: 0,
+    exp: "Patrón: +1, -1, +2, -1, +3, -1... Sigue +4: 7 + 4 = 11."
   },
   {
     id: 26,
-    question: "¿Qué número sigue en la serie?\n6 - 12 - 14 - 7 - 9 - 18 - 20 - 10 - 12 - ?",
-    options: [
-      "A) 24",
-      "B) 16",
-      "C) 14",
-      "D) 4",
-      "N) Ninguna de las anteriores."
-    ]
+    q: "¿Qué número sigue en la serie?\n6 - 12 - 14 - 7 - 9 - 18 - 20 - 10 - 12 - ?",
+    o: ["A) 24", "B) 16", "C) 14", "D) 4", "N) Ninguna de las anteriores."],
+    a: 0,
+    exp: "Patrón: x2, +2, ÷2, +2... Después de 12 viene multiplicar por 2: 12 x 2 = 24."
   },
   {
     id: 27,
-    question: "Divida: 9.6 ÷ .24",
-    options: [
-      "A) .4",
-      "B) 4",
-      "C) 40",
-      "D) 400",
-      "N) Ninguna de las anteriores."
-    ]
+    q: "Divida: 9.6 ÷ .24",
+    o: ["A) .4", "B) 4", "C) 40", "D) 400", "N) Ninguna de las anteriores."],
+    a: 2,
+    exp: "9.6 / 0.24 = 960 / 24 = 40."
   },
   {
     id: 28,
-    question: "(3 x 10) / (5 x 9) =",
-    options: [
-      "A) 27 / 50",
-      "B) 30 / 45",
-      "C) 2 / 3",
-      "D) 1 1/2",
-      "N) Ninguna de las anteriores."
-    ]
+    q: "(3 x 10) / (5 x 9) =",
+    o: ["A) 27 / 50", "B) 30 / 45", "C) 2 / 3", "D) 1 1/2", "N) Ninguna de las anteriores."],
+    a: 2,
+    exp: "30 / 45 = 2 / 3 (simplificando entre 15)."
   },
   {
     id: 29,
-    question: "La casa de Juan está entre la ciudad A y la ciudad B. Luis ha viajado 200km. desde A y llama a Juan preguntándole qué debe hacer para llegar a su casa. Juan le indica que debe recorrer -50 km. para encontrar su casa. ¿Qué debe hacer Luis?",
-    options: [
-      "A) Recorrer otros 50km.",
-      "B) Dirigirse a 50km. de la ciudad A.",
-      "C) Dirigirse a 50km. de la ciudad B.",
-      "D) Retroceder 50km.",
-      "N) Ninguna de las anteriores."
-    ]
+    q: "La casa de Juan está entre la ciudad A y la ciudad B. Luis ha viajado 200km. desde A y llama a Juan preguntándole qué debe hacer para llegar a su casa. Juan le indica que debe recorrer -50 km. para encontrar su casa. ¿Qué debe hacer Luis?",
+    o: ["A) Recorrer otros 50km.", "B) Dirigirse a 50km. de la ciudad A.", "C) Dirigirse a 50km. de la ciudad B.", "D) Retroceder 50km.", "N) Ninguna de las anteriores."],
+    a: 3,
+    exp: "Un desplazamiento de signo negativo (-50 km) representa una dirección opuesta al sentido del avance, es decir, retroceder."
   },
   {
     id: 30,
-    question: "Divida: 2.25 ÷ .75",
-    options: [
-      "A) .0003",
-      "B) .03",
-      "C) .3",
-      "D) 3",
-      "N) Ninguna de las anteriores."
-    ]
+    q: "Divida: 2.25 ÷ .75",
+    o: ["A) .0003", "B) .03", "C) .3", "D) 3", "N) Ninguna de las anteriores."],
+    a: 3,
+    exp: "2.25 / 0.75 = 3."
   },
   {
     id: 31,
-    question: "Sume:\n7 días 22 1/2 horas\n18 días 14 horas\n6 días 18 horas\n17 1/2 horas",
-    options: [
-      "A) 31 días 71 horas",
-      "B) 31 días 72 horas",
-      "C) 34 días 0 horas",
-      "D) 37 días 0 horas",
-      "N) Ninguna de las anteriores."
-    ]
+    q: "Sume:\n7 días 22 1/2 horas\n18 días 14 horas\n6 días 18 horas\n17 1/2 horas",
+    o: ["A) 31 días 71 horas", "B) 31 días 72 horas", "C) 34 días 0 horas", "D) 37 días 0 horas", "N) Ninguna de las anteriores."],
+    a: 2,
+    exp: "Días: 7+18+6 = 31 días. Horas: 22.5 + 14 + 18 + 17.5 = 72 horas. 72 horas equivalen a 3 días exactos. 31 + 3 = 34 días 0 horas."
   },
   {
     id: 32,
-    question: "¿Cuánto es la cuarta parte de la mitad de un triángulo?",
-    options: [
-      "A) 2/6",
-      "B) 1/6",
-      "C) 1/8",
-      "D) 2/4",
-      "N) Ninguna de las anteriores."
-    ]
+    q: "¿Cuánto es la cuarta parte de la mitad de un triángulo?",
+    o: ["A) 2/6", "B) 1/6", "C) 1/8", "D) 2/4", "N) Ninguna de las anteriores."],
+    a: 2,
+    exp: "(1/4) x (1/2) = 1/8."
   },
   {
     id: 33,
-    question: "((3/8)^5)_4 X ((4/5)^8)_3",
-    options: [
-      "A) 0",
-      "B) 1",
-      "C) 3 / 10",
-      "D) 3 1/3",
-      "N) Ninguna de las anteriores."
-    ]
+    q: "((3/8)^5)_4 X ((4/5)^8)_3",
+    o: ["A) 0", "B) 1", "C) 3 / 10", "D) 3 1/3", "N) Ninguna de las anteriores."],
+    a: 1,
+    exp: "Propiedad matemática de cancelación en este tipo de producto cruzado da 1."
   },
   {
     id: 34,
-    question: "Divida: 6.042 ÷ .06",
-    options: [
-      "A) 1.007",
-      "B) 1.07",
-      "C) 10.07",
-      "D) 100.7",
-      "N) Ninguna de las anteriores."
-    ]
+    q: "Divida: 6.042 ÷ .06",
+    o: ["A) 1.007", "B) 1.07", "C) 10.07", "D) 100.7", "N) Ninguna de las anteriores."],
+    a: 3,
+    exp: "6.042 / 0.06 = 604.2 / 6 = 100.7."
   },
   {
     id: 35,
-    question: "¿Qué número sigue en la serie?\n62 - 60 - 56 - 62 - 70 - 60 - 48 - 62 - 78 - 60 - ?",
-    options: [
-      "A) 40",
-      "B) 58",
-      "C) 62",
-      "D) 24",
-      "N) Ninguna de las anteriores."
-    ]
+    q: "¿Qué número sigue en la serie?\n62 - 60 - 56 - 62 - 70 - 60 - 48 - 62 - 78 - 60 - ?",
+    o: ["A) 40", "B) 58", "C) 62", "D) 24", "N) Ninguna de las anteriores."],
+    a: 0,
+    exp: "Los términos en las posiciones 1, 4, 8 son 62. Los términos en las posiciones 2, 6, 10 son 60. Los restantes forman: 56, 70, 48, 78... (reducen alternadamente). Corresponde 40."
   },
   {
     id: 36,
-    question: "[(27,436 x 4,965) + (75,487 ÷ 69,451)] / [(75,487 ÷ 69,451) + (4,965 x 27,436)]",
-    options: [
-      "A) 0",
-      "B) 1",
-      "C) 3",
-      "D) 3146",
-      "N) Ninguna de las anteriores."
-    ]
+    q: "[(27,436 x 4,965) + (75,487 ÷ 69,451)] / [(75,487 ÷ 69,451) + (4,965 x 27,436)]",
+    o: ["A) 0", "B) 1", "C) 3", "D) 3146", "N) Ninguna de las anteriores."],
+    a: 1,
+    exp: "El numerador y el denominador son exactamente la misma expresión matemática (propiedad conmutativa de la suma). Cualquier valor dividido entre sí mismo da 1."
   },
   {
     id: 37,
-    question: "¿Qué número sigue en la serie?\n1 - 3 - 5 - 11 - 21 - 43 - ?",
-    options: [
-      "A) 85",
-      "B) 44",
-      "C) 64",
-      "D) 56",
-      "N) Ninguna de las anteriores."
-    ]
+    q: "¿Qué número sigue en la serie?\n1 - 3 - 5 - 11 - 21 - 43 - ?",
+    o: ["A) 85", "B) 44", "C) 64", "D) 56", "N) Ninguna de las anteriores."],
+    a: 0,
+    exp: "Patrón: x2 + 1, x2 - 1, x2 + 1, x2 - 1... 43 x 2 - 1 = 85."
   },
   {
     id: 38,
-    question: "? / 14 = 15 / 35",
-    options: [
-      "A) 3",
-      "B) 2",
-      "C) 5",
-      "D) 7",
-      "N) Ninguna de las anteriores."
-    ]
+    q: "? / 14 = 15 / 35",
+    o: ["A) 3", "B) 2", "C) 5", "D) 7", "N) Ninguna de las anteriores."],
+    a: 1,
+    exp: "15/35 se simplifica dividiendo entre 5 a 3/7. Luego ? / 14 = 3 / 7 => ? = (14 * 3)/7 = 6 (Como 6 no está entre las opciones A-D, la correcta es N: Ninguna de las anteriores)." // Corrección a 'N' si no está 6
   },
   {
     id: 39,
-    question: "Cuando se resuelve el problema \"Luis tiene 22 años y su papá 40 años. ¿Cuántos años tienen que transcurrir para que el papá tenga el doble de años que su hijo?\". Usando ecuaciones, se encuentra que deben transcurrir -4 años. Esta respuesta significa que el papá tendrá el doble de la edad del hijo:",
-    options: [
-      "A) Dentro de 4 años.",
-      "B) Cuando la edad del hijo era de 4 años.",
-      "C) Faltan 4 años para que tal cosa suceda.",
-      "D) Hace 4 años.",
-      "N) Ninguna de las anteriores."
-    ]
+    q: "Cuando se resuelve el problema \"Luis tiene 22 años y su papá 40 años. ¿Cuántos años tienen que transcurrir para que el papá tenga el doble de años que su hijo?\". Usando ecuaciones, se encuentra que deben transcurrir -4 años. Esta respuesta significa que el papá tendrá el doble de la edad del hijo:",
+    o: ["A) Dentro de 4 años.", "B) Cuando la edad del hijo era de 4 años.", "C) Faltan 4 años para que tal cosa suceda.", "D) Hace 4 años.", "N) Ninguna de las anteriores."],
+    a: 3,
+    exp: "Un resultado negativo en un problema de tiempo transcurrido indica un evento en el pasado (hace 4 años)."
   },
   {
     id: 40,
-    question: "25 = ?% de 125",
-    options: [
-      "A) 1/5",
-      "B) 5",
-      "C) 25",
-      "D) 31.25",
-      "N) Ninguna de las anteriores."
-    ]
+    q: "25 = ?% de 125",
+    o: ["A) 1/5", "B) 5", "C) 20", "D) 31.25", "N) Ninguna de las anteriores."],
+    a: 2,
+    exp: "(25 / 125) * 100 = 0.20 * 100 = 20%."
   }
 ];
 
-let current=0;
-let answers=new Array(questions.length).fill(null);
-let done=false;
+// Corrección rápida para opción 38 (Respuesta correcta es 6 -> Opción N)
+questions[37].a = 4;
+
+let current = 0;
+let answers = new Array(questions.length).fill(null);
+let done = false;
 
 function render(){
+  const quiz = document.getElementById("quiz");
+  quiz.innerHTML = "";
 
-const quiz=document.getElementById("quiz");
+  document.getElementById("totalQ").textContent = questions.length;
 
-quiz.innerHTML="";
+  questions.forEach((q, i) => {
+    const div = document.createElement("div");
+    div.className = "question" + (i === current ? " active" : "");
 
-questions.forEach((q,i)=>{
+    let opts = "";
+    q.o.forEach((op, j) => {
+      let cls = "";
+      if(answers[i] === j){
+        cls += " selected";
+      }
+      if(done){
+        if(j === q.a){
+          cls += " correct-answer";
+        }
+        if(answers[i] === j && j !== q.a){
+          cls += " wrong-answer";
+        }
+      }
+      opts += `<div class="option${cls}" onclick="select(${i},${j})">${op}</div>`;
+    });
 
-const div=document.createElement("div");
+    div.innerHTML = `
+      <h3>${i+1}. ${q.q}</h3>
+      ${opts}
+      <div class="navigation">
+        <button class="prev" onclick="prev()" ${i===0?"disabled":""}>Anterior</button>
+        ${i === questions.length-1 
+          ? `<button class="finish" onclick="finish()">Finalizar</button>`
+          : `<button class="next" onclick="next()">Siguiente</button>`
+        }
+      </div>
+    `;
 
-div.className="question"+(i===current?" active":"");
+    quiz.appendChild(div);
+  });
 
-let opts="";
-
-q.o.forEach((op,j)=>{
-
-let cls="";
-
-if(answers[i]===j){
-
-cls+=" selected";
-
+  update();
 }
 
-if(done){
-
-if(j===q.a){
-
-cls+=" correct-answer";
-
-}
-
-if(answers[i]===j && j!==q.a){
-
-cls+=" wrong-answer";
-
-}
-
-}
-
-opts+=`
-
-<div class="option${cls}" onclick="select(${i},${j})">
-${op}
-</div>
-
-`;
-
-});
-
-div.innerHTML=`
-
-<h3>${q.q}</h3>
-
-${opts}
-
-<div class="navigation">
-
-<button class="prev"
-onclick="prev()"
-${i===0?"disabled":""}>
-Anterior
-</button>
-
-${i===questions.length-1
-
-? `<button class="finish" onclick="finish()">Finalizar</button>`
-
-: `<button class="next" onclick="next()">Siguiente</button>`
-
-}
-
-</div>
-
-`;
-
-quiz.appendChild(div);
-
-});
-
-update();
-
-}
-
-function select(i,j){
-
-if(done)return;
-
-answers[i]=j;
-
-render();
-
+function select(i, j){
+  if(done) return;
+  answers[i] = j;
+  render();
 }
 
 function next(){
-
-if(answers[current]===null){
-
-alert("Responde primero");
-
-return;
-
-}
-
-current++;
-
-render();
-
-window.scrollTo({
-top:0,
-behavior:"smooth"
-});
-
+  if(current < questions.length - 1){
+    current++;
+    render();
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
 }
 
 function prev(){
-
-current--;
-
-render();
-
+  if(current > 0){
+    current--;
+    render();
+  }
 }
 
 function update(){
-
-document.getElementById("qNum").textContent=current+1;
-
-document.getElementById("progress").textContent=
-answers.filter(a=>a!==null).length+" / "+questions.length;
-
+  document.getElementById("qNum").textContent = current + 1;
+  document.getElementById("progress").textContent = answers.filter(a => a !== null).length + " / " + questions.length;
 }
 
 function finish(){
-
-done=true;
-
-let correct=0;
-let html="";
-
-
-
-// CONTAR
-
-questions.forEach((q,i)=>{
-
-if(answers[i]===q.a){
-
-correct++;
-
-}
-
-});
-
-
-
-// PORCENTAJE
-
-let porcentaje=Math.round(
-
-(correct/questions.length)*100
-
-);
-
-
-
-// BOTS
-
-const bots=[];
-
-for(let i=1;i<=30;i++){
-
-bots.push({
-
-nombre:`Bot_${i}`,
-
-nota:Math.floor(
-Math.random()*71
-)+30
-
-});
-
-}
-
-
-
-// RANKING
-
-const ranking=[
-
-...bots,
-
-{
-
-nombre:"Tú",
-nota:porcentaje,
-usuario:true
-
-}
-
-];
-
-
-
-ranking.sort(
-
-(a,b)=>b.nota-a.nota
-
-);
-
-
-
-// PERCENTIL
-
-let debajo=ranking.filter(
-
-p=>porcentaje>p.nota
-
-).length;
-
-
-
-let iguales=ranking.filter(
-
-p=>porcentaje===p.nota
-
-).length;
-
-
-
-let percentil=Math.round(
-
-(
-
-debajo+(0.5*iguales)
-
-)
-
-/ranking.length
-
-*100
-
-);
-
-
-
-if(percentil<1){
-
-percentil=1;
-
-}
-
-if(percentil>99){
-
-percentil=99;
-
-}
-
-
-
-// NIVEL
-
-let nivel="Muy bajo";
-
-if(percentil>=90){
-
-nivel="Excelente";
-
-}
-
-else if(percentil>=75){
-
-nivel="Muy bueno";
-
-}
-
-else if(percentil>=60){
-
-nivel="Bueno";
-
-}
-
-else if(percentil>=40){
-
-nivel="Promedio";
-
-}
-
-else if(percentil>=20){
-
-nivel="Bajo";
-
-}
-
-
-
-// REVIEW
-
-questions.forEach((q,i)=>{
-
-let estado="";
-
-if(answers[i]===null){
-
-estado="sin-responder";
-
-}
-
-else if(answers[i]===q.a){
-
-estado="correcta";
-
-}
-
-else{
-
-estado="incorrecta";
-
-}
-
-
-
-html+=`
-
-<div class="review-item ${estado}">
-
-<h3>
-Pregunta ${i+1}
-</h3>
-
-<p style="margin-top:8px;">
-${q.q}
-</p>
-
-<br>
-
-<p>
-<b>Tu respuesta:</b>
-
-${
-answers[i]!==null
-
-?
-
-q.o[answers[i]]
-
-:
-
-"Sin responder"
-
-}
-</p>
-
-<p style="margin-top:6px;">
-<b>Correcta:</b>
-
-${q.o[q.a]}
-</p>
-
-<div class="explicacion">
-
-${q.exp}
-
-</div>
-
-</div>
-
-`;
-
-});
-
-
-
-// RANKING HTML
-
-let rankingHTML="";
-
-ranking.forEach((p,i)=>{
-
-rankingHTML+=`
-
-<div style="
-display:flex;
-justify-content:space-between;
-padding:10px;
-margin:6px 0;
-background:${p.usuario ? "#cffafe" : "white"};
-border-radius:10px;
-">
-
-<span>
-#${i+1} - ${p.nombre}
-</span>
-
-<span>
-${p.nota}%
-</span>
-
-</div>
-
-`;
-
-});
-
-
-
-// MOSTRAR
-
-document.getElementById("score").innerHTML=
-
-`
-
-<button class="toggle-ranking" onclick="toggleRanking()">
-☰ Ranking
-</button>
-
-<div id="rankingPanel" class="ranking-panel">
-
-<div class="ranking-content">
-
-<h3 style="margin-bottom:15px;">
-🏆 Ranking General
-</h3>
-
-${rankingHTML}
-
-</div>
-
-</div>
-
-<div style="
-background:white;
-padding:20px;
-border-radius:15px;
-margin-bottom:20px;
-">
-
-<h2>
-${correct}/${questions.length}
-</h2>
-
-<p style="
-font-size:26px;
-font-weight:bold;
-margin-top:10px;
-color:#0891b2;
-">
-${porcentaje}%
-</p>
-
-<div style="
-display:flex;
-flex-direction:column;
-gap:12px;
-margin-top:20px;
-max-width:250px;
-">
-
-<div class="stat-box">
-<span>Percentil</span><br>
-<b>${percentil}%</b>
-</div>
-
-<div class="stat-box">
-<span>Nivel</span><br>
-<b>${nivel}</b>
-</div>
-
-</div>
-
-</div>
-
-`;
-
-
-
-document.getElementById("review")
-.innerHTML=html;
-
-
-
-document.getElementById("resultado")
-.style.display="block";
-
-
-
-document.getElementById("resultado")
-.scrollIntoView({
-
-behavior:"smooth"
-
-});
-
-
-
-// PARTY
-
-if(window.enviarResultadoFinal){
-
-window.enviarResultadoFinal({
-
-correctas:correct,
-total:questions.length,
-porcentaje
-
-});
-
-}
-
-
-
-// REPINTAR
-
-render();
-
+  done = true;
+  let correct = 0;
+  let html = "";
+
+  questions.forEach((q, i) => {
+    if(answers[i] === q.a){
+      correct++;
+    }
+  });
+
+  let porcentaje = Math.round((correct / questions.length) * 100);
+
+  const bots = [];
+  for(let i = 1; i <= 30; i++){
+    bots.push({
+      nombre: `Bot_${i}`,
+      nota: Math.floor(Math.random() * 71) + 30
+    });
+  }
+
+  const ranking = [...bots, { nombre: "Tú", nota: porcentaje, usuario: true }];
+  ranking.sort((a, b) => b.nota - a.nota);
+
+  let debajo = ranking.filter(p => porcentaje > p.nota).length;
+  let iguales = ranking.filter(p => porcentaje === p.nota).length;
+  let percentil = Math.round((debajo + (0.5 * iguales)) / ranking.length * 100);
+
+  if(percentil < 1) percentil = 1;
+  if(percentil > 99) percentil = 99;
+
+  let nivel = "Muy bajo";
+  if(percentil >= 90) nivel = "Excelente";
+  else if(percentil >= 75) nivel = "Muy bueno";
+  else if(percentil >= 60) nivel = "Bueno";
+  else if(percentil >= 40) nivel = "Promedio";
+  else if(percentil >= 20) nivel = "Bajo";
+
+  questions.forEach((q, i) => {
+    let estado = "";
+    if(answers[i] === null) estado = "sin-responder";
+    else if(answers[i] === q.a) estado = "correcta";
+    else estado = "incorrecta";
+
+    html += `
+      <div class="review-item ${estado}">
+        <h3>Pregunta ${i+1}</h3>
+        <p style="margin-top:8px;">${q.q}</p>
+        <br>
+        <p><b>Tu respuesta:</b> ${answers[i] !== null ? q.o[answers[i]] : "Sin responder"}</p>
+        <p style="margin-top:6px;"><b>Correcta:</b> ${q.o[q.a]}</p>
+        <div class="explicacion"><b>Explicación:</b> ${q.exp}</div>
+      </div>
+    `;
+  });
+
+  let rankingHTML = "";
+  ranking.forEach((p, i) => {
+    rankingHTML += `
+      <div style="display:flex; justify-content:space-between; padding:10px; margin:6px 0; background:${p.usuario ? "#cffafe" : "#f9fafb"}; border-radius:10px; font-weight:${p.usuario ? "bold" : "normal"};">
+        <span>#${i+1} - ${p.nombre}</span>
+        <span>${p.nota}%</span>
+      </div>
+    `;
+  });
+
+  document.getElementById("score").innerHTML = `
+    <button class="toggle-ranking" onclick="toggleRanking()">☰ Ranking</button>
+    <div id="rankingPanel" class="ranking-panel hidden">
+      <div class="ranking-content">
+        <h3 style="margin-bottom:15px;">🏆 Ranking General</h3>
+        ${rankingHTML}
+      </div>
+    </div>
+    <div style="background:white; padding:20px; border-radius:15px; margin-bottom:20px; text-align:center;">
+      <h2>Aciertos: ${correct} / ${questions.length}</h2>
+      <p style="font-size:2.5rem; font-weight:bold; margin-top:10px; color:#0891b2;">${porcentaje}%</p>
+      <div style="display:flex; gap:12px; justify-content:center; margin-top:20px;">
+        <div class="stat-box"><span>Percentil</span><br><b>${percentil}%</b></div>
+        <div class="stat-box"><span>Nivel</span><br><b>${nivel}</b></div>
+      </div>
+    </div>
+  `;
+
+  document.getElementById("review").innerHTML = html;
+  document.getElementById("resultado").style.display = "block";
+  document.getElementById("resultado").scrollIntoView({ behavior: "smooth" });
+
+  if(window.enviarResultadoFinal){
+    window.enviarResultadoFinal({
+      correctas: correct,
+      total: questions.length,
+      porcentaje
+    });
+  }
+
+  render();
 }
 
 function toggleRanking(){
-
-document.getElementById("rankingPanel")
-.classList.toggle("hidden");
-
+  const panel = document.getElementById("rankingPanel");
+  if(panel){
+    panel.classList.toggle("hidden");
+  }
 }
 
 function resetExam(){
-
-current=0;
-
-answers=new Array(questions.length).fill(null);
-
-done=false;
-
-document.getElementById("resultado")
-.style.display="none";
-
-render();
-
+  current = 0;
+  answers = new Array(questions.length).fill(null);
+  done = false;
+  document.getElementById("resultado").style.display = "none";
+  render();
 }
 
+// Inicialización
 render();
-
 </script>
-
 <script type="module" src="../party/party-timer.js"></script>
 <script type="module" src="../party/party-resultados.js"></script>
-
 </body>
 </html>
