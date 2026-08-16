@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Examen Verbal 6</title>
+<title>Examen Verbal 6 - Nivel 3</title>
 
 <style>
 
@@ -175,14 +175,27 @@ background:#fda4af;
 color:#881337;
 }
 
+.prev:hover{
+background:#fb7185;
+color:white;
+}
+
 .next{
 background:#fb7185;
 color:white;
 }
 
+.next:hover{
+background:#f43f5e;
+}
+
 .finish{
 background:#dc2626;
 color:white;
+}
+
+.finish:hover{
+background:#b91c1c;
 }
 
 .actions{
@@ -198,9 +211,17 @@ background:#e11d48;
 color:white;
 }
 
+.btn-primary:hover{
+background:#be123c;
+}
+
 .btn-secondary{
 background:#fecdd3;
 color:#9f1239;
+}
+
+.btn-secondary:hover{
+background:#fda4af;
 }
 
 .result{
@@ -212,9 +233,15 @@ border:1px solid #fecdd3;
 display:none;
 }
 
+.result h2{
+margin-bottom:10px;
+color:#9f1239;
+}
+
 .review{
 margin-top:18px;
 text-align:left;
+color:#1f2937;
 }
 
 .review-summary{
@@ -250,8 +277,8 @@ background:#ffffff;
 border-radius:14px;
 padding:14px;
 margin-bottom:12px;
-text-align:left;
 border-left:6px solid #cbd5e1;
+box-shadow:0 4px 14px rgba(0,0,0,0.05);
 }
 
 .review-item.correcta{
@@ -269,11 +296,19 @@ border-left-color:#f59e0b;
 background:#fffbeb;
 }
 
+.review-item h4{
+margin-bottom:8px;
+font-size:1rem;
+}
+
 .explicacion{
 margin-top:8px;
-padding:10px;
+padding:10px 12px;
 background:#f8fafc;
 border-radius:10px;
+color:#334155;
+line-height:1.5;
+font-size:0.95rem;
 }
 
 /* PANEL RANKING */
@@ -298,10 +333,8 @@ transform:translateX(-100%);
 }
 
 .toggle-ranking{
-position:fixed;
-left:15px;
-top:15px;
-z-index:1000;
+display:inline-block;
+margin-bottom:15px;
 background:#e11d48;
 color:white;
 border:none;
@@ -312,7 +345,18 @@ font-weight:bold;
 }
 
 .ranking-content{
-margin-top:60px;
+margin-top:20px;
+}
+
+.badge-nivel{
+display:inline-block;
+background:#9f1239;
+color:white;
+font-size:0.8rem;
+padding:3px 8px;
+border-radius:6px;
+margin-bottom:10px;
+font-weight:bold;
 }
 
 @media(max-width:768px){
@@ -335,17 +379,11 @@ padding:18px;
 <div class="container">
 
 <div class="header">
-
 <h1>📖 Examen Verbal 6</h1>
-
-<p>
-Versión digital interactiva
-</p>
-
+<p>Versión digital interactiva - Dificultad: Nivel 3</p>
 <a class="top-link" href="../verbal.html">
 ← Volver a Verbal
 </a>
-
 </div>
 
 <div class="stats-bar">
@@ -584,498 +622,219 @@ exp:"Elemento y característica."
 ];
 
 let current = 0;
-
-let answers =
-new Array(questions.length).fill(null);
-
+let answers = new Array(questions.length).fill(null);
 let examenFinalizado = false;
 
-const quiz =
-document.getElementById("quiz");
+const quiz = document.getElementById("quiz");
 
 function actualizarProgreso(){
-
-const respondidas =
-answers.filter(a => a !== null).length;
-
-document.getElementById("progress").textContent =
-`${respondidas} / ${questions.length}`;
-
-document.getElementById("qNum").textContent =
-current + 1;
-
+const respondidas = answers.filter(a => a !== null).length;
+document.getElementById("progress").textContent = `${respondidas} / ${questions.length}`;
+document.getElementById("qNum").textContent = current + 1;
 }
 
 function render(){
-
 quiz.innerHTML = "";
 
 questions.forEach((q,i)=>{
-
 let div = document.createElement("div");
-
-div.className =
-"question" + (i===current ? " active" : "");
+div.className = "question" + (i===current ? " active" : "");
 
 let opts = "";
 
 q.o.forEach((op,j)=>{
-
 let extraClass = "";
-
-if(answers[i] === j)
-extraClass += " selected";
+if(answers[i] === j) extraClass += " selected";
 
 if(examenFinalizado){
-
-if(j === q.a)
-extraClass += " correct-answer";
-
-if(answers[i] === j && j !== q.a){
-
-extraClass += " wrong-answer";
-
-}
-
+if(j === q.a) extraClass += " correct-answer";
+if(answers[i] === j && j !== q.a) extraClass += " wrong-answer";
 }
 
 opts += `
-
-<div class="option${extraClass}"
-onclick="selectOption(${i},${j})">
-
+<div class="option${extraClass}" onclick="selectOption(${i},${j})">
 ${String.fromCharCode(65+j)}. ${op}
-
 </div>
-
 `;
-
 });
 
 div.innerHTML = `
-
 <h3>${q.q}</h3>
-
 ${opts}
-
 <div class="navigation">
-
-<button class="prev"
-onclick="prevQuestion()"
-${i===0 ? "disabled" : ""}>
-Anterior
-</button>
-
+<button class="prev" onclick="prevQuestion()" ${i===0 ? "disabled" : ""}>Anterior</button>
 ${i===questions.length-1
-
-? `<button class="finish"
-onclick="finishQuiz()">
-Finalizar
-</button>`
-
-: `<button class="next"
-onclick="nextQuestion()">
-Siguiente
-</button>`
-
+? `<button class="finish" onclick="finishQuiz()">Finalizar</button>`
+: `<button class="next" onclick="nextQuestion()">Siguiente</button>`
 }
-
 </div>
-
 `;
 
 quiz.appendChild(div);
-
 });
 
 actualizarProgreso();
-
 }
 
 function selectOption(i,j){
-
 if(examenFinalizado) return;
-
 answers[i] = j;
-
 render();
-
 }
 
 function nextQuestion(){
-
 if(current < questions.length-1){
-
 current++;
-
 render();
-
-window.scrollTo({
-top:0,
-behavior:"smooth"
-});
-
+window.scrollTo({ top:0, behavior:"smooth" });
 }
-
 }
 
 function prevQuestion(){
-
 if(current > 0){
-
 current--;
-
 render();
-
 }
-
 }
 
 function finishQuiz(){
-
 if(examenFinalizado) return;
-
 examenFinalizado = true;
 
 let total = questions.length;
-
 let correctas = 0;
 let incorrectas = 0;
 let sinResponder = 0;
 
-let revisionHTML = "";
-
-questions.forEach((q,i)=>{
-
+questions.forEach((q, i) => {
 const respuestaUsuario = answers[i];
-
-if(respuestaUsuario === q.a){
-
-correctas++;
-
-}
-else if(respuestaUsuario === null){
-
-sinResponder++;
-
-}
-else{
-
-incorrectas++;
-
-}
-
+if(respuestaUsuario === q.a) correctas++;
+else if(respuestaUsuario === null) sinResponder++;
+else incorrectas++;
 });
 
-const porcentaje =
-Math.round((correctas/total)*100);
+const porcentaje = Math.round((correctas/total)*100);
 
-const bots=[];
-
-for(let i=1;i<=30;i++){
-
-bots.push({
-
-nombre:`Bot_${i}`,
-
-nota:Math.floor(Math.random()*71)+30
-
-});
-
+// GENERACIÓN DE BOTS NIVEL 3 (Notas entre 75% y 100%)
+const bots = [];
+for(let i=1; i<=30; i++){
+    const notaBot = Math.floor(Math.random() * 26) + 75; // Genera 75 - 100
+    bots.push({
+        nombre: `Bot_${i}`,
+        nota: notaBot
+    });
 }
 
-const ranking=[
-
+const ranking = [
 ...bots,
-
-{
-nombre:"Tú",
-nota:porcentaje,
-usuario:true
-}
-
+{ nombre: "Tú", nota: porcentaje, usuario: true }
 ];
 
-ranking.sort((a,b)=>b.nota-a.nota);
+ranking.sort((a,b) => b.nota - a.nota);
 
-let debajo=ranking.filter(
-p=>porcentaje>p.nota
-).length;
+let debajo = ranking.filter(p => porcentaje > p.nota).length;
+let iguales = ranking.filter(p => porcentaje === p.nota).length;
+let percentil = Math.round((debajo + (0.5 * iguales)) / ranking.length * 100);
 
-let iguales=ranking.filter(
-p=>porcentaje===p.nota
-).length;
+if(percentil < 1) percentil = 1;
+if(percentil > 99) percentil = 99;
 
-let percentil=Math.round(
-(
-debajo+(0.5*iguales)
-)
-/ranking.length
-*100
-);
+let nivel = "Muy bajo";
+if(percentil >= 90) nivel = "Excelente";
+else if(percentil >= 75) nivel = "Muy bueno";
+else if(percentil >= 60) nivel = "Bueno";
+else if(percentil >= 40) nivel = "Promedio";
+else if(percentil >= 20) nivel = "Bajo";
 
-if(percentil<1){
-percentil=1;
-}
-
-if(percentil>99){
-percentil=99;
-}
-
-let nivel="Muy bajo";
-
-if(percentil>=90){
-nivel="Excelente";
-}
-else if(percentil>=75){
-nivel="Muy bueno";
-}
-else if(percentil>=60){
-nivel="Bueno";
-}
-else if(percentil>=40){
-nivel="Promedio";
-}
-else if(percentil>=20){
-nivel="Bajo";
-}
-
-questions.forEach((q,i)=>{
-
+let revisionHTML = "";
+questions.forEach((q, i) => {
 const respuestaUsuario = answers[i];
-
 const numero = i + 1;
 
 if(respuestaUsuario === q.a){
-
 revisionHTML += `
-
 <div class="review-item correcta">
-
-<h4>
-Pregunta ${numero}: ✅ Correcta
-</h4>
-
-<div class="explicacion">
-
-${q.exp}
-
+<h4>Pregunta ${numero}: ✅ Correcta</h4>
+<p><strong>Tu respuesta:</strong> ${String.fromCharCode(65 + respuestaUsuario)}. ${q.o[respuestaUsuario]}</p>
+<div class="explicacion">${q.exp}</div>
 </div>
-
-</div>
-
 `;
-
-}
-else if(respuestaUsuario === null){
-
+} else if(respuestaUsuario === null){
 revisionHTML += `
-
 <div class="review-item sin-responder">
-
-<h4>
-Pregunta ${numero}: ⚠️ Sin responder
-</h4>
-
-<div class="explicacion">
-
-Respuesta correcta:
-${q.o[q.a]}
-
+<h4>Pregunta ${numero}: ⚠️ Sin responder</h4>
+<p><strong>Respuesta correcta:</strong> ${String.fromCharCode(65 + q.a)}. ${q.o[q.a]}</p>
+<div class="explicacion">${q.exp}</div>
 </div>
-
-</div>
-
 `;
-
-}
-else{
-
+} else {
 revisionHTML += `
-
 <div class="review-item incorrecta">
-
-<h4>
-Pregunta ${numero}: ❌ Incorrecta
-</h4>
-
-<div class="explicacion">
-
-Correcta:
-${q.o[q.a]}
-
-<br><br>
-
-${q.exp}
-
+<h4>Pregunta ${numero}: ❌ Incorrecta</h4>
+<p><strong>Tu respuesta:</strong> ${String.fromCharCode(65 + respuestaUsuario)}. ${q.o[respuestaUsuario]}</p>
+<p><strong>Correcta:</strong> ${String.fromCharCode(65 + q.a)}. ${q.o[q.a]}</p>
+<div class="explicacion">${q.exp}</div>
 </div>
-
-</div>
-
 `;
-
 }
-
 });
 
-document.getElementById("puntajeTexto")
-.innerHTML = `
+document.getElementById("puntajeTexto").innerHTML = `
+<button class="toggle-ranking" onclick="toggleRanking()">🏆 Ver Ranking</button>
 
-<button class="toggle-ranking" onclick="toggleRanking()">
-☰ Ranking
-</button>
-
-<div id="rankingPanel" class="ranking-panel">
-
+<div id="rankingPanel" class="ranking-panel hidden">
 <div class="ranking-content">
-
-<h3 style="margin-bottom:15px;">
-🏆 Ranking General
-</h3>
-
+<span class="badge-nivel">Nivel 3 (Dificultad Alta)</span>
+<h3 style="margin-bottom:15px;">🏆 Ranking General</h3>
 ${ranking.map((p,i)=>`
-
-<div style="
-display:flex;
-justify-content:space-between;
-padding:10px;
-margin:6px 0;
-background:${p.usuario ? "#ffe4e6" : "white"};
-border-radius:10px;
-">
-
-<span>
-#${i+1} - ${p.nombre}
-</span>
-
-<span>
-${p.nota}%
-</span>
-
+<div style="display:flex; justify-content:space-between; padding:10px; margin:6px 0; background:${p.usuario ? "#ffe4e6" : "white"}; border-radius:10px;">
+<span>#${i+1} - ${p.nombre}</span>
+<span>${p.nota}%</span>
 </div>
-
 `).join("")}
-
+</div>
 </div>
 
-</div>
-
-<div style="
-background:white;
-padding:20px;
-border-radius:15px;
-margin-bottom:20px;
-">
-
-<h2>
-${correctas}/${total}
-</h2>
-
-<p style="
-font-size:26px;
-font-weight:bold;
-margin-top:10px;
-color:#e11d48;
-">
-
-${porcentaje}%
-
-</p>
-
+<div style="background:white; padding:20px; border-radius:15px; margin-bottom:20px;">
+<h2>${correctas}/${total}</h2>
+<p style="font-size:26px; font-weight:bold; margin-top:10px; color:#e11d48;">${porcentaje}%</p>
 <div class="review-summary">
-
-<div class="summary-box">
-<h4>Correctas</h4>
-<p>${correctas}</p>
+<div class="summary-box"><h4>Correctas</h4><p>${correctas}</p></div>
+<div class="summary-box"><h4>Incorrectas</h4><p>${incorrectas}</p></div>
+<div class="summary-box"><h4>Sin responder</h4><p>${sinResponder}</p></div>
+<div class="summary-box"><h4>Percentil</h4><p>${percentil}%</p></div>
+<div class="summary-box"><h4>Nivel</h4><p>${nivel}</p></div>
 </div>
-
-<div class="summary-box">
-<h4>Incorrectas</h4>
-<p>${incorrectas}</p>
 </div>
-
-<div class="summary-box">
-<h4>Sin responder</h4>
-<p>${sinResponder}</p>
-</div>
-
-<div class="summary-box">
-<h4>Percentil</h4>
-<p>${percentil}%</p>
-</div>
-
-<div class="summary-box">
-<h4>Nivel</h4>
-<p>${nivel}</p>
-</div>
-
-</div>
-
-</div>
-
 `;
 
-document.getElementById("revision")
-.innerHTML = revisionHTML;
-
-document.getElementById("resultado")
-.style.display = "block";
-
-document.getElementById("resultado")
-.scrollIntoView({
-behavior:"smooth"
-});
+document.getElementById("revision").innerHTML = revisionHTML;
+document.getElementById("resultado").style.display = "block";
+document.getElementById("resultado").scrollIntoView({ behavior:"smooth" });
 
 render();
 
 if(window.enviarResultadoFinal){
-
-window.enviarResultadoFinal({
-
-correctas,
-incorrectas,
-sinResponder,
-total,
-porcentaje
-
-});
-
+window.enviarResultadoFinal({ correctas, incorrectas, sinResponder, total, porcentaje });
 }
-
 }
 
 function toggleRanking(){
-
-document.getElementById("rankingPanel")
-.classList.toggle("hidden");
-
+const panel = document.getElementById("rankingPanel");
+if(panel){
+panel.classList.toggle("hidden");
+}
 }
 
 function reiniciarExamen(){
-
 current = 0;
-
-answers =
-new Array(questions.length).fill(null);
-
+answers = new Array(questions.length).fill(null);
 examenFinalizado = false;
-
-document.getElementById("resultado")
-.style.display = "none";
-
-document.getElementById("revision")
-.innerHTML = "";
-
-document.getElementById("puntajeTexto")
-.innerHTML = "";
-
-window.scrollTo({
-top:0,
-behavior:"smooth"
-});
-
+document.getElementById("resultado").style.display = "none";
+document.getElementById("revision").innerHTML = "";
+document.getElementById("puntajeTexto").innerHTML = "";
+window.scrollTo({ top:0, behavior:"smooth" });
 render();
-
 }
 
 render();
