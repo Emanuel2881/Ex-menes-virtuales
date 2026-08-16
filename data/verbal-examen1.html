@@ -630,16 +630,25 @@ correctas++;
 const porcentaje =
 Math.round((correctas/total)*100);
 
+const rangosBots=[
+{min:50,max:64},{min:50,max:64},
+{min:65,max:74},{min:65,max:74},{min:65,max:74},{min:65,max:74},
+{min:75,max:84},{min:75,max:84},{min:75,max:84},{min:75,max:84},{min:75,max:84},{min:75,max:84},{min:75,max:84},{min:75,max:84},{min:75,max:84},
+{min:85,max:94},{min:85,max:94},{min:85,max:94},{min:85,max:94},{min:85,max:94},{min:85,max:94},{min:85,max:94},{min:85,max:94},{min:85,max:94},{min:85,max:94},
+{min:95,max:100},{min:95,max:100},{min:95,max:100},{min:95,max:100},{min:95,max:100}
+];
+
+rangosBots.sort(()=>Math.random()-0.5);
+
 const bots=[];
 
 for(let i=1;i<=30;i++){
 
+const rango=rangosBots[i-1];
+
 bots.push({
-
 nombre:`Bot_${i}`,
-
-nota:Math.floor(Math.random()*71)+30
-
+nota:Math.floor(Math.random()*(rango.max-rango.min+1))+rango.min
 });
 
 }
