@@ -53,10 +53,18 @@ margin-top:12px;
 color:#be123c;
 text-decoration:none;
 font-weight:bold;
+border-radius:6px;
+padding:4px 8px;
 }
 
 .top-link:hover{
 text-decoration:underline;
+}
+
+.top-link:focus-visible,
+button:focus-visible{
+outline:3px solid #be123c;
+outline-offset:2px;
 }
 
 .stats-bar{
@@ -76,6 +84,8 @@ padding:12px 18px;
 min-width:150px;
 text-align:center;
 box-shadow:0 4px 12px rgba(0,0,0,0.05);
+flex:1;
+max-width:220px;
 }
 
 .stat-label{
@@ -107,25 +117,35 @@ display:block;
 }
 
 .question h3{
-font-size:1.08rem;
+font-size:1.15rem;
 line-height:1.6;
 color:#9f1239;
 margin-bottom:14px;
 }
 
-.option{
-display:block;
-background:#ffe4e6;
-padding:12px 14px;
-margin:10px 0;
-border-radius:12px;
-cursor:pointer;
-border:1px solid transparent;
-transition:0.2s ease;
-color:#881337;
+.options-group{
+display:flex;
+flex-direction:column;
+gap:10px;
+margin-bottom:16px;
 }
 
-.option:hover{
+.option{
+display:block;
+width:100%;
+text-align:left;
+background:#ffe4e6;
+padding:14px 16px;
+border-radius:12px;
+cursor:pointer;
+border:2px solid transparent;
+transition:all 0.2s ease;
+color:#881337;
+font-size:1rem;
+font-weight:500;
+}
+
+.option:hover:not(:disabled){
 background:#fecdd3;
 border-color:#fb7185;
 }
@@ -163,10 +183,16 @@ padding:12px 20px;
 font-size:1rem;
 font-weight:bold;
 cursor:pointer;
-transition:0.2s ease;
+transition:transform 0.2s ease, background-color 0.2s ease;
 }
 
-button:hover{
+button:disabled{
+opacity:0.5;
+cursor:not-allowed;
+transform:none !important;
+}
+
+button:hover:not(:disabled){
 transform:translateY(-1px);
 }
 
@@ -219,7 +245,7 @@ text-align:left;
 
 .review-summary{
 display:grid;
-grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
 gap:12px;
 margin:18px 0 14px;
 }
@@ -274,6 +300,8 @@ margin-top:8px;
 padding:10px;
 background:#f8fafc;
 border-radius:10px;
+color:#334155;
+font-size:0.95rem;
 }
 
 /* PANEL RANKING */
@@ -286,7 +314,7 @@ width:320px;
 height:100vh;
 background:white;
 color:#111827;
-box-shadow:4px 0 20px rgba(0,0,0,0.12);
+box-shadow:4px 0 20px rgba(0,0,0,0.15);
 padding:20px;
 overflow-y:auto;
 z-index:999;
@@ -300,29 +328,47 @@ transform:translateX(-100%);
 .toggle-ranking{
 position:fixed;
 left:15px;
-top:15px;
+bottom:15px;
 z-index:1000;
 background:#e11d48;
 color:white;
 border:none;
-padding:10px 15px;
-border-radius:12px;
+padding:12px 18px;
+border-radius:50px;
 cursor:pointer;
 font-weight:bold;
+box-shadow:0 4px 14px rgba(225,29,72,0.4);
 }
 
 .ranking-content{
-margin-top:60px;
+margin-top:20px;
 }
 
 @media(max-width:768px){
 
+body{
+padding:15px 10px;
+}
+
 .ranking-panel{
-width:260px;
+width:280px;
 }
 
 .container{
-padding:18px;
+padding:16px;
+border-radius:16px;
+}
+
+.question{
+padding:15px;
+}
+
+.actions, .navigation{
+flex-direction:column;
+}
+
+button{
+width:100%;
 }
 
 }
@@ -334,748 +380,293 @@ padding:18px;
 
 <div class="container">
 
-<div class="header">
-
+<header class="header">
 <h1>📖 Examen Verbal 9</h1>
+<p>Versión digital interactiva</p>
+<a class="top-link" href="../verbal.html">← Volver a Verbal</a>
+</header>
 
-<p>
-Versión digital interactiva
-</p>
-
-<a class="top-link" href="../verbal.html">
-← Volver a Verbal
-</a>
-
-</div>
-
-<div class="stats-bar">
-
+<div class="stats-bar" aria-live="polite">
 <div class="stat-box">
-<span class="stat-label">
-Pregunta actual
-</span>
-
-<span class="stat-value">
-<span id="qNum">1</span> / 25
-</span>
+<span class="stat-label">Pregunta actual</span>
+<span class="stat-value"><span id="qNum">1</span> / 25</span>
 </div>
 
 <div class="stat-box">
-<span class="stat-label">
-Progreso
-</span>
-
-<span class="stat-value" id="progress">
-0 / 25
-</span>
+<span class="stat-label">Progreso</span>
+<span class="stat-value" id="progress">0 / 25</span>
+</div>
 </div>
 
-</div>
-
-<div id="quiz"></div>
+<main id="quiz" role="region" aria-label="Cuestionario"></main>
 
 <div class="actions">
-
-<button class="btn-primary"
-onclick="finishQuiz()">
-Calificar examen
-</button>
-
-<button class="btn-secondary"
-onclick="reiniciarExamen()">
-Reiniciar
-</button>
-
+<button class="btn-primary" onclick="finishQuiz()">Calificar examen</button>
+<button class="btn-secondary" onclick="reiniciarExamen()">Reiniciar</button>
 </div>
 
-<div class="result" id="resultado">
-
-<h2>
-Resultado Final
-</h2>
-
-<p id="puntajeTexto"></p>
-
+<section class="result" id="resultado" aria-live="polite">
+<h2>Resultado Final</h2>
+<div id="puntajeTexto"></div>
 <div class="review" id="revision"></div>
+</section>
 
 </div>
 
+<button id="btnRanking" class="toggle-ranking" style="display:none;" onclick="toggleRanking()" aria-expanded="false" aria-controls="rankingPanel">
+🏆 Ranking
+</button>
+
+<aside id="rankingPanel" class="ranking-panel hidden" aria-hidden="true">
+<div class="ranking-content" id="rankingContent">
+<h3 style="margin-bottom:15px;">🏆 Ranking General</h3>
+<div id="rankingList"></div>
 </div>
+</aside>
 
 <script>
 
 const questions = [
-
-{
-q:"CEREBRO es a PENSAR como CORAZÓN es a ___",
-o:["Respirar","Sentir","Mover","Caminar"],
-a:1,
-exp:"Órgano y función."
-},
-
-{
-q:"ESCUELA es a MAESTRO como HOSPITAL es a ___",
-o:["Paciente","Enfermera","Doctor","Cirugía"],
-a:2,
-exp:"Lugar y profesional."
-},
-
-{
-q:"LEÓN es a RUGIR como SERPIENTE es a ___",
-o:["Silbar","Morder","Arrastrarse","Sisear"],
-a:3,
-exp:"Animal y sonido."
-},
-
-{
-q:"PLUMA es a ESCRIBIR como PINCEL es a ___",
-o:["Pintar","Borrar","Colorear","Dibujar"],
-a:0,
-exp:"Herramienta y acción."
-},
-
-{
-q:"DÍA es a SOL como NOCHE es a ___",
-o:["Luz","Oscuridad","Luna","Estrella"],
-a:2,
-exp:"Elemento representativo."
-},
-
-{
-q:"MADERA es a PAPEL como ARENA es a ___",
-o:["Vidrio","Cemento","Playa","Roca"],
-a:0,
-exp:"Material y producto."
-},
-
-{
-q:"AUTO es a CONDUCTOR como AVIÓN es a ___",
-o:["Capitán","Piloto","Mecánico","Azafata"],
-a:1,
-exp:"Vehículo y quien lo dirige."
-},
-
-{
-q:"LIBRO es a LEER como RADIO es a ___",
-o:["Escuchar","Hablar","Cantar","Ver"],
-a:0,
-exp:"Objeto y acción."
-},
-
-{
-q:"SOLTERO es a CASADO como NIÑO es a ___",
-o:["Joven","Adulto","Anciano","Persona"],
-a:1,
-exp:"Etapa inicial y posterior."
-},
-
-{
-q:"LLUVIA es a PARAGUAS como SOL es a ___",
-o:["Calor","Sombrero","Gafas","Bloqueador"],
-a:1,
-exp:"Objeto y situación."
-},
-
-{
-q:"GALLINA es a HUEVO como VACA es a ___",
-o:["Leche","Queso","Pasto","Carne"],
-a:0,
-exp:"Animal y producto."
-},
-
-{
-q:"MÚSICA es a SONIDO como PINTURA es a ___",
-o:["Color","Arte","Lienzo","Dibujo"],
-a:0,
-exp:"Disciplina y elemento."
-},
-
-{
-q:"RELOJ es a TIEMPO como BALANZA es a ___",
-o:["Peso","Medida","Masa","Volumen"],
-a:0,
-exp:"Instrumento y magnitud."
-},
-
-{
-q:"FUEGO es a CALOR como HIELO es a ___",
-o:["Frío","Agua","Nieve","Vapor"],
-a:0,
-exp:"Elemento y característica."
-},
-
-{
-q:"PEZ es a AGUA como PÁJARO es a ___",
-o:["Cielo","Nido","Árbol","Aire"],
-a:3,
-exp:"Animal y medio."
-},
-
-{
-q:"CAMINAR es a PIERNA como ESCRIBIR es a ___",
-o:["Brazo","Mano","Papel","Lápiz"],
-a:1,
-exp:"Acción y parte utilizada."
-},
-
-{
-q:"MÉDICO es a CURAR como ABOGADO es a ___",
-o:["Defender","Acusar","Juzgar","Demandar"],
-a:0,
-exp:"Profesión y función."
-},
-
-{
-q:"ZAPATO es a PIE como SOMBRERO es a ___",
-o:["Cabeza","Cabello","Cara","Cuello"],
-a:0,
-exp:"Objeto y parte del cuerpo."
-},
-
-{
-q:"ABEJA es a COLMENA como AVE es a ___",
-o:["Árbol","Nido","Jaula","Pluma"],
-a:1,
-exp:"Animal y hogar."
-},
-
-{
-q:"TECLADO es a COMPUTADORA como CONTROL es a ___",
-o:["Televisor","Consola","Pantalla","Celular"],
-a:1,
-exp:"Accesorio y dispositivo."
-},
-
-{
-q:"PINTOR es a ARTE como CIENTÍFICO es a ___",
-o:["Estudio","Laboratorio","Ciencia","Experimento"],
-a:2,
-exp:"Profesión y campo."
-},
-
-{
-q:"FRÍO es a INVIERNO como CALOR es a ___",
-o:["Fuego","Verano","Playa","Sol"],
-a:1,
-exp:"Característica y estación."
-},
-
-{
-q:"OREJA es a ESCUCHAR como OJO es a ___",
-o:["Mirar","Hablar","Leer","Observar"],
-a:3,
-exp:"Órgano y función."
-},
-
-{
-q:"CARPINTERO es a MARTILLO como COCINERO es a ___",
-o:["Plato","Cuchillo","Sartén","Receta"],
-a:1,
-exp:"Profesión y herramienta."
-},
-
-{
-q:"UNIVERSIDAD es a ESTUDIANTE como ESTADIO es a ___",
-o:["Jugador","Partido","Aficionado","Equipo"],
-a:0,
-exp:"Lugar y persona principal."
-}
-
+{ q:"CEREBRO es a PENSAR como CORAZÓN es a ___", o:["Respirar","Sentir","Mover","Caminar"], a:1, exp:"Órgano y función." },
+{ q:"ESCUELA es a MAESTRO como HOSPITAL es a ___", o:["Paciente","Enfermera","Doctor","Cirugía"], a:2, exp:"Lugar y profesional." },
+{ q:"LEÓN es a RUGIR como SERPIENTE es a ___", o:["Silbar","Morder","Arrastrarse","Sisear"], a:3, exp:"Animal y sonido." },
+{ q:"PLUMA es a ESCRIBIR como PINCEL es a ___", o:["Pintar","Borrar","Colorear","Dibujar"], a:0, exp:"Herramienta y acción." },
+{ q:"DÍA es a SOL como NOCHE es a ___", o:["Luz","Oscuridad","Luna","Estrella"], a:2, exp:"Elemento representativo." },
+{ q:"MADERA es a PAPEL como ARENA es a ___", o:["Vidrio","Cemento","Playa","Roca"], a:0, exp:"Material y producto." },
+{ q:"AUTO es a CONDUCTOR como AVIÓN es a ___", o:["Capitán","Piloto","Mecánico","Azafata"], a:1, exp:"Vehículo y quien lo dirige." },
+{ q:"LIBRO es a LEER como RADIO es a ___", o:["Escuchar","Hablar","Cantar","Ver"], a:0, exp:"Objeto y acción." },
+{ q:"SOLTERO es a CASADO como NIÑO es a ___", o:["Joven","Adulto","Anciano","Persona"], a:1, exp:"Etapa inicial y posterior." },
+{ q:"LLUVIA es a PARAGUAS como SOL es a ___", o:["Calor","Sombrero","Gafas","Bloqueador"], a:1, exp:"Objeto y situación." },
+{ q:"GALLINA es a HUEVO como VACA es a ___", o:["Leche","Queso","Pasto","Carne"], a:0, exp:"Animal y producto." },
+{ q:"MÚSICA es a SONIDO como PINTURA es a ___", o:["Color","Arte","Lienzo","Dibujo"], a:0, exp:"Disciplina y elemento." },
+{ q:"RELOJ es a TIEMPO como BALANZA es a ___", o:["Peso","Medida","Masa","Volumen"], a:0, exp:"Instrumento y magnitud." },
+{ q:"FUEGO es a CALOR como HIELO es a ___", o:["Frío","Agua","Nieve","Vapor"], a:0, exp:"Elemento y característica." },
+{ q:"PEZ es a AGUA como PÁJARO es a ___", o:["Cielo","Nido","Árbol","Aire"], a:3, exp:"Animal y medio." },
+{ q:"CAMINAR es a PIERNA como ESCRIBIR es a ___", o:["Brazo","Mano","Papel","Lápiz"], a:1, exp:"Acción y parte utilizada." },
+{ q:"MÉDICO es a CURAR como ABOGADO es a ___", o:["Defender","Acusar","Juzgar","Demandar"], a:0, exp:"Profesión y función." },
+{ q:"ZAPATO es a PIE como SOMBRERO es a ___", o:["Cabeza","Cabello","Cara","Cuello"], a:0, exp:"Objeto y parte del cuerpo." },
+{ q:"ABEJA es a COLMENA como AVE es a ___", o:["Árbol","Nido","Jaula","Pluma"], a:1, exp:"Animal y hogar." },
+{ q:"TECLADO es a COMPUTADORA como CONTROL es a ___", o:["Televisor","Consola","Pantalla","Celular"], a:1, exp:"Accesorio y dispositivo." },
+{ q:"PINTOR es a ARTE como CIENTÍFICO es a ___", o:["Estudio","Laboratorio","Ciencia","Experimento"], a:2, exp:"Profesión y campo." },
+{ q:"FRÍO es a INVIERNO como CALOR es a ___", o:["Fuego","Verano","Playa","Sol"], a:1, exp:"Característica y estación." },
+{ q:"OREJA es a ESCUCHAR como OJO es a ___", o:["Mirar","Hablar","Leer","Observar"], a:3, exp:"Órgano y función." },
+{ q:"CARPINTERO es a MARTILLO como COCINERO es a ___", o:["Plato","Cuchillo","Sartén","Receta"], a:1, exp:"Profesión y herramienta." },
+{ q:"UNIVERSIDAD es a ESTUDIANTE como ESTADIO es a ___", o:["Jugador","Partido","Aficionado","Equipo"], a:0, exp:"Lugar y persona principal." }
 ];
 
 let current = 0;
-
-let answers =
-new Array(questions.length).fill(null);
-
+let answers = new Array(questions.length).fill(null);
 let examenFinalizado = false;
 
-const quiz =
-document.getElementById("quiz");
+const quiz = document.getElementById("quiz");
 
 function actualizarProgreso(){
-
-const respondidas =
-answers.filter(a => a !== null).length;
-
-document.getElementById("progress").textContent =
-`${respondidas} / ${questions.length}`;
-
-document.getElementById("qNum").textContent =
-current + 1;
-
+const respondidas = answers.filter(a => a !== null).length;
+document.getElementById("progress").textContent = `${respondidas} / ${questions.length}`;
+document.getElementById("qNum").textContent = current + 1;
 }
 
 function render(){
-
 quiz.innerHTML = "";
 
-questions.forEach((q,i)=>{
+questions.forEach((q, i) => {
+const div = document.createElement("article");
+div.className = "question" + (i === current ? " active" : "");
+div.setAttribute("aria-hidden", i !== current);
 
-let div = document.createElement("div");
+let optsHTML = "";
 
-div.className =
-"question" + (i===current ? " active" : "");
-
-let opts = "";
-
-q.o.forEach((op,j)=>{
-
+q.o.forEach((op, j) => {
 let extraClass = "";
+let isSelected = answers[i] === j;
 
-if(answers[i] === j)
-extraClass += " selected";
+if(isSelected) extraClass += " selected";
 
 if(examenFinalizado){
-
-if(j === q.a)
-extraClass += " correct-answer";
-
-if(answers[i] === j && j !== q.a){
-
-extraClass += " wrong-answer";
-
+if(j === q.a) extraClass += " correct-answer";
+if(isSelected && j !== q.a) extraClass += " wrong-answer";
 }
 
-}
-
-opts += `
-
-<div class="option${extraClass}"
-onclick="selectOption(${i},${j})">
-
+optsHTML += `
+<button type="button" 
+class="option${extraClass}" 
+onclick="selectOption(${i}, ${j})"
+${examenFinalizado ? "disabled" : ""}
+aria-pressed="${isSelected}">
 ${String.fromCharCode(65+j)}. ${op}
-
-</div>
-
+</button>
 `;
-
 });
 
 div.innerHTML = `
-
-<h3>${q.q}</h3>
-
-${opts}
-
+<h3>Pregunta ${i + 1}: ${q.q}</h3>
+<div class="options-group">${optsHTML}</div>
 <div class="navigation">
-
-<button class="prev"
-onclick="prevQuestion()"
-${i===0 ? "disabled" : ""}>
-Anterior
-</button>
-
-${i===questions.length-1
-
-? `<button class="finish"
-onclick="finishQuiz()">
-Finalizar
-</button>`
-
-: `<button class="next"
-onclick="nextQuestion()">
-Siguiente
-</button>`
-
+<button class="prev" onclick="prevQuestion()" ${i === 0 ? "disabled" : ""}>Anterior</button>
+${i === questions.length - 1
+? `<button class="finish" onclick="finishQuiz()">Finalizar</button>`
+: `<button class="next" onclick="nextQuestion()">Siguiente</button>`
 }
-
 </div>
-
 `;
 
 quiz.appendChild(div);
-
 });
 
 actualizarProgreso();
-
 }
 
-function selectOption(i,j){
-
+function selectOption(i, j){
 if(examenFinalizado) return;
-
 answers[i] = j;
-
 render();
-
 }
 
 function nextQuestion(){
-
-if(current < questions.length-1){
-
+if(current < questions.length - 1){
 current++;
-
 render();
-
-window.scrollTo({
-top:0,
-behavior:"smooth"
-});
-
+window.scrollTo({ top: 0, behavior: "smooth" });
 }
-
 }
 
 function prevQuestion(){
-
 if(current > 0){
-
 current--;
-
 render();
-
+window.scrollTo({ top: 0, behavior: "smooth" });
 }
-
 }
 
 function finishQuiz(){
-
 if(examenFinalizado) return;
-
 examenFinalizado = true;
 
 let total = questions.length;
-
 let correctas = 0;
 let incorrectas = 0;
 let sinResponder = 0;
-
 let revisionHTML = "";
 
-questions.forEach((q,i)=>{
-
+questions.forEach((q, i) => {
 const respuestaUsuario = answers[i];
-
-if(respuestaUsuario === q.a){
-
-correctas++;
-
-}
-else if(respuestaUsuario === null){
-
-sinResponder++;
-
-}
-else{
-
-incorrectas++;
-
-}
-
+if(respuestaUsuario === q.a) correctas++;
+else if(respuestaUsuario === null) sinResponder++;
+else incorrectas++;
 });
 
-const porcentaje =
-Math.round((correctas/total)*100);
+const porcentaje = Math.round((correctas / total) * 100);
 
-const bots=[];
-
-for(let i=1;i<=30;i++){
-
-bots.push({
-
-nombre:`Bot_${i}`,
-
-nota:Math.floor(Math.random()*71)+30
-
-});
-
+// Generar bots de alta dificultad (puntuaciones concentradas entre 60% y 100%)
+const bots = [];
+for(let i = 1; i <= 30; i++){
+// Ponderar hacia valores más altos (80% - 98%)
+let r = Math.random();
+let nota = Math.floor(60 + Math.pow(r, 0.5) * 40);
+// Redondeo al múltiplo de 4 más cercano para simular aciertos de 25 preguntas (cada una vale 4%)
+nota = Math.min(100, Math.max(60, Math.round(nota / 4) * 4));
+bots.push({ nombre: `Bot_${i}`, nota: nota });
 }
 
-const ranking=[
+const ranking = [...bots, { nombre: "Tú", nota: porcentaje, usuario: true }];
+ranking.sort((a, b) => b.nota - a.nota);
 
-...bots,
+let debajo = ranking.filter(p => porcentaje > p.nota).length;
+let iguales = ranking.filter(p => porcentaje === p.nota).length;
+let percentil = Math.round((debajo + (0.5 * iguales)) / ranking.length * 100);
 
-{
-nombre:"Tú",
-nota:porcentaje,
-usuario:true
-}
+percentil = Math.max(1, Math.min(99, percentil));
 
-];
+let nivel = "Muy bajo";
+if(percentil >= 90) nivel = "Excelente";
+else if(percentil >= 75) nivel = "Muy bueno";
+else if(percentil >= 60) nivel = "Bueno";
+else if(percentil >= 40) nivel = "Promedio";
+else if(percentil >= 20) nivel = "Bajo";
 
-ranking.sort((a,b)=>b.nota-a.nota);
-
-let debajo=ranking.filter(
-p=>porcentaje>p.nota
-).length;
-
-let iguales=ranking.filter(
-p=>porcentaje===p.nota
-).length;
-
-let percentil=Math.round(
-(
-debajo+(0.5*iguales)
-)
-/ranking.length
-*100
-);
-
-if(percentil<1){
-percentil=1;
-}
-
-if(percentil>99){
-percentil=99;
-}
-
-let nivel="Muy bajo";
-
-if(percentil>=90){
-nivel="Excelente";
-}
-else if(percentil>=75){
-nivel="Muy bueno";
-}
-else if(percentil>=60){
-nivel="Bueno";
-}
-else if(percentil>=40){
-nivel="Promedio";
-}
-else if(percentil>=20){
-nivel="Bajo";
-}
-
-questions.forEach((q,i)=>{
-
+questions.forEach((q, i) => {
 const respuestaUsuario = answers[i];
-
 const numero = i + 1;
 
 if(respuestaUsuario === q.a){
-
 revisionHTML += `
-
 <div class="review-item correcta">
-
-<h4>
-Pregunta ${numero}: ✅ Correcta
-</h4>
-
-<div class="explicacion">
-
-${q.exp}
-
-</div>
-
-</div>
-
-`;
-
-}
-else if(respuestaUsuario === null){
-
+<h4>Pregunta ${numero}: ✅ Correcta</h4>
+<div class="explicacion">${q.exp}</div>
+</div>`;
+} else if(respuestaUsuario === null){
 revisionHTML += `
-
 <div class="review-item sin-responder">
-
-<h4>
-Pregunta ${numero}: ⚠️ Sin responder
-</h4>
-
-<div class="explicacion">
-
-Respuesta correcta:
-${q.o[q.a]}
-
-</div>
-
-</div>
-
-`;
-
-}
-else{
-
+<h4>Pregunta ${numero}: ⚠️ Sin responder</h4>
+<div class="explicacion">Respuesta correcta: <strong>${q.o[q.a]}</strong></div>
+</div>`;
+} else {
 revisionHTML += `
-
 <div class="review-item incorrecta">
-
-<h4>
-Pregunta ${numero}: ❌ Incorrecta
-</h4>
-
-<div class="explicacion">
-
-Correcta:
-${q.o[q.a]}
-
-<br><br>
-
-${q.exp}
-
-</div>
-
-</div>
-
-`;
-
+<h4>Pregunta ${numero}: ❌ Incorrecta</h4>
+<div class="explicacion">Respuesta correcta: <strong>${q.o[q.a]}</strong><br><br>${q.exp}</div>
+</div>`;
 }
-
 });
 
-document.getElementById("puntajeTexto")
-.innerHTML = `
-
-<button class="toggle-ranking" onclick="toggleRanking()">
-☰ Ranking
-</button>
-
-<div id="rankingPanel" class="ranking-panel">
-
-<div class="ranking-content">
-
-<h3 style="margin-bottom:15px;">
-🏆 Ranking General
-</h3>
-
-${ranking.map((p,i)=>`
-
-<div style="
-display:flex;
-justify-content:space-between;
-padding:10px;
-margin:6px 0;
-background:${p.usuario ? "#ffe4e6" : "white"};
-border-radius:10px;
-">
-
-<span>
-#${i+1} - ${p.nombre}
-</span>
-
-<span>
-${p.nota}%
-</span>
-
+const rankingListHTML = ranking.map((p, i) => `
+<div style="display:flex; justify-content:space-between; padding:10px; margin:6px 0; background:${p.usuario ? "#ffe4e6" : "#f8fafc"}; border-radius:10px; font-weight:${p.usuario ? "bold" : "normal"};">
+<span>#${i+1} - ${p.nombre}</span>
+<span>${p.nota}%</span>
 </div>
+`).join("");
 
-`).join("")}
+document.getElementById("rankingList").innerHTML = rankingListHTML;
+document.getElementById("btnRanking").style.display = "block";
 
-</div>
-
-</div>
-
-<div style="
-background:white;
-padding:20px;
-border-radius:15px;
-margin-bottom:20px;
-">
-
-<h2>
-${correctas}/${total}
-</h2>
-
-<p style="
-font-size:26px;
-font-weight:bold;
-margin-top:10px;
-color:#e11d48;
-">
-
-${porcentaje}%
-
-</p>
+document.getElementById("puntajeTexto").innerHTML = `
+<div style="background:white; padding:20px; border-radius:15px; margin-bottom:20px; text-align:center;">
+<h2>Puntaje: ${correctas}/${total}</h2>
+<p style="font-size:2rem; font-weight:bold; margin-top:10px; color:#e11d48;">${porcentaje}%</p>
 
 <div class="review-summary">
-
-<div class="summary-box">
-<h4>Correctas</h4>
-<p>${correctas}</p>
+<div class="summary-box"><h4>Correctas</h4><p>${correctas}</p></div>
+<div class="summary-box"><h4>Incorrectas</h4><p>${incorrectas}</p></div>
+<div class="summary-box"><h4>Sin responder</h4><p>${sinResponder}</p></div>
+<div class="summary-box"><h4>Percentil</h4><p>${percentil}%</p></div>
+<div class="summary-box"><h4>Nivel</h4><p>${nivel}</p></div>
 </div>
-
-<div class="summary-box">
-<h4>Incorrectas</h4>
-<p>${incorrectas}</p>
 </div>
-
-<div class="summary-box">
-<h4>Sin responder</h4>
-<p>${sinResponder}</p>
-</div>
-
-<div class="summary-box">
-<h4>Percentil</h4>
-<p>${percentil}%</p>
-</div>
-
-<div class="summary-box">
-<h4>Nivel</h4>
-<p>${nivel}</p>
-</div>
-
-</div>
-
-</div>
-
 `;
 
-document.getElementById("revision")
-.innerHTML = revisionHTML;
+document.getElementById("revision").innerHTML = revisionHTML;
+document.getElementById("resultado").style.display = "block";
 
-document.getElementById("resultado")
-.style.display = "block";
-
-document.getElementById("resultado")
-.scrollIntoView({
-behavior:"smooth"
-});
-
+document.getElementById("resultado").scrollIntoView({ behavior: "smooth" });
 render();
 
 if(window.enviarResultadoFinal){
-
-window.enviarResultadoFinal({
-
-correctas,
-incorrectas,
-sinResponder,
-total,
-porcentaje
-
-});
-
+window.enviarResultadoFinal({ correctas, incorrectas, sinResponder, total, porcentaje });
 }
-
 }
 
 function toggleRanking(){
+const panel = document.getElementById("rankingPanel");
+const isHidden = panel.classList.toggle("hidden");
+const btn = document.getElementById("btnRanking");
 
-document.getElementById("rankingPanel")
-.classList.toggle("hidden");
-
+btn.setAttribute("aria-expanded", !isHidden);
+panel.setAttribute("aria-hidden", isHidden);
 }
 
 function reiniciarExamen(){
-
 current = 0;
-
-answers =
-new Array(questions.length).fill(null);
-
+answers = new Array(questions.length).fill(null);
 examenFinalizado = false;
 
-document.getElementById("resultado")
-.style.display = "none";
+document.getElementById("resultado").style.display = "none";
+document.getElementById("btnRanking").style.display = "none";
+document.getElementById("rankingPanel").classList.add("hidden");
+document.getElementById("revision").innerHTML = "";
+document.getElementById("puntajeTexto").innerHTML = "";
 
-document.getElementById("revision")
-.innerHTML = "";
-
-document.getElementById("puntajeTexto")
-.innerHTML = "";
-
-window.scrollTo({
-top:0,
-behavior:"smooth"
-});
-
+window.scrollTo({ top: 0, behavior: "smooth" });
 render();
-
 }
 
 render();
