@@ -25,7 +25,7 @@ export function esModoSecuencia() {
 
 /**
  * Guarda el resultado del examen actual en la secuencia.
- * @param {string} etapa - Identificador (ej. 'verbal', 'matematicas').
+ * @param {string} etapa - Identificador (ej. 'verbal', 'numerica').
  * @param {number} correctas - Cantidad de aciertos.
  * @param {number} total - Total de preguntas.
  */
@@ -43,16 +43,32 @@ export function guardarResultadoExamen(etapa, correctas, total) {
 }
 
 /**
- * Selecciona aleatoriamente el siguiente examen de matemáticas disponible.
- * @returns {string} Ruta o nombre del archivo del examen de matemáticas.
+ * Selecciona aleatoriamente el siguiente examen de aptitud numérica disponible.
+ * @returns {string} Nombre del archivo del examen de aptitud numérica.
  */
 export function obtenerExamenMateAleatorio() {
-  const examenesMate = [
-    'mate-examen1.html',
-    'mate-examen2.html'
+  const examenesNumerica = [
+    'numerica-examen1.html',
+    'numerica-examen2.html',
+    'numerica-examen3.html',
+    'numerica-examen4.html',
+    'numerica-examen5.html',
+    'numerica-examen6.html',
+    'numerica-examen7.html',
+    'numerica-examen8.html',
+    'numerica-examen9.html',
+    'numerica-examen10.html',
+    'numerica-examen11.html',
+    'numerica-examen12.html',
+    'numerica-examen13.html',
+    'numerica-examen14.html',
+    'numerica-examen15.html',
+    'numerica-examen16.html',
+    'numerica-examen17.html'
   ];
-  const indice = Math.floor(Math.random() * examenesMate.length);
-  return examenesMate[indice];
+  
+  const indice = Math.floor(Math.random() * examenesNumerica.length);
+  return examenesNumerica[indice];
 }
 
 /**
