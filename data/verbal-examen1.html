@@ -6,7 +6,6 @@
 <title>Examen Verbal 1</title>
 
 <style>
-
 *{
 box-sizing:border-box;
 margin:0;
@@ -219,7 +218,6 @@ border-radius:10px;
 }
 
 /* PANEL RANKING */
-
 .ranking-panel{
 position:fixed;
 left:0;
@@ -258,17 +256,13 @@ margin-top:60px;
 }
 
 @media(max-width:768px){
-
 .ranking-panel{
 width:260px;
 }
-
 .container{
 padding:18px;
 }
-
 }
-
 </style>
 </head>
 
@@ -277,662 +271,260 @@ padding:18px;
 <div class="container">
 
 <div class="header">
-
 <h1>📖 Examen Verbal 1</h1>
-
-<p>
-Analogías y relaciones verbales
-</p>
-
-<a class="top-link" href="../verbal.html">
-← Volver a Verbal
-</a>
-
+<p>Analogías y relaciones verbales</p>
+<a class="top-link" href="../verbal.html">← Volver a Verbal</a>
 </div>
 
 <div class="stats-bar">
-
 <div class="stat-box">
-<span class="stat-label">
-Pregunta actual
-</span>
-
-<span class="stat-value">
-<span id="qNum">1</span> / 15
-</span>
+<span class="stat-label">Pregunta actual</span>
+<span class="stat-value"><span id="qNum">1</span> / 15</span>
 </div>
 
 <div class="stat-box">
-<span class="stat-label">
-Progreso
-</span>
-
-<span class="stat-value" id="progress">
-0 / 15
-</span>
+<span class="stat-label">Progreso</span>
+<span class="stat-value" id="progress">0 / 15</span>
 </div>
-
 </div>
 
 <div id="quiz"></div>
 
 <div class="actions">
-
-<button class="btn-primary"
-id="btnCalificar"
-onclick="finishQuiz()">
-Calificar examen
-</button>
-
-<button class="btn-secondary"
-onclick="reiniciarExamen()">
-Reiniciar
-</button>
-
+<button class="btn-primary" onclick="finishQuiz()">Calificar examen</button>
+<button class="btn-secondary" onclick="reiniciarExamen()">Reiniciar</button>
 </div>
 
 <div class="result" id="resultado">
-
-<h2>
-Resultado Final
-</h2>
-
+<h2>Resultado Final</h2>
 <p id="puntajeTexto"></p>
-
 <div id="revision"></div>
-
 </div>
 
 </div>
 
-<script type="module">
-import { esModoSecuencia, guardarResultadoExamen, obtenerExamenMateAleatorio } from "../secuenciaExamenes.js";
-
+<!-- SCRIPT BASE (MANTIENE LA COMPATIBILIDAD CON TODO EL EXAMEN) -->
+<script>
 const questions = [
-
-{
-q:"CIUDAD es a HOMBRE como COLMENA es a ___",
-o:["Hormiga","Mosquito","Araña","Abeja"],
-a:3,
-exp:"La relación es lugar donde vive o se agrupa."
-},
-
-{
-q:"BATIDO es a BATIR como ZUMO es a ___",
-o:["Exprimir","Aplastar","Machacar","Succionar"],
-a:0,
-exp:"Producto y acción que lo origina."
-},
-
-{
-q:"CONSEJERO es a CONSEJO como CANTANTE es a ___",
-o:["Fama","Éxito","Composición","Canción"],
-a:3,
-exp:"Persona y resultado de su función."
-},
-
-{
-q:"ESTUFA es a CALOR como NEVERA es a ___",
-o:["Temperatura","Frío","Conservación","Congelación"],
-a:1,
-exp:"Objeto y efecto principal."
-},
-
-{
-q:"MARTILLO es a CLAVO como DESTORNILLADOR es a ___",
-o:["Hierro","Tornillo","Remache","Herramienta"],
-a:1,
-exp:"Herramienta y objeto."
-},
-
-{
-q:"ASA es a CESTA como POMO es a ___",
-o:["Puerta","Tirador","Envase","Manillar"],
-a:0,
-exp:"Parte de un objeto."
-},
-
-{
-q:"LÍQUIDO es a SOPA como SÓLIDO es a ___",
-o:["Comer","Bebida","Plátano","Gaseoso"],
-a:2,
-exp:"Categoría y ejemplo."
-},
-
-{
-q:"BALLENA es a ACUÁTICO como LEÓN es a ___",
-o:["Carnívoro","Terrestre","Depredador","Devorador"],
-a:1,
-exp:"Animal y medio donde vive."
-},
-
-{
-q:"RESTAR es a SUMAR como ARREGLAR es a ___",
-o:["Incluir","Corregir","Estropear","Resarcir"],
-a:2,
-exp:"Relación de oposición."
-},
-
-{
-q:"MÁS es a MENOS como DESPUÉS es a ___",
-o:["Tiempo","Siguiente","Pronto","Antes"],
-a:3,
-exp:"Antónimos."
-},
-
-{
-q:"FÉMUR es a HUESO como CORAZÓN es a ___",
-o:["Glándula","Vena","Músculo","Arteria"],
-a:2,
-exp:"Especie y género."
-},
-
-{
-q:"CUATRO es a CINCO como CUADRADO es a ___",
-o:["Triángulo","Heptágono","Hexágono","Pentágono"],
-a:3,
-exp:"Aumento de una unidad."
-},
-
-{
-q:"HARINA es a TRIGO como CERVEZA es a ___",
-o:["Manzana","Patata","Cebada","Alfalfa"],
-a:2,
-exp:"Producto y materia prima."
-},
-
-{
-q:"PIE es a CUERPO como BOMBILLA es a ___",
-o:["Ojos","Luz","Vela","Lámpara"],
-a:3,
-exp:"Parte y todo."
-},
-
-{
-q:"EXCAVAR es a CAVIDAD como ALINEAR es a ___",
-o:["Seguido","Recta","Acodo","Ensamblar"],
-a:1,
-exp:"Acción y resultado."
-}
-
+{ q:"CIUDAD es a HOMBRE como COLMENA es a ___", o:["Hormiga","Mosquito","Araña","Abeja"], a:3, exp:"La relación es lugar donde vive o se agrupa." },
+{ q:"BATIDO es a BATIR como ZUMO es a ___", o:["Exprimir","Aplastar","Machacar","Succionar"], a:0, exp:"Producto y acción que lo origina." },
+{ q:"CONSEJERO es a CONSEJO como CANTANTE es a ___", o:["Fama","Éxito","Composición","Canción"], a:3, exp:"Persona y resultado de su función." },
+{ q:"ESTUFA es a CALOR como NEVERA es a ___", o:["Temperatura","Frío","Conservación","Congelación"], a:1, exp:"Objeto y efecto principal." },
+{ q:"MARTILLO es a CLAVO como DESTORNILLADOR es a ___", o:["Hierro","Tornillo","Remache","Herramienta"], a:1, exp:"Herramienta y objeto." },
+{ q:"ASA es a CESTA como POMO es a ___", o:["Puerta","Tirador","Envase","Manillar"], a:0, exp:"Parte de un objeto." },
+{ q:"LÍQUIDO es a SOPA como SÓLIDO es a ___", o:["Comer","Bebida","Plátano","Gaseoso"], a:2, exp:"Categoría y ejemplo." },
+{ q:"BALLENA es a ACUÁTICO como LEÓN es a ___", o:["Carnívoro","Terrestre","Depredador","Devorador"], a:1, exp:"Animal y medio donde vive." },
+{ q:"RESTAR es a SUMAR como ARREGLAR es a ___", o:["Incluir","Corregir","Estropear","Resarcir"], a:2, exp:"Relación de oposición." },
+{ q:"MÁS es a MENOS como DESPUÉS es a ___", o:["Tiempo","Siguiente","Pronto","Antes"], a:3, exp:"Antónimos." },
+{ q:"FÉMUR es a HUESO como CORAZÓN es a ___", o:["Glándula","Vena","Músculo","Arteria"], a:2, exp:"Especie y género." },
+{ q:"CUATRO es a CINCO como CUADRADO es a ___", o:["Triángulo","Heptágono","Hexágono","Pentágono"], a:3, exp:"Aumento de una unidad." },
+{ q:"HARINA es a TRIGO como CERVEZA es a ___", o:["Manzana","Patata","Cebada","Alfalfa"], a:2, exp:"Producto y materia prima." },
+{ q:"PIE es a CUERPO como BOMBILLA es a ___", o:["Ojos","Luz","Vela","Lámpara"], a:3, exp:"Parte y todo." },
+{ q:"EXCAVAR es a CAVIDAD como ALINEAR es a ___", o:["Seguido","Recta","Acodo","Ensamblar"], a:1, exp:"Acción y resultado." }
 ];
 
 let current = 0;
-
-let answers =
-new Array(questions.length).fill(null);
-
+let answers = new Array(questions.length).fill(null);
 let examenFinalizado = false;
 
-const quiz =
-document.getElementById("quiz");
+const quiz = document.getElementById("quiz");
 
 function actualizarProgreso(){
-
-const respondidas =
-answers.filter(a => a !== null).length;
-
-document.getElementById("progress").textContent =
-`${respondidas} / ${questions.length}`;
-
-document.getElementById("qNum").textContent =
-current + 1;
-
+  const respondidas = answers.filter(a => a !== null).length;
+  document.getElementById("progress").textContent = `${respondidas} / ${questions.length}`;
+  document.getElementById("qNum").textContent = current + 1;
 }
 
 function render(){
+  quiz.innerHTML = "";
+  questions.forEach((q,i)=>{
+    let div = document.createElement("div");
+    div.className = "question" + (i===current ? " active" : "");
+    let opts = "";
 
-quiz.innerHTML = "";
+    q.o.forEach((op,j)=>{
+      let extraClass = "";
+      if(answers[i] === j) extraClass += " selected";
 
-questions.forEach((q,i)=>{
+      if(examenFinalizado){
+        if(j === q.a) extraClass += " correct-answer";
+        if(answers[i] === j && j !== q.a) extraClass += " wrong-answer";
+      }
 
-let div = document.createElement("div");
+      opts += `<div class="option${extraClass}" onclick="selectOption(${i},${j})">${String.fromCharCode(65+j)}. ${op}</div>`;
+    });
 
-div.className =
-"question" + (i===current ? " active" : "");
-
-let opts = "";
-
-q.o.forEach((op,j)=>{
-
-let extraClass = "";
-
-if(answers[i] === j)
-extraClass += " selected";
-
-if(examenFinalizado){
-
-if(j === q.a)
-extraClass += " correct-answer";
-
-if(answers[i] === j && j !== q.a){
-
-extraClass += " wrong-answer";
-
-}
-
-}
-
-opts += `
-
-<div class="option${extraClass}"
-onclick="selectOption(${i},${j})">
-
-${String.fromCharCode(65+j)}. ${op}
-
-</div>
-
-`;
-
-});
-
-div.innerHTML = `
-
-<h3>${q.q}</h3>
-
-${opts}
-
-<div class="navigation">
-
-<button class="prev"
-onclick="prevQuestion()"
-${i===0 ? "disabled" : ""}>
-Anterior
-</button>
-
-${i===questions.length-1
-
-? `<button class="finish"
-onclick="finishQuiz()">
-Finalizar
-</button>`
-
-: `<button class="next"
-onclick="nextQuestion()">
-Siguiente
-</button>`
-
-}
-
-</div>
-
-`;
-
-quiz.appendChild(div);
-
-});
-
-actualizarProgreso();
-
+    div.innerHTML = `
+      <h3>${q.q}</h3>
+      ${opts}
+      <div class="navigation">
+        <button class="prev" onclick="prevQuestion()" ${i===0 ? "disabled" : ""}>Anterior</button>
+        ${i===questions.length-1
+          ? `<button class="finish" onclick="finishQuiz()">Finalizar</button>`
+          : `<button class="next" onclick="nextQuestion()">Siguiente</button>`
+        }
+      </div>
+    `;
+    quiz.appendChild(div);
+  });
+  actualizarProgreso();
 }
 
 function selectOption(i,j){
-
-if(examenFinalizado) return;
-
-answers[i] = j;
-
-render();
-
+  if(examenFinalizado) return;
+  answers[i] = j;
+  render();
 }
 
 function nextQuestion(){
-
-if(current < questions.length-1){
-
-current++;
-
-render();
-
-window.scrollTo({
-top:0,
-behavior:"smooth"
-});
-
-}
-
+  if(current < questions.length-1){
+    current++;
+    render();
+    window.scrollTo({top:0, behavior:"smooth"});
+  }
 }
 
 function prevQuestion(){
-
-if(current > 0){
-
-current--;
-
-render();
-
-}
-
+  if(current > 0){
+    current--;
+    render();
+  }
 }
 
 function finishQuiz(){
-
-if(examenFinalizado) return;
-
-let total = questions.length;
-let correctas = 0;
-
-questions.forEach((q,i)=>{
-  if(answers[i] === q.a){
-    correctas++;
-  }
-});
-
-// INTERCEPCIÓN MODO EVALUACIÓN
-if(esModoSecuencia()){
+  if(examenFinalizado) return;
   examenFinalizado = true;
-  guardarResultadoExamen("verbal", correctas, total);
-  alert("¡Etapa Verbal completada! A continuación realizarás la Etapa 2: Habilidad Numérica.");
-  const examenMate = obtenerExamenMateAleatorio();
-  window.location.href = `../data/${examenMate.replace(/^data\//, '')}`;
-  return;
-}
 
-examenFinalizado = true;
-
-let revisionHTML = "";
-
-const porcentaje =
-Math.round((correctas/total)*100);
-
-const rangosBots=[
-{min:50,max:64},{min:50,max:64},
-{min:65,max:74},{min:65,max:74},{min:65,max:74},{min:65,max:74},
-{min:75,max:84},{min:75,max:84},{min:75,max:84},{min:75,max:84},{min:75,max:84},{min:75,max:84},{min:75,max:84},{min:75,max:84},{min:75,max:84},
-{min:85,max:94},{min:85,max:94},{min:85,max:94},{min:85,max:94},{min:85,max:94},{min:85,max:94},{min:85,max:94},{min:85,max:94},{min:85,max:94},{min:85,max:94},
-{min:95,max:100},{min:95,max:100},{min:95,max:100},{min:95,max:100},{min:95,max:100}
-];
-
-rangosBots.sort(()=>Math.random()-0.5);
-
-const bots=[];
-
-for(let i=1;i<=30;i++){
-
-const rango=rangosBots[i-1];
-
-bots.push({
-nombre:`Bot_${i}`,
-nota:Math.floor(Math.random()*(rango.max-rango.min+1))+rango.min
-});
-
-}
-
-const ranking=[
-
-...bots,
-
-{
-nombre:"Tú",
-nota:porcentaje,
-usuario:true
-}
-
-];
-
-ranking.sort((a,b)=>b.nota-a.nota);
-
-let debajo=ranking.filter(
-p=>porcentaje>p.nota
-).length;
-
-let iguales=ranking.filter(
-p=>porcentaje===p.nota
-).length;
-
-let percentil=Math.round(
-(
-debajo+(0.5*iguales)
-)
-/ranking.length
-*100
-);
-
-if(percentil<1){
-percentil=1;
-}
-
-if(percentil>99){
-percentil=99;
-}
-
-let nivel="Muy bajo";
-
-if(percentil>=90){
-nivel="Excelente";
-}
-else if(percentil>=75){
-nivel="Muy bueno";
-}
-else if(percentil>=60){
-nivel="Bueno";
-}
-else if(percentil>=40){
-nivel="Promedio";
-}
-else if(percentil>=20){
-nivel="Bajo";
-}
-
-questions.forEach((q,i)=>{
-
-const respuestaUsuario = answers[i];
-
-if(respuestaUsuario === q.a){
-
-revisionHTML += `
-
-<div class="review-item correcta">
-
-<h4>
-Pregunta ${i+1}: ✅ Correcta
-</h4>
-
-<div class="explicacion">
-
-${q.exp}
-
-</div>
-
-</div>
-
-`;
-
-}
-else if(respuestaUsuario === null){
-
-revisionHTML += `
-
-<div class="review-item sin-responder">
-
-<h4>
-Pregunta ${i+1}: ⚠️ Sin responder
-</h4>
-
-<div class="explicacion">
-
-Respuesta correcta:
-${q.o[q.a]}
-
-</div>
-
-</div>
-
-`;
-
-}
-else{
-
-revisionHTML += `
-
-<div class="review-item incorrecta">
-
-<h4>
-Pregunta ${i+1}: ❌ Incorrecta
-</h4>
-
-<div class="explicacion">
-
-Correcta:
-${q.o[q.a]}
-
-<br><br>
-
-${q.exp}
-
-</div>
-
-</div>
-
-`;
-
-}
-
-});
-
-document.getElementById("puntajeTexto")
-.innerHTML = `
-
-<button class="toggle-ranking" onclick="toggleRanking()">
-☰ Ranking
-</button>
-
-<div id="rankingPanel" class="ranking-panel">
-
-<div class="ranking-content">
-
-<h3 style="margin-bottom:15px;">
-🏆 Ranking General
-</h3>
-
-${ranking.map((p,i)=>`
-
-<div style="
-display:flex;
-justify-content:space-between;
-padding:10px;
-margin:6px 0;
-background:${p.usuario ? "#ffe4e6" : "white"};
-border-radius:10px;
-">
-
-<span>
-#${i+1} - ${p.nombre}
-</span>
-
-<span>
-${p.nota}%
-</span>
-
-</div>
-
-`).join("")}
-
-</div>
-
-</div>
-
-<div style="
-background:white;
-padding:20px;
-border-radius:15px;
-margin-bottom:20px;
-">
-
-<h2>
-${correctas}/${total}
-</h2>
-
-<p style="
-font-size:26px;
-font-weight:bold;
-margin-top:10px;
-color:#e11d48;
-">
-
-${porcentaje}%
-
-</p>
-
-<div style="
-display:flex;
-flex-direction:column;
-gap:12px;
-margin-top:20px;
-max-width:250px;
-">
-
-<div class="stat-box">
-<span class="stat-label">
-Percentil
-</span>
-
-<span class="stat-value">
-${percentil}%
-</span>
-</div>
-
-<div class="stat-box">
-<span class="stat-label">
-Nivel
-</span>
-
-<span class="stat-value">
-${nivel}
-</span>
-</div>
-
-</div>
-
-</div>
-
-`;
-
-document.getElementById("revision")
-.innerHTML = revisionHTML;
-
-document.getElementById("resultado")
-.style.display = "block";
-
-render();
-
-if(window.enviarResultadoFinal){
-
-window.enviarResultadoFinal({
-
-correctas,
-total,
-porcentaje
-
-});
-
-}
-
+  let total = questions.length;
+  let correctas = 0;
+
+  questions.forEach((q,i)=>{
+    if(answers[i] === q.a) correctas++;
+  });
+
+  const porcentaje = Math.round((correctas/total)*100);
+
+  const rangosBots=[
+    {min:50,max:64},{min:50,max:64},
+    {min:65,max:74},{min:65,max:74},{min:65,max:74},{min:65,max:74},
+    {min:75,max:84},{min:75,max:84},{min:75,max:84},{min:75,max:84},{min:75,max:84},{min:75,max:84},{min:75,max:84},{min:75,max:84},{min:75,max:84},
+    {min:85,max:94},{min:85,max:94},{min:85,max:94},{min:85,max:94},{min:85,max:94},{min:85,max:94},{min:85,max:94},{min:85,max:94},{min:85,max:94},{min:85,max:94},
+    {min:95,max:100},{min:95,max:100},{min:95,max:100},{min:95,max:100},{min:95,max:100}
+  ];
+  rangosBots.sort(()=>Math.random()-0.5);
+
+  const bots=[];
+  for(let i=1;i<=30;i++){
+    const rango=rangosBots[i-1];
+    bots.push({
+      nombre:`Bot_${i}`,
+      nota:Math.floor(Math.random()*(rango.max-rango.min+1))+rango.min
+    });
+  }
+
+  const ranking=[...bots, {nombre:"Tú", nota:porcentaje, usuario:true}];
+  ranking.sort((a,b)=>b.nota-a.nota);
+
+  let debajo=ranking.filter(p=>porcentaje>p.nota).length;
+  let iguales=ranking.filter(p=>porcentaje===p.nota).length;
+  let percentil=Math.round((debajo+(0.5*iguales))/ranking.length*100);
+
+  percentil = Math.max(1, Math.min(99, percentil));
+
+  let nivel="Muy bajo";
+  if(percentil>=90) nivel="Excelente";
+  else if(percentil>=75) nivel="Muy bueno";
+  else if(percentil>=60) nivel="Bueno";
+  else if(percentil>=40) nivel="Promedio";
+  else if(percentil>=20) nivel="Bajo";
+
+  let revisionHTML = "";
+  questions.forEach((q,i)=>{
+    const respuestaUsuario = answers[i];
+    if(respuestaUsuario === q.a){
+      revisionHTML += `<div class="review-item correcta"><h4>Pregunta ${i+1}: ✅ Correcta</h4><div class="explicacion">${q.exp}</div></div>`;
+    }else if(respuestaUsuario === null){
+      revisionHTML += `<div class="review-item sin-responder"><h4>Pregunta ${i+1}: ⚠️ Sin responder</h4><div class="explicacion">Respuesta correcta: ${q.o[q.a]}</div></div>`;
+    }else{
+      revisionHTML += `<div class="review-item incorrecta"><h4>Pregunta ${i+1}: ❌ Incorrecta</h4><div class="explicacion">Correcta: ${q.o[q.a]}<br><br>${q.exp}</div></div>`;
+    }
+  });
+
+  document.getElementById("puntajeTexto").innerHTML = `
+    <button class="toggle-ranking" onclick="toggleRanking()">☰ Ranking</button>
+    <div id="rankingPanel" class="ranking-panel">
+      <div class="ranking-content">
+        <h3 style="margin-bottom:15px;">🏆 Ranking General</h3>
+        ${ranking.map((p,i)=>`
+          <div style="display:flex;justify-content:space-between;padding:10px;margin:6px 0;background:${p.usuario ? "#ffe4e6" : "white"};border-radius:10px;">
+            <span>#${i+1} - ${p.nombre}</span>
+            <span>${p.nota}%</span>
+          </div>
+        `).join("")}
+      </div>
+    </div>
+    <div style="background:white;padding:20px;border-radius:15px;margin-bottom:20px;">
+      <h2>${correctas}/${total}</h2>
+      <p style="font-size:26px;font-weight:bold;margin-top:10px;color:#e11d48;">${porcentaje}%</p>
+      <div style="display:flex;flex-direction:column;gap:12px;margin-top:20px;max-width:250px;">
+        <div class="stat-box"><span class="stat-label">Percentil</span><span class="stat-value">${percentil}%</span></div>
+        <div class="stat-box"><span class="stat-label">Nivel</span><span class="stat-value">${nivel}</span></div>
+      </div>
+    </div>
+  `;
+
+  document.getElementById("revision").innerHTML = revisionHTML;
+  document.getElementById("resultado").style.display = "block";
+  render();
+
+  if(window.enviarResultadoFinal){
+    window.enviarResultadoFinal({ correctas, total, porcentaje });
+  }
 }
 
 function toggleRanking(){
-
-document.getElementById("rankingPanel")
-.classList.toggle("hidden");
-
+  document.getElementById("rankingPanel").classList.toggle("hidden");
 }
 
 function reiniciarExamen(){
-
-location.reload();
-
+  location.reload();
 }
 
-// Exponer funciones al scope global (window) necesarias para eventos HTML onclick
-window.selectOption = selectOption;
-window.nextQuestion = nextQuestion;
-window.prevQuestion = prevQuestion;
-window.finishQuiz = finishQuiz;
-window.toggleRanking = toggleRanking;
-window.reiniciarExamen = reiniciarExamen;
-
 render();
+</script>
 
+<!-- SCRIPTS EXTERNOS DE MÓDULO CON CONTROL DE SECUENCIA INTERCEPTADO -->
+<script type="module">
+  import { esModoSecuencia, guardarResultadoExamen, obtenerExamenMateAleatorio } from "../secuenciaExamenes.js";
+
+  // Interceptador que vigila cuándo el usuario finaliza
+  function verificarRedireccionSecuencia() {
+    if (esModoSecuencia()) {
+      let correctas = 0;
+      let total = questions.length;
+
+      questions.forEach((q, i) => {
+        if (answers[i] === q.a) correctas++;
+      });
+
+      guardarResultadoExamen("verbal", correctas, total);
+
+      alert("¡Etapa Verbal completada! Avanzando automáticamente a la Etapa 2: Habilidad Numérica.");
+
+      const examenMate = obtenerExamenMateAleatorio();
+      const nombreLimpio = examenMate.replace(/^data\//, '');
+      window.location.href = `../data/${nombreLimpio}`;
+      return true;
+    }
+    return false;
+  }
+
+  // Sobrescribimos finishQuiz de forma segura
+  const finishQuizOriginal = window.finishQuiz;
+  window.finishQuiz = function() {
+    if (verificarRedireccionSecuencia()) return;
+    if (finishQuizOriginal) finishQuizOriginal();
+  };
 </script>
 
 <script type="module" src="../party/party-timer.js"></script>
