@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Matemáticas</title>
+  <title>Matemáticas - Habilidad Numérica</title>
   <style>
     *{
       margin:0;
@@ -20,7 +20,7 @@
 
     header{
       text-align:center;
-      padding:50px 20px 30px;
+      padding:40px 20px 20px;
     }
 
     header h1{
@@ -43,7 +43,7 @@
     }
 
     .top-box{
-      background: rgba(255,255,255,0.8);
+      background: rgba(255,255,255,0.9);
       backdrop-filter: blur(8px);
       border:1px solid rgba(255,255,255,0.6);
       border-radius:24px;
@@ -66,10 +66,100 @@
       margin:auto;
     }
 
+    /* ESTILOS DEL SWITCH DE MODO EVALUACIÓN */
+    .switch-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 15px;
+      margin: 20px 0 10px;
+      background: #ffffff;
+      padding: 14px 24px;
+      border-radius: 50px;
+      width: fit-content;
+      margin-left: auto;
+      margin-right: auto;
+      box-shadow: 0 4px 15px rgba(37, 99, 235, 0.12);
+      border: 1px solid #bfdbfe;
+    }
+
+    .switch-label {
+      font-weight: bold;
+      color: #1e40af;
+      font-size: 0.95rem;
+    }
+
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 56px;
+      height: 28px;
+    }
+
+    .switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #cbd5e1;
+      transition: .3s;
+      border-radius: 34px;
+    }
+
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 20px;
+      width: 20px;
+      left: 4px;
+      bottom: 4px;
+      background-color: white;
+      transition: .3s;
+      border-radius: 50%;
+    }
+
+    input:checked + .slider {
+      background-color: #2563eb;
+    }
+
+    input:checked + .slider:before {
+      transform: translateX(28px);
+    }
+
+    .btn-secuencia {
+      display: none;
+      margin-top: 15px;
+      background: linear-gradient(135deg, #2563eb, #1d4ed8);
+      color: white;
+      padding: 14px 28px;
+      border-radius: 14px;
+      font-weight: bold;
+      font-size: 1.05rem;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 6px 20px rgba(37, 99, 235, 0.3);
+      transition: all 0.25s ease;
+    }
+
+    .btn-secuencia:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(37, 99, 235, 0.4);
+    }
+
     .actions{
       display:flex;
       justify-content:center;
       margin-top:18px;
+      gap: 12px;
+      flex-wrap: wrap;
     }
 
     .back-btn{
@@ -100,6 +190,9 @@
       box-shadow:0 10px 25px rgba(0,0,0,0.08);
       transition: transform 0.25s ease, box-shadow 0.25s ease;
       border:1px solid rgba(255,255,255,0.7);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
     }
 
     .card:hover{
@@ -127,6 +220,7 @@
 
     .card a{
       display:inline-block;
+      text-align: center;
       text-decoration:none;
       background:#3b82f6;
       color:white;
@@ -139,6 +233,11 @@
     .card a:hover{
       background:#2563eb;
       transform: scale(1.03);
+    }
+
+    /* ESTADO DESACTIVADO O EN MODO SECUENCIA */
+    .modo-secuencia-activo .card a {
+      background: #64748b;
     }
 
     footer{
@@ -165,13 +264,28 @@
     </p>
   </header>
 
-  <div class="container">
+  <div class="container" id="mainContainer">
 
     <div class="top-box">
-      <h2>Exámenes disponibles</h2>
+      <h2>Modo de Evaluación</h2>
       <p>
-        En este apartado puedo entrar a cada examen de matemáticas, resolverlo y revisar mi resultado al final.
+        Activa el modo secuencia para realizar la prueba global combinada (Verbal + Numérica) con percentiles y ranking de bots.
       </p>
+
+      <!-- SWITCH MODO EVALUACIÓN COMPLETA -->
+      <div class="switch-container">
+        <span class="switch-label">Práctica Individual</span>
+        <label class="switch">
+          <input type="checkbox" id="switchSecuencia" onchange="toggleModoSecuencia()">
+          <span class="slider"></span>
+        </label>
+        <span class="switch-label" style="color: #1d4ed8;">Modo Evaluacion (Verbal + Numérica)</span>
+      </div>
+
+      <button id="btnIniciarSecuencia" class="btn-secuencia" onclick="iniciarPruebaGlobal()">
+        🚀 Iniciar Evaluación Completa (Etapa 1: Verbal)
+      </button>
+
       <div class="actions">
         <a href="index.html" class="back-btn">← Volver al inicio</a>
       </div>
@@ -180,195 +294,258 @@
     <div class="grid">
 
       <div class="card">
-        <div class="icon">📘</div>
-        <h3>Examen 1</h3>
-        <p>
-          Basado en el Documento 1. Incluye ejercicios de operaciones básicas,
-          series numéricas, porcentajes y lógica matemática inicial.
-        </p>
+        <div>
+          <div class="icon">📘</div>
+          <h3>Examen 1</h3>
+          <p>
+            Basado en el Documento 1. Incluye ejercicios de operaciones básicas,
+            series numéricas, porcentajes y lógica matemática inicial.
+          </p>
+        </div>
         <a href="data/numerica-examen1.html">Abrir examen</a>
       </div>
 
       <div class="card">
-        <div class="icon">📐</div>
-        <h3>Examen 2</h3>
-        <p>
-          Extraído del Documento 2. Enfocado en sucesiones, ecuaciones y resolución
-          de problemas algebraicos básicos.
-        </p>
+        <div>
+          <div class="icon">📐</div>
+          <h3>Examen 2</h3>
+          <p>
+            Extraído del Documento 2. Enfocado en sucesiones, ecuaciones y resolución
+            de problemas algebraicos básicos.
+          </p>
+        </div>
         <a href="data/numerica-examen2.html">Abrir examen</a>
       </div>
 
       <div class="card">
-        <div class="icon">🧮</div>
-        <h3>Examen 3</h3>
-        <p>
-          Basado en el Documento 3 (resuelto). Incluye procedimientos,
-          simplificación de expresiones y razonamiento numérico aplicado.
-        </p>
+        <div>
+          <div class="icon">🧮</div>
+          <h3>Examen 3</h3>
+          <p>
+            Basado en el Documento 3 (resuelto). Incluye procedimientos,
+            simplificación de expresiones y razonamiento numérico aplicado.
+          </p>
+        </div>
         <a href="data/numerica-examen3.html">Abrir examen</a>
       </div>
 
       <div class="card">
-        <div class="icon">📊</div>
-        <h3>Examen 4</h3>
-        <p>
-          Construido a partir del Documento 4. Contiene problemas aplicados,
-          porcentajes, áreas, perímetros y análisis lógico.
-        </p>
+        <div>
+          <div class="icon">📊</div>
+          <h3>Examen 4</h3>
+          <p>
+            Construido a partir del Documento 4. Contiene problemas aplicados,
+            porcentajes, áreas, perímetros y análisis lógico.
+          </p>
+        </div>
         <a href="data/numerica-examen4.html">Abrir examen</a>
       </div>
 
       <div class="card">
-        <div class="icon">🔄</div>
-        <h3>Examen 5</h3>
-        <p>
-          Adaptado del Documento 5. Se enfoca en relaciones numéricas,
-          analogías y patrones lógicos.
-        </p>
+        <div>
+          <div class="icon">🔄</div>
+          <h3>Examen 5</h3>
+          <p>
+            Adaptado del Documento 5. Se enfoca en relaciones numéricas,
+            analogías y patrones lógicos.
+          </p>
+        </div>
         <a href="data/numerica-examen5.html">Abrir examen</a>
       </div>
 
       <div class="card">
-        <div class="icon">⚡</div>
-        <h3>Examen 6</h3>
-        <p>
-          Basado en el Documento 6 (DAT). Incluye patrones avanzados,
-          series complejas, fracciones y lógica rápida.
-        </p>
+        <div>
+          <div class="icon">⚡</div>
+          <h3>Examen 6</h3>
+          <p>
+            Basado en el Documento 6 (DAT). Incluye patrones avanzados,
+            series complejas, fracciones y lógica rápida.
+          </p>
+        </div>
         <a href="data/numerica-examen6.html">Abrir examen</a>
       </div>
 
       <div class="card">
-        <div class="icon">🎯</div>
-        <h3>Examen 7</h3>
-        <p>
-          Simulacro general basado en la combinación de todos los documentos.
-          Incluye mezcla completa de temas tipo examen real.
-        </p>
+        <div>
+          <div class="icon">🎯</div>
+          <h3>Examen 7</h3>
+          <p>
+            Simulacro general basado en la combinación de todos los documentos.
+            Incluye mezcla completa de temas tipo examen real.
+          </p>
+        </div>
         <a href="data/numerica-examen7.html">Abrir examen</a>
       </div>
 
       <div class="card">
-        <div class="icon">🧩</div>
-        <h3>Examen 8</h3>
-        <p>
-          Examen mixto balanceado. Integra contenidos de los documentos 1–4
-          para reforzar precisión y dominio general.
-        </p>
+        <div>
+          <div class="icon">🧩</div>
+          <h3>Examen 8</h3>
+          <p>
+            Examen mixto balanceado. Integra contenidos de los documentos 1–4
+            para reforzar precisión y dominio general.
+          </p>
+        </div>
         <a href="data/numerica-examen8.html">Abrir examen</a>
       </div>
 
       <div class="card">
-        <div class="icon">💀</div>
-        <h3>Examen 9</h3>
-        <p>
-          Simulacro final nivel avanzado. Combina lógica, trampas y velocidad
-          basado en los documentos 5 y 6.
-        </p>
+        <div>
+          <div class="icon">💀</div>
+          <h3>Examen 9</h3>
+          <p>
+            Simulacro final nivel avanzado. Combina lógica, trampas y velocidad
+            basado en los documentos 5 y 6.
+          </p>
+        </div>
         <a href="data/numerica-examen9.html">Abrir examen</a>
       </div>
 
       <div class="card">
-        <div class="icon">➕</div>
-        <h3>Simulador de Sumas</h3>
-        <p>
-          Herramienta de práctica rápida enfocada en agilidad mental.
-          Permite entrenar velocidad y precisión en operaciones básicas.
-        </p>
+        <div>
+          <div class="icon">➕</div>
+          <h3>Simulador de Sumas</h3>
+          <p>
+            Herramienta de práctica rápida enfocada en agilidad mental.
+            Permite entrenar velocidad y precisión en operaciones básicas.
+          </p>
+        </div>
         <a href="data/numerica-factorN.html">Abrir simulador</a>
       </div>
 
       <div class="card">
-        <div class="icon">📋</div>
-        <h3>Examen 10</h3>
-        <p>
-          Habilidad Numérica 10. Incluye tablas de datos, series numéricas,
-          operaciones, razonamiento lógico y problemas de análisis.
-        </p>
+        <div>
+          <div class="icon">📋</div>
+          <h3>Examen 10</h3>
+          <p>
+            Habilidad Numérica 10. Incluye tablas de datos, series numéricas,
+            operaciones, razonamiento lógico y problemas de análisis.
+          </p>
+        </div>
         <a href="data/numerica-examen10.html">Abrir examen</a>
       </div>
 
       <div class="card">
-        <div class="icon">💡</div>
-        <h3>Examen 11</h3>
-        <p>
-          Habilidad Numérica 11. Enfocado en el desarrollo de agilidad de cálculo,
-          propiedades numéricas avanzadas y lógica abstracta.
-        </p>
+        <div>
+          <div class="icon">💡</div>
+          <h3>Examen 11</h3>
+          <p>
+            Habilidad Numérica 11. Enfocado en el desarrollo de agilidad de cálculo,
+            propiedades numéricas avanzadas y lógica abstracta.
+          </p>
+        </div>
         <a href="data/numerica-examen11.html">Abrir examen</a>
       </div>
 
       <div class="card">
-        <div class="icon">🔑</div>
-        <h3>Examen 12</h3>
-        <p>
-          Habilidad Numérica 12. Retos combinados de proporcionalidad directa,
-          inversa, regla de tres compleja y problemas analíticos de velocidad.
-        </p>
+        <div>
+          <div class="icon">🔑</div>
+          <h3>Examen 12</h3>
+          <p>
+            Habilidad Numérica 12. Retos combinados de proporcionalidad directa,
+            inversa, regla de tres compleja y problemas analíticos de velocidad.
+          </p>
+        </div>
         <a href="data/numerica-examen12.html">Abrir examen</a>
       </div>
 
       <div class="card">
-        <div class="icon">🌀</div>
-        <h3>Examen 13</h3>
-        <p>
-          Habilidad Numérica 13. Evaluaciones sistemáticas basadas en secuencias de
-          patrones espaciales y de razonamiento cuantitativo puro.
-        </p>
+        <div>
+          <div class="icon">🌀</div>
+          <h3>Examen 13</h3>
+          <p>
+            Habilidad Numérica 13. Evaluaciones sistemáticas basadas en secuencias de
+            patrones espaciales y de razonamiento cuantitativo puro.
+          </p>
+        </div>
         <a href="data/numerica-examen13.html">Abrir examen</a>
       </div>
 
       <div class="card">
-        <div class="icon">🎓</div>
-        <h3>Examen 14</h3>
-        <p>
-          Habilidad Numérica 14. Nivel avanzado global. Combina sistemas complejos,
-          lógica deductiva estricta y velocidad de resolución óptima.
-        </p>
+        <div>
+          <div class="icon">🎓</div>
+          <h3>Examen 14</h3>
+          <p>
+            Habilidad Numérica 14. Nivel avanzado global. Combina sistemas complejos,
+            lógica deductiva estricta y velocidad de resolución óptima.
+          </p>
+        </div>
         <a href="data/numerica-examen14.html">Abrir examen</a>
       </div>
 
-      <!-- NUEVAS TARJETAS HASTA EL 16 -->
-
       <div class="card">
-        <div class="icon">🚀</div>
-        <h3>Examen 15</h3>
-        <p>
-          Habilidad Numérica 15. Contiene retos de optimización de operaciones aritméticas,
-          cálculo mental veloz y relaciones proporcionales cruzadas.
-        </p>
+        <div>
+          <div class="icon">🚀</div>
+          <h3>Examen 15</h3>
+          <p>
+            Habilidad Numérica 15. Contiene retos de optimización de operaciones aritméticas,
+            cálculo mental veloz y relaciones proporcionales cruzadas.
+          </p>
+        </div>
         <a href="data/numerica-examen15.html">Abrir examen</a>
       </div>
 
       <div class="card">
-        <div class="icon">🔥</div>
-        <h3>Examen 16</h3>
-        <p>
-          Habilidad Numérica 16. Evaluación de simulación extrema. Plantea problemas de alta
-          complejidad algebraica, secuencias ocultas y agudeza analítica.
-        </p>
+        <div>
+          <div class="icon">🔥</div>
+          <h3>Examen 16</h3>
+          <p>
+            Habilidad Numérica 16. Evaluación de simulación extrema. Plantea problemas de alta
+            complejidad algebraica, secuencias ocultas y agudeza analítica.
+          </p>
+        </div>
         <a href="data/numerica-examen16.html">Abrir examen</a>
+      </div>
+
+      <div class="card">
+        <div>
+          <div class="icon">🏆</div>
+          <h3>Examen 17</h3>
+          <p>
+            Habilidad Numérica 17. Examen integral avanzado diseñado para medir rendimiento
+            global y velocidad analítica.
+          </p>
+        </div>
+        <a href="data/numerica-examen17.html">Abrir examen</a>
       </div>
 
     </div> 
 
-       <div class="card">
-        <div class="icon">🔥</div>
-        <h3>Examen 17</h3>
-        <p>
-          Habilidad Numérica 16. Evaluación de simulación extrema. Plantea problemas de alta
-          complejidad algebraica, secuencias ocultas y agudeza analítica.
-        </p>
-        <a href="data/numerica-examen17.html">Abrir examen</a>
-      </div>
-
-  
   </div> 
 
   <footer>
     Matemáticas • Exámenes digitales
   </footer>
+
+  <!-- SCRIPT CON INTERACCIÓN Y MÓDULO -->
+  <script type="module">
+    import { iniciarSecuencia, obtenerExamenVerbalAleatorio } from "./data/secuenciaExamenes.js";
+
+    window.toggleModoSecuencia = function() {
+      const switchEl = document.getElementById("switchSecuencia");
+      const btnIniciar = document.getElementById("btnIniciarSecuencia");
+      const mainContainer = document.getElementById("mainContainer");
+
+      if (switchEl.checked) {
+        btnIniciar.style.display = "inline-block";
+        mainContainer.classList.add("modo-secuencia-activo");
+      } else {
+        btnIniciar.style.display = "none";
+        mainContainer.classList.remove("modo-secuencia-activo");
+      }
+    };
+
+    window.iniciarPruebaGlobal = function() {
+      // 1. Iniciar registro de estado limpio
+      iniciarSecuencia();
+
+      // 2. Obtener un examen verbal aleatorio para arrancar la etapa 1
+      const examenVerbalInicial = obtenerExamenVerbalAleatorio();
+
+      // 3. Redirigir
+      window.location.href = `data/${examenVerbalInicial}`;
+    };
+  </script>
 
 </body>
 </html>
