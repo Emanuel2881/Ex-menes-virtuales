@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Modo Evaluación - Examen 10 (Numérica Avanzada / Tablas)</title>
+
+<style>
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+}
+
+body{
+  font-family:Arial, Helvetica, sans-serif;
+  background:linear-gradient(135deg,#eff6ff,#dbeafe,#bfdbfe);
+  color:#1e3a8a;
+  min-height:100vh;
+  padding:30px 15px;
+}
+
+.container{
+  max-width:950px;
+  margin:auto;
+  background:rgba(255,255,255,0.95);
+  padding:25px;
+  border-radius:24px;
+  box-shadow:0 12px 35px rgba(0,0,0,0.08);
+}
+
+.header{
+  text-align:center;
+  margin-bottom:20px;
+}
+
+.header h1{
+  font-size:clamp(1.9rem,4vw,2.7rem);
+  margin-bottom:10px;
+  color:#1d4ed8;
+}
+
+.header p{
+  color:#1e40af;
+  opacity:0.9;
+  line-height:1.5;
+}
+
+.badge-eval{
+  display:inline-block;
+  background:#2563eb;
+  color:white;
+  padding:6px 14px;
+  border-radius:20px;
+  font-size:0.85rem;
+  font-weight:bold;
+  margin-bottom:10px;
+}
+
+.inicio-panel{
+  text-align:center;
+  padding:20px 10px;
+}
+
+.stats-bar{
+  display:flex;
+  flex-wrap:wrap;
+  gap:12px;
+  justify-content:center;
+  align-items:center;
+  margin-bottom:20px;
+}
+
+.stat-box{
+  background:#fff;
+  border:1px solid #93c5fd;
+  border-radius:14px;
+  padding:12px 18px;
+  min-width:150px;
+  text-align:center;
+  box-shadow:0 4px 12px rgba(0,0,0,0.05);
+}
+
+.stat-label{
+  display:block;
+  font-size:0.9rem;
+  color:#1d4ed8;
+  margin-bottom:4px;
+  font-weight:bold;
+}
+
+.stat-value{
+  display:block;
+  font-size:1.15rem;
+  color:#1e3a8a;
+  font-weight:bold;
+}
+
+.progreso-container{
+  width:100%;
+  height:14px;
+  background:#dbeafe;
+  border-radius:20px;
+  overflow:hidden;
+  margin-bottom:20px;
+  border:1px solid #93c5fd;
+}
+
+.barra-progreso{
+  width:0%;
+  height:100%;
+  background:#2563eb;
+  transition:width 0.3s ease;
+}
+
+.question{
+  background:#eff6ff;
+  border:1px solid #93c5fd;
+  border-radius:20px;
+  padding:20px;
+  margin-bottom:18px;
+}
+
+.question h3{
+  font-size:1.08rem;
+  line-height:1.6;
+  color:#1d4ed8;
+  margin-bottom:14px;
+}
+
+.option{
+  display:block;
+  background:#dbeafe;
+  padding:12px 14px;
+  margin:10px 0;
+  border-radius:12px;
+  cursor:pointer;
+  border:1px solid transparent;
+  transition:0.2s ease;
+  color:#1e40af;
+}
+
+.option:hover{
+  background:#bfdbfe;
+  border-color:#3b82f6;
+  transform:scale(1.01);
+}
+
+.option.selected{
+  background:#2563eb;
+  color:white;
+  border-color:#1d4ed8;
+}
+
+.navigation{
+  display:flex;
+  flex-wrap:wrap;
+  gap:12px;
+  justify-content:center;
+  margin-top:18px;
+}
+
+button, .btn-link{
+  border:none;
+  border-radius:14px;
+  padding:12px 20px;
+  font-size:1rem;
+  font-weight:bold;
+  cursor:pointer;
+  transition:0.2s ease;
+  text-decoration:none;
+  display:inline-block;
+  text-align:center;
+}
+
+button:hover, .btn-link:hover{
+  transform:translateY(-1px);
+}
+
+.prev{
+  background:#93c5fd;
+  color:#1e3a8a;
+}
+
+.prev:hover{
+  background:#60a5fa;
+  color:white;
+}
+
+.next{
+  background:#2563eb;
+  color:white;
+}
+
+.next:hover{
+  background:#1d4ed8;
+}
+
+.actions{
+  display:flex;
+  justify-content:center;
+  flex-wrap:wrap;
+  gap:12px;
+  margin-top:25px;
+}
+
+.btn-primary{
+  background:#1d4ed8;
+  color:white;
+  font-size:1.1rem;
+  padding:14px 28px;
+}
+
+.btn-primary:hover{
+  background:#1e40af;
+}
+
+.btn-secondary{
+  background:#93c5fd;
+  color:#1e3a8a;
+  font-size:1.1rem;
+  padding:14px 28px;
+}
+
+.btn-secondary:hover{
+  background:#60a5fa;
+  color:white;
+}
+
+.oculto{
+  display:none !important;
+}
+
+/* RESULTADOS */
+
+.result-card{
+  background:white;
+  border:1px solid #93c5fd;
+  border-radius:20px;
+  padding:25px;
+  margin-top:20px;
+  text-align:center;
+  box-shadow:0 8px 25px rgba(0,0,0,0.05);
+}
+
+.result-card h2{
+  color:#1d4ed8;
+  margin-bottom:15px;
+}
+
+.metrics-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit, minmax(130px, 1fr));
+  gap:12px;
+  margin:20px 0;
+}
+
+.metric-box{
+  background:#eff6ff;
+  border:1px solid #93c5fd;
+  padding:12px;
+  border-radius:12px;
+}
+
+.metric-box h4{
+  font-size:0.85rem;
+  color:#1d4ed8;
+  margin-bottom:4px;
+}
+
+.metric-box p{
+  font-size:1.25rem;
+  font-weight:bold;
+  color:#1e3a8a;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="header">
+  <span class="badge-eval">EVALUACIÓN DE PRUEBA - EXAMEN 10</span>
+  <h1>🧠 Habilidad Numérica 10</h1>
+  <p>Evaluación avanzada con operaciones complejas, series e interpretación de tablas.</p>
+</div>
+
+<!-- PANTALLA INICIO -->
+<div id="pantallaInicio" class="inicio-panel">
+  <div class="question" style="display:block; margin-bottom:20px;">
+    <h3>Evaluación Integral de Habilidad Numérica 10</h3>
+    <p style="color:#1e40af; margin-top:8px;">Pon a prueba tus capacidades cognitivas resolviendo ecuaciones con incógnitas múltiples, secuencias lógicas avanzadas y cálculo analítico a partir de tablas de datos.</p>
+  </div>
+  <button type="button" class="btn-primary" id="startBtn">Iniciar examen</button>
+</div>
+
+<!-- PANTALLA EXAMEN -->
+<div id="pantallaExamen" class="oculto">
+
+  <div class="stats-bar">
+    <div class="stat-box">
+      <span class="stat-label">Pregunta actual</span>
+      <span class="stat-value"><span id="qNum">1</span> / 32</span>
+    </div>
+    <div class="stat-box">
+      <span class="stat-label">Progreso</span>
+      <span class="stat-value" id="progress">0 / 32</span>
+    </div>
+    <div class="stat-box">
+      <span class="stat-label">Puntaje actual</span>
+      <span class="stat-value" id="puntajeText">0</span>
+    </div>
+  </div>
+
+  <div class="progreso-container">
+    <div class="barra-progreso" id="barraProgreso"></div>
+  </div>
+
+  <div id="quiz"></div>
+
+  <div class="actions">
+    <button type="button" class="btn-primary" id="btnCalificar">
+      Finalizar y Calificar
+    </button>
+    <button type="button" class="btn-secondary" id="btnReiniciar">
+      Reiniciar
+    </button>
+  </div>
+
+</div>
+
+<!-- TARJETA DE RESULTADOS -->
+<div class="result-card oculto" id="resultadoPanel">
+  <h2>📊 Resultado de la Evaluación Analítica</h2>
+  <div class="metrics-grid">
+    <div class="metric-box">
+      <h4>Aciertos</h4>
+      <p id="resAciertos">0 / 32</p>
+    </div>
+    <div class="metric-box">
+      <h4>Porcentaje</h4>
+      <p id="resPorcentaje">0%</p>
+    </div>
+    <div class="metric-box">
+      <h4>Percentil</h4>
+      <p id="resPercentil">0%</p>
+    </div>
+    <div class="metric-box">
+      <h4>Nivel</h4>
+      <p id="resNivel">-</p>
+    </div>
+    <div class="metric-box">
+      <h4>Posición Bot</h4>
+      <p id="resPosicion">#--</p>
+    </div>
+  </div>
+
+  <div class="actions">
+    <button type="button" class="btn-secondary" id="btnReintentar">Reintentar Simulacro</button>
+    <button type="button" class="btn-primary" id="btnVerResultados">Ver Resultados Finales 🏆</button>
+  </div>
+
+</div>
+
+</div>
+
+<script type="module">
+import { calcularResultadoEval } from './eval-bots.js';
+
+const questions = [
+  { q: "14 × 3 = 6 × ?", o: ["6", "7", "8", "9", "42"], a: 1, exp: "42 ÷ 6 = 7" },
+  { q: "(4 + 8) × 3 = (3 × 3) × ?", o: ["2", "3", "4", "6", "9"], a: 2, exp: "36 = 9 × 4" },
+  { q: "100 ÷ 4 = ?²", o: ["4", "5", "10", "25", "50"], a: 1, exp: "100÷4=25 y 5²=25" },
+  { q: "? − 12 = 16 + 7 − 13", o: ["2", "12", "22", "25", "28"], a: 2, exp: "16+7−13=10 entonces ?=22" },
+  { q: "250 ÷ 5 = 5 × ?", o: ["5", "10", "15", "25", "50"], a: 1, exp: "250÷5=50 y 5×10=50" },
+
+  { q: "Serie: 16, 8, 16, 20, 10, 20, 24, 12, ?", o: ["4", "6", "14", "24", "25"], a: 3, exp: "Patrón ÷2 y ×2" },
+  { q: "Serie: 2, 3, 6, 7, 14, 15, 30, 31, ?", o: ["32", "34", "38", "61", "62"], a: 4, exp: "×2 luego +1" },
+  { q: "Serie: 100, 50, 60, 30, 40, 20, ?", o: ["5", "7", "10", "15", "30"], a: 4, exp: "÷2 luego +10 (Respuesta correcta: 30)" },
+  { q: "Serie: 2, 3, 2, 4, 3, 6, ?", o: ["3", "4", "5", "7", "8"], a: 2, exp: "Se duplican los pares" },
+  { q: "Serie: 62, 68, 64, 32, 38, 34, 17, 23, ?", o: ["11", "17", "19", "21", "29"], a: 1, exp: "+6 -4 ÷2" },
+
+  { q: `<div><b>Ejercicio 11</b><br><br><table border="1" style="width:100%;border-collapse:collapse;text-align:center;background:white;"><tr><th></th><th>Secadoras</th><th>Lavadoras</th><th>Frigoríficos</th><th>Total</th></tr><tr><td>Enero</td><td>X</td><td>X</td><td>30</td><td>90</td></tr><tr><td>Febrero</td><td>5</td><td>40</td><td>25</td><td>70</td></tr><tr><td>Marzo</td><td>X</td><td>30</td><td>35</td><td>105</td></tr><tr><td>Abril</td><td>50</td><td>45</td><td>?</td><td>X</td></tr><tr><td>Total</td><td>X</td><td>155</td><td>145</td><td>X</td></tr></table></div>`, o: ["30", "45", "55", "65", "90"], a: 2, exp: "Respuesta correcta: 55" },
+  { q: `<div><b>Ejercicio 12</b><br><br><table border="1" style="width:100%;border-collapse:collapse;text-align:center;background:white;"><tr><th></th><th>Ventiladores</th><th>Estufas</th><th>Aspiradoras</th><th>Total</th></tr><tr><td>Abril</td><td>5</td><td>8</td><td>X</td><td>33</td></tr><tr><td>Mayo</td><td>X</td><td>15</td><td>5</td><td>30</td></tr><tr><td>Junio</td><td>10</td><td>X</td><td>X</td><td>X</td></tr><tr><td>Total</td><td>?</td><td>38</td><td>32</td><td>X</td></tr></table></div>`, o: ["10", "15", "20", "25", "30"], a: 3, exp: "Respuesta correcta: 25" },
+  { q: `<div><b>Ejercicio 13</b><br><br><table border="1" style="width:100%;border-collapse:collapse;text-align:center;background:white;"><tr><th></th><th>Cámara</th><th>Impresora</th><th>Escáner</th><th>Total</th></tr><tr><td>Enero</td><td>20</td><td>X</td><td>15</td><td>X</td></tr><tr><td>Febrero</td><td>?</td><td>30</td><td>X</td><td>70</td></tr><tr><td>Marzo</td><td>20</td><td>X</td><td>30</td><td>X</td></tr><tr><td>Abril</td><td>X</td><td>15</td><td>10</td><td>55</td></tr><tr><td>Total</td><td>85</td><td>X</td><td>80</td><td>X</td></tr></table></div>`, o: ["10", "15", "25", "40", "45"], a: 1, exp: "Respuesta correcta: 15" },
+  { q: `<div><b>Ejercicio 14</b><br><br><table border="1" style="width:100%;border-collapse:collapse;text-align:center;background:white;"><tr><th></th><th>Televisión</th><th>Altavoces</th><th>Auriculares</th><th>Total</th></tr><tr><td>Julio</td><td>X</td><td>X</td><td>5</td><td>35</td></tr><tr><td>Agosto</td><td>5</td><td>X</td><td>10</td><td>30</td></tr><tr><td>Septiembre</td><td>15</td><td>5</td><td>X</td><td>X</td></tr><tr><td>Total</td><td>30</td><td>X</td><td>35</td><td>?</td></tr></table></div>`, o: ["40", "65", "95", "100", "105"], a: 4, exp: "Respuesta correcta: 105" },
+  { q: `<div><b>Ejercicio 15</b><br><br><table border="1" style="width:100%;border-collapse:collapse;text-align:center;background:white;"><tr><th></th><th>Televisión</th><th>Altavoces</th><th>Auriculares</th><th>Total</th></tr><tr><td>Octubre</td><td>X</td><td>?</td><td>15</td><td>60</td></tr><tr><td>Noviembre</td><td>X</td><td>10</td><td>10</td><td>30</td></tr><tr><td>Diciembre</td><td>20</td><td>20</td><td>X</td><td>X</td></tr><tr><td>Total</td><td>45</td><td>X</td><td>30</td><td>X</td></tr></table></div>`, o: ["4", "5", "15", "30", "45"], a: 3, exp: "Respuesta correcta: 30" },
+
+  { q: "(2 × 9) − 11 = [(9 + ?) ÷ 2] − 1", o: ["3", "5", "7", "9", "16"], a: 2, exp: "?=7" },
+  { q: "[(? × 2) − 7] + 4 = (7 × 2) + 11", o: ["6", "7", "9", "14", "16"], a: 1, exp: "?=7" },
+  { q: "[{(? × 4) ÷ 3] − 5} × 5 = (13 + 19 − 2) ÷ 2", o: ["2", "3", "6", "8", "15"], a: 2, exp: "?=6" },
+  { q: "30 + 25 − 16 = [(? × 2) ÷ 4] − 1", o: ["5", "20", "40", "80", "160"], a: 3, exp: "?=80" },
+  { q: "(? − 5)² ÷ 8 = 42 ÷ 21", o: ["3", "7", "9", "13", "41"], a: 2, exp: "?=9" },
+
+  { q: "Serie: 1,2,4,3,6,7,14,13,26,27,54,?", o: ["35", "53", "55", "56", "108"], a: 1, exp: "×2 y −1 alternados" },
+  { q: "Serie: 48,47,49,46,50,45,51,44,52,43,?", o: ["42", "50", "51", "52", "53"], a: 4, exp: "Sube y baja" },
+  { q: "Serie: 3,2,6,4,12,8,24,16,48,32,96,?", o: ["64", "80", "89", "92", "95"], a: 0, exp: "×2 alternado" },
+  { q: "Serie: 2,4,6,3,5,10,12,6,8,?", o: ["4", "5", "10", "13", "16"], a: 4, exp: "Patrón numérico" },
+  { q: "Serie: 52,50,46,52,60,50,38,52,68,50,?", o: ["14", "30", "48", "52", "70"], a: 0, exp: "Patrón alterno" },
+  { q: "Serie: 39,40,38,19,22,18,9,14,8,4,?", o: ["2", "5", "7", "10", "11"], a: 4, exp: "Respuesta correcta: 11" },
+
+  { q: `<div><b>Ejercicio 27</b><br><br><table border="1" style="width:100%;border-collapse:collapse;text-align:center;background:white;"><tr><th></th><th>Plancha</th><th>Depiladora</th><th>Afeitadoras</th><th>Total</th></tr><tr><td>Mayo</td><td>20</td><td>5</td><td>X</td><td>40</td></tr><tr><td>Junio</td><td>X</td><td>X</td><td>10</td><td>X</td></tr><tr><td>Abril</td><td>X</td><td>5</td><td>5</td><td>25</td></tr><tr><td>Total</td><td>40</td><td>20</td><td>X</td><td>?</td></tr></table></div>`, o: ["60", "65", "75", "90", "95"], a: 3, exp: "Respuesta correcta: 90" },
+  { q: `<div><b>Ejercicio 28</b><br><br><table border="1" style="width:100%;border-collapse:collapse;text-align:center;background:white;"><tr><th></th><th>Hornos</th><th>Microondas</th><th>Vitrocerámica</th><th>Total</th></tr><tr><td>Septiembre</td><td>25</td><td>40</td><td>5</td><td>70</td></tr><tr><td>Octubre</td><td>X</td><td>45</td><td>50</td><td>X</td></tr><tr><td>Noviembre</td><td>30</td><td>X</td><td>?</td><td>90</td></tr><tr><td>Diciembre</td><td>35</td><td>30</td><td>X</td><td>105</td></tr><tr><td>Total</td><td>145</td><td>155</td><td>X</td><td>X</td></tr></table></div>`, o: ["10", "15", "20", "30", "60"], a: 2, exp: "Respuesta correcta: 20" },
+
+  { q: `<div><b>Ejercicio 29</b><br><br><table border="1" style="width:100%;border-collapse:collapse;text-align:center;background:white;"><tr><th></th><th>Cafetera</th><th>Tostadora</th><th>Freidora</th><th>Total</th></tr><tr><td>Enero</td><td>X</td><td>5</td><td>20</td><td>35</td></tr><tr><td>Febrero</td><td>5</td><td>X</td><td>X</td><td>30</td></tr><tr><td>Marzo</td><td>15</td><td>30</td><td>?</td><td>X</td></tr><tr><td>Total</td><td>X</td><td>55</td><td>40</td><td>X</td></tr></table></div>`, o: ["5", "10", "15", "20", "25"], a: 2, exp: "Respuesta correcta: 15" },
+  { q: `<div><b>Ejercicio 30</b><br><br><table border="1" style="width:100%;border-collapse:collapse;text-align:center;background:white;"><tr><th>Artículo</th><th>Unidades</th><th>Puntos/unidad</th><th>Total puntos</th></tr><tr><td>Chocolate</td><td>5</td><td>225</td><td>X</td></tr><tr><td>Harina</td><td>6</td><td>?</td><td>X</td></tr><tr><td>Nueces</td><td>8</td><td>140</td><td>X</td></tr><tr><td colspan="3"><b>Total</b></td><td>3925</td></tr></table></div>`, o: ["26", "265", "270", "280", "1680"], a: 3, exp: "Respuesta correcta: 280" },
+  { q: `<div><b>Ejercicio 31</b><br><br><table border="1" style="width:100%;border-collapse:collapse;text-align:center;background:white;"><tr><th></th><th>Armarios</th><th>Mesas</th><th>Sillas</th><th>Total</th></tr><tr><td>Mayo</td><td>X</td><td>15</td><td>20</td><td>45</td></tr><tr><td>Junio</td><td>15</td><td>10</td><td>X</td><td>55</td></tr><tr><td>Julio</td><td>X</td><td>5</td><td>20</td><td>X</td></tr><tr><td>Agosto</td><td>10</td><td>X</td><td>10</td><td>25</td></tr><tr><td>Total</td><td>?</td><td>X</td><td>80</td><td>155</td></tr></table></div>`, o: ["25", "35", "40", "45", "50"], a: 2, exp: "Respuesta correcta: 40" },
+  { q: `<div><b>Ejercicio 32</b><br><br><table border="1" style="width:100%;border-collapse:collapse;text-align:center;background:white;"><tr><th>Artículo</th><th>Unidades</th><th>Puntos/unidad</th><th>Total puntos</th></tr><tr><td>Grapa</td><td>2,500</td><td>0.05</td><td>125</td></tr><tr><td>Chincheta</td><td>3,000</td><td>?</td><td>X</td></tr><tr><td>Tornillo</td><td>1,200</td><td>0.1</td><td>120</td></tr><tr><td colspan="3"><b>Total</b></td><td>845</td></tr></table></div>`, o: ["0.03", "0.1", "0.2", "0.5", "5"], a: 2, exp: "Respuesta correcta: 0.2" }
+];
+
+let current = 0;
+let answers = new Array(questions.length).fill(null);
+let evaluado = false;
+
+const quiz = document.getElementById("quiz");
+
+function calcularPuntajeActual() {
+  let aciertos = 0;
+  questions.forEach((q, i) => {
+    if(answers[i] === q.a) aciertos++;
+  });
+  return aciertos;
+}
+
+function actualizarProgreso(){
+  const respondidas = answers.filter(a => a !== null).length;
+  document.getElementById("progress").textContent = `${respondidas} / ${questions.length}`;
+  document.getElementById("qNum").textContent = current + 1;
+  document.getElementById("puntajeText").textContent = calcularPuntajeActual();
+
+  const porcentajeBarra = ((current + 1) / questions.length) * 100;
+  document.getElementById("barraProgreso").style.width = `${porcentajeBarra}%`;
+}
+
+function render(){
+  quiz.innerHTML = "";
+
+  questions.forEach((q,i)=>{
+    let div = document.createElement("div");
+    div.className = "question" + (i===current ? " active" : "");
+    if (i !== current) div.style.display = "none";
+
+    let opts = "";
+
+    q.o.forEach((op,j)=>{
+      let extraClass = answers[i] === j ? " selected" : "";
+
+      // Las opciones pueden contener texto plano o elementos seguros
+      opts += `
+        <div class="option${extraClass}" data-q="${i}" data-o="${j}">
+          ${String.fromCharCode(65+j)}. ${op}
+        </div>
+      `;
+    });
+
+    div.innerHTML = `
+      <h3>Pregunta ${i+1}</h3>
+      <div style="margin-bottom:12px;">${q.q}</div>
+      ${opts}
+      <div class="navigation">
+        <button type="button" class="prev" data-action="prev" ${i===0 ? "disabled" : ""}>Anterior</button>
+        ${i===questions.length-1
+          ? `<button type="button" class="next" data-action="finish">Finalizar</button>`
+          : `<button type="button" class="next" data-action="next">Siguiente</button>`
+        }
+      </div>
+    `;
+
+    quiz.appendChild(div);
+  });
+
+  // Eventos de selección
+  quiz.querySelectorAll('.option').forEach(opt => {
+    opt.addEventListener('click', (e) => {
+      if(evaluado) return;
+      const qIdx = parseInt(e.currentTarget.getAttribute('data-q'));
+      const oIdx = parseInt(e.currentTarget.getAttribute('data-o'));
+      answers[qIdx] = oIdx;
+      render();
+    });
+  });
+
+  // Eventos de navegación
+  quiz.querySelectorAll('button[data-action]').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      const action = e.currentTarget.getAttribute('data-action');
+      if(action === 'next') nextQuestion();
+      if(action === 'prev') prevQuestion();
+      if(action === 'finish') calificar();
+    });
+  });
+
+  actualizarProgreso();
+}
+
+function iniciarExamen(){
+  document.getElementById("pantallaInicio").classList.add("oculto");
+  document.getElementById("pantallaExamen").classList.remove("oculto");
+  render();
+}
+
+function nextQuestion(){
+  if(current < questions.length-1){
+    current++;
+    render();
+    window.scrollTo({ top:0, behavior:"smooth" });
+  }
+}
+
+function prevQuestion(){
+  if(current > 0){
+    current--;
+    render();
+  }
+}
+
+function calificar(){
+  if(evaluado) return;
+  evaluado = true;
+
+  let correctas = calcularPuntajeActual();
+  
+  // Guardar puntaje en escala 0-100 para la vista final de resultados
+  let notaEscalada = Math.round((correctas / questions.length) * 100);
+  localStorage.setItem("numerica", notaEscalada);
+
+  // Obtener cálculo con bots
+  let res = { porcentaje: 0, percentil: 50, nivel: "Promedio", posicion: 1, ranking: [] };
+  if (typeof calcularResultadoEval === "function") {
+    res = calcularResultadoEval(correctas, questions.length);
+  } else {
+    res.porcentaje = notaEscalada;
+  }
+
+  document.getElementById("resAciertos").textContent = `${correctas} / ${questions.length}`;
+  document.getElementById("resPorcentaje").textContent = `${res.porcentaje}%`;
+  document.getElementById("resPercentil").textContent = `${res.percentil}%`;
+  document.getElementById("resNivel").textContent = res.nivel;
+  document.getElementById("resPosicion").textContent = `#${res.posicion} de ${res.ranking ? res.ranking.length : 30}`;
+
+  document.getElementById("pantallaExamen").classList.add("oculto");
+  const panel = document.getElementById("resultadoPanel");
+  panel.classList.remove("oculto");
+  panel.scrollIntoView({ behavior:"smooth" });
+}
+
+function reiniciar(){
+  current = 0;
+  answers = new Array(questions.length).fill(null);
+  evaluado = false;
+  document.getElementById("resultadoPanel").classList.add("oculto");
+  document.getElementById("pantallaExamen").classList.add("oculto");
+  document.getElementById("pantallaInicio").classList.remove("oculto");
+  window.scrollTo({ top:0, behavior:"smooth" });
+}
+
+document.getElementById("startBtn").addEventListener("click", iniciarExamen);
+document.getElementById("btnCalificar").addEventListener("click", calificar);
+document.getElementById("btnReiniciar").addEventListener("click", reiniciar);
+document.getElementById("btnReintentar").addEventListener("click", reiniciar);
+document.getElementById("btnVerResultados").addEventListener("click", () => {
+  window.location.href = "resultados.html";
+});
+
+</script>
+
+</body>
+</html>
