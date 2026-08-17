@@ -468,9 +468,13 @@ window.onload = function() {
       guardarResultadoExamen("verbal", correctas, total);
       alert("¡Etapa Verbal completada! Avanzando a la Etapa 2: Habilidad Numérica.");
       
-      var examenMate = obtenerExamenMateAleatorio();
-      var nombreLimpio = examenMate.replace(/^data\//, '');
-      window.location.href = "../data/" + nombreLimpio;
+      var examenMate = obtenerExamenMateAleatorio(); // devuelva 'data/numerica-examen1.html' o 'numerica-examen1.html'
+      
+      // Limpiamos 'data/' y cualquier '../' para quedarnos solo con 'numerica-examenX.html'
+      var nombreArchivo = examenMate.replace(/^data\//, '').replace(/^\.\.\//, '');
+
+      // Redirigimos directamente al archivo hermano que está en esta misma carpeta /data/
+      window.location.href = nombreArchivo; 
       return true;
     }
     return false;
