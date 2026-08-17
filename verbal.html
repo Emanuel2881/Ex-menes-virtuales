@@ -1,299 +1,275 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Módulo Verbal</title>
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aptitud Verbal</title>
 
-    body {
-      font-family: Arial, Helvetica, sans-serif;
-      background: linear-gradient(135deg, #fff1f2, #ffe4e6, #fecdd3);
-      color: #7f1d1d;
-      min-height: 100vh;
-      padding: 30px 15px;
-    }
+<style>
+*{
+box-sizing:border-box;
+margin:0;
+padding:0;
+}
 
-    .container {
-      max-width: 800px;
-      margin: auto;
-      background: rgba(255, 255, 255, 0.95);
-      padding: 30px;
-      border-radius: 24px;
-      box-shadow: 0 12px 35px rgba(0, 0, 0, 0.08);
-    }
+body{
+font-family:Arial, Helvetica, sans-serif;
+background:linear-gradient(135deg,#fff1f2,#ffe4e6,#fecdd3);
+color:#7f1d1d;
+min-height:100vh;
+padding:30px 15px;
+}
 
-    .header {
-      text-align: center;
-      margin-bottom: 25px;
-    }
+.container{
+max-width:950px;
+margin:auto;
+background:rgba(255,255,255,0.95);
+padding:25px;
+border-radius:24px;
+box-shadow:0 12px 35px rgba(0,0,0,0.08);
+}
 
-    .header h1 {
-      font-size: clamp(2rem, 4vw, 2.8rem);
-      color: #9f1239;
-      margin-bottom: 8px;
-    }
+.header{
+text-align:center;
+margin-bottom:20px;
+}
 
-    .header p {
-      color: #881337;
-      opacity: 0.9;
-    }
+.header h1{
+font-size:clamp(1.9rem,4vw,2.7rem);
+margin-bottom:10px;
+color:#9f1239;
+}
 
-    /* Switch de Modo Secuencia */
-    .secuencia-card {
-      background: #fff;
-      border: 2px solid #fecdd3;
-      border-radius: 16px;
-      padding: 16px 20px;
-      margin-bottom: 25px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 15px;
-    }
+.header p{
+color:#881337;
+opacity:0.9;
+}
 
-    .secuencia-info h3 {
-      font-size: 1.05rem;
-      color: #9f1239;
-      margin-bottom: 4px;
-    }
+.top-link{
+display:inline-block;
+margin-top:12px;
+color:#be123c;
+text-decoration:none;
+font-weight:bold;
+}
 
-    .secuencia-info p {
-      font-size: 0.88rem;
-      color: #be123c;
-    }
+.exam-grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+gap:18px;
+margin-top:20px;
+}
 
-    .switch {
-      position: relative;
-      display: inline-block;
-      width: 50px;
-      height: 26px;
-      flex-shrink: 0;
-    }
+.exam-card{
+background:#fff;
+border:1px solid #fecdd3;
+border-radius:20px;
+padding:20px;
+box-shadow:0 8px 20px rgba(0,0,0,0.04);
+transition:transform 0.2s, box-shadow 0.2s;
+display:flex;
+flex-direction:column;
+justify-content:space-between;
+}
 
-    .switch input {
-      opacity: 0;
-      width: 0;
-      height: 0;
-    }
+.exam-card:hover{
+transform:translateY(-4px);
+box-shadow:0 12px 25px rgba(225,29,72,0.12);
+}
 
-    .slider {
-      position: absolute;
-      cursor: pointer;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background-color: #cbd5e1;
-      transition: .3s;
-      border-radius: 34px;
-    }
+.exam-card h3{
+color:#9f1239;
+margin-bottom:8px;
+font-size:1.2rem;
+}
 
-    .slider:before {
-      position: absolute;
-      content: "";
-      height: 20px;
-      width: 20px;
-      left: 3px;
-      bottom: 3px;
-      background-color: white;
-      transition: .3s;
-      border-radius: 50%;
-    }
+.exam-card p{
+color:#881337;
+font-size:0.92rem;
+margin-bottom:15px;
+line-height:1.4;
+}
 
-    input:checked + .slider {
-      background-color: #e11d48;
-    }
+.btn{
+display:inline-block;
+text-align:center;
+background:#e11d48;
+color:white;
+text-decoration:none;
+padding:10px 16px;
+border-radius:12px;
+font-weight:bold;
+transition:background 0.2s;
+}
 
-    input:checked + .slider:before {
-      transform: translateX(24px);
-    }
+.btn:hover{
+background:#be123c;
+}
 
-    /* Lista de exámenes */
-    .list-title {
-      font-size: 1.2rem;
-      color: #881337;
-      margin-bottom: 15px;
-    }
+/* CONTENEDOR MODO SECUENCIA */
+.secuencia-container {
+    background: white;
+    border: 2px solid #ffe4e6;
+    border-radius: 16px;
+    padding: 15px 20px;
+    margin-bottom: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 4px 15px rgba(225,29,72,0.05);
+}
 
-    .exam-grid {
-      display: grid;
-      gap: 14px;
-    }
+.secuencia-info h3 {
+    color: #881337;
+    margin: 0 0 5px 0;
+    font-size: 1.1rem;
+}
 
-    .exam-card {
-      background: #fff;
-      border: 1px solid #fecdd3;
-      border-radius: 14px;
-      padding: 18px 20px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      text-decoration: none;
-      color: #7f1d1d;
-      transition: all 0.2s ease;
-    }
+.secuencia-info p {
+    color: #9f1239;
+    margin: 0;
+    font-size: 0.9rem;
+    opacity: 0.8;
+}
 
-    .exam-card:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 18px rgba(225, 29, 72, 0.12);
-      border-color: #fb7185;
-    }
+/* STYLES PARA EL SWITCH INTERRACTIVO */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 26px;
+  flex-shrink: 0;
+}
 
-    .exam-info h4 {
-      font-size: 1.1rem;
-      color: #9f1239;
-      margin-bottom: 4px;
-    }
+.switch input { 
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
 
-    .exam-info p {
-      font-size: 0.85rem;
-      color: #be123c;
-    }
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-color: #fecdd3;
+  transition: .3s;
+  border-radius: 34px;
+}
 
-    .btn-start {
-      background: #ffe4e6;
-      color: #9f1239;
-      font-weight: bold;
-      padding: 8px 16px;
-      border-radius: 10px;
-      font-size: 0.9rem;
-    }
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 20px;
+  width: 20px;
+  left: 3px;
+  bottom: 3px;
+  background-color: white;
+  transition: .3s;
+  border-radius: 50%;
+}
 
-    .top-link {
-      display: inline-block;
-      margin-bottom: 15px;
-      color: #be123c;
-      text-decoration: none;
-      font-weight: bold;
-    }
-  </style>
+input:checked + .slider {
+  background-color: #e11d48;
+}
+
+input:checked + .slider:before {
+  transform: translateX(24px);
+}
+</style>
 </head>
+
 <body>
 
 <div class="container">
 
-  <a class="top-link" href="../index.html">← Volver al Inicio</a>
+<div class="header">
+<h1>💬 Aptitud Verbal</h1>
+<p>Selecciona un examen para practicar analogías y relaciones verbales</p>
+<a class="top-link" href="../index.html">← Volver al Menú Principal</a>
+</div>
 
-  <div class="header">
-    <h1>📖 Módulo Verbal</h1>
-    <p>Selecciona una prueba o activa el modo examen continuo</p>
-  </div>
-
-  <!-- Switch Control de Modo Secuencia -->
-  <div class="secuencia-card">
+<!-- PANEL MODO SECUENCIA -->
+<div class="secuencia-container">
     <div class="secuencia-info">
-      <h3>Modo Examen Completo (Secuencia)</h3>
-      <p>Al terminar Verbal, avanzarás al examen de Matemáticas.</p>
+        <h3>Modo Examen Completo</h3>
+        <p>Realiza 1 examen al azar de cada materia de forma seguida con Ranking Global al final.</p>
     </div>
     <label class="switch">
-      <input type="checkbox" id="chkSecuencia" onchange="toggleModoSecuencia(this.checked)">
-      <span class="slider"></span>
+        <input type="checkbox" id="chkSecuencia" onchange="toggleModoSecuencia(this.checked)">
+        <span class="slider"></span>
     </label>
-  </div>
+</div>
 
-  <h3 class="list-title">Exámenes Disponibles</h3>
+<div class="exam-grid">
 
-  <div class="exam-grid">
-    <!-- Examen 1 -->
-    <a href="data/verbal-examen1.html" class="exam-card">
-      <div class="exam-info">
-        <h4>Examen Verbal 1</h4>
-        <p>15 Preguntas • Analogías y relaciones verbales</p>
-      </div>
-      <span class="btn-start">Comenzar →</span>
-    </a>
+<div class="exam-card">
+<h3>Examen 1</h3>
+<p>15 preguntas de analogías verbales con explicación.</p>
+<a class="btn" href="data/verbal-examen1.html">Iniciar Examen</a>
+</div>
 
-    <!-- Examen 2 -->
-    <a href="data/verbal-examen2.html" class="exam-card">
-      <div class="exam-info">
-        <h4>Examen Verbal 2</h4>
-        <p>15 Preguntas • Sinónimos y antónimos</p>
-      </div>
-      <span class="btn-start">Comenzar →</span>
-    </a>
+<div class="exam-card">
+<h3>Examen 2</h3>
+<p>15 preguntas de analogías verbales con explicación.</p>
+<a class="btn" href="data/verbal-examen2.html">Iniciar Examen</a>
+</div>
 
-    <!-- Examen 3 -->
-    <a href="data/verbal-examen3.html" class="exam-card">
-      <div class="exam-info">
-        <h4>Examen Verbal 3</h4>
-        <p>15 Preguntas • Comprensión lectora</p>
-      </div>
-      <span class="btn-start">Comenzar →</span>
-    </a>
+<div class="exam-card">
+<h3>Examen 3</h3>
+<p>15 preguntas de analogías verbales con explicación.</p>
+<a class="btn" href="data/verbal-examen3.html">Iniciar Examen</a>
+</div>
 
-    <!-- Examen 4 -->
-    <a href="data/verbal-examen4.html" class="exam-card">
-      <div class="exam-info">
-        <h4>Examen Verbal 4</h4>
-        <p>15 Preguntas • Completar oraciones</p>
-      </div>
-      <span class="btn-start">Comenzar →</span>
-    </a>
+<div class="exam-card">
+<h3>Examen 4</h3>
+<p>15 preguntas de analogías verbales con explicación.</p>
+<a class="btn" href="data/verbal-examen4.html">Iniciar Examen</a>
+</div>
 
-    <!-- Examen 5 -->
-    <a href="data/verbal-examen5.html" class="exam-card">
-      <div class="exam-info">
-        <h4>Examen Verbal 5</h4>
-        <p>15 Preguntas • Razonamiento lógico verbal</p>
-      </div>
-      <span class="btn-start">Comenzar →</span>
-    </a>
+<div class="exam-card">
+<h3>Examen 5</h3>
+<p>15 preguntas de analogías verbales con explicación.</p>
+<a class="btn" href="data/verbal-examen5.html">Iniciar Examen</a>
+</div>
 
-    <!-- Examen 6 -->
-    <a href="data/verbal-examen6.html" class="exam-card">
-      <div class="exam-info">
-        <h4>Examen Verbal 6</h4>
-        <p>15 Preguntas • Término excluido y semántica</p>
-      </div>
-      <span class="btn-start">Comenzar →</span>
-    </a>
+<div class="exam-card">
+<h3>Examen 6</h3>
+<p>15 preguntas de analogías verbales con explicación.</p>
+<a class="btn" href="data/verbal-examen6.html">Iniciar Examen</a>
+</div>
 
-    <!-- Examen 7 -->
-    <a href="data/verbal-examen7.html" class="exam-card">
-      <div class="exam-info">
-        <h4>Examen Verbal 7</h4>
-        <p>15 Preguntas • Cohesión y conectores lógicos</p>
-      </div>
-      <span class="btn-start">Comenzar →</span>
-    </a>
+<div class="exam-card">
+<h3>Examen 7</h3>
+<p>15 preguntas de analogías verbales con explicación.</p>
+<a class="btn" href="data/verbal-examen7.html">Iniciar Examen</a>
+</div>
 
-    <!-- Examen 8 -->
-    <a href="data/verbal-examen8.html" class="exam-card">
-      <div class="exam-info">
-        <h4>Examen Verbal 8</h4>
-        <p>15 Preguntas • Plan de redacción</p>
-      </div>
-      <span class="btn-start">Comenzar →</span>
-    </a>
+<div class="exam-card">
+<h3>Examen 8</h3>
+<p>15 preguntas de analogías verbales con explicación.</p>
+<a class="btn" href="data/verbal-examen8.html">Iniciar Examen</a>
+</div>
 
-    <!-- Examen 9 -->
-    <a href="data/verbal-examen9.html" class="exam-card">
-      <div class="exam-info">
-        <h4>Examen Verbal 9</h4>
-        <p>15 Preguntas • Examen de repaso general</p>
-      </div>
-      <span class="btn-start">Comenzar →</span>
-    </a>
-  </div>
+<div class="exam-card">
+<h3>Examen 9</h3>
+<p>15 preguntas de analogías verbales con explicación.</p>
+<a class="btn" href="data/verbal-examen9.html">Iniciar Examen</a>
+</div>
 
 </div>
 
-<!-- SCRIPT MÓDULO -->
+</div>
+
 <script type="module">
-  import { toggleModoSecuencia, esModoSecuencia } from './secuenciaExamenes.js';
-
-  window.toggleModoSecuencia = toggleModoSecuencia;
-  window.esModoSecuencia = esModoSecuencia;
-
-  document.addEventListener('DOMContentLoaded', () => {
-    const chk = document.getElementById('chkSecuencia');
-    if (chk) {
-      chk.checked = esModoSecuencia();
-    }
-  });
+    import { toggleModoSecuencia, esModoSecuencia } from './secuenciaExamenes.js';
+    
+    // Sincronizar el checkbox al cargar la página
+    document.addEventListener('DOMContentLoaded', () => {
+        const chk = document.getElementById('chkSecuencia');
+        if(chk) {
+            chk.checked = esModoSecuencia();
+        }
+    });
 </script>
 
 </body>
