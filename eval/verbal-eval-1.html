@@ -159,7 +159,7 @@ body{
   margin-top:18px;
 }
 
-button, .btn-link{
+button{
   border:none;
   border-radius:14px;
   padding:12px 20px;
@@ -167,12 +167,11 @@ button, .btn-link{
   font-weight:bold;
   cursor:pointer;
   transition:0.2s ease;
-  text-decoration:none;
   display:inline-block;
   text-align:center;
 }
 
-button:hover, .btn-link:hover{
+button:hover{
   transform:translateY(-1px);
 }
 
@@ -356,7 +355,7 @@ button:hover, .btn-link:hover{
 
   <div class="actions">
     <button type="button" class="btn-secondary" id="btnReintentar">Reintentar Verbal</button>
-    <a href="mate-eval-1.html" class="btn-primary btn-link">Ir al Examen de Matemáticas ➡️</a>
+    <button type="button" class="btn-primary" id="btnIrMathAleatorio">Ir al Examen de Matemáticas Aleatorio ➡️</button>
   </div>
 
 </div>
@@ -443,7 +442,6 @@ function render(){
     quiz.appendChild(div);
   });
 
-  // Eventos de selección
   quiz.querySelectorAll('.option').forEach(opt => {
     opt.addEventListener('click', (e) => {
       if(evaluado) return;
@@ -454,7 +452,6 @@ function render(){
     });
   });
 
-  // Eventos de navegación
   quiz.querySelectorAll('button[data-action]').forEach(btn => {
     btn.addEventListener('click', (e) => {
       const action = e.currentTarget.getAttribute('data-action');
@@ -494,11 +491,9 @@ function calificar(){
 
   let correctas = calcularPuntajeActual();
   
-  // Guardar puntaje en escala 0-100 para la vista final de resultados
   let notaEscalada = Math.round((correctas / questions.length) * 100);
   localStorage.setItem("verbal", notaEscalada);
 
-  // Obtener cálculo con bots
   let res = { porcentaje: 0, percentil: 50, nivel: "Promedio", posicion: 1, ranking: [] };
   if (typeof calcularResultadoEval === "function") {
     res = calcularResultadoEval(correctas, questions.length);
@@ -533,6 +528,24 @@ document.getElementById("btnCalificar").addEventListener("click", calificar);
 document.getElementById("btnReiniciar").addEventListener("click", reiniciar);
 document.getElementById("btnReintentar").addEventListener("click", reiniciar);
 
+// Lógica para saltar a un examen de matemáticas aleatorio al finalizar verbal
+document.getElementById("btnIrMathAleatorio").addEventListener("click", () => {
+  const examenesMatematicas = [
+    "mate-eval-1.html",
+    "mate-eval-2.html",
+    "mate-eval-3.html",
+    "mate-eval-4.html",
+    "mate-eval-5.html",
+    "mate-eval-6.html",
+    "mate-eval-7.html",
+    "mate-eval-8.html",
+    "mate-eval-9.html",
+    "mate-eval-10.html"
+  ];
+  
+  const indiceAleatorio = Math.floor(Math.random() * examenesMatematicas.length);
+  window.location.href = examenesMatematicas[indiceAleatorio];
+});
 </script>
 
 </body>
