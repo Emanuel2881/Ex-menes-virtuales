@@ -1,74 +1,94 @@
-// eval/eval-bots.js
+/**
+ * eval-bots.js
+ * Módulo de bots y cálculo de percentiles dinámico.
+ * Funciona para cualquier cantidad total de preguntas (15, 30, 150, etc.).
+ * Rendimiento de bots: Rango [60% - 98%].
+ */
 
-// Lista oficial de 30 nombres únicos para los bots competitivos
+// Nombres base para generar los 30 bots
 const NOMBRES_BOTS = [
-  "Astra_99", "Nexus_Mind", "Valeria_S", "Olympo_88", "Kaiser_V",
-  "Sigma_Master", "Cronos_X", "Atenea_Quiz", "Titan_Verbal", "Hyperion_01",
-  "Minerva_Tech", "Vector_Prime", "Lumina_A", "Apex_Predict", "Delfos_77",
-  "Socrates_AI", "Zeus_Cognitive", "Eos_Scholar", "Vortex_Core", "Quantum_Gen",
-  "Phoenix_09", "Cerebro_Top", "Apolo_Logic", "Vanguard_99", "Electra_Mind",
-  "Helios_Peak", "Aegis_Verbal", "Orion_Ace", "Nirvana_Code", "Genesis_Max"
+  "Sofía Martínez", "Carlos Mendoza", "Lucía Fernández", "Mateo Gómez",
+  "Valeria Ríos", "Alejandro Torres", "Elena Navarro", "Gabriel Silva",
+  "Camila Ortiz", "Diego Castro", "Isabella Morales", "Lucas Romero",
+  "Mariana Delgado", "Javier Vargas", "Paula Benítez", "Adrián Peña",
+  "Daniela Ramos", "Nicolás Medina", "Sara Aguilar", "Tomás Guerrero",
+  "Beatriz Rojas", "Samuel Paredes", "Victoria Soria", "Gonzalo Lara",
+  "Natalia Cruz", "Joaquín Ibáñez", "Claudia Prieto", "Hugo Blanco",
+  "Irene Pastor", "Manuel Gallego"
 ];
 
 /**
- * Genera el listado de 30 bots con notas difíciles (rango de 60% a 100%).
- * @param {number} totalPreguntas - Número total de preguntas evaluadas hasta el examen actual.
- * @returns {Array} Array de objetos bot con nombre, aciertos y nota (%).
+ * Genera una lista de bots con aciertos proporcionales al total de preguntas.
+ * Rango de porcentaje: entre 60% y 98%.
+ * 
+ * @param {number} totalPreguntas - Número de preguntas de la prueba.
+ * @returns {Array} Lista de bots ordenada de mayor a menor aciertos.
  */
-export function obtener30BotsEvaluacion(totalPreguntas) {
-  return NOMBRES_BOTS.map((nombre) => {
-    // Puntuación aleatoria entre 60% y 100%
-    const porcentaje = Math.floor(Math.random() * 41) + 60; 
-    const aciertos = Math.round((porcentaje / 100) * totalPreguntas);
+export function generarBotsAdaptativos(totalPreguntas) {
+  const minPorcentaje = 0.60;
+  const maxPorcentaje = 0.98;
+  const paso = (maxPorcentaje - minPorcentaje) / (NOMBRES_BOTS.length - 1);
+
+  return NOMBRES_BOTS.map((nombre, idx) => {
+    // Genera una distribución uniforme del 98% al 60%
+    const pct = maxPorcentaje - (idx * paso);
+    const aciertos = Math.round(totalPreguntas * pct);
 
     return {
       nombre,
       aciertos,
-      nota: porcentaje
+      porcentaje: Math.round(pct * 100)
     };
-  });
+  }).sort((a, b) => b.aciertos - a.aciertos);
 }
 
 /**
- * Calcula el Percentil Global y el Ranking de 31 participantes (30 bots + Usuario).
- * @param {number} aciertosUsuario - Aciertos acumulados por el usuario.
- * @param {number} totalPreguntas - Preguntas totales evaluadas hasta el momento.
- * @returns {Object} Objeto con ranking ordenado, percentil, nivel y porcentaje del usuario.
+ * Calcula el percentil, porcentaje global, nivel y ranking de forma totalmente dinámica.
+ * 
+ * @param {number} aciertosUsuario - Aciertos obtenidos por el usuario.
+ * @param {number} totalPreguntas - Número total de preguntas reales de la evaluación.
+ * @returns {Object} Un objeto con { porcentaje, percentil, nivel, posicion, ranking }
  */
-export function calcularPercentilGlobal(aciertosUsuario, totalPreguntas) {
-  const porcentajeUsuario = Math.round((aciertosUsuario / totalPreguntas) * 100);
-  const bots = obtener30BotsEvaluacion(totalPreguntas);
+export function calcularResultadoEval(aciertosUsuario, totalPreguntas) {
+  const porcentaje = Math.round((aciertosUsuario / totalPreguntas) * 100);
+  
+  // Genera bots escalados exactamente a 'totalPreguntas'
+  const listaBots = generarBotsAdaptativos(totalPreguntas);
 
-  const usuario = {
-    nombre: "Tú (Usuario)",
-    aciertos: aciertosUsuario,
-    nota: porcentajeUsuario,
-    usuario: true
-  };
+  // Integrar al usuario en la lista
+  const ranking = [
+    ...listaBots,
+    { nombre: "Tú", aciertos: aciertosUsuario, porcentaje, usuario: true }
+  ];
 
-  // Combinar usuario con los 30 bots y ordenar descendentemente por nota
-  const ranking = [...bots, usuario];
-  ranking.sort((a, b) => b.nota - a.nota);
+  // Ordenar de mayor a menor aciertos
+  ranking.sort((a, b) => b.aciertos - a.aciertos);
 
-  // Cálculo de percentil
-  const debajo = ranking.filter(p => porcentajeUsuario > p.nota).length;
-  const iguales = ranking.filter(p => porcentajeUsuario === p.nota).length;
+  // Encontrar la posición del usuario en el ranking (1-indexed)
+  const posicion = ranking.findIndex(p => p.usuario) + 1;
 
-  let percentil = Math.round((debajo + (0.5 * iguales)) / ranking.length * 100);
+  // Cálculo del percentil
+  const debajo = ranking.filter(p => aciertosUsuario > p.aciertos).length;
+  const iguales = ranking.filter(p => aciertosUsuario === p.aciertos).length;
+  let percentil = Math.round(((debajo + 0.5 * iguales) / ranking.length) * 100);
+
+  // Ajustes para evitar percentiles absolutos (0 o 100)
   if (percentil < 1) percentil = 1;
   if (percentil > 99) percentil = 99;
 
-  // Asignación de nivel académico
+  // Clasificación de nivel basada en percentil
   let nivel = "Bajo";
   if (percentil >= 90) nivel = "Sobresaliente";
-  else if (percentil >= 75) nivel = "Muy Bueno";
+  else if (percentil >= 75) nivel = "Muy bueno";
   else if (percentil >= 60) nivel = "Competitivo";
   else if (percentil >= 40) nivel = "Promedio";
 
   return {
-    ranking,
+    porcentaje,
     percentil,
     nivel,
-    porcentajeUsuario
+    posicion,
+    totalPreguntas,
+    ranking
   };
 }
