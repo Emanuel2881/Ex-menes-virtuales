@@ -262,11 +262,14 @@ input:checked + .slider:before {
 
 <script type="module">
     import { toggleModoSecuencia, esModoSecuencia } from './secuenciaExamenes.js';
+
+    // Exponer la función al objeto window para que el HTML la encuentre
+    window.toggleModoSecuencia = toggleModoSecuencia;
     
     // Sincronizar el checkbox al cargar la página
     document.addEventListener('DOMContentLoaded', () => {
         const chk = document.getElementById('chkSecuencia');
-        if(chk) {
+        if (chk) {
             chk.checked = esModoSecuencia();
         }
     });
