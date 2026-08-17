@@ -7,280 +7,269 @@
 
 <style>
 *{
-box-sizing:border-box;
-margin:0;
-padding:0;
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
 }
 
 body{
-font-family:Arial, Helvetica, sans-serif;
-background:linear-gradient(135deg,#fdf2f8,#fce7f3,#fbcfe8);
-color:#831843;
-min-height:100vh;
-padding:30px 15px;
+  font-family:Arial, Helvetica, sans-serif;
+  background:linear-gradient(135deg,#fdf2f8,#fce7f3,#fbcfe8);
+  color:#831843;
+  min-height:100vh;
+  padding:30px 15px;
 }
 
 .container{
-max-width:950px;
-margin:auto;
-background:rgba(255,255,255,0.95);
-padding:25px;
-border-radius:24px;
-box-shadow:0 12px 35px rgba(0,0,0,0.08);
+  max-width:950px;
+  margin:auto;
+  background:rgba(255,255,255,0.95);
+  padding:25px;
+  border-radius:24px;
+  box-shadow:0 12px 35px rgba(0,0,0,0.08);
 }
 
 .header{
-text-align:center;
-margin-bottom:20px;
+  text-align:center;
+  margin-bottom:20px;
 }
 
 .header h1{
-font-size:clamp(1.9rem,4vw,2.7rem);
-margin-bottom:10px;
-color:#be185d;
+  font-size:clamp(1.9rem,4vw,2.7rem);
+  margin-bottom:10px;
+  color:#be185d;
 }
 
 .header p{
-color:#9d174d;
-opacity:0.9;
-line-height:1.5;
+  color:#9d174d;
+  opacity:0.9;
+  line-height:1.5;
 }
 
 .badge-eval{
-display:inline-block;
-background:#db2777;
-color:white;
-padding:6px 14px;
-border-radius:20px;
-font-size:0.85rem;
-font-weight:bold;
-margin-bottom:10px;
+  display:inline-block;
+  background:#db2777;
+  color:white;
+  padding:6px 14px;
+  border-radius:20px;
+  font-size:0.85rem;
+  font-weight:bold;
+  margin-bottom:10px;
 }
 
 .inicio-panel{
-text-align:center;
-padding:20px 10px;
+  text-align:center;
+  padding:20px 10px;
 }
 
 .stats-bar{
-display:flex;
-flex-wrap:wrap;
-gap:12px;
-justify-content:center;
-align-items:center;
-margin-bottom:20px;
+  display:flex;
+  flex-wrap:wrap;
+  gap:12px;
+  justify-content:center;
+  align-items:center;
+  margin-bottom:20px;
 }
 
 .stat-box{
-background:#fff;
-border:1px solid #fbcfe8;
-border-radius:14px;
-padding:12px 18px;
-min-width:150px;
-text-align:center;
-box-shadow:0 4px 12px rgba(0,0,0,0.05);
+  background:#fff;
+  border:1px solid #fbcfe8;
+  border-radius:14px;
+  padding:12px 18px;
+  min-width:150px;
+  text-align:center;
+  box-shadow:0 4px 12px rgba(0,0,0,0.05);
 }
 
 .stat-label{
-display:block;
-font-size:0.9rem;
-color:#db2777;
-margin-bottom:4px;
-font-weight:bold;
+  display:block;
+  font-size:0.9rem;
+  color:#db2777;
+  margin-bottom:4px;
+  font-weight:bold;
 }
 
 .stat-value{
-display:block;
-font-size:1.15rem;
-color:#831843;
-font-weight:bold;
+  display:block;
+  font-size:1.15rem;
+  color:#831843;
+  font-weight:bold;
 }
 
 .progreso-container{
-width:100%;
-height:14px;
-background:#fce7f3;
-border-radius:20px;
-overflow:hidden;
-margin-bottom:20px;
-border:1px solid #fbcfe8;
+  width:100%;
+  height:14px;
+  background:#fce7f3;
+  border-radius:20px;
+  overflow:hidden;
+  margin-bottom:20px;
+  border:1px solid #fbcfe8;
 }
 
 .barra-progreso{
-width:0%;
-height:100%;
-background:#db2777;
-transition:width 0.3s ease;
+  width:0%;
+  height:100%;
+  background:#db2777;
+  transition:width 0.3s ease;
 }
 
 .question{
-background:#fdf2f8;
-border:1px solid #fbcfe8;
-border-radius:20px;
-padding:20px;
-margin-bottom:18px;
-}
-
-.tipo-tag{
-display:inline-block;
-color:#be185d;
-font-weight:bold;
-font-size:0.9rem;
-margin-bottom:8px;
-background:#fce7f3;
-padding:4px 10px;
-border-radius:8px;
+  background:#fdf2f8;
+  border:1px solid #fbcfe8;
+  border-radius:20px;
+  padding:20px;
+  margin-bottom:18px;
 }
 
 .question h3{
-font-size:1.08rem;
-line-height:1.6;
-color:#be185d;
-margin-bottom:14px;
+  font-size:1.08rem;
+  line-height:1.6;
+  color:#be185d;
+  margin-bottom:14px;
 }
 
 .option{
-display:block;
-background:#fce7f3;
-padding:12px 14px;
-margin:10px 0;
-border-radius:12px;
-cursor:pointer;
-border:1px solid transparent;
-transition:0.2s ease;
-color:#9d174d;
+  display:block;
+  background:#fce7f3;
+  padding:12px 14px;
+  margin:10px 0;
+  border-radius:12px;
+  cursor:pointer;
+  border:1px solid transparent;
+  transition:0.2s ease;
+  color:#9d174d;
 }
 
 .option:hover{
-background:#fbcfe8;
-border-color:#f472b6;
+  background:#fbcfe8;
+  border-color:#f472b6;
 }
 
 .option.selected{
-background:#db2777;
-color:white;
-border-color:#be185d;
+  background:#db2777;
+  color:white;
+  border-color:#be185d;
 }
 
 .navigation{
-display:flex;
-flex-wrap:wrap;
-gap:12px;
-justify-content:center;
-margin-top:18px;
+  display:flex;
+  flex-wrap:wrap;
+  gap:12px;
+  justify-content:center;
+  margin-top:18px;
 }
 
 button, .btn-link{
-border:none;
-border-radius:14px;
-padding:12px 20px;
-font-size:1rem;
-font-weight:bold;
-cursor:pointer;
-transition:0.2s ease;
-text-decoration:none;
-display:inline-block;
-text-align:center;
+  border:none;
+  border-radius:14px;
+  padding:12px 20px;
+  font-size:1rem;
+  font-weight:bold;
+  cursor:pointer;
+  transition:0.2s ease;
+  text-decoration:none;
+  display:inline-block;
+  text-align:center;
 }
 
 button:hover, .btn-link:hover{
-transform:translateY(-1px);
+  transform:translateY(-1px);
 }
 
 .prev{
-background:#fbcfe8;
-color:#831843;
+  background:#fbcfe8;
+  color:#831843;
 }
 
 .prev:hover{
-background:#f472b6;
-color:white;
+  background:#f472b6;
+  color:white;
 }
 
 .next{
-background:#ec4899;
-color:white;
+  background:#ec4899;
+  color:white;
 }
 
 .next:hover{
-background:#db2777;
+  background:#db2777;
 }
 
 .actions{
-display:flex;
-justify-content:center;
-flex-wrap:wrap;
-gap:12px;
-margin-top:25px;
+  display:flex;
+  justify-content:center;
+  flex-wrap:wrap;
+  gap:12px;
+  margin-top:25px;
 }
 
 .btn-primary{
-background:#db2777;
-color:white;
-font-size:1.1rem;
-padding:14px 28px;
+  background:#db2777;
+  color:white;
+  font-size:1.1rem;
+  padding:14px 28px;
 }
 
 .btn-primary:hover{
-background:#be185d;
+  background:#be185d;
 }
 
 .btn-secondary{
-background:#fbcfe8;
-color:#831843;
-font-size:1.1rem;
-padding:14px 28px;
+  background:#fbcfe8;
+  color:#831843;
+  font-size:1.1rem;
+  padding:14px 28px;
 }
 
 .btn-secondary:hover{
-background:#f472b6;
+  background:#f472b6;
 }
 
 .oculto{
-display:none !important;
+  display:none !important;
 }
 
 /* RESULTADOS */
 
 .result-card{
-background:white;
-border:1px solid #fbcfe8;
-border-radius:20px;
-padding:25px;
-margin-top:20px;
-text-align:center;
-box-shadow:0 8px 25px rgba(0,0,0,0.05);
+  background:white;
+  border:1px solid #fbcfe8;
+  border-radius:20px;
+  padding:25px;
+  margin-top:20px;
+  text-align:center;
+  box-shadow:0 8px 25px rgba(0,0,0,0.05);
 }
 
 .result-card h2{
-color:#be185d;
-margin-bottom:15px;
+  color:#be185d;
+  margin-bottom:15px;
 }
 
 .metrics-grid{
-display:grid;
-grid-template-columns:repeat(auto-fit, minmax(130px, 1fr));
-gap:12px;
-margin:20px 0;
+  display:grid;
+  grid-template-columns:repeat(auto-fit, minmax(130px, 1fr));
+  gap:12px;
+  margin:20px 0;
 }
 
 .metric-box{
-background:#fdf2f8;
-border:1px solid #fbcfe8;
-padding:12px;
-border-radius:12px;
+  background:#fdf2f8;
+  border:1px solid #fbcfe8;
+  padding:12px;
+  border-radius:12px;
 }
 
 .metric-box h4{
-font-size:0.85rem;
-color:#db2777;
-margin-bottom:4px;
+  font-size:0.85rem;
+  color:#db2777;
+  margin-bottom:4px;
 }
 
 .metric-box p{
-font-size:1.25rem;
-font-weight:bold;
-color:#831843;
+  font-size:1.25rem;
+  font-weight:bold;
+  color:#831843;
 }
 </style>
 </head>
@@ -290,86 +279,85 @@ color:#831843;
 <div class="container">
 
 <div class="header">
-<span class="badge-eval">EVALUACIÓN DE PRUEBA - EXAMEN 1</span>
-<h1>🗣️ Examen Verbal 1</h1>
-<p>Responde las 15 preguntas. Al finalizar obtendrás tus aciertos, percentil y nivel en vivo.</p>
+  <span class="badge-eval">EVALUACIÓN DE PRUEBA - EXAMEN 1</span>
+  <h1>🗣️ Examen Verbal 1</h1>
+  <p>Responde las 15 preguntas. Al finalizar obtendrás tus aciertos, percentil y nivel en vivo.</p>
 </div>
 
 <!-- PANTALLA INICIO -->
 <div id="pantallaInicio" class="inicio-panel">
-<div class="question" style="display:block; margin-bottom:20px;">
-<h3>Evaluación de Analogías Verbales</h3>
-<p style="color:#9d174d; margin-top:8px;">Demuestra tu habilidad verbal resolviendo la serie completa a tu propio ritmo.</p>
-</div>
-<button type="button" class="btn-primary" id="startBtn">Iniciar examen</button>
+  <div class="question" style="display:block; margin-bottom:20px;">
+    <h3>Evaluación de Analogías Verbales</h3>
+    <p style="color:#9d174d; margin-top:8px;">Demuestra tu habilidad verbal resolviendo la serie completa a tu propio ritmo.</p>
+  </div>
+  <button type="button" class="btn-primary" id="startBtn">Iniciar examen</button>
 </div>
 
 <!-- PANTALLA EXAMEN -->
 <div id="pantallaExamen" class="oculto">
 
-<div class="stats-bar">
-<div class="stat-box">
-<span class="stat-label">Pregunta actual</span>
-<span class="stat-value"><span id="qNum">1</span> / 15</span>
-</div>
-<div class="stat-box">
-<span class="stat-label">Progreso</span>
-<span class="stat-value" id="progress">0 / 15</span>
-</div>
-<div class="stat-box">
-<span class="stat-label">Puntaje actual</span>
-<span class="stat-value" id="puntajeText">0</span>
-</div>
-</div>
+  <div class="stats-bar">
+    <div class="stat-box">
+      <span class="stat-label">Pregunta actual</span>
+      <span class="stat-value"><span id="qNum">1</span> / 15</span>
+    </div>
+    <div class="stat-box">
+      <span class="stat-label">Progreso</span>
+      <span class="stat-value" id="progress">0 / 15</span>
+    </div>
+    <div class="stat-box">
+      <span class="stat-label">Puntaje actual</span>
+      <span class="stat-value" id="puntajeText">0</span>
+    </div>
+  </div>
 
-<div class="progreso-container">
-<div class="barra-progreso" id="barraProgreso"></div>
-</div>
+  <div class="progreso-container">
+    <div class="barra-progreso" id="barraProgreso"></div>
+  </div>
 
-<div id="quiz"></div>
+  <div id="quiz"></div>
 
-<div class="actions">
-<button type="button" class="btn-primary" id="btnCalificar">
-Finalizar y Calificar
-</button>
-<button type="button" class="btn-secondary" id="btnReiniciar">
-Reiniciar
-</button>
-</div>
+  <div class="actions">
+    <button type="button" class="btn-primary" id="btnCalificar">
+      Finalizar y Calificar
+    </button>
+    <button type="button" class="btn-secondary" id="btnReiniciar">
+      Reiniciar
+    </button>
+  </div>
 
 </div>
 
 <!-- TARJETA DE RESULTADOS -->
 <div class="result-card oculto" id="resultadoPanel">
-<h2>📊 Resultado de la Evaluación</h2>
-<div class="metrics-grid">
-<div class="metric-box">
-<h4>Aciertos</h4>
-<p id="resAciertos">0 / 15</p>
-</div>
-<div class="metric-box">
-<h4>Porcentaje</h4>
-<p id="resPorcentaje">0%</p>
-</div>
-<div class="metric-box">
-<h4>Percentil</h4>
-<p id="resPercentil">0%</p>
-</div>
-<div class="metric-box">
-<h4>Nivel</h4>
-<p id="resNivel">-</p>
-</div>
-<div class="metric-box">
-<h4>Posición Bot</h4>
-<p id="resPosicion">#--</p>
-</div>
-</div>
+  <h2>📊 Resultado de la Evaluación</h2>
+  <div class="metrics-grid">
+    <div class="metric-box">
+      <h4>Aciertos</h4>
+      <p id="resAciertos">0 / 15</p>
+    </div>
+    <div class="metric-box">
+      <h4>Porcentaje</h4>
+      <p id="resPorcentaje">0%</p>
+    </div>
+    <div class="metric-box">
+      <h4>Percentil</h4>
+      <p id="resPercentil">0%</p>
+    </div>
+    <div class="metric-box">
+      <h4>Nivel</h4>
+      <p id="resNivel">-</p>
+    </div>
+    <div class="metric-box">
+      <h4>Posición Bot</h4>
+      <p id="resPosicion">#--</p>
+    </div>
+  </div>
 
-<div class="actions">
-<button type="button" class="btn-secondary" id="btnReintentar">Reintentar Verbal</button>
-<!-- ENLACE CORREGIDO A MATE-EVAL-1.HTML -->
-<a href="mate-eval-1.html" class="btn-primary btn-link">Ir al Examen de Matemáticas ➡️</a>
-</div>
+  <div class="actions">
+    <button type="button" class="btn-secondary" id="btnReintentar">Reintentar Verbal</button>
+    <a href="mate-eval-1.html" class="btn-primary btn-link">Ir al Examen de Matemáticas ➡️</a>
+  </div>
 
 </div>
 
@@ -379,96 +367,21 @@ Reiniciar
 import { calcularResultadoEval } from './eval-bots.js';
 
 const questions = [
-{
-q:"CIUDAD es a HOMBRE como COLMENA es a ___",
-o:["Hormiga","Mosquito","Araña","Abeja"],
-a:3,
-exp:"La relación es el lugar donde vive o se agrupa la especie."
-},
-{
-q:"BATIDO es a BATIR como ZUMO es a ___",
-o:["Exprimir","Aplastar","Machacar","Succionar"],
-a:0,
-exp:"Muestra el producto final y la acción que lo origina."
-},
-{
-q:"CONSEJERO es a CONSEJO como CANTANTE es a ___",
-o:["Fama","Éxito","Composición","Canción"],
-a:3,
-exp:"La persona y el producto o resultado principal de su función."
-},
-{
-q:"ESTUFA es a CALOR como NEVERA es a ___",
-o:["Temperatura","Frío","Conservación","Congelación"],
-a:1,
-exp:"Relación de objeto a la sensación/efecto térmico que produce."
-},
-{
-q:"MARTILLO es a CLAVO como DESTORNILLADOR es a ___",
-o:["Hierro","Tornillo","Remache","Herramienta"],
-a:1,
-exp:"Relación de la herramienta con el elemento sobre el que actúa."
-},
-{
-q:"ASA es a CESTA como POMO es a ___",
-o:["Puerta","Tirador","Envase","Manillar"],
-a:0,
-exp:"Relación parte-todo entre el elemento de agarre y el objeto principal."
-},
-{
-q:"LÍQUIDO es a SOPA como SÓLIDO es a ___",
-o:["Comer","Bebida","Plátano","Gaseoso"],
-a:2,
-exp:"Categoría del estado de la materia y su respectivo ejemplo de alimento."
-},
-{
-q:"BALLENA es a ACUÁTICO como LEÓN es a ___",
-o:["Carnívoro","Terrestre","Depredador","Devorador"],
-a:1,
-exp:"Animal y su medio natural de vida."
-},
-{
-q:"RESTAR es a SUMAR como ARREGLAR es a ___",
-o:["Incluir","Corregir","Estropear","Resarcir"],
-a:2,
-exp:"Relación de antonimia entre operaciones u acciones opuestas."
-},
-{
-q:"MÁS es a MENOS como DESPUÉS es a ___",
-o:["Tiempo","Siguiente","Pronto","Antes"],
-a:3,
-exp:"Relación de conceptos opuestos o antónimos."
-},
-{
-q:"FÉMUR es a HUESO como CORAZÓN es a ___",
-o:["Glándula","Vena","Músculo","Arteria"],
-a:2,
-exp:"Relación de elemento específico a su categoría biológica."
-},
-{
-q:"CUATRO es a CINCO como CUADRADO es a ___",
-o:["Triángulo","Heptágono","Hexágono","Pentágono"],
-a:3,
-exp:"Aumento de una unidad numérica respecto a los lados de la figura."
-},
-{
-q:"HARINA es a TRIGO como CERVEZA es a ___",
-o:["Manzana","Patata","Cebada","Alfalfa"],
-a:2,
-exp:"Producto elaborado y su materia prima vegetal principal."
-},
-{
-q:"PIE es a CUERPO como BOMBILLA es a ___",
-o:["Ojos","Luz","Vela","Lámpara"],
-a:3,
-exp:"Relación de parte integrante a su todo."
-},
-{
-q:"EXCAVAR es a CAVIDAD como ALINEAR es a ___",
-o:["Seguido","Recta","Acodo","Ensamblar"],
-a:1,
-exp:"Acción realizada y el resultado geométrico producido."
-}
+  { q:"CIUDAD es a HOMBRE como COLMENA es a ___", o:["Hormiga","Mosquito","Araña","Abeja"], a:3 },
+  { q:"BATIDO es a BATIR como ZUMO es a ___", o:["Exprimir","Aplastar","Machacar","Succionar"], a:0 },
+  { q:"CONSEJERO es a CONSEJO como CANTANTE es a ___", o:["Fama","Éxito","Composición","Canción"], a:3 },
+  { q:"ESTUFA es a CALOR como NEVERA es a ___", o:["Temperatura","Frío","Conservación","Congelación"], a:1 },
+  { q:"MARTILLO es a CLAVO como DESTORNILLADOR es a ___", o:["Hierro","Tornillo","Remache","Herramienta"], a:1 },
+  { q:"ASA es a CESTA como POMO es a ___", o:["Puerta","Tirador","Envase","Manillar"], a:0 },
+  { q:"LÍQUIDO es a SOPA como SÓLIDO es a ___", o:["Comer","Bebida","Plátano","Gaseoso"], a:2 },
+  { q:"BALLENA es a ACUÁTICO como LEÓN es a ___", o:["Carnívoro","Terrestre","Depredador","Devorador"], a:1 },
+  { q:"RESTAR es a SUMAR como ARREGLAR es a ___", o:["Incluir","Corregir","Estropear","Resarcir"], a:2 },
+  { q:"MÁS es a MENOS como DESPUÉS es a ___", o:["Tiempo","Siguiente","Pronto","Antes"], a:3 },
+  { q:"FÉMUR es a HUESO como CORAZÓN es a ___", o:["Glándula","Vena","Músculo","Arteria"], a:2 },
+  { q:"CUATRO es a CINCO como CUADRADO es a ___", o:["Triángulo","Heptágono","Hexágono","Pentágono"], a:3 },
+  { q:"HARINA es a TRIGO como CERVEZA es a ___", o:["Manzana","Patata","Cebada","Alfalfa"], a:2 },
+  { q:"PIE es a CUERPO como BOMBILLA es a ___", o:["Ojos","Luz","Vela","Lámpara"], a:3 },
+  { q:"EXCAVAR es a CAVIDAD como ALINEAR es a ___", o:["Seguido","Recta","Acodo","Ensamblar"], a:1 }
 ];
 
 let current = 0;
@@ -478,101 +391,101 @@ let evaluado = false;
 const quiz = document.getElementById("quiz");
 
 function calcularPuntajeActual() {
-let aciertos = 0;
-questions.forEach((q, i) => {
-if(answers[i] === q.a) aciertos++;
-});
-return aciertos;
+  let aciertos = 0;
+  questions.forEach((q, i) => {
+    if(answers[i] === q.a) aciertos++;
+  });
+  return aciertos;
 }
 
 function actualizarProgreso(){
-const respondidas = answers.filter(a => a !== null).length;
-document.getElementById("progress").textContent = `${respondidas} / ${questions.length}`;
-document.getElementById("qNum").textContent = current + 1;
-document.getElementById("puntajeText").textContent = calcularPuntajeActual();
+  const respondidas = answers.filter(a => a !== null).length;
+  document.getElementById("progress").textContent = `${respondidas} / ${questions.length}`;
+  document.getElementById("qNum").textContent = current + 1;
+  document.getElementById("puntajeText").textContent = calcularPuntajeActual();
 
-const porcentajeBarra = ((current + 1) / questions.length) * 100;
-document.getElementById("barraProgreso").style.width = `${porcentajeBarra}%`;
+  const porcentajeBarra = ((current + 1) / questions.length) * 100;
+  document.getElementById("barraProgreso").style.width = `${porcentajeBarra}%`;
 }
 
 function render(){
-quiz.innerHTML = "";
+  quiz.innerHTML = "";
 
-questions.forEach((q,i)=>{
-let div = document.createElement("div");
-div.className = "question" + (i===current ? " active" : "");
-if (i !== current) div.style.display = "none";
+  questions.forEach((q,i)=>{
+    let div = document.createElement("div");
+    div.className = "question" + (i===current ? " active" : "");
+    if (i !== current) div.style.display = "none";
 
-let opts = "";
+    let opts = "";
 
-q.o.forEach((op,j)=>{
-let extraClass = answers[i] === j ? " selected" : "";
+    q.o.forEach((op,j)=>{
+      let extraClass = answers[i] === j ? " selected" : "";
 
-opts += `
-<div class="option${extraClass}" data-q="${i}" data-o="${j}">
-${String.fromCharCode(65+j)}. ${op}
-</div>
-`;
-});
+      opts += `
+        <div class="option${extraClass}" data-q="${i}" data-o="${j}">
+          ${String.fromCharCode(65+j)}. ${op}
+        </div>
+      `;
+    });
 
-div.innerHTML = `
-<h3>${i+1}. ${q.q}</h3>
-${opts}
-<div class="navigation">
-<button type="button" class="prev" data-action="prev" ${i===0 ? "disabled" : ""}>Anterior</button>
-${i===questions.length-1
-? `<button type="button" class="next" data-action="finish">Finalizar</button>`
-: `<button type="button" class="next" data-action="next">Siguiente</button>`
-}
-</div>
-`;
+    div.innerHTML = `
+      <h3>${i+1}. ${q.q}</h3>
+      ${opts}
+      <div class="navigation">
+        <button type="button" class="prev" data-action="prev" ${i===0 ? "disabled" : ""}>Anterior</button>
+        ${i===questions.length-1
+          ? `<button type="button" class="next" data-action="finish">Finalizar</button>`
+          : `<button type="button" class="next" data-action="next">Siguiente</button>`
+        }
+      </div>
+    `;
 
-quiz.appendChild(div);
-});
+    quiz.appendChild(div);
+  });
 
-// Eventos de selección
-quiz.querySelectorAll('.option').forEach(opt => {
-opt.addEventListener('click', (e) => {
-if(evaluado) return;
-const qIdx = parseInt(e.currentTarget.getAttribute('data-q'));
-const oIdx = parseInt(e.currentTarget.getAttribute('data-o'));
-answers[qIdx] = oIdx;
-render();
-});
-});
+  // Eventos de selección
+  quiz.querySelectorAll('.option').forEach(opt => {
+    opt.addEventListener('click', (e) => {
+      if(evaluado) return;
+      const qIdx = parseInt(e.currentTarget.getAttribute('data-q'));
+      const oIdx = parseInt(e.currentTarget.getAttribute('data-o'));
+      answers[qIdx] = oIdx;
+      render();
+    });
+  });
 
-// Eventos de navegación
-quiz.querySelectorAll('button[data-action]').forEach(btn => {
-btn.addEventListener('click', (e) => {
-const action = e.currentTarget.getAttribute('data-action');
-if(action === 'next') nextQuestion();
-if(action === 'prev') prevQuestion();
-if(action === 'finish') calificar();
-});
-});
+  // Eventos de navegación
+  quiz.querySelectorAll('button[data-action]').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      const action = e.currentTarget.getAttribute('data-action');
+      if(action === 'next') nextQuestion();
+      if(action === 'prev') prevQuestion();
+      if(action === 'finish') calificar();
+    });
+  });
 
-actualizarProgreso();
+  actualizarProgreso();
 }
 
 function iniciarExamen(){
-document.getElementById("pantallaInicio").classList.add("oculto");
-document.getElementById("pantallaExamen").classList.remove("oculto");
-render();
+  document.getElementById("pantallaInicio").classList.add("oculto");
+  document.getElementById("pantallaExamen").classList.remove("oculto");
+  render();
 }
 
 function nextQuestion(){
-if(current < questions.length-1){
-current++;
-render();
-window.scrollTo({ top:0, behavior:"smooth" });
-}
+  if(current < questions.length-1){
+    current++;
+    render();
+    window.scrollTo({ top:0, behavior:"smooth" });
+  }
 }
 
 function prevQuestion(){
-if(current > 0){
-current--;
-render();
-}
+  if(current > 0){
+    current--;
+    render();
+  }
 }
 
 function calificar(){
@@ -581,16 +494,23 @@ function calificar(){
 
   let correctas = calcularPuntajeActual();
   
-  // Guardar puntaje verbal para la página de resultados finales
-  localStorage.setItem("verbal", correctas);
+  // Guardar puntaje en escala 0-100 para la vista final de resultados
+  let notaEscalada = Math.round((correctas / questions.length) * 100);
+  localStorage.setItem("verbal", notaEscalada);
 
-  const res = calcularResultadoEval(correctas, questions.length);
+  // Obtener cálculo con bots
+  let res = { porcentaje: 0, percentil: 50, nivel: "Promedio", posicion: 1, ranking: [] };
+  if (typeof calcularResultadoEval === "function") {
+    res = calcularResultadoEval(correctas, questions.length);
+  } else {
+    res.porcentaje = notaEscalada;
+  }
 
   document.getElementById("resAciertos").textContent = `${correctas} / ${questions.length}`;
   document.getElementById("resPorcentaje").textContent = `${res.porcentaje}%`;
   document.getElementById("resPercentil").textContent = `${res.percentil}%`;
   document.getElementById("resNivel").textContent = res.nivel;
-  document.getElementById("resPosicion").textContent = `#${res.posicion} de ${res.ranking.length}`;
+  document.getElementById("resPosicion").textContent = `#${res.posicion} de ${res.ranking ? res.ranking.length : 30}`;
 
   document.getElementById("pantallaExamen").classList.add("oculto");
   const panel = document.getElementById("resultadoPanel");
@@ -599,13 +519,13 @@ function calificar(){
 }
 
 function reiniciar(){
-current = 0;
-answers = new Array(questions.length).fill(null);
-evaluado = false;
-document.getElementById("resultadoPanel").classList.add("oculto");
-document.getElementById("pantallaExamen").classList.add("oculto");
-document.getElementById("pantallaInicio").classList.remove("oculto");
-window.scrollTo({ top:0, behavior:"smooth" });
+  current = 0;
+  answers = new Array(questions.length).fill(null);
+  evaluado = false;
+  document.getElementById("resultadoPanel").classList.add("oculto");
+  document.getElementById("pantallaExamen").classList.add("oculto");
+  document.getElementById("pantallaInicio").classList.remove("oculto");
+  window.scrollTo({ top:0, behavior:"smooth" });
 }
 
 document.getElementById("startBtn").addEventListener("click", iniciarExamen);
