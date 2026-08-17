@@ -263,7 +263,9 @@ Resultado Final
 
 </div>
 
-<script>
+<script type="module">
+
+import { guardarResultadoExamen, calcularResultadoGlobal } from "./secuenciaExamenes.js";
 
 const questions = [
 
@@ -451,80 +453,25 @@ let porcentaje=Math.round(
 (correct/questions.length)*100
 );
 
-const rangosBots=[
-{min:50,max:64},{min:50,max:64},
-{min:65,max:74},{min:65,max:74},{min:65,max:74},{min:65,max:74},
-{min:75,max:84},{min:75,max:84},{min:75,max:84},{min:75,max:84},{min:75,max:84},{min:75,max:84},{min:75,max:84},{min:75,max:84},{min:75,max:84},
-{min:85,max:94},{min:85,max:94},{min:85,max:94},{min:85,max:94},{min:85,max:94},{min:85,max:94},{min:85,max:94},{min:85,max:94},{min:85,max:94},{min:85,max:94},
-{min:95,max:100},{min:95,max:100},{min:95,max:100},{min:95,max:100},{min:95,max:100}
-];
+// 1. Guardar resultado de Numérica en el almacenamiento secuencial
+guardarResultadoExamen("numerica", correct, questions.length);
 
-rangosBots.sort(()=>Math.random()-0.5);
+// 2. Intentar calcular el resultado global combinando ambas evaluaciones
+const resultadoGlobal = calcularResultadoGlobal();
 
-const bots=[];
+let percentil = 0;
+let nivel = "";
+let ranking = [];
 
-for(let i=1;i<=30;i++){
-
-const rango=rangosBots[i-1];
-
-bots.push({
-nombre:`Bot_${i}`,
-nota:Math.floor(Math.random()*(rango.max-rango.min+1))+rango.min
-});
-
-}
-
-const ranking=[
-...bots,
-{
-nombre:"Tú",
-nota:porcentaje,
-usuario:true
-}
-];
-
-ranking.sort((a,b)=>b.nota-a.nota);
-
-let debajo=ranking.filter(
-p=>porcentaje>p.nota
-).length;
-
-let iguales=ranking.filter(
-p=>porcentaje===p.nota
-).length;
-
-let percentil=Math.round(
-(
-debajo+(0.5*iguales)
-)
-/ranking.length
-*100
-);
-
-if(percentil<1){
-percentil=1;
-}
-
-if(percentil>99){
-percentil=99;
-}
-
-let nivel="Muy bajo";
-
-if(percentil>=90){
-nivel="Excelente";
-}
-else if(percentil>=75){
-nivel="Muy bueno";
-}
-else if(percentil>=60){
-nivel="Bueno";
-}
-else if(percentil>=40){
-nivel="Promedio";
-}
-else if(percentil>=20){
-nivel="Bajo";
+if(resultadoGlobal){
+// Si ambas etapas (Verbal + Numérica) fueron completadas
+percentil = resultadoGlobal.usuario.percentil;
+nivel = resultadoGlobal.usuario.nivel;
+ranking = resultadoGlobal.ranking;
+} else {
+// En caso de evaluarse únicamente como examen individual de Numérica
+percentil = porcentaje;
+nivel = "Evaluación Individual";
 }
 
 questions.forEach((q,i)=>{
@@ -593,7 +540,7 @@ display:flex;
 justify-content:space-between;
 padding:10px;
 margin:6px 0;
-background:${p.usuario ? "#dbeafe" : "white"};
+background:${p.esUsuario ? "#dbeafe" : "white"};
 border-radius:10px;
 ">
 
@@ -619,7 +566,7 @@ document.getElementById("score").innerHTML=
 ☰ Ranking
 </button>
 
-<div id="rankingPanel" class="ranking-panel">
+<div id="rankingPanel" class="ranking-panel hidden">
 
 <div class="ranking-content">
 
@@ -708,6 +655,12 @@ document.getElementById("rankingPanel")
 .classList.toggle("hidden");
 
 }
+
+window.select = select;
+window.next = next;
+window.prev = prev;
+window.finish = finish;
+window.toggleRanking = toggleRanking;
 
 window.mostrarResultadosParty = function(data){
 
