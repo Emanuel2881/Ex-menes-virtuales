@@ -265,7 +265,17 @@ Resultado Final
 
 <script type="module">
 
-import { guardarResultadoExamen, calcularResultadoGlobal } from "./secuenciaExamenes.js";
+let guardarResultadoExamen = null;
+let calcularResultadoGlobal = null;
+
+// Intenta importar de forma segura los módulos externos
+try {
+  const modulo = await import("./secuenciaExamenes.js");
+  guardarResultadoExamen = modulo.guardarResultadoExamen;
+  calcularResultadoGlobal = modulo.calcularResultadoGlobal;
+} catch (e) {
+  console.warn("Módulo secuenciaExamenes.js no detectado o ejecutado fuera de un servidor web. Modo standalone activo.", e);
+}
 
 const questions = [
 
@@ -453,25 +463,21 @@ let porcentaje=Math.round(
 (correct/questions.length)*100
 );
 
-// 1. Guardar resultado de Numérica en el almacenamiento secuencial
-guardarResultadoExamen("numerica", correct, questions.length);
+if (guardarResultadoExamen) {
+  guardarResultadoExamen("numerica", correct, questions.length);
+}
 
-// 2. Intentar calcular el resultado global combinando ambas evaluaciones
-const resultadoGlobal = calcularResultadoGlobal();
-
-let percentil = 0;
-let nivel = "";
+let percentil = porcentaje;
+let nivel = "Evaluación Individual";
 let ranking = [];
 
-if(resultadoGlobal){
-// Si ambas etapas (Verbal + Numérica) fueron completadas
-percentil = resultadoGlobal.usuario.percentil;
-nivel = resultadoGlobal.usuario.nivel;
-ranking = resultadoGlobal.ranking;
-} else {
-// En caso de evaluarse únicamente como examen individual de Numérica
-percentil = porcentaje;
-nivel = "Evaluación Individual";
+if (calcularResultadoGlobal) {
+  const resultadoGlobal = calcularResultadoGlobal();
+  if(resultadoGlobal){
+    percentil = resultadoGlobal.usuario.percentil;
+    nivel = resultadoGlobal.usuario.nivel;
+    ranking = resultadoGlobal.ranking;
+  }
 }
 
 questions.forEach((q,i)=>{
@@ -574,7 +580,7 @@ document.getElementById("score").innerHTML=
 🏆 Ranking General
 </h3>
 
-${rankingHTML}
+${rankingHTML || '<p style="color:gray;">Completa ambas áreas para ver el ranking global.</p>'}
 
 </div>
 
@@ -662,65 +668,10 @@ window.prev = prev;
 window.finish = finish;
 window.toggleRanking = toggleRanking;
 
-window.mostrarResultadosParty = function(data){
-
-const ranking=[...data].sort((a,b)=>b.porcentaje-a.porcentaje);
-
-let html=`<div class="party-grid">`;
-
-ranking.forEach((j,i)=>{
-
-let medal=i===0?"🥇":i===1?"🥈":i===2?"🥉":"";
-
-html+=`
-
-<div class="party-card">
-
-<h3>
-${medal} Jugador ${i+1}
-</h3>
-
-<p>
-${j.correctas}/${j.total}
-</p>
-
-<p>
-${j.porcentaje}%
-</p>
-
-</div>
-
-`;
-
-});
-
-html+=`</div>`;
-
-html+=`
-
-<div class="party-winner">
-
-🏆 Mejor:
-${ranking[0].porcentaje}%
-
-</div>
-
-`;
-
-document.getElementById("partyResultadoContenido")
-.innerHTML=html;
-
-document.getElementById("resultadoParty")
-.style.display="block";
-
-};
-
+// Ejecutar primer renderizado garantizado
 render();
 
 </script>
-
-<script type="module" src="../party/party-timer.js"></script>
-<script type="module" src="../party/party-resultados.js"></script>
 
 </body>
 </html>
