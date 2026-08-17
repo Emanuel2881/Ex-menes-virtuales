@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Modo Evaluación - Examen 1 (Verbal)</title>
+
+<style>
+
+*{
+box-sizing:border-box;
+margin:0;
+padding:0;
+}
+
+body{
+font-family:Arial, Helvetica, sans-serif;
+background:linear-gradient(135deg,#fff1f2,#ffe4e6,#fecdd3);
+color:#7f1d1d;
+min-height:100vh;
+padding:30px 15px;
+}
+
+.container{
+max-width:950px;
+margin:auto;
+background:rgba(255,255,255,0.95);
+padding:25px;
+border-radius:24px;
+box-shadow:0 12px 35px rgba(0,0,0,0.08);
+}
+
+.header{
+text-align:center;
+margin-bottom:20px;
+}
+
+.header h1{
+font-size:clamp(1.9rem,4vw,2.7rem);
+margin-bottom:10px;
+color:#9f1239;
+}
+
+.header p{
+color:#881337;
+opacity:0.9;
+line-height:1.5;
+}
+
+.badge-eval{
+display:inline-block;
+background:#be123c;
+color:white;
+padding:6px 14px;
+border-radius:20px;
+font-size:0.85rem;
+font-weight:bold;
+margin-bottom:10px;
+}
+
+.stats-bar{
+display:flex;
+flex-wrap:wrap;
+gap:12px;
+justify-content:center;
+align-items:center;
+margin-bottom:20px;
+}
+
+.stat-box{
+background:#fff;
+border:1px solid #fecdd3;
+border-radius:14px;
+padding:12px 18px;
+min-width:150px;
+text-align:center;
+box-shadow:0 4px 12px rgba(0,0,0,0.05);
+}
+
+.stat-label{
+display:block;
+font-size:0.9rem;
+color:#be123c;
+margin-bottom:4px;
+font-weight:bold;
+}
+
+.stat-value{
+display:block;
+font-size:1.15rem;
+color:#7f1d1d;
+font-weight:bold;
+}
+
+.question{
+display:none;
+background:#fff7f8;
+border:1px solid #fecdd3;
+border-radius:20px;
+padding:20px;
+margin-bottom:18px;
+}
+
+.question.active{
+display:block;
+}
+
+.question h3{
+font-size:1.08rem;
+line-height:1.6;
+color:#9f1239;
+margin-bottom:14px;
+}
+
+.option{
+display:block;
+background:#ffe4e6;
+padding:12px 14px;
+margin:10px 0;
+border-radius:12px;
+cursor:pointer;
+border:1px solid transparent;
+transition:0.2s ease;
+color:#881337;
+}
+
+.option:hover{
+background:#fecdd3;
+border-color:#fb7185;
+}
+
+.option.selected{
+background:#f43f5e;
+color:white;
+border-color:#e11d48;
+}
+
+.navigation{
+display:flex;
+flex-wrap:wrap;
+gap:12px;
+justify-content:center;
+margin-top:18px;
+}
+
+button{
+border:none;
+border-radius:14px;
+padding:12px 20px;
+font-size:1rem;
+font-weight:bold;
+cursor:pointer;
+transition:0.2s ease;
+}
+
+button:hover{
+transform:translateY(-1px);
+}
+
+.prev{
+background:#fda4af;
+color:#881337;
+}
+
+.prev:hover{
+background:#fb7185;
+color:white;
+}
+
+.next{
+background:#fb7185;
+color:white;
+}
+
+.next:hover{
+background:#f43f5e;
+}
+
+.actions{
+display:flex;
+justify-content:center;
+gap:12px;
+margin-top:25px;
+}
+
+.btn-primary{
+background:#e11d48;
+color:white;
+font-size:1.1rem;
+padding:14px 28px;
+}
+
+.btn-primary:hover{
+background:#be123c;
+}
+
+.btn-secondary{
+background:#fecdd3;
+color:#9f1239;
+font-size:1.1rem;
+padding:14px 28px;
+}
+
+.btn-secondary:hover{
+background:#fda4af;
+}
+
+/* RESULTADOS */
+
+.result-card{
+display:none;
+background:white;
+border:1px solid #fecdd3;
+border-radius:20px;
+padding:25px;
+margin-top:20px;
+text-align:center;
+box-shadow:0 8px 25px rgba(0,0,0,0.05);
+}
+
+.result-card h2{
+color:#9f1239;
+margin-bottom:15px;
+}
+
+.metrics-grid{
+display:grid;
+grid-template-columns:repeat(auto-fit, minmax(130px, 1fr));
+gap:12px;
+margin:20px 0;
+}
+
+.metric-box{
+background:#fff7f8;
+border:1px solid #fecdd3;
+padding:12px;
+border-radius:12px;
+}
+
+.metric-box h4{
+font-size:0.85rem;
+color:#be123c;
+margin-bottom:4px;
+}
+
+.metric-box p{
+font-size:1.25rem;
+font-weight:bold;
+color:#7f1d1d;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="header">
+<span class="badge-eval">EVALUACIÓN DE PRUEBA - EXAMEN 1</span>
+<h1>📖 Examen Verbal 1</h1>
+<p>Responde las 15 preguntas. Al finalizar obtendrás tus aciertos, percentil y nivel en vivo.</p>
+</div>
+
+<div class="stats-bar">
+
+<div class="stat-box">
+<span class="stat-label">Pregunta actual</span>
+<span class="stat-value"><span id="qNum">1</span> / 15</span>
+</div>
+
+<div class="stat-box">
+<span class="stat-label">Progreso</span>
+<span class="stat-value" id="progress">0 / 15</span>
+</div>
+
+</div>
+
+<div id="quiz"></div>
+
+<div class="actions">
+<button type="button" class="btn-primary" id="btnCalificar">
+Finalizar y Calificar
+</button>
+<button type="button" class="btn-secondary" id="btnReiniciar">
+Reiniciar
+</button>
+</div>
+
+<!-- TARJETA DE RESULTADOS -->
+<div class="result-card" id="resultadoPanel">
+<h2>📊 Resultado de la Evaluación</h2>
+<div class="metrics-grid">
+<div class="metric-box">
+<h4>Aciertos</h4>
+<p id="resAciertos">0 / 15</p>
+</div>
+<div class="metric-box">
+<h4>Porcentaje</h4>
+<p id="resPorcentaje">0%</p>
+</div>
+<div class="metric-box">
+<h4>Percentil</h4>
+<p id="resPercentil">0%</p>
+</div>
+<div class="metric-box">
+<h4>Nivel</h4>
+<p id="resNivel">-</p>
+</div>
+<div class="metric-box">
+<h4>Posición Bot</h4>
+<p id="resPosicion">#--</p>
+</div>
+</div>
+</div>
+
+</div>
+
+<script type="module">
+import { calcularResultadoEval } from './eval-bots.js';
+
+const questions = [
+{ q:"CIUDAD es a HOMBRE como COLMENA es a ___", o:["Hormiga","Mosquito","Araña","Abeja"], a:3 },
+{ q:"BATIDO es a BATIR como ZUMO es a ___", o:["Exprimir","Aplastar","Machacar","Succionar"], a:0 },
+{ q:"CONSEJERO es a CONSEJO como CANTANTE es a ___", o:["Fama","Éxito","Composición","Canción"], a:3 },
+{ q:"ESTUFA es a CALOR como NEVERA es a ___", o:["Temperatura","Frío","Conservación","Congelación"], a:1 },
+{ q:"MARTILLO es a CLAVO como DESTORNILLADOR es a ___", o:["Hierro","Tornillo","Remache","Herramienta"], a:1 },
+{ q:"ASA es a CESTA como POMO es a ___", o:["Puerta","Tirador","Envase","Manillar"], a:0 },
+{ q:"LÍQUIDO es a SOPA como SÓLIDO es a ___", o:["Comer","Bebida","Plátano","Gaseoso"], a:2 },
+{ q:"BALLENA es a ACUÁTICO como LEÓN es a ___", o:["Carnívoro","Terrestre","Depredador","Devorador"], a:1 },
+{ q:"RESTAR es a SUMAR como ARREGLAR es a ___", o:["Incluir","Corregir","Estropear","Resarcir"], a:2 },
+{ q:"MÁS es a MENOS como DESPUÉS es a ___", o:["Tiempo","Siguiente","Pronto","Antes"], a:3 },
+{ q:"FÉMUR es a HUESO como CORAZÓN es a ___", o:["Glándula","Vena","Músculo","Arteria"], a:2 },
+{ q:"CUATRO es a CINCO como CUADRADO es a ___", o:["Triángulo","Heptágono","Hexágono","Pentágono"], a:3 },
+{ q:"HARINA es a TRIGO como CERVEZA es a ___", o:["Manzana","Patata","Cebada","Alfalfa"], a:2 },
+{ q:"PIE es a CUERPO como BOMBILLA es a ___", o:["Ojos","Luz","Vela","Lámpara"], a:3 },
+{ q:"EXCAVAR es a CAVIDAD como ALINEAR es a ___", o:["Seguido","Recta","Acodo","Ensamblar"], a:1 }
+];
+
+let current = 0;
+let answers = new Array(questions.length).fill(null);
+let evaluado = false;
+
+const quiz = document.getElementById("quiz");
+
+function actualizarProgreso(){
+const respondidas = answers.filter(a => a !== null).length;
+document.getElementById("progress").textContent = `${respondidas} / ${questions.length}`;
+document.getElementById("qNum").textContent = current + 1;
+}
+
+function render(){
+quiz.innerHTML = "";
+
+questions.forEach((q,i)=>{
+let div = document.createElement("div");
+div.className = "question" + (i===current ? " active" : "");
+
+let opts = "";
+
+q.o.forEach((op,j)=>{
+let extraClass = answers[i] === j ? " selected" : "";
+
+opts += `
+<div class="option${extraClass}" data-q="${i}" data-o="${j}">
+${String.fromCharCode(65+j)}. ${op}
+</div>
+`;
+});
+
+div.innerHTML = `
+<h3>${i+1}. ${q.q}</h3>
+${opts}
+<div class="navigation">
+<button type="button" class="prev" data-action="prev" ${i===0 ? "disabled" : ""}>Anterior</button>
+${i===questions.length-1
+? `<button type="button" class="next" data-action="finish">Finalizar</button>`
+: `<button type="button" class="next" data-action="next">Siguiente</button>`
+}
+</div>
+`;
+
+quiz.appendChild(div);
+});
+
+// Eventos de selección
+quiz.querySelectorAll('.option').forEach(opt => {
+opt.addEventListener('click', (e) => {
+if(evaluado) return;
+const qIdx = parseInt(e.currentTarget.getAttribute('data-q'));
+const oIdx = parseInt(e.currentTarget.getAttribute('data-o'));
+answers[qIdx] = oIdx;
+render();
+});
+});
+
+// Eventos de botones
+quiz.querySelectorAll('button[data-action]').forEach(btn => {
+btn.addEventListener('click', (e) => {
+const action = e.currentTarget.getAttribute('data-action');
+if(action === 'next') nextQuestion();
+if(action === 'prev') prevQuestion();
+if(action === 'finish') calificar();
+});
+});
+
+actualizarProgreso();
+}
+
+function nextQuestion(){
+if(current < questions.length-1){
+current++;
+render();
+window.scrollTo({ top:0, behavior:"smooth" });
+}
+}
+
+function prevQuestion(){
+if(current > 0){
+current--;
+render();
+}
+}
+
+function calificar(){
+if(evaluado) return;
+evaluado = true;
+
+let correctas = 0;
+questions.forEach((q, i) => {
+if(answers[i] === q.a) correctas++;
+});
+
+// Obtener percentil y ranking en tiempo real de eval-bots.js
+const res = calcularResultadoEval(correctas, questions.length);
+
+document.getElementById("resAciertos").textContent = `${correctas} / ${questions.length}`;
+document.getElementById("resPorcentaje").textContent = `${res.porcentaje}%`;
+document.getElementById("resPercentil").textContent = `${res.percentil}%`;
+document.getElementById("resNivel").textContent = res.nivel;
+document.getElementById("resPosicion").textContent = `#${res.posicion} de ${res.ranking.length}`;
+
+const panel = document.getElementById("resultadoPanel");
+panel.style.display = "block";
+panel.scrollIntoView({ behavior:"smooth" });
+}
+
+function reiniciar(){
+current = 0;
+answers = new Array(questions.length).fill(null);
+evaluado = false;
+document.getElementById("resultadoPanel").style.display = "none";
+render();
+window.scrollTo({ top:0, behavior:"smooth" });
+}
+
+document.getElementById("btnCalificar").addEventListener("click", calificar);
+document.getElementById("btnReiniciar").addEventListener("click", reiniciar);
+
+render();
+</script>
+
+</body>
+</html>
