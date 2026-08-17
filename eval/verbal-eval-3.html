@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Selección de Examen - Habilidad Verbal Nivel 3</title>
+
+<style>
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+}
+
+body{
+  font-family:Arial, Helvetica, sans-serif;
+  background:linear-gradient(135deg,#fff1f2,#ffe4e6,#fecdd3);
+  color:#7f1d1d;
+  min-height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  padding:20px;
+}
+
+.container{
+  max-width:600px;
+  width:100%;
+  background:rgba(255,255,255,0.95);
+  padding:30px;
+  border-radius:24px;
+  box-shadow:0 12px 35px rgba(0,0,0,0.08);
+  text-align:center;
+}
+
+h1{
+  font-size:2rem;
+  color:#9f1239;
+  margin-bottom:12px;
+}
+
+p{
+  color:#881337;
+  margin-bottom:25px;
+  line-height:1.5;
+}
+
+.btn-random{
+  background:#e11d48;
+  color:white;
+  border:none;
+  border-radius:16px;
+  padding:16px 32px;
+  font-size:1.2rem;
+  font-weight:bold;
+  cursor:pointer;
+  transition:0.2s ease;
+  box-shadow:0 6px 20px rgba(225,29,72,0.3);
+}
+
+.btn-random:hover{
+  background:#be123c;
+  transform:translateY(-2px);
+  box-shadow:0 8px 25px rgba(225,29,72,0.4);
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+  <h1>📖 Simulador de Habilidad Verbal (Nivel 3)</h1>
+  <p>Haz clic en el botón para cargar de forma totalmente aleatoria uno de los exámenes verbales avanzados disponibles en el sistema.</p>
+  
+  <button type="button" class="btn-random" id="btnAleatorioVerbal">
+    🎲 Iniciar Examen Aleatorio Verbal
+  </button>
+</div>
+
+<script>
+const examenesVerbales = [
+  "verbal-eval-1.html",
+  "verbal-eval-2.html",
+  "verbal-eval-3.html",
+  "verbal-eval-4.html",
+  "verbal-eval-5.html",
+  "verbal-eval-6.html",
+  "verbal-eval-7.html",
+  "verbal-eval-8.html",
+  "verbal-eval-9.html",
+  "verbal-eval-10.html"
+];
+
+document.getElementById("btnAleatorioVerbal").addEventListener("click", () => {
+  const indiceAleatorio = Math.floor(Math.random() * examenesVerbales.length);
+  const examenSeleccionado = examenesVerbales[indiceAleatorio];
+  
+  // Redirige al examen verbal seleccionado aleatoriamente
+  window.location.href = examenSeleccionado;
+});
+</script>
+
+</body>
+</html>
