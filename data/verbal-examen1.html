@@ -217,7 +217,6 @@ background:#f8fafc;
 border-radius:10px;
 }
 
-/* PANEL RANKING */
 .ranking-panel{
 position:fixed;
 left:0;
@@ -303,8 +302,9 @@ padding:18px;
 
 </div>
 
-<!-- SCRIPT BASE (MANTIENE LA COMPATIBILIDAD CON TODO EL EXAMEN) -->
-<script>
+<script type="module">
+import { esModoSecuencia, guardarResultadoExamen, obtenerExamenMateAleatorio } from "../secuenciaExamenes.js";
+
 const questions = [
 { q:"CIUDAD es a HOMBRE como COLMENA es a ___", o:["Hormiga","Mosquito","Araña","Abeja"], a:3, exp:"La relación es lugar donde vive o se agrupa." },
 { q:"BATIDO es a BATIR como ZUMO es a ___", o:["Exprimir","Aplastar","Machacar","Succionar"], a:0, exp:"Producto y acción que lo origina." },
@@ -393,7 +393,6 @@ function prevQuestion(){
 
 function finishQuiz(){
   if(examenFinalizado) return;
-  examenFinalizado = true;
 
   let total = questions.length;
   let correctas = 0;
@@ -402,6 +401,18 @@ function finishQuiz(){
     if(answers[i] === q.a) correctas++;
   });
 
+  // EVALUACIÓN MODO SECUENCIA
+  if(esModoSecuencia()){
+    examenFinalizado = true;
+    guardarResultadoExamen("verbal", correctas, total);
+    alert("¡Etapa Verbal completada! Avanzando automáticamente a la Etapa 2: Habilidad Numérica.");
+    const examenMate = obtenerExamenMateAleatorio();
+    const nombreLimpio = examenMate.replace(/^data\//, '');
+    window.location.href = `../data/${nombreLimpio}`;
+    return;
+  }
+
+  examenFinalizado = true;
   const porcentaje = Math.round((correctas/total)*100);
 
   const rangosBots=[
@@ -490,41 +501,15 @@ function reiniciarExamen(){
   location.reload();
 }
 
+// Exponer funciones al scope global para listeners onclick
+window.selectOption = selectOption;
+window.nextQuestion = nextQuestion;
+window.prevQuestion = prevQuestion;
+window.finishQuiz = finishQuiz;
+window.toggleRanking = toggleRanking;
+window.reiniciarExamen = reiniciarExamen;
+
 render();
-</script>
-
-<!-- SCRIPTS EXTERNOS DE MÓDULO CON CONTROL DE SECUENCIA INTERCEPTADO -->
-<script type="module">
-  import { esModoSecuencia, guardarResultadoExamen, obtenerExamenMateAleatorio } from "../secuenciaExamenes.js";
-
-  // Interceptador que vigila cuándo el usuario finaliza
-  function verificarRedireccionSecuencia() {
-    if (esModoSecuencia()) {
-      let correctas = 0;
-      let total = questions.length;
-
-      questions.forEach((q, i) => {
-        if (answers[i] === q.a) correctas++;
-      });
-
-      guardarResultadoExamen("verbal", correctas, total);
-
-      alert("¡Etapa Verbal completada! Avanzando automáticamente a la Etapa 2: Habilidad Numérica.");
-
-      const examenMate = obtenerExamenMateAleatorio();
-      const nombreLimpio = examenMate.replace(/^data\//, '');
-      window.location.href = `../data/${nombreLimpio}`;
-      return true;
-    }
-    return false;
-  }
-
-  // Sobrescribimos finishQuiz de forma segura
-  const finishQuizOriginal = window.finishQuiz;
-  window.finishQuiz = function() {
-    if (verificarRedireccionSecuencia()) return;
-    if (finishQuizOriginal) finishQuizOriginal();
-  };
 </script>
 
 <script type="module" src="../party/party-timer.js"></script>
