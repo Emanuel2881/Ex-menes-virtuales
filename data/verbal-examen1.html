@@ -217,7 +217,47 @@ background:#f8fafc;
 border-radius:10px;
 }
 
+.ranking-panel{
+position:fixed;
+left:0;
+top:0;
+width:320px;
+height:100vh;
+background:white;
+color:#111827;
+box-shadow:4px 0 20px rgba(0,0,0,0.12);
+padding:20px;
+overflow-y:auto;
+z-index:999;
+transition:transform 0.3s ease;
+}
+
+.ranking-panel.hidden{
+transform:translateX(-100%);
+}
+
+.toggle-ranking{
+position:fixed;
+left:15px;
+top:15px;
+z-index:1000;
+background:#e11d48;
+color:white;
+border:none;
+padding:10px 15px;
+border-radius:12px;
+cursor:pointer;
+font-weight:bold;
+}
+
+.ranking-content{
+margin-top:60px;
+}
+
 @media(max-width:768px){
+.ranking-panel{
+width:260px;
+}
 .container{
 padding:18px;
 }
@@ -226,6 +266,15 @@ padding:18px;
 </head>
 
 <body>
+
+<button class="toggle-ranking" onclick="toggleRanking()">🏆 Ranking</button>
+
+<div class="ranking-panel hidden" id="rankingPanel">
+  <div class="ranking-content" id="party-rankings">
+    <h3>Ranking en vivo</h3>
+    <p style="font-size:0.9rem; color:#666; margin-top:5px;">Cargando participantes...</p>
+  </div>
+</div>
 
 <div class="container">
 
@@ -284,6 +333,15 @@ var questions = [
 var current = 0;
 var answers = new Array(questions.length).fill(null);
 var examenFinalizado = false;
+
+function calcularPercentil(aciertos, total) {
+  var porcentaje = (aciertos / total) * 100;
+  if (porcentaje === 100) return 99;
+  if (porcentaje >= 90) return Math.floor(85 + (porcentaje - 90) * 1.3);
+  if (porcentaje >= 75) return Math.floor(65 + (porcentaje - 75) * 1.3);
+  if (porcentaje >= 50) return Math.floor(40 + (porcentaje - 50) * 1);
+  return Math.max(1, Math.floor(porcentaje * 0.7));
+}
 
 function actualizarProgreso(){
   var respondidas = answers.filter(function(a){ return a !== null; }).length;
@@ -367,6 +425,7 @@ function finishQuiz(){
   });
 
   var porcentaje = Math.round((correctas / total) * 100);
+  var percentil = calcularPercentil(correctas, total);
 
   var revisionHTML = "";
   questions.forEach(function(q, i){
@@ -382,13 +441,24 @@ function finishQuiz(){
 
   document.getElementById("puntajeTexto").innerHTML = 
     '<div style="background:white;padding:20px;border-radius:15px;margin-bottom:20px;">' +
-      '<h2>' + correctas + '/' + total + '</h2>' +
-      '<p style="font-size:26px;font-weight:bold;margin-top:10px;color:#e11d48;">' + porcentaje + '%</p>' +
+      '<h2>' + correctas + '/' + total + ' aciertos</h2>' +
+      '<p style="font-size:24px;font-weight:bold;margin-top:10px;color:#e11d48;">Precisión: ' + porcentaje + '%</p>' +
+      '<p style="font-size:18px;font-weight:bold;margin-top:5px;color:#9f1239;">Percentil estimado: P' + percentil + '</p>' +
+      '<p style="font-size:0.85rem;color:#666;margin-top:4px;">(Superas al ' + percentil + '% de los aspirantes)</p>' +
     '</div>';
 
   document.getElementById("revision").innerHTML = revisionHTML;
   document.getElementById("resultado").style.display = "block";
   render();
+
+  if(window.enviarResultadoFinal){
+    window.enviarResultadoFinal({ correctas: correctas, total: total, porcentaje: porcentaje, percentil: percentil });
+  }
+}
+
+function toggleRanking(){
+  var panel = document.getElementById("rankingPanel");
+  if(panel) panel.classList.toggle("hidden");
 }
 
 function reiniciarExamen(){
@@ -399,6 +469,9 @@ window.onload = function() {
   render();
 };
 </script>
+
+<script type="module" src="../party/party-timer.js"></script>
+<script type="module" src="../party/party-resultados.js"></script>
 
 </body>
 </html>
