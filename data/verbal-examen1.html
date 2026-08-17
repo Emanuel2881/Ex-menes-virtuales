@@ -217,47 +217,7 @@ background:#f8fafc;
 border-radius:10px;
 }
 
-.ranking-panel{
-position:fixed;
-left:0;
-top:0;
-width:320px;
-height:100vh;
-background:white;
-color:#111827;
-box-shadow:4px 0 20px rgba(0,0,0,0.12);
-padding:20px;
-overflow-y:auto;
-z-index:999;
-transition:transform 0.3s ease;
-}
-
-.ranking-panel.hidden{
-transform:translateX(-100%);
-}
-
-.toggle-ranking{
-position:fixed;
-left:15px;
-top:15px;
-z-index:1000;
-background:#e11d48;
-color:white;
-border:none;
-padding:10px 15px;
-border-radius:12px;
-cursor:pointer;
-font-weight:bold;
-}
-
-.ranking-content{
-margin-top:60px;
-}
-
 @media(max-width:768px){
-.ranking-panel{
-width:260px;
-}
 .container{
 padding:18px;
 }
@@ -302,7 +262,6 @@ padding:18px;
 
 </div>
 
-<!-- SCRIPT BASE: Carga e interactividad garantizada -->
 <script>
 var questions = [
 { q:"CIUDAD es a HOMBRE como COLMENA es a ___", o:["Hormiga","Mosquito","Araña","Abeja"], a:3, exp:"La relación es lugar donde vive o se agrupa." },
@@ -398,8 +357,6 @@ function prevQuestion(){
 function finishQuiz(){
   if(examenFinalizado) return;
 
-  if(window.evaluarSecuenciaGlobal && window.evaluarSecuenciaGlobal()) return;
-
   examenFinalizado = true;
 
   var total = questions.length;
@@ -432,15 +389,6 @@ function finishQuiz(){
   document.getElementById("revision").innerHTML = revisionHTML;
   document.getElementById("resultado").style.display = "block";
   render();
-
-  if(window.enviarResultadoFinal){
-    window.enviarResultadoFinal({ correctas: correctas, total: total, porcentaje: porcentaje });
-  }
-}
-
-function toggleRanking(){
-  var panel = document.getElementById("rankingPanel");
-  if(panel) panel.classList.toggle("hidden");
 }
 
 function reiniciarExamen(){
@@ -451,59 +399,6 @@ window.onload = function() {
   render();
 };
 </script>
-
-<!-- Módulos cargados al final -->
-<script type="module">
-  import { esModoSecuencia, guardarResultadoExamen } from "../secuenciaExamenes.js";
-
-  window.evaluarSecuenciaGlobal = function() {
-    if (esModoSecuencia()) {
-      var total = questions.length;
-      var correctas = 0;
-
-      questions.forEach(function(q, i){
-        if(answers[i] === q.a) correctas++;
-      });
-
-      // 1. Guardar notas del módulo verbal
-      guardarResultadoExamen("verbal", correctas, total);
-      alert("¡Etapa Verbal completada! Avanzando a la Etapa 2: Habilidad Numérica.");
-
-      // 2. Lista completa con los 17 exámenes de aptitud numérica
-      var listaExamenesNumerica = [
-        "numerica-examen1.html",
-        "numerica-examen2.html",
-        "numerica-examen3.html",
-        "numerica-examen4.html",
-        "numerica-examen5.html",
-        "numerica-examen6.html",
-        "numerica-examen7.html",
-        "numerica-examen8.html",
-        "numerica-examen9.html",
-        "numerica-examen10.html",
-        "numerica-examen11.html",
-        "numerica-examen12.html",
-        "numerica-examen13.html",
-        "numerica-examen14.html",
-        "numerica-examen15.html",
-        "numerica-examen16.html",
-        "numerica-examen17.html"
-      ];
-
-      // 3. Seleccionar uno al azar
-      var indiceAzar = Math.floor(Math.random() * listaExamenesNumerica.length);
-      var examenElegido = listaExamenesNumerica[indiceAzar];
-
-      // 4. Redirigir al examen elegido (al estar en /data/, carga directo el archivo hermano)
-      window.location.href = examenElegido;
-      return true;
-    }
-    return false;
-  };
-</script>
-
-<script type="module" src="../party/party-timer.js"></script>
-<script type="module" src="../party/party-resultados.js"></script>
 
 </body>
 </html>
