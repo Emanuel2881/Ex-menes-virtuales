@@ -290,7 +290,7 @@ padding:18px;
 <div id="quiz"></div>
 
 <div class="actions">
-<button class="btn-primary" onclick="finishQuiz()">Calificar examen</button>
+<button class="btn-primary" id="btnCalificar" onclick="finishQuiz()">Calificar examen</button>
 <button class="btn-secondary" onclick="reiniciarExamen()">Reiniciar</button>
 </div>
 
@@ -302,10 +302,9 @@ padding:18px;
 
 </div>
 
-<script type="module">
-import { esModoSecuencia, guardarResultadoExamen, obtenerExamenMateAleatorio } from "../secuenciaExamenes.js";
-
-const questions = [
+<!-- SCRIPT BASE: Carga e interactividad garantizada sin módulos -->
+<script>
+var questions = [
 { q:"CIUDAD es a HOMBRE como COLMENA es a ___", o:["Hormiga","Mosquito","Araña","Abeja"], a:3, exp:"La relación es lugar donde vive o se agrupa." },
 { q:"BATIDO es a BATIR como ZUMO es a ___", o:["Exprimir","Aplastar","Machacar","Succionar"], a:0, exp:"Producto y acción que lo origina." },
 { q:"CONSEJERO es a CONSEJO como CANTANTE es a ___", o:["Fama","Éxito","Composición","Canción"], a:3, exp:"Persona y resultado de su función." },
@@ -323,30 +322,28 @@ const questions = [
 { q:"EXCAVAR es a CAVIDAD como ALINEAR es a ___", o:["Seguido","Recta","Acodo","Ensamblar"], a:1, exp:"Acción y resultado." }
 ];
 
-let current = 0;
-let answers = new Array(questions.length).fill(null);
-let examenFinalizado = false;
+var current = 0;
+var answers = new Array(questions.length).fill(null);
+var examenFinalizado = false;
 
 function actualizarProgreso(){
-  const respondidas = answers.filter(a => a !== null).length;
-  const progressEl = document.getElementById("progress");
-  const qNumEl = document.getElementById("qNum");
-  if(progressEl) progressEl.textContent = respondidas + " / " + questions.length;
-  if(qNumEl) qNumEl.textContent = current + 1;
+  var respondidas = answers.filter(function(a){ return a !== null; }).length;
+  document.getElementById("progress").textContent = respondidas + " / " + questions.length;
+  document.getElementById("qNum").textContent = current + 1;
 }
 
 function render(){
-  const quiz = document.getElementById("quiz");
+  var quiz = document.getElementById("quiz");
   if(!quiz) return;
   quiz.innerHTML = "";
 
-  questions.forEach((q,i)=>{
-    let div = document.createElement("div");
-    div.className = "question" + (i===current ? " active" : "");
-    let opts = "";
+  questions.forEach(function(q, i){
+    var div = document.createElement("div");
+    div.className = "question" + (i === current ? " active" : "");
+    var opts = "";
 
-    q.o.forEach((op,j)=>{
-      let extraClass = "";
+    q.o.forEach(function(op, j){
+      var extraClass = "";
       if(answers[i] === j) extraClass += " selected";
 
       if(examenFinalizado){
@@ -354,40 +351,40 @@ function render(){
         if(answers[i] === j && j !== q.a) extraClass += " wrong-answer";
       }
 
-      const letra = String.fromCharCode(65+j);
-      opts += "<div class=\"option" + extraClass + "\" onclick=\"selectOption(" + i + "," + j + ")\">" + letra + ". " + op + "</div>";
+      var letra = String.fromCharCode(65 + j);
+      opts += '<div class="option' + extraClass + '" onclick="selectOption(' + i + ',' + j + ')">' + letra + '. ' + op + '</div>';
     });
 
-    let btnNav = "";
+    var btnNav = "";
     if(i === questions.length - 1){
-      btnNav = "<button class=\"finish\" onclick=\"finishQuiz()\">Finalizar</button>";
+      btnNav = '<button class="finish" onclick="finishQuiz()">Finalizar</button>';
     } else {
-      btnNav = "<button class=\"next\" onclick=\"nextQuestion()\">Siguiente</button>";
+      btnNav = '<button class="next" onclick="nextQuestion()">Siguiente</button>';
     }
 
-    const disabledPrev = i === 0 ? "disabled" : "";
-    div.innerHTML = "<h3>" + q.q + "</h3>" + opts +
-      "<div class=\"navigation\">" +
-        "<button class=\"prev\" onclick=\"prevQuestion()\" " + disabledPrev + ">Anterior</button>" +
+    var disabledPrev = i === 0 ? "disabled" : "";
+    div.innerHTML = '<h3>' + q.q + '</h3>' + opts +
+      '<div class="navigation">' +
+        '<button class="prev" onclick="prevQuestion()" ' + disabledPrev + '>Anterior</button>' +
         btnNav +
-      "</div>";
+      '</div>';
 
     quiz.appendChild(div);
   });
   actualizarProgreso();
 }
 
-function selectOption(i,j){
+function selectOption(i, j){
   if(examenFinalizado) return;
   answers[i] = j;
   render();
 }
 
 function nextQuestion(){
-  if(current < questions.length-1){
+  if(current < questions.length - 1){
     current++;
     render();
-    window.scrollTo({top:0, behavior:"smooth"});
+    window.scrollTo({top: 0, behavior: "smooth"});
   }
 }
 
@@ -400,107 +397,101 @@ function prevQuestion(){
 
 function finishQuiz(){
   if(examenFinalizado) return;
+  
+  // Si la redirección en modo secuencia está activa, se detiene la evaluación estándar.
+  if(window.evaluarSecuenciaGlobal && window.evaluarSecuenciaGlobal()) return;
 
-  let total = questions.length;
-  let correctas = 0;
+  examenFinalizado = true;
 
-  questions.forEach((q,i)=>{
+  var total = questions.length;
+  var correctas = 0;
+
+  questions.forEach(function(q, i){
     if(answers[i] === q.a) correctas++;
   });
 
-  if(esModoSecuencia()){
-    examenFinalizado = true;
-    guardarResultadoExamen("verbal", correctas, total);
-    alert("¡Etapa Verbal completada! Avanzando automáticamente a la Etapa 2: Habilidad Numérica.");
-    const examenMate = obtenerExamenMateAleatorio();
-    const nombreLimpio = examenMate.replace(/^data\//, '');
-    window.location.href = "../data/" + nombreLimpio;
-    return;
-  }
+  var porcentaje = Math.round((correctas / total) * 100);
 
-  examenFinalizado = true;
-  const porcentaje = Math.round((correctas/total)*100);
-
-  const rangosBots=[
+  var rangosBots = [
     {min:50,max:64},{min:50,max:64},
     {min:65,max:74},{min:65,max:74},{min:65,max:74},{min:65,max:74},
     {min:75,max:84},{min:75,max:84},{min:75,max:84},{min:75,max:84},{min:75,max:84},{min:75,max:84},{min:75,max:84},{min:75,max:84},{min:75,max:84},
     {min:85,max:94},{min:85,max:94},{min:85,max:94},{min:85,max:94},{min:85,max:94},{min:85,max:94},{min:85,max:94},{min:85,max:94},{min:85,max:94},{min:85,max:94},
     {min:95,max:100},{min:95,max:100},{min:95,max:100},{min:95,max:100},{min:95,max:100}
   ];
-  rangosBots.sort(()=>Math.random()-0.5);
+  rangosBots.sort(function(){ return Math.random() - 0.5; });
 
-  const bots=[];
-  for(let i=1;i<=30;i++){
-    const rango=rangosBots[i-1];
+  var bots = [];
+  for(var i = 1; i <= 30; i++){
+    var rango = rangosBots[i - 1];
     bots.push({
-      nombre:"Bot_" + i,
-      nota:Math.floor(Math.random()*(rango.max-rango.min+1))+rango.min
+      nombre: "Bot_" + i,
+      nota: Math.floor(Math.random() * (rango.max - rango.min + 1)) + rango.min
     });
   }
 
-  const ranking=[...bots, {nombre:"Tú", nota:porcentaje, usuario:true}];
-  ranking.sort((a,b)=>b.nota-a.nota);
+  var ranking = bots.concat([{nombre: "Tú", nota: porcentaje, usuario: true}]);
+  ranking.sort(function(a, b){ return b.nota - a.nota; });
 
-  let debajo=ranking.filter(p=>porcentaje>p.nota).length;
-  let iguales=ranking.filter(p=>porcentaje===p.nota).length;
-  let percentil=Math.round((debajo+(0.5*iguales))/ranking.length*100);
+  var debajo = ranking.filter(function(p){ return porcentaje > p.nota; }).length;
+  var iguales = ranking.filter(function(p){ return porcentaje === p.nota; }).length;
+  var percentil = Math.round(((debajo + (0.5 * iguales)) / ranking.length) * 100);
 
   percentil = Math.max(1, Math.min(99, percentil));
 
-  let nivel="Muy bajo";
-  if(percentil>=90) nivel="Excelente";
-  else if(percentil>=75) nivel="Muy bueno";
-  else if(percentil>=60) nivel="Bueno";
-  else if(percentil>=40) nivel="Promedio";
-  else if(percentil>=20) nivel="Bajo";
+  var nivel = "Muy bajo";
+  if(percentil >= 90) nivel = "Excelente";
+  else if(percentil >= 75) nivel = "Muy bueno";
+  else if(percentil >= 60) nivel = "Bueno";
+  else if(percentil >= 40) nivel = "Promedio";
+  else if(percentil >= 20) nivel = "Bajo";
 
-  let revisionHTML = "";
-  questions.forEach((q,i)=>{
-    const respuestaUsuario = answers[i];
+  var revisionHTML = "";
+  questions.forEach(function(q, i){
+    var respuestaUsuario = answers[i];
     if(respuestaUsuario === q.a){
-      revisionHTML += "<div class=\"review-item correcta\"><h4>Pregunta " + (i+1) + ": ✅ Correcta</h4><div class=\"explicacion\">" + q.exp + "</div></div>";
-    }else if(respuestaUsuario === null){
-      revisionHTML += "<div class=\"review-item sin-responder\"><h4>Pregunta " + (i+1) + ": ⚠️ Sin responder</h4><div class=\"explicacion\">Respuesta correcta: " + q.o[q.a] + "</div></div>";
-    }else{
-      revisionHTML += "<div class=\"review-item incorrecta\"><h4>Pregunta " + (i+1) + ": ❌ Incorrecta</h4><div class=\"explicacion\">Correcta: " + q.o[q.a] + "<br><br>" + q.exp + "</div></div>";
+      revisionHTML += '<div class="review-item correcta"><h4>Pregunta ' + (i+1) + ': ✅ Correcta</h4><div class="explicacion">' + q.exp + '</div></div>';
+    } else if(respuestaUsuario === null){
+      revisionHTML += '<div class="review-item sin-responder"><h4>Pregunta ' + (i+1) + ': ⚠️ Sin responder</h4><div class="explicacion">Respuesta correcta: ' + q.o[q.a] + '</div></div>';
+    } else {
+      revisionHTML += '<div class="review-item incorrecta"><h4>Pregunta ' + (i+1) + ': ❌ Incorrecta</h4><div class="explicacion">Correcta: ' + q.o[q.a] + '<br><br>' + q.exp + '</div></div>';
     }
   });
 
-  let rankingFilasHTML = "";
-  ranking.forEach((p, idx) => {
-    const bg = p.usuario ? "#ffe4e6" : "white";
-    rankingFilasHTML += "<div style=\"display:flex;justify-content:space-between;padding:10px;margin:6px 0;background:" + bg + ";border-radius:10px;\"><span>#" + (idx+1) + " - " + p.nombre + "</span><span>" + p.nota + "%</span></div>";
+  var rankingFilasHTML = "";
+  ranking.forEach(function(p, idx){
+    var bg = p.usuario ? "#ffe4e6" : "white";
+    rankingFilasHTML += '<div style="display:flex;justify-content:space-between;padding:10px;margin:6px 0;background:' + bg + ';border-radius:10px;"><span>#' + (idx+1) + ' - ' + p.nombre + '</span><span>' + p.nota + '%</span></div>';
   });
 
   document.getElementById("puntajeTexto").innerHTML = 
-    "<button class=\"toggle-ranking\" onclick=\"toggleRanking()\">☰ Ranking</button>" +
-    "<div id=\"rankingPanel\" class=\"ranking-panel\">" +
-      "<div class=\"ranking-content\">" +
-        "<h3 style=\"margin-bottom:15px;\">🏆 Ranking General</h3>" +
+    '<button class="toggle-ranking" onclick="toggleRanking()">☰ Ranking</button>' +
+    '<div id="rankingPanel" class="ranking-panel">' +
+      '<div class="ranking-content">' +
+        '<h3 style="margin-bottom:15px;">🏆 Ranking General</h3>' +
         rankingFilasHTML +
-      "</div>" +
-    "</div>" +
-    "<div style=\"background:white;padding:20px;border-radius:15px;margin-bottom:20px;\">" +
-      "<h2>" + correctas + "/" + total + "</h2>" +
-      "<p style=\"font-size:26px;font-weight:bold;margin-top:10px;color:#e11d48;\">" + porcentaje + "%</p>" +
-      "<div style=\"display:flex;flex-direction:column;gap:12px;margin-top:20px;max-width:250px;\">" +
-        "<div class=\"stat-box\"><span class=\"stat-label\">Percentil</span><span class=\"stat-value\">" + percentil + "%</span></div>" +
-        "<div class=\"stat-box\"><span class=\"stat-label\">Nivel</span><span class=\"stat-value\">" + nivel + "</span></div>" +
-      "</div>" +
-    "</div>";
+      '</div>' +
+    '</div>' +
+    '<div style="background:white;padding:20px;border-radius:15px;margin-bottom:20px;">' +
+      '<h2>' + correctas + '/' + total + '</h2>' +
+      '<p style="font-size:26px;font-weight:bold;margin-top:10px;color:#e11d48;">' + porcentaje + '%</p>' +
+      '<div style="display:flex;flex-direction:column;gap:12px;margin-top:20px;max-width:250px;">' +
+        '<div class="stat-box"><span class="stat-label">Percentil</span><span class="stat-value">' + percentil + '%</span></div>' +
+        '<div class="stat-box"><span class="stat-label">Nivel</span><span class="stat-value">' + nivel + '</span></div>' +
+      '</div>' +
+    '</div>';
 
   document.getElementById("revision").innerHTML = revisionHTML;
   document.getElementById("resultado").style.display = "block";
   render();
 
   if(window.enviarResultadoFinal){
-    window.enviarResultadoFinal({ correctas, total, porcentaje });
+    window.enviarResultadoFinal({ correctas: correctas, total: total, porcentaje: porcentaje });
   }
 }
 
 function toggleRanking(){
-  const panel = document.getElementById("rankingPanel");
+  var panel = document.getElementById("rankingPanel");
   if(panel) panel.classList.toggle("hidden");
 }
 
@@ -508,14 +499,33 @@ function reiniciarExamen(){
   location.reload();
 }
 
-window.selectOption = selectOption;
-window.nextQuestion = nextQuestion;
-window.prevQuestion = prevQuestion;
-window.finishQuiz = finishQuiz;
-window.toggleRanking = toggleRanking;
-window.reiniciarExamen = reiniciarExamen;
-
+// Iniciar render de preguntas inmediatamente
 render();
+</script>
+
+<!-- SCRIPT MÓDULO: Control de Modo Secuencia independiente -->
+<script type="module">
+  import { esModoSecuencia, guardarResultadoExamen, obtenerExamenMateAleatorio } from "../secuenciaExamenes.js";
+
+  window.evaluarSecuenciaGlobal = function() {
+    if (esModoSecuencia()) {
+      var total = questions.length;
+      var correctas = 0;
+
+      questions.forEach(function(q, i){
+        if(answers[i] === q.a) correctas++;
+      });
+
+      guardarResultadoExamen("verbal", correctas, total);
+      alert("¡Etapa Verbal completada! Avanzando a la Etapa 2: Habilidad Numérica.");
+      
+      var examenMate = obtenerExamenMateAleatorio();
+      var nombreLimpio = examenMate.replace(/^data\//, '');
+      window.location.href = "../data/" + nombreLimpio;
+      return true;
+    }
+    return false;
+  };
 </script>
 
 <script type="module" src="../party/party-timer.js"></script>
