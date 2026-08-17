@@ -661,10 +661,10 @@ else incorrectas++;
 
 const porcentaje = Math.round((correctas/total)*100);
 
-// GENERACIÓN DE BOTS EN NIVEL 1
+// GENERACIÓN DE BOTS DIFÍCILES (Notas entre 60% y 100%, promedio ~80%)
 const bots = [];
 for(let i=1; i<=30; i++){
-    const notaBot = Math.floor(Math.random() * 41) + 50; // Rango 50 - 90
+    const notaBot = Math.floor(Math.random() * 41) + 60; // Rango 60 - 100
     bots.push({
         nombre: `Bot_${i}`,
         nota: notaBot
@@ -730,7 +730,7 @@ document.getElementById("puntajeTexto").innerHTML = `
 
 <div id="rankingPanel" class="ranking-panel hidden">
 <div class="ranking-content">
-<span class="badge-nivel">Nivel 1 (Dificultad Básica)</span>
+<span class="badge-nivel">Nivel 1 (Dificultad Alta)</span>
 <h3 style="margin-bottom:15px;">🏆 Ranking General</h3>
 ${ranking.map((p,i)=>`
 <div style="display:flex; justify-content:space-between; padding:10px; margin:6px 0; background:${p.usuario ? "#ffe4e6" : "white"}; border-radius:10px;">
