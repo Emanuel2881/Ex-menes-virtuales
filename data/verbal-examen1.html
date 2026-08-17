@@ -327,16 +327,19 @@ let current = 0;
 let answers = new Array(questions.length).fill(null);
 let examenFinalizado = false;
 
-const quiz = document.getElementById("quiz");
-
 function actualizarProgreso(){
   const respondidas = answers.filter(a => a !== null).length;
-  document.getElementById("progress").textContent = `${respondidas} / ${questions.length}`;
-  document.getElementById("qNum").textContent = current + 1;
+  const progressEl = document.getElementById("progress");
+  const qNumEl = document.getElementById("qNum");
+  if(progressEl) progressEl.textContent = respondidas + " / " + questions.length;
+  if(qNumEl) qNumEl.textContent = current + 1;
 }
 
 function render(){
+  const quiz = document.getElementById("quiz");
+  if(!quiz) return;
   quiz.innerHTML = "";
+
   questions.forEach((q,i)=>{
     let div = document.createElement("div");
     div.className = "question" + (i===current ? " active" : "");
@@ -351,20 +354,24 @@ function render(){
         if(answers[i] === j && j !== q.a) extraClass += " wrong-answer";
       }
 
-      opts += `<div class="option${extraClass}" onclick="selectOption(${i},${j})">${String.fromCharCode(65+j)}. ${op}</div>`;
+      const letra = String.fromCharCode(65+j);
+      opts += "<div class=\"option" + extraClass + "\" onclick=\"selectOption(" + i + "," + j + ")\">" + letra + ". " + op + "</div>";
     });
 
-    div.innerHTML = `
-      <h3>${q.q}</h3>
-      ${opts}
-      <div class="navigation">
-        <button class="prev" onclick="prevQuestion()" ${i===0 ? "disabled" : ""}>Anterior</button>
-        ${i===questions.length-1
-          ? `<button class="finish" onclick="finishQuiz()">Finalizar</button>`
-          : `<button class="next" onclick="nextQuestion()">Siguiente</button>`
-        }
-      </div>
-    `;
+    let btnNav = "";
+    if(i === questions.length - 1){
+      btnNav = "<button class=\"finish\" onclick=\"finishQuiz()\">Finalizar</button>";
+    } else {
+      btnNav = "<button class=\"next\" onclick=\"nextQuestion()\">Siguiente</button>";
+    }
+
+    const disabledPrev = i === 0 ? "disabled" : "";
+    div.innerHTML = "<h3>" + q.q + "</h3>" + opts +
+      "<div class=\"navigation\">" +
+        "<button class=\"prev\" onclick=\"prevQuestion()\" " + disabledPrev + ">Anterior</button>" +
+        btnNav +
+      "</div>";
+
     quiz.appendChild(div);
   });
   actualizarProgreso();
@@ -401,14 +408,13 @@ function finishQuiz(){
     if(answers[i] === q.a) correctas++;
   });
 
-  // EVALUACIÓN MODO SECUENCIA
   if(esModoSecuencia()){
     examenFinalizado = true;
     guardarResultadoExamen("verbal", correctas, total);
     alert("¡Etapa Verbal completada! Avanzando automáticamente a la Etapa 2: Habilidad Numérica.");
     const examenMate = obtenerExamenMateAleatorio();
     const nombreLimpio = examenMate.replace(/^data\//, '');
-    window.location.href = `../data/${nombreLimpio}`;
+    window.location.href = "../data/" + nombreLimpio;
     return;
   }
 
@@ -428,7 +434,7 @@ function finishQuiz(){
   for(let i=1;i<=30;i++){
     const rango=rangosBots[i-1];
     bots.push({
-      nombre:`Bot_${i}`,
+      nombre:"Bot_" + i,
       nota:Math.floor(Math.random()*(rango.max-rango.min+1))+rango.min
     });
   }
@@ -453,36 +459,36 @@ function finishQuiz(){
   questions.forEach((q,i)=>{
     const respuestaUsuario = answers[i];
     if(respuestaUsuario === q.a){
-      revisionHTML += `<div class="review-item correcta"><h4>Pregunta ${i+1}: ✅ Correcta</h4><div class="explicacion">${q.exp}</div></div>`;
+      revisionHTML += "<div class=\"review-item correcta\"><h4>Pregunta " + (i+1) + ": ✅ Correcta</h4><div class=\"explicacion\">" + q.exp + "</div></div>";
     }else if(respuestaUsuario === null){
-      revisionHTML += `<div class="review-item sin-responder"><h4>Pregunta ${i+1}: ⚠️ Sin responder</h4><div class="explicacion">Respuesta correcta: ${q.o[q.a]}</div></div>`;
+      revisionHTML += "<div class=\"review-item sin-responder\"><h4>Pregunta " + (i+1) + ": ⚠️ Sin responder</h4><div class=\"explicacion\">Respuesta correcta: " + q.o[q.a] + "</div></div>";
     }else{
-      revisionHTML += `<div class="review-item incorrecta"><h4>Pregunta ${i+1}: ❌ Incorrecta</h4><div class="explicacion">Correcta: ${q.o[q.a]}<br><br>${q.exp}</div></div>`;
+      revisionHTML += "<div class=\"review-item incorrecta\"><h4>Pregunta " + (i+1) + ": ❌ Incorrecta</h4><div class=\"explicacion\">Correcta: " + q.o[q.a] + "<br><br>" + q.exp + "</div></div>";
     }
   });
 
-  document.getElementById("puntajeTexto").innerHTML = `
-    <button class="toggle-ranking" onclick="toggleRanking()">☰ Ranking</button>
-    <div id="rankingPanel" class="ranking-panel">
-      <div class="ranking-content">
-        <h3 style="margin-bottom:15px;">🏆 Ranking General</h3>
-        ${ranking.map((p,i)=>`
-          <div style="display:flex;justify-content:space-between;padding:10px;margin:6px 0;background:${p.usuario ? "#ffe4e6" : "white"};border-radius:10px;">
-            <span>#${i+1} - ${p.nombre}</span>
-            <span>${p.nota}%</span>
-          </div>
-        `).join("")}
-      </div>
-    </div>
-    <div style="background:white;padding:20px;border-radius:15px;margin-bottom:20px;">
-      <h2>${correctas}/${total}</h2>
-      <p style="font-size:26px;font-weight:bold;margin-top:10px;color:#e11d48;">${porcentaje}%</p>
-      <div style="display:flex;flex-direction:column;gap:12px;margin-top:20px;max-width:250px;">
-        <div class="stat-box"><span class="stat-label">Percentil</span><span class="stat-value">${percentil}%</span></div>
-        <div class="stat-box"><span class="stat-label">Nivel</span><span class="stat-value">${nivel}</span></div>
-      </div>
-    </div>
-  `;
+  let rankingFilasHTML = "";
+  ranking.forEach((p, idx) => {
+    const bg = p.usuario ? "#ffe4e6" : "white";
+    rankingFilasHTML += "<div style=\"display:flex;justify-content:space-between;padding:10px;margin:6px 0;background:" + bg + ";border-radius:10px;\"><span>#" + (idx+1) + " - " + p.nombre + "</span><span>" + p.nota + "%</span></div>";
+  });
+
+  document.getElementById("puntajeTexto").innerHTML = 
+    "<button class=\"toggle-ranking\" onclick=\"toggleRanking()\">☰ Ranking</button>" +
+    "<div id=\"rankingPanel\" class=\"ranking-panel\">" +
+      "<div class=\"ranking-content\">" +
+        "<h3 style=\"margin-bottom:15px;\">🏆 Ranking General</h3>" +
+        rankingFilasHTML +
+      "</div>" +
+    "</div>" +
+    "<div style=\"background:white;padding:20px;border-radius:15px;margin-bottom:20px;\">" +
+      "<h2>" + correctas + "/" + total + "</h2>" +
+      "<p style=\"font-size:26px;font-weight:bold;margin-top:10px;color:#e11d48;\">" + porcentaje + "%</p>" +
+      "<div style=\"display:flex;flex-direction:column;gap:12px;margin-top:20px;max-width:250px;\">" +
+        "<div class=\"stat-box\"><span class=\"stat-label\">Percentil</span><span class=\"stat-value\">" + percentil + "%</span></div>" +
+        "<div class=\"stat-box\"><span class=\"stat-label\">Nivel</span><span class=\"stat-value\">" + nivel + "</span></div>" +
+      "</div>" +
+    "</div>";
 
   document.getElementById("revision").innerHTML = revisionHTML;
   document.getElementById("resultado").style.display = "block";
@@ -494,14 +500,14 @@ function finishQuiz(){
 }
 
 function toggleRanking(){
-  document.getElementById("rankingPanel").classList.toggle("hidden");
+  const panel = document.getElementById("rankingPanel");
+  if(panel) panel.classList.toggle("hidden");
 }
 
 function reiniciarExamen(){
   location.reload();
 }
 
-// Exponer funciones al scope global para listeners onclick
 window.selectOption = selectOption;
 window.nextQuestion = nextQuestion;
 window.prevQuestion = prevQuestion;
