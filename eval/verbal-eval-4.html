@@ -6,7 +6,6 @@
 <title>Examen Verbal 4 - Nivel 3</title>
 
 <style>
-
 *{
 box-sizing:border-box;
 margin:0;
@@ -91,6 +90,23 @@ display:block;
 font-size:1.15rem;
 color:#7f1d1d;
 font-weight:bold;
+}
+
+.progreso-container{
+width:100%;
+height:14px;
+background:#ffe4e6;
+border-radius:20px;
+overflow:hidden;
+margin-bottom:20px;
+border:1px solid #fecdd3;
+}
+
+.barra-progreso{
+width:0%;
+height:100%;
+background:#f43f5e;
+transition:width 0.3s ease;
 }
 
 .question{
@@ -360,17 +376,13 @@ font-weight:bold;
 }
 
 @media(max-width:768px){
-
 .ranking-panel{
 width:260px;
 }
-
 .container{
 padding:18px;
 }
-
 }
-
 </style>
 </head>
 
@@ -379,191 +391,139 @@ padding:18px;
 <div class="container">
 
 <div class="header">
-
 <h1>📖 Examen Verbal 4</h1>
-
-<p>
-Versión digital interactiva - Dificultad: Nivel 3
-</p>
-
-<a class="top-link" href="../verbal.html">
-← Volver a Verbal
-</a>
-
+<p>Versión digital interactiva - Dificultad: Nivel 3</p>
+<a class="top-link" href="../verbal.html">← Volver a Verbal</a>
 </div>
 
 <div class="stats-bar">
-
 <div class="stat-box">
-<span class="stat-label">
-Pregunta actual
-</span>
-
-<span class="stat-value">
-<span id="qNum">1</span> / 16
-</span>
+<span class="stat-label">Pregunta actual</span>
+<span class="stat-value"><span id="qNum">1</span> / 16</span>
+</div>
+<div class="stat-box">
+<span class="stat-label">Progreso</span>
+<span class="stat-value" id="progress">0 / 16</span>
+</div>
 </div>
 
-<div class="stat-box">
-<span class="stat-label">
-Progreso
-</span>
-
-<span class="stat-value" id="progress">
-0 / 16
-</span>
-</div>
-
+<div class="progreso-container">
+<div class="barra-progreso" id="barraProgreso"></div>
 </div>
 
 <div id="quiz"></div>
 
 <div class="actions">
-
-<button type="button"
-class="btn-primary"
-onclick="finishQuiz()">
-Calificar examen
-</button>
-
-<button type="button"
-class="btn-secondary"
-onclick="reiniciarExamen()">
-Reiniciar
-</button>
-
+<button type="button" class="btn-primary" onclick="finishQuiz()">Calificar examen</button>
+<button type="button" class="btn-secondary" onclick="reiniciarExamen()">Reiniciar</button>
 </div>
 
 <div class="result" id="resultado">
-
-<h2>
-Resultado Final
-</h2>
-
+<h2>Resultado Final</h2>
 <p id="puntajeTexto"></p>
-
 <div class="review" id="revision"></div>
-
 </div>
 
 </div>
 
 <script>
-
 const questions = [
-
 {
 q:"MASCULINO es a GÉNERO como PLURAL es a ___",
 o:["Forma","Predicado","Modo","Número"],
 a:3,
 exp:"Masculino pertenece al género y plural al número."
 },
-
 {
 q:"PIRÁMIDE es a TRIÁNGULO como CUBO es a ___",
 o:["Cuadrado","Rectángulo","Rombo","Cilindro"],
 a:0,
 exp:"El cubo está relacionado con el cuadrado."
 },
-
 {
 q:"BEBIDA es a SED como COMIDA es a ___",
 o:["Ayuno","Gula","Apetito","Empacho"],
 a:2,
 exp:"La comida satisface el apetito."
 },
-
 {
 q:"SUB- es a DEBAJO como EQUI- es a ___",
 o:["Mitad","Mayor","Menor","Igual"],
 a:3,
 exp:"Equi significa igual."
 },
-
 {
 q:"JAMÁS es a NUNCA como TODO es a ___",
 o:["Parte","Nada","Uno","Completo"],
 a:1,
 exp:"Todo se opone a nada."
 },
-
 {
 q:"ARCHIVAR es a ___ como INCREMENTAR es a ___",
 o:["Abarcar – aumentar","Ordenar – distribuir","Guardar – aumentar","Desordenar – acrecentar"],
 a:2,
 exp:"Archivar equivale a guardar."
 },
-
 {
 q:"PIE es a CUERPO como BOMBILLA es a ___",
 o:["Ojos","Luz","Vela","Lámpara"],
 a:3,
 exp:"Parte y todo."
 },
-
 {
 q:"___ es a LÁPIZ como TINTA es a ___",
 o:["Dibujo – calamar","Grafito – papel","Mina – pluma","Artista – tintero"],
 a:2,
 exp:"La mina pertenece al lápiz."
 },
-
 {
 q:"___ es a TIEMPO como BARÓMETRO es a ___",
 o:["Presente – densidad","Hora – altura","Cronómetro – termómetro","Reloj – presión"],
 a:3,
 exp:"El reloj mide tiempo y el barómetro presión."
 },
-
 {
 q:"___ es a PÁJARO como ESCAMA es a ___",
 o:["Aire – mar","Aire – pez","Pluma – pez","Pico – pez"],
 a:2,
 exp:"La pluma pertenece al pájaro."
 },
-
 {
 q:"___ es a TRANSPORTE como TELÉFONO es a ___",
 o:["Motocicleta – hablar","Coche – comunicación","Tren – llamada","Distancia – información"],
 a:1,
 exp:"El teléfono sirve para comunicación."
 },
-
 {
 q:"___ es a ACUSACIÓN como ABOGADO es a ___",
 o:["Fiscal – defensa","Delito – letrado","Sentencia – testigo","Culpable – inocente"],
 a:0,
 exp:"El fiscal acusa y el abogado defiende."
 },
-
 {
 q:"ENCUBIERTO es a CLANDESTINO como ENDEBLE es a ___",
 o:["Doblado","Simple","Delicado","Comprimido"],
 a:2,
 exp:"Sinonimia."
 },
-
 {
 q:"ATRAPAR es a ___ como ATRASADO es a ___",
 o:["Diferir – resuelto","Prender – demorado","Engañar – empeñado","Reforzar – hendido"],
 a:1,
 exp:"Atrapar equivale a prender."
 },
-
 {
 q:"BIFURCADO es a ___ como RESISTENTE es a ___",
 o:["Compacto – duradero","Dividido – sensible","Estrecho – fundido","Ramificado – fuerte"],
 a:3,
 exp:"Sinonimia."
 },
-
 {
 q:"___ es a ÓPTIMO como MALO es a ___",
 o:["Mejor – peor","Pésimo – fatal","Fraude – engaño","Bueno – pésimo"],
 a:3,
 exp:"Bueno se relaciona con óptimo."
 }
-
 ];
 
 let current = 0;
@@ -576,6 +536,9 @@ function actualizarProgreso(){
 const respondidas = answers.filter(a => a !== null).length;
 document.getElementById("progress").textContent = `${respondidas} / ${questions.length}`;
 document.getElementById("qNum").textContent = current + 1;
+
+const porcentajeBarra = ((current + 1) / questions.length) * 100;
+document.getElementById("barraProgreso").style.width = `${porcentajeBarra}%`;
 }
 
 function render(){
@@ -604,7 +567,7 @@ ${String.fromCharCode(65+j)}. ${op}
 });
 
 div.innerHTML = `
-<h3>${q.q}</h3>
+<h3>${i+1}. ${q.q}</h3>
 ${opts}
 <div class="navigation">
 <button class="prev" onclick="prevQuestion()" ${i===0 ? "disabled" : ""}>Anterior</button>
@@ -659,15 +622,15 @@ else incorrectas++;
 });
 
 const porcentaje = Math.round((correctas/total)*100);
+localStorage.setItem("verbal4", porcentaje);
 
-// GENERACIÓN DE BOTS NIVEL 3 (Notas de bots entre 75% y 100%)
 const bots = [];
 for(let i=1; i<=30; i++){
-    const notaBot = Math.floor(Math.random() * 26) + 75; // Genera 75 - 100
-    bots.push({
-        nombre: `Bot_${i}`,
-        nota: notaBot
-    });
+const notaBot = Math.floor(Math.random() * 26) + 75;
+bots.push({
+nombre: `Bot_${i}`,
+nota: notaBot
+});
 }
 
 const ranking = [
@@ -751,39 +714,11 @@ ${ranking.map((p,i)=>`
 <div class="summary-box"><h4>Nivel</h4><p>${nivel}</p></div>
 </div>
 </div>
-
-<!-- Botón para ir al Examen de Matemáticas Aleatorio -->
-<div style="text-align:center; margin-top:20px;">
-  <button type="button" class="btn-primary" id="btnIrMathAleatorio" style="font-size:1.1rem; padding:14px 28px;">
-    Ir al Examen de Matemáticas Aleatorio ➡️
-  </button>
-</div>
 `;
 
 document.getElementById("revision").innerHTML = revisionHTML;
 document.getElementById("resultado").style.display = "block";
 document.getElementById("resultado").scrollIntoView({ behavior:"smooth" });
-
-// Agregar el listener al botón dinámico de matemáticas creado dentro del reporte
-const btnMath = document.getElementById("btnIrMathAleatorio");
-if(btnMath){
-  btnMath.addEventListener("click", () => {
-    const examenesMatematicas = [
-      "mate-eval-1.html",
-      "mate-eval-2.html",
-      "mate-eval-3.html",
-      "mate-eval-4.html",
-      "mate-eval-5.html",
-      "mate-eval-6.html",
-      "mate-eval-7.html",
-      "mate-eval-8.html",
-      "mate-eval-9.html",
-      "mate-eval-10.html"
-    ];
-    const indiceAleatorio = Math.floor(Math.random() * examenesMatematicas.length);
-    window.location.href = examenesMatematicas[indiceAleatorio];
-  });
-}
 
 render();
 
@@ -811,7 +746,6 @@ render();
 }
 
 render();
-
 </script>
 
 <script type="module" src="../party/party-timer.js"></script>
