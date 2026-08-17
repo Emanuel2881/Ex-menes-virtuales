@@ -6,7 +6,6 @@
 <title>Examen Verbal 7 - Nivel 3</title>
 
 <style>
-
 *{
 box-sizing:border-box;
 margin:0;
@@ -313,7 +312,6 @@ font-size:0.95rem;
 }
 
 /* PANEL RANKING */
-
 .ranking-panel{
 position:fixed;
 left:0;
@@ -361,17 +359,13 @@ font-weight:bold;
 }
 
 @media(max-width:768px){
-
 .ranking-panel{
 width:260px;
 }
-
 .container{
 padding:18px;
 }
-
 }
-
 </style>
 </head>
 
@@ -388,238 +382,183 @@ padding:18px;
 </div>
 
 <div class="stats-bar">
-
 <div class="stat-box">
-<span class="stat-label">
-Pregunta actual
-</span>
-
-<span class="stat-value">
-<span id="qNum">1</span> / 25
-</span>
+<span class="stat-label">Pregunta actual</span>
+<span class="stat-value"><span id="qNum">1</span> / 25</span>
 </div>
-
 <div class="stat-box">
-<span class="stat-label">
-Progreso
-</span>
-
-<span class="stat-value" id="progress">
-0 / 25
-</span>
+<span class="stat-label">Progreso</span>
+<span class="stat-value" id="progress">0 / 25</span>
 </div>
-
 </div>
 
 <div id="quiz"></div>
 
 <div class="actions">
-
-<button class="btn-primary"
-onclick="finishQuiz()">
-Calificar examen
-</button>
-
-<button class="btn-secondary"
-onclick="reiniciarExamen()">
-Reiniciar
-</button>
-
+<button class="btn-primary" onclick="finishQuiz()">Calificar examen</button>
+<button class="btn-secondary" onclick="reiniciarExamen()">Reiniciar</button>
 </div>
 
 <div class="result" id="resultado">
-
-<h2>
-Resultado Final
-</h2>
-
+<h2>Resultado Final</h2>
 <p id="puntajeTexto"></p>
-
 <div class="review" id="revision"></div>
-
 </div>
 
 </div>
 
 <script>
-
 const questions = [
-
 {
 q:"LUNA es a NOCHE como SOL es a ___",
 o:["Calor","Cielo","Día","Luz"],
 a:2,
 exp:"La luna se relaciona con la noche y el sol con el día."
 },
-
 {
 q:"BOCA es a HABLAR como OÍDO es a ___",
 o:["Escuchar","Mirar","Tocar","Respirar"],
 a:0,
 exp:"Órgano y función."
 },
-
 {
 q:"GATO es a FELINO como PERRO es a ___",
 o:["Animal","Canino","Mascota","Lobo"],
 a:1,
 exp:"Clasificación animal."
 },
-
 {
 q:"NIEVE es a FRÍO como DESIERTO es a ___",
 o:["Arena","Seco","Calor","Camello"],
 a:2,
 exp:"Lugar y característica."
 },
-
 {
 q:"LÁPIZ es a ESCRIBIR como TIJERA es a ___",
 o:["Papel","Cortar","Pegar","Dibujar"],
 a:1,
 exp:"Herramienta y acción."
 },
-
 {
 q:"MÚSICO es a ORQUESTA como JUGADOR es a ___",
 o:["Cancha","Equipo","Pelota","Uniforme"],
 a:1,
 exp:"Persona y grupo."
 },
-
 {
 q:"AUTO es a RUEDA como AVIÓN es a ___",
 o:["Motor","Piloto","Ala","Cabina"],
 a:2,
 exp:"Parte importante."
 },
-
 {
 q:"DOCTOR es a PACIENTE como MAESTRO es a ___",
 o:["Alumno","Libro","Escuela","Clase"],
 a:0,
 exp:"Profesión y persona atendida."
 },
-
 {
 q:"ABRIGO es a FRÍO como PARAGUAS es a ___",
 o:["Lluvia","Viento","Nube","Tormenta"],
 a:0,
 exp:"Objeto y situación."
 },
-
 {
 q:"HAMBRE es a COMIDA como SUEÑO es a ___",
 o:["Descanso","Dormir","Cama","Noche"],
 a:1,
 exp:"Necesidad y acción."
 },
-
 {
 q:"LEÓN es a SELVA como OSO es a ___",
 o:["Montaña","Bosque","Cueva","Río"],
 a:1,
 exp:"Animal y hábitat."
 },
-
 {
 q:"PINTOR es a BROCHA como ESCRITOR es a ___",
 o:["Libro","Lápiz","Papel","Historia"],
 a:1,
 exp:"Profesión y herramienta."
 },
-
 {
 q:"AGUA es a LÍQUIDO como HIELO es a ___",
 o:["Vapor","Frío","Sólido","Transparente"],
 a:2,
 exp:"Elemento y estado."
 },
-
 {
 q:"RÁPIDO es a VELOZ como LENTO es a ___",
 o:["Demorado","Calmado","Pausado","Suave"],
 a:0,
 exp:"Sinonimia."
 },
-
 {
 q:"CAMISA es a ROPA como SILLA es a ___",
 o:["Casa","Mueble","Mesa","Madera"],
 a:1,
 exp:"Elemento y categoría."
 },
-
 {
 q:"PÁJARO es a NIDO como ARAÑA es a ___",
 o:["Tela","Cueva","Red","Telaraña"],
 a:3,
 exp:"Animal y construcción."
 },
-
 {
 q:"CORAZÓN es a CUERPO como MOTOR es a ___",
 o:["Gasolina","Carro","Rueda","Máquina"],
 a:1,
 exp:"Parte fundamental."
 },
-
 {
 q:"SOLTERO es a CASADO como VIVO es a ___",
 o:["Dormido","Muerto","Viejo","Triste"],
 a:1,
 exp:"Opuestos."
 },
-
 {
 q:"ABEJA es a COLMENA como HORMIGA es a ___",
 o:["Tierra","Hormiguero","Insecto","Arena"],
 a:1,
 exp:"Animal y hogar."
 },
-
 {
 q:"MÉDICO es a ENFERMEDAD como ABOGADO es a ___",
 o:["Juez","Ley","Tribunal","Justicia"],
 a:1,
 exp:"Profesión y campo."
 },
-
 {
 q:"CUCHARA es a SOPA como TENEDOR es a ___",
 o:["Comida","Carne","Plato","Cuchillo"],
 a:1,
 exp:"Utensilio y alimento."
 },
-
 {
 q:"PEZ es a AGUA como AVE es a ___",
 o:["Nido","Árbol","Aire","Pluma"],
 a:2,
 exp:"Animal y medio."
 },
-
 {
 q:"ESCUELA es a APRENDER como GIMNASIO es a ___",
 o:["Correr","Ejercicio","Pesas","Entrenar"],
 a:3,
 exp:"Lugar y actividad."
 },
-
 {
 q:"REY es a CORONA como GRADUADO es a ___",
 o:["Título","Universidad","Diploma","Birrete"],
 a:3,
 exp:"Persona y objeto representativo."
 },
-
 {
 q:"BIBLIOTECA es a LEER como CINE es a ___",
 o:["Película","Pantalla","Actuar","Ver"],
 a:3,
 exp:"Lugar y actividad."
 }
-
 ];
 
 let current = 0;
@@ -716,14 +655,13 @@ else incorrectas++;
 
 const porcentaje = Math.round((correctas/total)*100);
 
-// GENERACIÓN DE BOTS NIVEL 3 (Notas entre 75% y 100%)
 const bots = [];
 for(let i=1; i<=30; i++){
-    const notaBot = Math.floor(Math.random() * 26) + 75; // Genera 75 - 100
-    bots.push({
-        nombre: `Bot_${i}`,
-        nota: notaBot
-    });
+const notaBot = Math.floor(Math.random() * 26) + 75;
+bots.push({
+nombre: `Bot_${i}`,
+nota: notaBot
+});
 }
 
 const ranking = [
@@ -808,7 +746,6 @@ ${ranking.map((p,i)=>`
 </div>
 </div>
 
-<!-- Botón para ir al Examen de Matemáticas Aleatorio -->
 <div style="text-align:center; margin-top:20px;">
   <button type="button" class="btn-primary" id="btnIrMathAleatorio" style="font-size:1.1rem; padding:14px 28px;">
     Ir al Examen de Matemáticas Aleatorio ➡️
@@ -820,7 +757,6 @@ document.getElementById("revision").innerHTML = revisionHTML;
 document.getElementById("resultado").style.display = "block";
 document.getElementById("resultado").scrollIntoView({ behavior:"smooth" });
 
-// Agregar el listener al botón dinámico de matemáticas creado dentro del reporte
 const btnMath = document.getElementById("btnIrMathAleatorio");
 if(btnMath){
   btnMath.addEventListener("click", () => {
@@ -867,11 +803,7 @@ render();
 }
 
 render();
-
 </script>
-
-<script type="module" src="../party/party-timer.js"></script>
-<script type="module" src="../party/party-resultados.js"></script>
 
 </body>
 </html>
