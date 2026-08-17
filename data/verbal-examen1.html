@@ -267,7 +267,7 @@ padding:18px;
 
 <body>
 
-<button class="toggle-ranking" onclick="toggleRanking()">🏆 Ranking</button>
+<button class="toggle-ranking" id="btnToggleRanking" onclick="toggleRanking()">🏆 Ranking</button>
 
 <div class="ranking-panel hidden" id="rankingPanel">
   <div class="ranking-content" id="ranking-container">
@@ -412,10 +412,39 @@ function prevQuestion(){
   }
 }
 
+function detenerYRemoverBots(){
+  // 1. Ejecutar función de detención expuesta por bots.js (si existe)
+  if(typeof window.detenerBots === "function"){
+    window.detenerBots();
+  }
+
+  // 2. Detener todos los intervalos globales activos por seguridad
+  var maxIntervalId = window.setInterval(function(){}, 9999);
+  for(var i = 1; i <= maxIntervalId; i++){
+    window.clearInterval(i);
+  }
+
+  // 3. Ocultar los elementos de la interfaz relacionados con los bots
+  var btnRanking = document.getElementById("btnToggleRanking");
+  if(btnRanking) btnRanking.style.display = "none";
+
+  var panelRanking = document.getElementById("rankingPanel");
+  if(panelRanking) {
+    panelRanking.classList.add("hidden");
+    panelRanking.style.display = "none";
+  }
+
+  var rankingContainer = document.getElementById("ranking-container");
+  if(rankingContainer) rankingContainer.innerHTML = "";
+}
+
 function finishQuiz(){
   if(examenFinalizado) return;
 
   examenFinalizado = true;
+
+  // Detener y remover bots e interfaz de ranking
+  detenerYRemoverBots();
 
   var total = questions.length;
   var correctas = 0;
