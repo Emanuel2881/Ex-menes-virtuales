@@ -1,101 +1,79 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Habilidad Verbal</title>
-
   <style>
-
-    *{
-      margin:0;
-      padding:0;
-      box-sizing:border-box;
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
     }
 
-    body{
+    body {
       font-family: Arial, Helvetica, sans-serif;
-      min-height:100vh;
       background: linear-gradient(135deg, #fff1f2, #ffe4e6, #fecdd3);
-      color:#7f1d1d;
+      color: #7f1d1d;
+      min-height: 100vh;
+      padding: 30px 15px;
     }
 
-    header{
-      text-align:center;
-      padding:50px 20px 30px;
+    .container {
+      max-width: 800px;
+      margin: auto;
+      background: rgba(255, 255, 255, 0.95);
+      padding: 30px;
+      border-radius: 24px;
+      box-shadow: 0 12px 35px rgba(0, 0, 0, 0.08);
     }
 
-    header h1{
-      font-size: clamp(2rem, 5vw, 3.2rem);
-      color:#be123c;
-      margin-bottom:12px;
+    .header {
+      text-align: center;
+      margin-bottom: 25px;
     }
 
-    header p{
-      max-width:760px;
-      margin:auto;
-      font-size:1.05rem;
-      line-height:1.6;
-      color:#9f1239;
+    .header h1 {
+      font-size: clamp(2rem, 4vw, 2.8rem);
+      color: #9f1239;
+      margin-bottom: 8px;
     }
 
-    .container{
-      width:min(1100px, 92%);
-      margin:0 auto 50px;
+    .header p {
+      color: #881337;
+      opacity: 0.9;
     }
 
-    .top-box{
-      background: rgba(255,255,255,0.85);
-      backdrop-filter: blur(8px);
-      border:1px solid rgba(255,255,255,0.6);
-      border-radius:24px;
-      padding:28px;
-      box-shadow:0 10px 30px rgba(244,63,94,0.12);
-      margin-bottom:30px;
-      text-align:center;
-    }
-
-    .top-box h2{
-      color:#e11d48;
-      margin-bottom:10px;
-      font-size:1.5rem;
-    }
-
-    .top-box p{
-      color:#881337;
-      line-height:1.6;
-      max-width:760px;
-      margin:auto;
-    }
-
-    /* ESTILOS DEL SWITCH MODO EVALUACIÓN */
-    .switch-container {
+    /* Interruptor / Switch de Modo Secuencia */
+    .secuencia-card {
+      background: #fff;
+      border: 2px solid #fecdd3;
+      border-radius: 16px;
+      padding: 16px 20px;
+      margin-bottom: 25px;
       display: flex;
       align-items: center;
-      justify-content: center;
+      justify-content: space-between;
       gap: 15px;
-      margin: 20px 0 10px;
-      background: #ffffff;
-      padding: 14px 24px;
-      border-radius: 50px;
-      width: fit-content;
-      margin-left: auto;
-      margin-right: auto;
-      box-shadow: 0 4px 15px rgba(225, 29, 72, 0.12);
-      border: 1px solid #fecdd3;
     }
 
-    .switch-label {
-      font-weight: bold;
+    .secuencia-info h3 {
+      font-size: 1.05rem;
       color: #9f1239;
-      font-size: 0.95rem;
+      margin-bottom: 4px;
+    }
+
+    .secuencia-info p {
+      font-size: 0.88rem;
+      color: #be123c;
     }
 
     .switch {
       position: relative;
       display: inline-block;
-      width: 56px;
-      height: 28px;
+      width: 50px;
+      height: 26px;
+      flex-shrink: 0;
     }
 
     .switch input {
@@ -107,10 +85,7 @@
     .slider {
       position: absolute;
       cursor: pointer;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
+      top: 0; left: 0; right: 0; bottom: 0;
       background-color: #cbd5e1;
       transition: .3s;
       border-radius: 34px;
@@ -121,8 +96,8 @@
       content: "";
       height: 20px;
       width: 20px;
-      left: 4px;
-      bottom: 4px;
+      left: 3px;
+      bottom: 3px;
       background-color: white;
       transition: .3s;
       border-radius: 50%;
@@ -133,459 +108,122 @@
     }
 
     input:checked + .slider:before {
-      transform: translateX(28px);
+      transform: translateX(24px);
     }
 
-    .btn-secuencia {
-      display: none;
-      margin-top: 15px;
-      background: linear-gradient(135deg, #f43f5e, #e11d48);
-      color: white;
-      padding: 14px 28px;
+    /* Lista de exámenes */
+    .list-title {
+      font-size: 1.2rem;
+      color: #881337;
+      margin-bottom: 15px;
+    }
+
+    .exam-grid {
+      display: grid;
+      gap: 14px;
+    }
+
+    .exam-card {
+      background: #fff;
+      border: 1px solid #fecdd3;
       border-radius: 14px;
-      font-weight: bold;
-      font-size: 1.05rem;
-      border: none;
-      cursor: pointer;
-      box-shadow: 0 6px 20px rgba(225, 29, 72, 0.3);
-      transition: all 0.25s ease;
-    }
-
-    .btn-secuencia:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 25px rgba(225, 29, 72, 0.4);
-    }
-
-    .actions{
-      display:flex;
-      justify-content:center;
-      margin-top:18px;
-      gap: 12px;
-      flex-wrap: wrap;
-    }
-
-    .back-btn{
-      text-decoration:none;
-      background:#e11d48;
-      color:white;
-      padding:12px 18px;
-      border-radius:12px;
-      font-weight:bold;
-      transition:0.2s ease;
-    }
-
-    .back-btn:hover{
-      background:#be123c;
-      transform:translateY(-2px);
-    }
-
-    .grid{
-      display:grid;
-      grid-template-columns:repeat(auto-fit, minmax(250px, 1fr));
-      gap:22px;
-    }
-
-    .card{
-      background: rgba(255,255,255,0.9);
-      border-radius:22px;
-      padding:24px;
-      box-shadow:0 10px 25px rgba(0,0,0,0.08);
-      transition: transform 0.25s ease, box-shadow 0.25s ease;
-      border:1px solid rgba(255,255,255,0.7);
+      padding: 18px 20px;
       display: flex;
-      flex-direction: column;
+      align-items: center;
       justify-content: space-between;
+      text-decoration: none;
+      color: #7f1d1d;
+      transition: all 0.2s ease;
     }
 
-    .card:hover{
-      transform: translateY(-6px);
-      box-shadow:0 14px 32px rgba(244,63,94,0.18);
+    .exam-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 18px rgba(225, 29, 72, 0.12);
+      border-color: #fb7185;
     }
 
-    .card .icon{
-      font-size:2rem;
-      margin-bottom:12px;
+    .exam-info h4 {
+      font-size: 1.1rem;
+      color: #9f1239;
+      margin-bottom: 4px;
     }
 
-    .card h3{
-      color:#be123c;
-      margin-bottom:10px;
-      font-size:1.3rem;
+    .exam-info p {
+      font-size: 0.85rem;
+      color: #be123c;
     }
 
-    .card p{
-      color:#3f3f46;
-      line-height:1.55;
-      margin-bottom:18px;
-      min-height:88px;
+    .btn-start {
+      background: #ffe4e6;
+      color: #9f1239;
+      font-weight: bold;
+      padding: 8px 16px;
+      border-radius: 10px;
+      font-size: 0.9rem;
     }
 
-    .card a{
-      display:inline-block;
-      text-align: center;
-      text-decoration:none;
-      background:#f43f5e;
-      color:white;
-      padding:11px 18px;
-      border-radius:12px;
-      font-weight:bold;
-      transition: background 0.2s ease, transform 0.2s ease;
+    .top-link {
+      display: inline-block;
+      margin-bottom: 15px;
+      color: #be123c;
+      text-decoration: none;
+      font-weight: bold;
     }
-
-    .card a:hover{
-      background:#e11d48;
-      transform: scale(1.03);
-    }
-
-    /* DESACTIVAR ESTILO EN MODO SECUENCIA */
-    .modo-secuencia-activo .card a {
-      background: #64748b;
-    }
-
-    .sources-box{
-      margin-top:35px;
-      background: rgba(255,255,255,0.9);
-      border-radius:24px;
-      padding:25px;
-      box-shadow:0 10px 30px rgba(244,63,94,0.10);
-      border:1px solid rgba(255,255,255,0.7);
-    }
-
-    .sources-header{
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      gap:12px;
-      margin-bottom:18px;
-    }
-
-    .sources-header h4{
-      color:#be123c;
-      font-size:1.3rem;
-    }
-
-    .sources-header button{
-      border:none;
-      background:#f43f5e;
-      color:white;
-      padding:10px 16px;
-      border-radius:12px;
-      font-weight:bold;
-      cursor:pointer;
-      transition:0.2s ease;
-    }
-
-    .sources-header button:hover{
-      background:#e11d48;
-    }
-
-    #sourcesContent{
-      display:grid;
-      grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
-      gap:14px;
-    }
-
-    .source-item{
-      background:#fff1f2;
-      border:1px solid #fecdd3;
-      padding:14px;
-      border-radius:16px;
-      color:#881337;
-      line-height:1.5;
-      transition:0.2s ease;
-    }
-
-    .source-item:hover{
-      background:#ffe4e6;
-    }
-
-    .source-item strong{
-      color:#e11d48;
-    }
-
-    .hidden-sources{
-      display:none !important;
-    }
-
-    footer{
-      text-align:center;
-      padding:20px;
-      color:#9f1239;
-      font-size:0.95rem;
-    }
-
-    @media (max-width: 600px){
-
-      .card p{
-        min-height:auto;
-      }
-
-      .sources-header{
-        flex-direction:column;
-        align-items:flex-start;
-      }
-
-    }
-
   </style>
 </head>
-
 <body>
 
-  <header>
-    <h1>Habilidad Verbal</h1>
+<div class="container">
 
-    <p>
-      Aquí están organizados mis exámenes digitales de razonamiento verbal,
-      enfocados en analogías, comprensión, antónimos y relación de palabras.
-    </p>
-  </header>
+  <a class="top-link" href="../index.html">← Volver al Inicio</a>
 
-  <div class="container" id="mainContainer">
-
-    <div class="top-box">
-
-      <h2>Modo de Evaluación</h2>
-
-      <p>
-        Activa el modo secuencia para realizar la prueba global combinada (Verbal + Numérica) con percentiles y ranking de bots.
-      </p>
-
-      <!-- SWITCH MODO EVALUACIÓN COMPLETA -->
-      <div class="switch-container">
-        <span class="switch-label">Práctica Individual</span>
-        <label class="switch">
-          <input type="checkbox" id="switchSecuencia" onchange="toggleModoSecuencia()">
-          <span class="slider"></span>
-        </label>
-        <span class="switch-label" style="color: #be123c;">Modo Evaluación (Verbal + Numérica)</span>
-      </div>
-
-      <button id="btnIniciarSecuencia" class="btn-secuencia" onclick="iniciarPruebaGlobal()">
-        🚀 Iniciar Evaluación Completa (Etapa 1: Verbal)
-      </button>
-
-      <div class="actions">
-        <a href="index.html" class="back-btn">← Volver al inicio</a>
-      </div>
-
-    </div>
-
-    <div class="grid">
-
-      <div class="card">
-        <div>
-          <div class="icon">🧠</div>
-          <h3>Examen 1</h3>
-          <p>
-            Examen enfocado en analogías básicas, donde se debe identificar la relación
-            entre pares de palabras.
-          </p>
-        </div>
-        <a href="data/verbal-examen1.html">Abrir examen</a>
-      </div>
-
-      <div class="card">
-        <div>
-          <div class="icon">📖</div>
-          <h3>Examen 2</h3>
-          <p>
-            Incluye completar oraciones, antónimos, analogías y palabras que no pertenecen
-            al mismo grupo.
-          </p>
-        </div>
-        <a href="data/verbal-examen2.html">Abrir examen</a>
-      </div>
-
-      <div class="card">
-        <div>
-          <div class="icon">📝</div>
-          <h3>Examen 3</h3>
-          <p>
-            Examen basado en analogías tipo admisión, con mayor enfoque en relaciones
-            complejas entre conceptos.
-          </p>
-        </div>
-        <a href="data/verbal-examen3.html">Abrir examen</a>
-      </div>
-
-      <div class="card">
-        <div>
-          <div class="icon">📚</div>
-          <h3>Examen 4</h3>
-          <p>
-            Examen de razonamiento verbal basado en analogías, categorías gramaticales
-            y relaciones lógicas entre conceptos.
-          </p>
-        </div>
-        <a href="data/verbal-examen4.html">Abrir examen</a>
-      </div>
-
-      <div class="card">
-        <div>
-          <div class="icon">🧩</div>
-          <h3>Examen 5</h3>
-          <p>
-            Incluye ejercicios de sinonimia, oposición, relación objeto-función
-            y asociaciones comunes de palabras.
-          </p>
-        </div>
-        <a href="data/verbal-examen5.html">Abrir examen</a>
-      </div>
-
-      <div class="card">
-        <div>
-          <div class="icon">🧠</div>
-          <h3>Examen 6</h3>
-          <p>
-            Examen enfocado en relaciones semánticas, asociaciones lógicas
-            y conexiones entre profesiones, objetos y acciones.
-          </p>
-        </div>
-        <a href="data/verbal-examen6.html">Abrir examen</a>
-      </div>
-
-      <div class="card">
-        <div>
-          <div class="icon">📖</div>
-          <h3>Examen 7</h3>
-          <p>
-            Evaluación verbal con analogías, antónimos y ejercicios de razonamiento
-            similares a pruebas de admisión.
-          </p>
-        </div>
-        <a href="data/verbal-examen7.html">Abrir examen</a>
-      </div>
-
-      <div class="card">
-        <div>
-          <div class="icon">📝</div>
-          <h3>Examen 8</h3>
-          <p>
-            Contiene preguntas sobre relaciones de palabras, funciones de objetos,
-            categorías y asociaciones verbales.
-          </p>
-        </div>
-        <a href="data/verbal-examen8.html">Abrir examen</a>
-      </div>
-
-      <div class="card">
-        <div>
-          <div class="icon">🎯</div>
-          <h3>Examen 9</h3>
-          <p>
-            Simulador verbal de práctica intensiva con ejercicios de lógica verbal,
-            comparación y comprensión de relaciones.
-          </p>
-        </div>
-        <a href="data/verbal-examen9.html">Abrir examen</a>
-      </div>
-
-      <div class="card">
-        <div>
-          <div class="icon">⏱️</div>
-          <h3>Examen 10</h3>
-          <p>
-            Simulacro general de 50 preguntas con límite de 20 minutos,
-            diseñado para repasar los exámenes anteriores.
-          </p>
-        </div>
-        <a href="data/verbal-examen10.html">Abrir examen</a>
-      </div>
-
-    </div>
-
-    <div class="sources-box" id="sourcesBox">
-
-      <div class="sources-header">
-        <h4>📚 Fuentes verbales utilizadas</h4>
-        <button onclick="toggleSources()" id="toggleBtn">Ocultar</button>
-      </div>
-
-      <div id="sourcesContent">
-
-        <div class="source-item">
-          <strong>V1</strong> → examen verbal resuelto.pdf
-        </div>
-
-        <div class="source-item">
-          <strong>V2</strong> → examen de habilidad verbal (1).pdf
-        </div>
-
-        <div class="source-item">
-          <strong>V3</strong> → nivel m vebal y numerico resuelto-1 (3).pdf
-        </div>
-
-        <div class="source-item">
-          <strong>V4</strong> → Cuadernillo 1 resuelto, Médicos 2021_compressed (1).pdf
-        </div>
-
-        <div class="source-item">
-          <strong>V5</strong> → Cuadernillo 3 resuelto, Médicos 2021_compressed (1) (2).pdf
-        </div>
-
-        <div class="source-item">
-          <strong>V6</strong> → RAZONAMIENTO Numerico y verbal DAT 5 lv1 (2).pdf
-        </div>
-
-        <div class="source-item">
-          <strong>V7</strong> → examen de 3r oportunidad razo. numerico y verbal resueltas (1) (3).pdf
-        </div>
-
-      </div>
-
-    </div>
-
+  <div class="header">
+    <h1>📖 Módulo Verbal</h1>
+    <p>Selecciona una prueba o activa el modo examen continuo</p>
   </div>
 
-  <footer>
-    Habilidad Verbal • Exámenes digitales
-  </footer>
+  <!-- Switch Control de Modo Secuencia -->
+  <div class="secuencia-card">
+    <div class="secuencia-info">
+      <h3>Modo Examen Completo (Secuencia)</h3>
+      <p>Al terminar Verbal, avanzarás automáticamente al examen de Matemáticas.</p>
+    </div>
+    <label class="switch">
+      <input type="checkbox" id="chkSecuencia" onchange="toggleModoSecuencia(this.checked)">
+      <span class="slider"></span>
+    </label>
+  </div>
 
-  <script>
-    function toggleSources(){
-      const content = document.getElementById("sourcesContent");
-      const btn = document.getElementById("toggleBtn");
+  <h3 class="list-title">Exámenes Disponibles</h3>
 
-      content.classList.toggle("hidden-sources");
+  <div class="exam-grid">
+    <a href="data/verbal-examen1.html" class="exam-card">
+      <div class="exam-info">
+        <h4>Examen Verbal 1</h4>
+        <p>15 Preguntas • Analogías y relaciones verbales</p>
+      </div>
+      <span class="btn-start">Comenzar →</span>
+    </a>
+  </div>
 
-      if(content.classList.contains("hidden-sources")){
-        btn.textContent = "Mostrar";
-      }else{
-        btn.textContent = "Ocultar";
-      }
+</div>
+
+<!-- SCRIPT MÓDULO: Carga la lógica de secuencia y la expone globalmente -->
+<script type="module">
+  import { toggleModoSecuencia, esModoSecuencia } from './secuenciaExamenes.js';
+
+  // Exponer a window para evitar "ReferenceError" en eventos HTML inline (onchange)
+  window.toggleModoSecuencia = toggleModoSecuencia;
+  window.esModoSecuencia = esModoSecuencia;
+
+  // Sincronizar el estado del checkbox al cargar la página
+  document.addEventListener('DOMContentLoaded', () => {
+    const chk = document.getElementById('chkSecuencia');
+    if (chk) {
+      chk.checked = esModoSecuencia();
     }
-  </script>
-
-  <!-- SCRIPT MÓDULO PARA SECUENCIA DE EXÁMENES DESDE LA RAÍZ -->
-  <script type="module">
-    import { iniciarSecuencia, obtenerExamenVerbalAleatorio } from "./secuenciaExamenes.js";
-
-    window.toggleModoSecuencia = function() {
-      const switchEl = document.getElementById("switchSecuencia");
-      const btnIniciar = document.getElementById("btnIniciarSecuencia");
-      const mainContainer = document.getElementById("mainContainer");
-
-      if (switchEl.checked) {
-        btnIniciar.style.display = "inline-block";
-        mainContainer.classList.add("modo-secuencia-activo");
-      } else {
-        btnIniciar.style.display = "none";
-        mainContainer.classList.remove("modo-secuencia-activo");
-      }
-    };
-
-    window.iniciarPruebaGlobal = function() {
-      iniciarSecuencia();
-      let examenVerbalInicial = obtenerExamenVerbalAleatorio();
-
-      if (!examenVerbalInicial.startsWith("data/")) {
-        examenVerbalInicial = `data/${examenVerbalInicial}`;
-      }
-
-      window.location.href = examenVerbalInicial;
-    };
-  </script>
+  });
+</script>
 
 </body>
 </html>
