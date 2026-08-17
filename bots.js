@@ -1,4 +1,4 @@
-function generarBotsYRanking(porcentajeUsuario) {
+export function generarBots(porcentajeUsuario) {
   var rangosBots = [
     {min:50,max:64},{min:50,max:64},
     {min:65,max:74},{min:65,max:74},{min:65,max:74},{min:65,max:74},
