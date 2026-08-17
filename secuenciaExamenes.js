@@ -37,51 +37,62 @@ const EXAMENES_VERBAL = [
 ];
 
 /**
- * Inicia una nueva secuencia limpia borrando registros previos.
+ * Inicia una nueva secuencia habilitando el modo de evaluación.
  */
 export function iniciarSecuencia() {
-  localStorage.removeItem(CLAVE_ALMACENAMIENTO);
+  const datosIniciales = {
+    modoActivo: true
+  };
+  localStorage.setItem(CLAVE_ALMACENAMIENTO, JSON.stringify(datosIniciales));
+}
+
+/**
+ * Verifica si actualmente se está ejecutando la evaluación continua.
+ * @returns {boolean}
+ */
+export function esModoSecuencia() {
+  const datos = JSON.parse(localStorage.getItem(CLAVE_ALMACENAMIENTO));
+  return Boolean(datos && datos.modoActivo);
 }
 
 /**
  * Guarda los resultados del examen actual (Verbal o Numérica).
- * 
- * @param {string} tipo - "verbal" o "numerica"
- * @param {number} correctas - Cantidad de respuestas correctas del usuario
- * @param {number} total - Cantidad total de preguntas del examen
  */
 export function guardarResultadoExamen(tipo, correctas, total) {
-  const datosPrevios = JSON.parse(localStorage.getItem(CLAVE_ALMACENAMIENTO)) || {};
+  const datosPrevios = JSON.parse(localStorage.getItem(CLAVE_ALMACENAMIENTO)) || { modoActivo: true };
   
   datosPrevios[tipo] = {
-    correctas: correctas,
-    total: total,
+    correctas: Number(correctas),
+    total: Number(total),
     porcentaje: Math.round((correctas / total) * 100)
   };
 
   localStorage.setItem(CLAVE_ALMACENAMIENTO, JSON.stringify(datosPrevios));
 }
 
+// Alias de apoyo para mantener compatibilidad
+export const registrarResultadoEtapa = guardarResultadoExamen;
+
 /**
  * Obtiene los datos guardados de la secuencia actual.
- * @returns {Object} Objeto con las secciones registradas
  */
 export function obtenerEstadoSecuencia() {
   return JSON.parse(localStorage.getItem(CLAVE_ALMACENAMIENTO)) || {};
 }
 
 /**
- * Selecciona una URL de examen de matemáticas aleatoriamente de la lista oficial.
- * @returns {string} Ruta del examen seleccionado
+ * Selecciona una URL de examen de matemáticas aleatoriamente.
  */
 export function obtenerExamenMateAleatorio() {
   const indice = Math.floor(Math.random() * EXAMENES_MATE.length);
   return EXAMENES_MATE[indice];
 }
 
+// Alias de apoyo para mantener compatibilidad con llamados de la vista
+export const obtenerExamenNumericoAleatorio = obtenerExamenMateAleatorio;
+
 /**
- * Selecciona una URL de examen verbal aleatoriamente de la lista oficial.
- * @returns {string} Ruta del examen seleccionado
+ * Selecciona una URL de examen verbal aleatoriamente.
  */
 export function obtenerExamenVerbalAleatorio() {
   const indice = Math.floor(Math.random() * EXAMENES_VERBAL.length);
@@ -89,10 +100,14 @@ export function obtenerExamenVerbalAleatorio() {
 }
 
 /**
+ * Limpia el estado del modo evaluación al finalizar.
+ */
+export function finalizarSecuencia() {
+  localStorage.removeItem(CLAVE_ALMACENAMIENTO);
+}
+
+/**
  * Procesa el resultado global combinando ambas etapas (Verbal + Numérica).
- * Simula los puntajes de los 29 bots en ambas áreas y calcula el percentil final.
- * 
- * @returns {Object|null} Objeto con la consolidación de notas, ranking y percentil
  */
 export function calcularResultadoGlobal() {
   const datos = obtenerEstadoSecuencia();
@@ -101,16 +116,13 @@ export function calcularResultadoGlobal() {
     return null; // Falta completar alguna de las dos etapas
   }
 
-  // 1. Obtener la simulación de los 29 bots para cada sección
   const botsVerbal = generarBots("verbal", datos.verbal.total);
   const botsNumerica = generarBots("numerica", datos.numerica.total);
 
-  // 2. Puntajes totales del usuario
   const totalCorrectasUsuario = datos.verbal.correctas + datos.numerica.correctas;
   const totalPreguntasGlobal = datos.verbal.total + datos.numerica.total;
   const porcentajeGlobalUsuario = Math.round((totalCorrectasUsuario / totalPreguntasGlobal) * 100);
 
-  // 3. Consolidar los resultados de los 29 bots combinando sus notas
   const listaParticipantes = [];
 
   for (let i = 0; i < 29; i++) {
@@ -128,7 +140,6 @@ export function calcularResultadoGlobal() {
     });
   }
 
-  // 4. Agregar al usuario para formar los 30 participantes (29 bots + 1 usuario)
   listaParticipantes.push({
     nombre: "Tú",
     correctas: totalCorrectasUsuario,
@@ -136,19 +147,14 @@ export function calcularResultadoGlobal() {
     esUsuario: true
   });
 
-  // 5. Ordenar de mayor a menor puntaje
   listaParticipantes.sort((a, b) => b.nota - a.nota);
 
-  // 6. Cálculo del Percentil
   const estrictamenteMenores = listaParticipantes.filter(p => porcentajeGlobalUsuario > p.nota).length;
   const iguales = listaParticipantes.filter(p => porcentajeGlobalUsuario === p.nota).length;
 
   let percentil = Math.round(((estrictamenteMenores + (0.5 * iguales)) / listaParticipantes.length) * 100);
-  
-  // Ajuste estético de límites
   percentil = Math.max(1, Math.min(99, percentil));
 
-  // Clasificación por nivel
   let nivel = "Muy bajo";
   if (percentil >= 90) nivel = "Excelente";
   else if (percentil >= 75) nivel = "Muy bueno";
