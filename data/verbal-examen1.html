@@ -454,7 +454,7 @@ window.onload = function() {
 
 <!-- Módulos cargados al final -->
 <script type="module">
-  import { esModoSecuencia, guardarResultadoExamen, obtenerExamenMateAleatorio } from "../secuenciaExamenes.js";
+  import { esModoSecuencia, guardarResultadoExamen } from "../secuenciaExamenes.js";
 
   window.evaluarSecuenciaGlobal = function() {
     if (esModoSecuencia()) {
@@ -465,16 +465,37 @@ window.onload = function() {
         if(answers[i] === q.a) correctas++;
       });
 
+      // 1. Guardar notas del módulo verbal
       guardarResultadoExamen("verbal", correctas, total);
       alert("¡Etapa Verbal completada! Avanzando a la Etapa 2: Habilidad Numérica.");
-      
-      var examenMate = obtenerExamenMateAleatorio(); // devuelva 'data/numerica-examen1.html' o 'numerica-examen1.html'
-      
-      // Limpiamos 'data/' y cualquier '../' para quedarnos solo con 'numerica-examenX.html'
-      var nombreArchivo = examenMate.replace(/^data\//, '').replace(/^\.\.\//, '');
 
-      // Redirigimos directamente al archivo hermano que está en esta misma carpeta /data/
-      window.location.href = nombreArchivo; 
+      // 2. Lista completa con los 17 exámenes de aptitud numérica
+      var listaExamenesNumerica = [
+        "numerica-examen1.html",
+        "numerica-examen2.html",
+        "numerica-examen3.html",
+        "numerica-examen4.html",
+        "numerica-examen5.html",
+        "numerica-examen6.html",
+        "numerica-examen7.html",
+        "numerica-examen8.html",
+        "numerica-examen9.html",
+        "numerica-examen10.html",
+        "numerica-examen11.html",
+        "numerica-examen12.html",
+        "numerica-examen13.html",
+        "numerica-examen14.html",
+        "numerica-examen15.html",
+        "numerica-examen16.html",
+        "numerica-examen17.html"
+      ];
+
+      // 3. Seleccionar uno al azar
+      var indiceAzar = Math.floor(Math.random() * listaExamenesNumerica.length);
+      var examenElegido = listaExamenesNumerica[indiceAzar];
+
+      // 4. Redirigir al examen elegido (al estar en /data/, carga directo el archivo hermano)
+      window.location.href = examenElegido;
       return true;
     }
     return false;
