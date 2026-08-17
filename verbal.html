@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Habilidad Verbal</title>
+  <title>Módulo Verbal</title>
   <style>
     * {
       box-sizing: border-box;
@@ -44,7 +44,7 @@
       opacity: 0.9;
     }
 
-    /* Interruptor / Switch de Modo Secuencia */
+    /* Switch de Modo Secuencia */
     .secuencia-card {
       background: #fff;
       border: 2px solid #fecdd3;
@@ -186,7 +186,7 @@
   <div class="secuencia-card">
     <div class="secuencia-info">
       <h3>Modo Examen Completo (Secuencia)</h3>
-      <p>Al terminar Verbal, avanzarás automáticamente al examen de Matemáticas.</p>
+      <p>Al terminar Verbal, avanzarás al examen de Matemáticas.</p>
     </div>
     <label class="switch">
       <input type="checkbox" id="chkSecuencia" onchange="toggleModoSecuencia(this.checked)">
@@ -197,6 +197,7 @@
   <h3 class="list-title">Exámenes Disponibles</h3>
 
   <div class="exam-grid">
+    <!-- Examen 1 -->
     <a href="data/verbal-examen1.html" class="exam-card">
       <div class="exam-info">
         <h4>Examen Verbal 1</h4>
@@ -204,19 +205,89 @@
       </div>
       <span class="btn-start">Comenzar →</span>
     </a>
+
+    <!-- Examen 2 -->
+    <a href="data/verbal-examen2.html" class="exam-card">
+      <div class="exam-info">
+        <h4>Examen Verbal 2</h4>
+        <p>15 Preguntas • Sinónimos y antónimos</p>
+      </div>
+      <span class="btn-start">Comenzar →</span>
+    </a>
+
+    <!-- Examen 3 -->
+    <a href="data/verbal-examen3.html" class="exam-card">
+      <div class="exam-info">
+        <h4>Examen Verbal 3</h4>
+        <p>15 Preguntas • Comprensión lectora</p>
+      </div>
+      <span class="btn-start">Comenzar →</span>
+    </a>
+
+    <!-- Examen 4 -->
+    <a href="data/verbal-examen4.html" class="exam-card">
+      <div class="exam-info">
+        <h4>Examen Verbal 4</h4>
+        <p>15 Preguntas • Completar oraciones</p>
+      </div>
+      <span class="btn-start">Comenzar →</span>
+    </a>
+
+    <!-- Examen 5 -->
+    <a href="data/verbal-examen5.html" class="exam-card">
+      <div class="exam-info">
+        <h4>Examen Verbal 5</h4>
+        <p>15 Preguntas • Razonamiento lógico verbal</p>
+      </div>
+      <span class="btn-start">Comenzar →</span>
+    </a>
+
+    <!-- Examen 6 -->
+    <a href="data/verbal-examen6.html" class="exam-card">
+      <div class="exam-info">
+        <h4>Examen Verbal 6</h4>
+        <p>15 Preguntas • Término excluido y semántica</p>
+      </div>
+      <span class="btn-start">Comenzar →</span>
+    </a>
+
+    <!-- Examen 7 -->
+    <a href="data/verbal-examen7.html" class="exam-card">
+      <div class="exam-info">
+        <h4>Examen Verbal 7</h4>
+        <p>15 Preguntas • Cohesión y conectores lógicos</p>
+      </div>
+      <span class="btn-start">Comenzar →</span>
+    </a>
+
+    <!-- Examen 8 -->
+    <a href="data/verbal-examen8.html" class="exam-card">
+      <div class="exam-info">
+        <h4>Examen Verbal 8</h4>
+        <p>15 Preguntas • Plan de redacción</p>
+      </div>
+      <span class="btn-start">Comenzar →</span>
+    </a>
+
+    <!-- Examen 9 -->
+    <a href="data/verbal-examen9.html" class="exam-card">
+      <div class="exam-info">
+        <h4>Examen Verbal 9</h4>
+        <p>15 Preguntas • Examen de repaso general</p>
+      </div>
+      <span class="btn-start">Comenzar →</span>
+    </a>
   </div>
 
 </div>
 
-<!-- SCRIPT MÓDULO: Carga la lógica de secuencia y la expone globalmente -->
+<!-- SCRIPT MÓDULO -->
 <script type="module">
   import { toggleModoSecuencia, esModoSecuencia } from './secuenciaExamenes.js';
 
-  // Exponer a window para evitar "ReferenceError" en eventos HTML inline (onchange)
   window.toggleModoSecuencia = toggleModoSecuencia;
   window.esModoSecuencia = esModoSecuencia;
 
-  // Sincronizar el estado del checkbox al cargar la página
   document.addEventListener('DOMContentLoaded', () => {
     const chk = document.getElementById('chkSecuencia');
     if (chk) {
