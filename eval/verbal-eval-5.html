@@ -6,7 +6,6 @@
 <title>Examen Verbal 5 - Nivel 3</title>
 
 <style>
-
 *{
 box-sizing:border-box;
 margin:0;
@@ -91,6 +90,23 @@ display:block;
 font-size:1.15rem;
 color:#7f1d1d;
 font-weight:bold;
+}
+
+.progreso-container{
+width:100%;
+height:14px;
+background:#ffe4e6;
+border-radius:20px;
+overflow:hidden;
+margin-bottom:20px;
+border:1px solid #fecdd3;
+}
+
+.barra-progreso{
+width:0%;
+height:100%;
+background:#f43f5e;
+transition:width 0.3s ease;
 }
 
 .question{
@@ -360,17 +376,13 @@ font-weight:bold;
 }
 
 @media(max-width:768px){
-
 .ranking-panel{
 width:260px;
 }
-
 .container{
 padding:18px;
 }
-
 }
-
 </style>
 </head>
 
@@ -381,121 +393,66 @@ padding:18px;
 <div class="header">
 <h1>📖 Examen Verbal 5</h1>
 <p>Versión digital interactiva - Dificultad: Nivel 3</p>
-<a class="top-link" href="../verbal.html">
-← Volver a Verbal
-</a>
+<a class="top-link" href="../verbal.html">← Volver a Verbal</a>
 </div>
 
 <div class="stats-bar">
-
 <div class="stat-box">
-<span class="stat-label">
-Pregunta actual
-</span>
-
-<span class="stat-value">
-<span id="qNum">1</span> / 25
-</span>
+<span class="stat-label">Pregunta actual</span>
+<span class="stat-value"><span id="qNum">1</span> / 25</span>
+</div>
+<div class="stat-box">
+<span class="stat-label">Progreso</span>
+<span class="stat-value" id="progress">0 / 25</span>
+</div>
 </div>
 
-<div class="stat-box">
-<span class="stat-label">
-Progreso
-</span>
-
-<span class="stat-value" id="progress">
-0 / 25
-</span>
-</div>
-
+<div class="progreso-container">
+<div class="barra-progreso" id="barraProgreso"></div>
 </div>
 
 <div id="quiz"></div>
 
 <div class="actions">
-
-<button type="button"
-class="btn-primary"
-onclick="finishQuiz()">
-Calificar examen
-</button>
-
-<button type="button"
-class="btn-secondary"
-onclick="reiniciarExamen()">
-Reiniciar
-</button>
-
+<button type="button" class="btn-primary" onclick="finishQuiz()">Calificar examen</button>
+<button type="button" class="btn-secondary" onclick="reiniciarExamen()">Reiniciar</button>
 </div>
 
 <div class="result" id="resultado">
-
-<h2>
-Resultado Final
-</h2>
-
+<h2>Resultado Final</h2>
 <p id="puntajeTexto"></p>
-
 <div class="review" id="revision"></div>
-
 </div>
 
 </div>
 
 <script>
-
 const questions = [
-
 {q:"RELOJ es a TIEMPO como TERMÓMETRO es a ___",o:["Calor","Temperatura","Clima","Presión"],a:1,exp:"El reloj mide tiempo y el termómetro temperatura."},
-
 {q:"ABOGADO es a LEY como MÉDICO es a ___",o:["Hospital","Enfermedad","Medicina","Paciente"],a:2,exp:"Profesión y ciencia."},
-
 {q:"SEMILLA es a ÁRBOL como HUEVO es a ___",o:["Ave","Nido","Pluma","Pico"],a:0,exp:"Origen y resultado."},
-
 {q:"TRIÁNGULO es a TRES como CUADRADO es a ___",o:["Lados","Cuatro","Ángulos","Recta"],a:1,exp:"Cantidad relacionada."},
-
 {q:"FELIZ es a ALEGRE como TRISTE es a ___",o:["Melancólico","Rápido","Callado","Fuerte"],a:0,exp:"Sinonimia."},
-
 {q:"NORTE es a SUR como ESTE es a ___",o:["Oeste","Arriba","Abajo","Centro"],a:0,exp:"Opuestos."},
-
 {q:"PÁGINA es a LIBRO como CAPÍTULO es a ___",o:["Texto","Biblioteca","Obra","Hoja"],a:2,exp:"Parte y todo."},
-
 {q:"LLAVE es a PUERTA como CONTRASEÑA es a ___",o:["Correo","Cuenta","Pantalla","Usuario"],a:1,exp:"Acceso."},
-
 {q:"AGUA es a SED como COMIDA es a ___",o:["Sueño","Apetito","Ansiedad","Dolor"],a:1,exp:"Necesidad satisfecha."},
-
 {q:"PERRO es a CACHORRO como GATO es a ___",o:["Felino","Bigote","Ratón","Gatito"],a:3,exp:"Animal y cría."},
-
 {q:"RÁPIDO es a LENTO como CALIENTE es a ___",o:["Frío","Fuego","Hielo","Templado"],a:0,exp:"Antónimos."},
-
 {q:"OJO es a VER como OÍDO es a ___",o:["Escuchar","Hablar","Pensar","Mirar"],a:0,exp:"Órgano y función."},
-
 {q:"ESCRITOR es a LIBRO como PINTOR es a ___",o:["Brocha","Arte","Cuadro","Color"],a:2,exp:"Profesión y obra."},
-
 {q:"MADERA es a ÁRBOL como PAPEL es a ___",o:["Libro","Celulosa","Cuaderno","Tinta"],a:1,exp:"Material derivado."},
-
 {q:"CAMINAR es a PIES como ESCRIBIR es a ___",o:["Papel","Dedos","Manos","Lápiz"],a:2,exp:"Acción y parte usada."},
-
 {q:"SOL es a DÍA como LUNA es a ___",o:["Tierra","Noche","Estrella","Cielo"],a:1,exp:"Relación natural."},
-
 {q:"PINTURA es a BROCHA como MÚSICA es a ___",o:["Instrumento","Sonido","Radio","Micrófono"],a:0,exp:"Herramienta utilizada."},
-
 {q:"LEÓN es a SELVA como CAMELLO es a ___",o:["Arena","Desierto","Oasis","Sabana"],a:1,exp:"Animal y hábitat."},
-
 {q:"CORRER es a VELOCIDAD como ESTUDIAR es a ___",o:["Aprendizaje","Escuela","Libro","Memoria"],a:0,exp:"Acción y resultado."},
-
 {q:"AVIÓN es a PILOTO como BARCO es a ___",o:["Capitán","Mar","Puerto","Pescador"],a:0,exp:"Vehículo y conductor."},
-
 {q:"BIBLIOTECA es a LIBROS como MUSEO es a ___",o:["Arte","Historia","Pinturas","Escultor"],a:2,exp:"Lugar y contenido."},
-
 {q:"DORMIR es a DESCANSAR como COMER es a ___",o:["Beber","Nutrir","Masticar","Cocinar"],a:1,exp:"Acción y finalidad."},
-
 {q:"CEREBRO es a PENSAR como CORAZÓN es a ___",o:["Respirar","Sentir","Caminar","Mover"],a:1,exp:"Órgano y función."},
-
 {q:"LÁPIZ es a BORRADOR como PLUMA es a ___",o:["Tinta","Corrector","Papel","Libro"],a:1,exp:"Objeto y corrector."},
-
 {q:"MAESTRO es a ESCUELA como DOCTOR es a ___",o:["Paciente","Clínica","Medicina","Cirugía"],a:1,exp:"Profesión y lugar de trabajo."}
-
 ];
 
 let current = 0;
@@ -508,6 +465,9 @@ function actualizarProgreso(){
 const respondidas = answers.filter(a => a !== null).length;
 document.getElementById("progress").textContent = `${respondidas} / ${questions.length}`;
 document.getElementById("qNum").textContent = current + 1;
+
+const porcentajeBarra = ((current + 1) / questions.length) * 100;
+document.getElementById("barraProgreso").style.width = `${porcentajeBarra}%`;
 }
 
 function render(){
@@ -536,7 +496,7 @@ ${String.fromCharCode(65+j)}. ${op}
 });
 
 div.innerHTML = `
-<h3>${q.q}</h3>
+<h3>${i+1}. ${q.q}</h3>
 ${opts}
 <div class="navigation">
 <button class="prev" onclick="prevQuestion()" ${i===0 ? "disabled" : ""}>Anterior</button>
@@ -591,15 +551,15 @@ else incorrectas++;
 });
 
 const porcentaje = Math.round((correctas/total)*100);
+localStorage.setItem("verbal5", porcentaje);
 
-// GENERACIÓN DE BOTS NIVEL 3 (Notas entre 75% y 100%)
 const bots = [];
 for(let i=1; i<=30; i++){
-    const notaBot = Math.floor(Math.random() * 26) + 75; // Genera 75 - 100
-    bots.push({
-        nombre: `Bot_${i}`,
-        nota: notaBot
-    });
+const notaBot = Math.floor(Math.random() * 26) + 75;
+bots.push({
+nombre: `Bot_${i}`,
+nota: notaBot
+});
 }
 
 const ranking = [
@@ -677,45 +637,17 @@ ${ranking.map((p,i)=>`
 <p style="font-size:26px; font-weight:bold; margin-top:10px; color:#e11d48;">${porcentaje}%</p>
 <div class="review-summary">
 <div class="summary-box"><h4>Correctas</h4><p>${correctas}</p></div>
-<div class="summary-box"><h4>Incorrectas</h4><p>${incorrectas}</p></div>
+<div class="summary-box"><h4>Incorrectas</h4><p> ${incorrectas}</p></div>
 <div class="summary-box"><h4>Sin responder</h4><p>${sinResponder}</p></div>
 <div class="summary-box"><h4>Percentil</h4><p>${percentil}%</p></div>
 <div class="summary-box"><h4>Nivel</h4><p>${nivel}</p></div>
 </div>
-</div>
-
-<!-- Botón para ir al Examen de Matemáticas Aleatorio -->
-<div style="text-align:center; margin-top:20px;">
-  <button type="button" class="btn-primary" id="btnIrMathAleatorio" style="font-size:1.1rem; padding:14px 28px;">
-    Ir al Examen de Matemáticas Aleatorio ➡️
-  </button>
 </div>
 `;
 
 document.getElementById("revision").innerHTML = revisionHTML;
 document.getElementById("resultado").style.display = "block";
 document.getElementById("resultado").scrollIntoView({ behavior:"smooth" });
-
-// Agregar el listener al botón dinámico de matemáticas creado dentro del reporte
-const btnMath = document.getElementById("btnIrMathAleatorio");
-if(btnMath){
-  btnMath.addEventListener("click", () => {
-    const examenesMatematicas = [
-      "mate-eval-1.html",
-      "mate-eval-2.html",
-      "mate-eval-3.html",
-      "mate-eval-4.html",
-      "mate-eval-5.html",
-      "mate-eval-6.html",
-      "mate-eval-7.html",
-      "mate-eval-8.html",
-      "mate-eval-9.html",
-      "mate-eval-10.html"
-    ];
-    const indiceAleatorio = Math.floor(Math.random() * examenesMatematicas.length);
-    window.location.href = examenesMatematicas[indiceAleatorio];
-  });
-}
 
 render();
 
@@ -743,7 +675,6 @@ render();
 }
 
 render();
-
 </script>
 
 <script type="module" src="../party/party-timer.js"></script>
