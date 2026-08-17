@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Modo Evaluación - Examen 7 (Numérica)</title>
+
+<style>
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+}
+
+body{
+  font-family:Arial, Helvetica, sans-serif;
+  background:linear-gradient(135deg,#f0f9ff,#e0f2fe,#bae6fd);
+  color:#0c4a6e;
+  min-height:100vh;
+  padding:30px 15px;
+}
+
+.container{
+  max-width:950px;
+  margin:auto;
+  background:rgba(255,255,255,0.95);
+  padding:25px;
+  border-radius:24px;
+  box-shadow:0 12px 35px rgba(0,0,0,0.08);
+}
+
+.header{
+  text-align:center;
+  margin-bottom:20px;
+}
+
+.header h1{
+  font-size:clamp(1.9rem,4vw,2.7rem);
+  margin-bottom:10px;
+  color:#0284c7;
+}
+
+.header p{
+  color:#0369a1;
+  opacity:0.9;
+  line-height:1.5;
+}
+
+.badge-eval{
+  display:inline-block;
+  background:#0284c7;
+  color:white;
+  padding:6px 14px;
+  border-radius:20px;
+  font-size:0.85rem;
+  font-weight:bold;
+  margin-bottom:10px;
+}
+
+.inicio-panel{
+  text-align:center;
+  padding:20px 10px;
+}
+
+.stats-bar{
+  display:flex;
+  flex-wrap:wrap;
+  gap:12px;
+  justify-content:center;
+  align-items:center;
+  margin-bottom:20px;
+}
+
+.stat-box{
+  background:#fff;
+  border:1px solid #bae6fd;
+  border-radius:14px;
+  padding:12px 18px;
+  min-width:150px;
+  text-align:center;
+  box-shadow:0 4px 12px rgba(0,0,0,0.05);
+}
+
+.stat-label{
+  display:block;
+  font-size:0.9rem;
+  color:#0284c7;
+  margin-bottom:4px;
+  font-weight:bold;
+}
+
+.stat-value{
+  display:block;
+  font-size:1.15rem;
+  color:#0c4a6e;
+  font-weight:bold;
+}
+
+.progreso-container{
+  width:100%;
+  height:14px;
+  background:#e0f2fe;
+  border-radius:20px;
+  overflow:hidden;
+  margin-bottom:20px;
+  border:1px solid #bae6fd;
+}
+
+.barra-progreso{
+  width:0%;
+  height:100%;
+  background:#0284c7;
+  transition:width 0.3s ease;
+}
+
+.question{
+  background:#f0f9ff;
+  border:1px solid #bae6fd;
+  border-radius:20px;
+  padding:20px;
+  margin-bottom:18px;
+}
+
+.question h3{
+  font-size:1.08rem;
+  line-height:1.6;
+  color:#0284c7;
+  margin-bottom:14px;
+}
+
+.option{
+  display:block;
+  background:#e0f2fe;
+  padding:12px 14px;
+  margin:10px 0;
+  border-radius:12px;
+  cursor:pointer;
+  border:1px solid transparent;
+  transition:0.2s ease;
+  color:#0369a1;
+}
+
+.option:hover{
+  background:#bae6fd;
+  border-color:#38bdf8;
+}
+
+.option.selected{
+  background:#0284c7;
+  color:white;
+  border-color:#0369a1;
+}
+
+.navigation{
+  display:flex;
+  flex-wrap:wrap;
+  gap:12px;
+  justify-content:center;
+  margin-top:18px;
+}
+
+button, .btn-link{
+  border:none;
+  border-radius:14px;
+  padding:12px 20px;
+  font-size:1rem;
+  font-weight:bold;
+  cursor:pointer;
+  transition:0.2s ease;
+  text-decoration:none;
+  display:inline-block;
+  text-align:center;
+}
+
+button:hover, .btn-link:hover{
+  transform:translateY(-1px);
+}
+
+.prev{
+  background:#bae6fd;
+  color:#0c4a6e;
+}
+
+.prev:hover{
+  background:#38bdf8;
+  color:white;
+}
+
+.next{
+  background:#0ea5e9;
+  color:white;
+}
+
+.next:hover{
+  background:#0284c7;
+}
+
+.actions{
+  display:flex;
+  justify-content:center;
+  flex-wrap:wrap;
+  gap:12px;
+  margin-top:25px;
+}
+
+.btn-primary{
+  background:#0284c7;
+  color:white;
+  font-size:1.1rem;
+  padding:14px 28px;
+}
+
+.btn-primary:hover{
+  background:#0369a1;
+}
+
+.btn-secondary{
+  background:#bae6fd;
+  color:#0c4a6e;
+  font-size:1.1rem;
+  padding:14px 28px;
+}
+
+.btn-secondary:hover{
+  background:#38bdf8;
+  color:white;
+}
+
+.oculto{
+  display:none !important;
+}
+
+/* RESULTADOS */
+
+.result-card{
+  background:white;
+  border:1px solid #bae6fd;
+  border-radius:20px;
+  padding:25px;
+  margin-top:20px;
+  text-align:center;
+  box-shadow:0 8px 25px rgba(0,0,0,0.05);
+}
+
+.result-card h2{
+  color:#0284c7;
+  margin-bottom:15px;
+}
+
+.metrics-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit, minmax(130px, 1fr));
+  gap:12px;
+  margin:20px 0;
+}
+
+.metric-box{
+  background:#f0f9ff;
+  border:1px solid #bae6fd;
+  padding:12px;
+  border-radius:12px;
+}
+
+.metric-box h4{
+  font-size:0.85rem;
+  color:#0284c7;
+  margin-bottom:4px;
+}
+
+.metric-box p{
+  font-size:1.25rem;
+  font-weight:bold;
+  color:#0c4a6e;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="header">
+  <span class="badge-eval">EVALUACIÓN DE PRUEBA - EXAMEN 7</span>
+  <h1>🧠 Simulacro Final – Habilidad Numérica</h1>
+  <p>Responde las 25 preguntas del simulacro de nivel examen real.</p>
+</div>
+
+<!-- PANTALLA INICIO -->
+<div id="pantallaInicio" class="inicio-panel">
+  <div class="question" style="display:block; margin-bottom:20px;">
+    <h3>Evaluación de Habilidad Numérica (Simulacro Final)</h3>
+    <p style="color:#0369a1; margin-top:8px;">Pon a prueba tus destrezas globales con series numéricas avanzadas, ecuaciones, porcentajes, áreas y perímetros.</p>
+  </div>
+  <button type="button" class="btn-primary" id="startBtn">Iniciar examen</button>
+</div>
+
+<!-- PANTALLA EXAMEN -->
+<div id="pantallaExamen" class="oculto">
+
+  <div class="stats-bar">
+    <div class="stat-box">
+      <span class="stat-label">Pregunta actual</span>
+      <span class="stat-value"><span id="qNum">1</span> / 25</span>
+    </div>
+    <div class="stat-box">
+      <span class="stat-label">Progreso</span>
+      <span class="stat-value" id="progress">0 / 25</span>
+    </div>
+    <div class="stat-box">
+      <span class="stat-label">Puntaje actual</span>
+      <span class="stat-value" id="puntajeText">0</span>
+    </div>
+  </div>
+
+  <div class="progreso-container">
+    <div class="barra-progreso" id="barraProgreso"></div>
+  </div>
+
+  <div id="quiz"></div>
+
+  <div class="actions">
+    <button type="button" class="btn-primary" id="btnCalificar">
+      Finalizar y Calificar
+    </button>
+    <button type="button" class="btn-secondary" id="btnReiniciar">
+      Reiniciar
+    </button>
+  </div>
+
+</div>
+
+<!-- TARJETA DE RESULTADOS -->
+<div class="result-card oculto" id="resultadoPanel">
+  <h2>📊 Resultado de la Evaluación</h2>
+  <div class="metrics-grid">
+    <div class="metric-box">
+      <h4>Aciertos</h4>
+      <p id="resAciertos">0 / 25</p>
+    </div>
+    <div class="metric-box">
+      <h4>Porcentaje</h4>
+      <p id="resPorcentaje">0%</p>
+    </div>
+    <div class="metric-box">
+      <h4>Percentil</h4>
+      <p id="resPercentil">0%</p>
+    </div>
+    <div class="metric-box">
+      <h4>Nivel</h4>
+      <p id="resNivel">-</p>
+    </div>
+    <div class="metric-box">
+      <h4>Posición Bot</h4>
+      <p id="resPosicion">#--</p>
+    </div>
+  </div>
+
+  <div class="actions">
+    <button type="button" class="btn-secondary" id="btnReintentar">Reintentar Simulacro</button>
+    <button type="button" class="btn-primary" id="btnVerResultados">Ver Resultados Finales 🏆</button>
+  </div>
+
+</div>
+
+</div>
+
+<script type="module">
+import { calcularResultadoEval } from './eval-bots.js';
+
+const questions = [
+  { q: "Serie: 4, 9, 19, 39, 79, ?", o: ["119", "139", "159", "199", "Ninguna"], a: 2, exp: "Se multiplica por 2 y se suma 1: 79×2+1=159" },
+  { q: "Serie: 1, 3, 6, 10, 15, ?", o: ["18", "20", "21", "24", "Ninguna"], a: 2, exp: "Se suma 2,3,4,5,6 → 15+6=21" },
+  { q: "Serie: 2, 6, 7, 21, 22, ?", o: ["44", "66", "67", "88", "Ninguna"], a: 1, exp: "Se alterna ×3 y +1 → 22×3=66" },
+  { q: "Serie: 5, 10, 20, 40, 80, ?", o: ["120", "140", "160", "180", "Ninguna"], a: 2, exp: "Se multiplica por 2 → 80×2=160" },
+  { q: "Serie: 3, 6, 18, 72, ?", o: ["144", "216", "288", "360", "Ninguna"], a: 2, exp: "Se multiplica por 2,3,4 → 72×4=288" },
+  { q: "Si 4x - 8 = 24, ¿x?", o: ["6", "7", "8", "9", "Ninguna"], a: 2, exp: "4x=32 → x=8" },
+  { q: "Si 3x + 6 = 21, ¿x?", o: ["3", "4", "5", "6", "Ninguna"], a: 2, exp: "3x=15 → x=5" },
+  { q: "Si x/4 = 7, ¿x?", o: ["21", "24", "28", "32", "Ninguna"], a: 2, exp: "x=28" },
+  { q: "Si 2x + 5 = 19, ¿x?", o: ["5", "6", "7", "8", "Ninguna"], a: 2, exp: "2x=14 → x=7" },
+  { q: "(3/5)+(7/10)", o: ["1", "11/10", "12/10", "13/10", "Ninguna"], a: 3, exp: "6/10+7/10=13/10" },
+  { q: "(4/3)×(9/8)", o: ["3/2", "1/2", "2", "4", "Ninguna"], a: 0, exp: "36/24=3/2" },
+  { q: "(10/3)÷(5/6)", o: ["2", "3", "4", "5", "Ninguna"], a: 2, exp: "(10/3)×(6/5)=60/15=4" },
+  { q: "25% de 360", o: ["80", "85", "90", "95", "Ninguna"], a: 2, exp: "0.25×360=90" },
+  { q: "40% de 250", o: ["80", "90", "100", "110", "Ninguna"], a: 2, exp: "0.4×250=100" },
+  { q: "Si 12 es el 20% de un número, ¿cuál es?", o: ["50", "60", "70", "80", "Ninguna"], a: 1, exp: "12÷0.2=60" },
+  { q: "(8×5)+(12÷3)", o: ["40", "42", "44", "46", "Ninguna"], a: 2, exp: "40+4=44" },
+  { q: "(15×2)+(18÷6)", o: ["30", "32", "33", "36", "Ninguna"], a: 2, exp: "30+3=33" },
+  { q: "Serie: 1, 4, 9, 16, 25, ?", o: ["30", "32", "36", "40", "Ninguna"], a: 2, exp: "Son cuadrados: 6²=36" },
+  { q: "Serie: 2, 5, 10, 17, 26, ?", o: ["35", "36", "37", "38", "Ninguna"], a: 2, exp: "Se suma 3,5,7,9,11 → 26+11=37" },
+  { q: "Serie: 1, 2, 4, 8, 16, ?", o: ["24", "30", "32", "36", "Ninguna"], a: 2, exp: "Se multiplica por 2 → 32" },
+  { q: "Promedio de 20, 30, 40, 50", o: ["30", "35", "40", "45", "Ninguna"], a: 1, exp: "(20+30+40+50)/4=35" },
+  { q: "Perímetro de un cuadrado lado 7", o: ["21", "24", "28", "30", "Ninguna"], a: 2, exp: "7×4=28" },
+  { q: "Área de un rectángulo 8×5", o: ["30", "35", "40", "45", "Ninguna"], a: 2, exp: "8×5=40" },
+  { q: "Si 5x = 45, ¿x?", o: ["7", "8", "9", "10", "Ninguna"], a: 2, exp: "x=9" },
+  { q: "Si x² = 81, ¿x?", o: ["7", "8", "9", "10", "Ninguna"], a: 2, exp: "x=9" }
+];
+
+let current = 0;
+let answers = new Array(questions.length).fill(null);
+let evaluado = false;
+
+const quiz = document.getElementById("quiz");
+
+function calcularPuntajeActual() {
+  let aciertos = 0;
+  questions.forEach((q, i) => {
+    if(answers[i] === q.a) aciertos++;
+  });
+  return aciertos;
+}
+
+function actualizarProgreso(){
+  const respondidas = answers.filter(a => a !== null).length;
+  document.getElementById("progress").textContent = `${respondidas} / ${questions.length}`;
+  document.getElementById("qNum").textContent = current + 1;
+  document.getElementById("puntajeText").textContent = calcularPuntajeActual();
+
+  const porcentajeBarra = ((current + 1) / questions.length) * 100;
+  document.getElementById("barraProgreso").style.width = `${porcentajeBarra}%`;
+}
+
+function render(){
+  quiz.innerHTML = "";
+
+  questions.forEach((q,i)=>{
+    let div = document.createElement("div");
+    div.className = "question" + (i===current ? " active" : "");
+    if (i !== current) div.style.display = "none";
+
+    let opts = "";
+
+    q.o.forEach((op,j)=>{
+      let extraClass = answers[i] === j ? " selected" : "";
+
+      opts += `
+        <div class="option${extraClass}" data-q="${i}" data-o="${j}">
+          ${String.fromCharCode(65+j)}. ${op}
+        </div>
+      `;
+    });
+
+    div.innerHTML = `
+      <h3>${i+1}. ${q.q}</h3>
+      ${opts}
+      <div class="navigation">
+        <button type="button" class="prev" data-action="prev" ${i===0 ? "disabled" : ""}>Anterior</button>
+        ${i===questions.length-1
+          ? `<button type="button" class="next" data-action="finish">Finalizar</button>`
+          : `<button type="button" class="next" data-action="next">Siguiente</button>`
+        }
+      </div>
+    `;
+
+    quiz.appendChild(div);
+  });
+
+  // Eventos de selección
+  quiz.querySelectorAll('.option').forEach(opt => {
+    opt.addEventListener('click', (e) => {
+      if(evaluado) return;
+      const qIdx = parseInt(e.currentTarget.getAttribute('data-q'));
+      const oIdx = parseInt(e.currentTarget.getAttribute('data-o'));
+      answers[qIdx] = oIdx;
+      render();
+    });
+  });
+
+  // Eventos de navegación
+  quiz.querySelectorAll('button[data-action]').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      const action = e.currentTarget.getAttribute('data-action');
+      if(action === 'next') nextQuestion();
+      if(action === 'prev') prevQuestion();
+      if(action === 'finish') calificar();
+    });
+  });
+
+  actualizarProgreso();
+}
+
+function iniciarExamen(){
+  document.getElementById("pantallaInicio").classList.add("oculto");
+  document.getElementById("pantallaExamen").classList.remove("oculto");
+  render();
+}
+
+function nextQuestion(){
+  if(current < questions.length-1){
+    current++;
+    render();
+    window.scrollTo({ top:0, behavior:"smooth" });
+  }
+}
+
+function prevQuestion(){
+  if(current > 0){
+    current--;
+    render();
+  }
+}
+
+function calificar(){
+  if(evaluado) return;
+  evaluado = true;
+
+  let correctas = calcularPuntajeActual();
+  
+  // Guardar puntaje en escala 0-100 para la vista final de resultados
+  let notaEscalada = Math.round((correctas / questions.length) * 100);
+  localStorage.setItem("numerica", notaEscalada);
+
+  // Obtener cálculo con bots
+  let res = { porcentaje: 0, percentil: 50, nivel: "Promedio", posicion: 1, ranking: [] };
+  if (typeof calcularResultadoEval === "function") {
+    res = calcularResultadoEval(correctas, questions.length);
+  } else {
+    res.porcentaje = notaEscalada;
+  }
+
+  document.getElementById("resAciertos").textContent = `${correctas} / ${questions.length}`;
+  document.getElementById("resPorcentaje").textContent = `${res.porcentaje}%`;
+  document.getElementById("resPercentil").textContent = `${res.percentil}%`;
+  document.getElementById("resNivel").textContent = res.nivel;
+  document.getElementById("resPosicion").textContent = `#${res.posicion} de ${res.ranking ? res.ranking.length : 30}`;
+
+  document.getElementById("pantallaExamen").classList.add("oculto");
+  const panel = document.getElementById("resultadoPanel");
+  panel.classList.remove("oculto");
+  panel.scrollIntoView({ behavior:"smooth" });
+}
+
+function reiniciar(){
+  current = 0;
+  answers = new Array(questions.length).fill(null);
+  evaluado = false;
+  document.getElementById("resultadoPanel").classList.add("oculto");
+  document.getElementById("pantallaExamen").classList.add("oculto");
+  document.getElementById("pantallaInicio").classList.remove("oculto");
+  window.scrollTo({ top:0, behavior:"smooth" });
+}
+
+document.getElementById("startBtn").addEventListener("click", iniciarExamen);
+document.getElementById("btnCalificar").addEventListener("click", calificar);
+document.getElementById("btnReiniciar").addEventListener("click", reiniciar);
+document.getElementById("btnReintentar").addEventListener("click", reiniciar);
+document.getElementById("btnVerResultados").addEventListener("click", () => {
+  window.location.href = "resultados.html";
+});
+
+</script>
+
+</body>
+</html>
