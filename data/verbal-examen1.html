@@ -270,9 +270,9 @@ padding:18px;
 <button class="toggle-ranking" onclick="toggleRanking()">🏆 Ranking</button>
 
 <div class="ranking-panel hidden" id="rankingPanel">
-  <div class="ranking-content" id="party-rankings">
+  <div class="ranking-content" id="ranking-container">
     <h3>Ranking en vivo</h3>
-    <p style="font-size:0.9rem; color:#666; margin-top:5px;">Cargando participantes...</p>
+    <p style="font-size:0.9rem; color:#666; margin-top:5px;">Cargando competidores...</p>
   </div>
 </div>
 
@@ -470,8 +470,8 @@ window.onload = function() {
 };
 </script>
 
-<script type="module" src="../party/party-timer.js"></script>
-<script type="module" src="../party/party-resultados.js"></script>
+<!-- Carga del script centralizado de bots desde la raíz -->
+<script type="module" src="../bots.js"></script>
 
 </body>
 </html>
