@@ -493,23 +493,16 @@ render();
 }
 
 function calificar(){
-if(evaluado) return;
-evaluado = true;
+  if(evaluado) return;
+  evaluado = true;
 
-let correctas = calcularPuntajeActual();
+  let correctas = calcularPuntajeActual();
+  
+  // 1. Guardar la nota numérica en el navegador
+  localStorage.setItem("numerica", correctas);
 
-const res = calcularResultadoEval(correctas, questions.length);
-
-document.getElementById("resAciertos").textContent = `${correctas} / ${questions.length}`;
-document.getElementById("resPorcentaje").textContent = `${res.porcentaje}%`;
-document.getElementById("resPercentil").textContent = `${res.percentil}%`;
-document.getElementById("resNivel").textContent = res.nivel;
-document.getElementById("resPosicion").textContent = `#${res.posicion} de ${res.ranking.length}`;
-
-document.getElementById("pantallaExamen").classList.add("oculto");
-const panel = document.getElementById("resultadoPanel");
-panel.classList.remove("oculto");
-panel.scrollIntoView({ behavior:"smooth" });
+  // 2. Redirigir a la página final de resultados
+  window.location.href = "resultados.html"; 
 }
 
 function reiniciar(){
