@@ -319,6 +319,7 @@ Progreso
 <div class="actions">
 
 <button class="btn-primary"
+id="btnCalificar"
 onclick="finishQuiz()">
 Calificar examen
 </button>
@@ -344,7 +345,8 @@ Resultado Final
 
 </div>
 
-<script>
+<script type="module">
+import { esModoSecuencia, guardarResultadoExamen, obtenerExamenMateAleatorio } from "../secuenciaExamenes.js";
 
 const questions = [
 
@@ -607,25 +609,28 @@ function finishQuiz(){
 
 if(examenFinalizado) return;
 
-examenFinalizado = true;
-
 let total = questions.length;
-
 let correctas = 0;
 
-let revisionHTML = "";
-
 questions.forEach((q,i)=>{
+  if(answers[i] === q.a){
+    correctas++;
+  }
+});
 
-const respuestaUsuario = answers[i];
-
-if(respuestaUsuario === q.a){
-
-correctas++;
-
+// INTERCEPCIÓN MODO EVALUACIÓN
+if(esModoSecuencia()){
+  examenFinalizado = true;
+  guardarResultadoExamen("verbal", correctas, total);
+  alert("¡Etapa Verbal completada! A continuación realizarás la Etapa 2: Habilidad Numérica.");
+  const examenMate = obtenerExamenMateAleatorio();
+  window.location.href = `../data/${examenMate.replace(/^data\//, '')}`;
+  return;
 }
 
-});
+examenFinalizado = true;
+
+let revisionHTML = "";
 
 const porcentaje =
 Math.round((correctas/total)*100);
@@ -917,6 +922,14 @@ function reiniciarExamen(){
 location.reload();
 
 }
+
+// Exponer funciones al scope global (window) necesarias para eventos HTML onclick
+window.selectOption = selectOption;
+window.nextQuestion = nextQuestion;
+window.prevQuestion = prevQuestion;
+window.finishQuiz = finishQuiz;
+window.toggleRanking = toggleRanking;
+window.reiniciarExamen = reiniciarExamen;
 
 render();
 
