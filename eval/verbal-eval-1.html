@@ -170,7 +170,7 @@ justify-content:center;
 margin-top:18px;
 }
 
-button{
+button, .btn-link{
 border:none;
 border-radius:14px;
 padding:12px 20px;
@@ -178,9 +178,12 @@ font-size:1rem;
 font-weight:bold;
 cursor:pointer;
 transition:0.2s ease;
+text-decoration:none;
+display:inline-block;
+text-align:center;
 }
 
-button:hover{
+button:hover, .btn-link:hover{
 transform:translateY(-1px);
 }
 
@@ -206,6 +209,7 @@ background:#db2777;
 .actions{
 display:flex;
 justify-content:center;
+flex-wrap:wrap;
 gap:12px;
 margin-top:25px;
 }
@@ -360,9 +364,13 @@ Reiniciar
 <p id="resPosicion">#--</p>
 </div>
 </div>
+
 <div class="actions">
-<button type="button" class="btn-secondary" id="btnReintentar">Intentar otra vez</button>
+<button type="button" class="btn-secondary" id="btnReintentar">Reintentar Verbal</button>
+<!-- BOTÓN AGREGA PARA IR A MATEMÁTICAS -->
+<a href="matematicas-eval-1.html" class="btn-primary btn-link">Ir al Examen de Matemáticas ➡️</a>
 </div>
+
 </div>
 
 </div>
