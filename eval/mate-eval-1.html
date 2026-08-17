@@ -6,7 +6,6 @@
 <title>Modo Evaluación - Examen 1 (Matemática)</title>
 
 <style>
-
 *{
 box-sizing:border-box;
 margin:0;
@@ -58,6 +57,11 @@ font-weight:bold;
 margin-bottom:10px;
 }
 
+.inicio-panel{
+text-align:center;
+padding:20px 10px;
+}
+
 .stats-bar{
 display:flex;
 flex-wrap:wrap;
@@ -92,17 +96,29 @@ color:#1e3a8a;
 font-weight:bold;
 }
 
+.progreso-container{
+width:100%;
+height:14px;
+background:#dbeafe;
+border-radius:20px;
+overflow:hidden;
+margin-bottom:20px;
+border:1px solid #93c5fd;
+}
+
+.barra-progreso{
+width:0%;
+height:100%;
+background:#2563eb;
+transition:width 0.3s ease;
+}
+
 .question{
-display:none;
 background:#eff6ff;
 border:1px solid #93c5fd;
 border-radius:20px;
 padding:20px;
 margin-bottom:18px;
-}
-
-.question.active{
-display:block;
 }
 
 .question h3{
@@ -205,10 +221,13 @@ padding:14px 28px;
 background:#93c5fd;
 }
 
+.oculto{
+display:none !important;
+}
+
 /* RESULTADOS */
 
 .result-card{
-display:none;
 background:white;
 border:1px solid #93c5fd;
 border-radius:20px;
@@ -248,7 +267,6 @@ font-size:1.25rem;
 font-weight:bold;
 color:#1e3a8a;
 }
-
 </style>
 </head>
 
@@ -259,21 +277,38 @@ color:#1e3a8a;
 <div class="header">
 <span class="badge-eval">EVALUACIÓN DE PRUEBA - EXAMEN 1</span>
 <h1>🧠 Examen Matemática 1</h1>
-<p>Responde las 24 preguntas. Al finalizar obtendrás tus aciertos, percentil y nivel en vivo.</p>
+<p>Responde las 40 preguntas. Al finalizar obtendrás tus aciertos, percentil y nivel en vivo.</p>
 </div>
+
+<!-- PANTALLA INICIO -->
+<div id="pantallaInicio" class="inicio-panel">
+<div class="question" style="display:block; margin-bottom:20px;">
+<h3>Simulador de Habilidad Numérica</h3>
+<p style="color:#1e40af; margin-top:8px;">Series numéricas, lógica, operaciones, porcentajes y razonamiento matemático.</p>
+</div>
+<button type="button" class="btn-primary" id="startBtn">Iniciar examen</button>
+</div>
+
+<!-- PANTALLA EXAMEN -->
+<div id="pantallaExamen" class="oculto">
 
 <div class="stats-bar">
-
 <div class="stat-box">
 <span class="stat-label">Pregunta actual</span>
-<span class="stat-value"><span id="qNum">1</span> / 24</span>
+<span class="stat-value"><span id="qNum">1</span> / 40</span>
 </div>
-
 <div class="stat-box">
 <span class="stat-label">Progreso</span>
-<span class="stat-value" id="progress">0 / 24</span>
+<span class="stat-value" id="progress">0 / 40</span>
+</div>
+<div class="stat-box">
+<span class="stat-label">Puntaje actual</span>
+<span class="stat-value" id="puntajeText">0</span>
+</div>
 </div>
 
+<div class="progreso-container">
+<div class="barra-progreso" id="barraProgreso"></div>
 </div>
 
 <div id="quiz"></div>
@@ -287,13 +322,15 @@ Reiniciar
 </button>
 </div>
 
+</div>
+
 <!-- TARJETA DE RESULTADOS -->
-<div class="result-card" id="resultadoPanel">
+<div class="result-card oculto" id="resultadoPanel">
 <h2>📊 Resultado de la Evaluación</h2>
 <div class="metrics-grid">
 <div class="metric-box">
 <h4>Aciertos</h4>
-<p id="resAciertos">0 / 24</p>
+<p id="resAciertos">0 / 40</p>
 </div>
 <div class="metric-box">
 <h4>Porcentaje</h4>
@@ -312,6 +349,9 @@ Reiniciar
 <p id="resPosicion">#--</p>
 </div>
 </div>
+<div class="actions">
+<button type="button" class="btn-secondary" id="btnReintentar">Intentar otra vez</button>
+</div>
 </div>
 
 </div>
@@ -320,30 +360,32 @@ Reiniciar
 import { calcularResultadoEval } from './eval-bots.js';
 
 const questions = [
-{q:"Si 4x + 12 = 28, ¿cuál es el valor de x?",o:["2","3","4","5","Ninguna"],a:2},
-{q:"Serie: 3, 6, 12, 24, 48, ?",o:["72","84","96","100","Ninguna"],a:2},
-{q:"25% de 200",o:["25","40","50","60","Ninguna"],a:2},
-{q:"Si 7y - 5 = 30, ¿y?",o:["3","4","5","6","Ninguna"],a:2},
-{q:"Resto de 100 ÷ 9",o:["1","2","3","4","Ninguna"],a:0},
-{q:"8/N = N/2",o:["2","3","4","5","Ninguna"],a:2},
-{q:"(3/4)+(5/8)",o:["11/8","1/2","7/8","9/8","Ninguna"],a:0},
-{q:"15% de 80",o:["10","12","14","16","Ninguna"],a:1},
-{q:"Serie: 5, 10, 20, 40, ?",o:["60","70","80","90","Ninguna"],a:2},
-{q:"9 es el 30% de",o:["20","25","30","35","Ninguna"],a:2},
-{q:"2a + 3a + 5 = ?",o:["5a+5","6a+5","7a+5","8a","Ninguna"],a:0},
-{q:"12/18 simplificado",o:["2/3","3/4","4/5","6/9","Ninguna"],a:0},
-{q:"x/5 = 9",o:["35","40","45","50","Ninguna"],a:2},
-{q:"¿Cuál es mayor?",o:["2/3","3/5","4/7","5/8","Ninguna"],a:0},
-{q:"7×(5+3)",o:["40","48","56","64","Ninguna"],a:2},
-{q:"Serie: 1, 4, 9, 16, ?",o:["20","25","30","36","Ninguna"],a:1},
-{q:"Número divisible entre 2 y 5",o:["12","15","20","25","Ninguna"],a:2},
-{q:"6x = 42, ¿x?",o:["5","6","7","8","Ninguna"],a:2},
-{q:"(2/5)*(10/3)",o:["4/3","5/3","2","3","Ninguna"],a:0},
-{q:"50% de 120",o:["40","50","60","70","Ninguna"],a:2},
-{q:"Serie: 2, 6, 18, 54, ?",o:["72","96","162","180","Ninguna"],a:2},
-{q:"x + 8 = 20",o:["10","11","12","13","Ninguna"],a:2},
-{q:"No divisible entre 3",o:["123","456","789","100","Ninguna"],a:3},
-{q:"4m + 6m - 3m",o:["5m","6m","7m","8m","Ninguna"],a:2}
+
+{q:"Si 4x + 12 = 28, ¿cuál es el valor de x?",o:["2","3","4","5","Ninguna"],a:2,exp:"4x=16 → x=4"},
+{q:"Serie: 3, 6, 12, 24, 48, ?",o:["72","84","96","100","Ninguna"],a:2,exp:"Se multiplica por 2 → 96"},
+{q:"25% de 200",o:["25","40","50","60","Ninguna"],a:2,exp:"0.25×200=50"},
+{q:"Si 7y - 5 = 30, ¿y?",o:["3","4","5","6","Ninguna"],a:2,exp:"7y=35 → y=5"},
+{q:"Resto de 100 ÷ 9",o:["1","2","3","4","Ninguna"],a:0,exp:"9×11=99 → sobra 1"},
+{q:"8/N = N/2",o:["2","3","4","5","Ninguna"],a:2,exp:"N²=16 → N=4"},
+{q:"(3/4)+(5/8)",o:["11/8","1/2","7/8","9/8","Ninguna"],a:0,exp:"6/8 + 5/8 = 11/8"},
+{q:"15% de 80",o:["10","12","14","16","Ninguna"],a:1,exp:"0.15×80=12"},
+{q:"Serie: 5, 10, 20, 40, ?",o:["60","70","80","90","Ninguna"],a:2,exp:"×2 → 80"},
+{q:"9 es el 30% de",o:["20","25","30","35","Ninguna"],a:2,exp:"9/0.3=30"},
+{q:"2a + 3a + 5 = ?",o:["5a+5","6a+5","7a+5","8a","Ninguna"],a:0,exp:"5a+5"},
+{q:"12/18 simplificado",o:["2/3","3/4","4/5","6/9","Ninguna"],a:0,exp:"÷6 → 2/3"},
+{q:"x/5 = 9",o:["35","40","45","50","Ninguna"],a:2,exp:"x=45"},
+{q:"¿Cuál es mayor?",o:["2/3","3/5","4/7","5/8","Ninguna"],a:0,exp:"2/3 ≈ 0.66 mayor"},
+{q:"7×(5+3)",o:["40","48","56","64","Ninguna"],a:2,exp:"7×8=56"},
+{q:"Serie: 1, 4, 9, 16, ?",o:["20","25","30","36","Ninguna"],a:1,exp:"Cuadrados → 25"},
+{q:"Número divisible entre 2 y 5",o:["12","15","20","25","Ninguna"],a:2,exp:"20"},
+{q:"6x = 42, ¿x?",o:["5","6","7","8","Ninguna"],a:2,exp:"x=7"},
+{q:"(2/5)*(10/3)",o:["4/3","5/3","2","3","Ninguna"],a:0,exp:"=4/3"},
+{q:"50% de 120",o:["40","50","60","70","Ninguna"],a:2,exp:"=60"},
+{q:"Serie: 2, 6, 18, 54, ?",o:["72","96","162","180","Ninguna"],a:2,exp:"×3"},
+{q:"x + 8 = 20",o:["10","11","12","13","Ninguna"],a:2,exp:"x=12"},
+{q:"No divisible entre 3",o:["123","456","789","100","Ninguna"],a:3,exp:"100 no cumple"},
+{q:"4m + 6m - 3m",o:["5m","6m","7m","8m","Ninguna"],a:2,exp:"=7m"}
+
 ];
 
 let current = 0;
@@ -352,10 +394,22 @@ let evaluado = false;
 
 const quiz = document.getElementById("quiz");
 
+function calcularPuntajeActual() {
+let aciertos = 0;
+questions.forEach((q, i) => {
+if(answers[i] === q.a) aciertos++;
+});
+return aciertos;
+}
+
 function actualizarProgreso(){
 const respondidas = answers.filter(a => a !== null).length;
 document.getElementById("progress").textContent = `${respondidas} / ${questions.length}`;
 document.getElementById("qNum").textContent = current + 1;
+document.getElementById("puntajeText").textContent = calcularPuntajeActual();
+
+const porcentajeBarra = ((current + 1) / questions.length) * 100;
+document.getElementById("barraProgreso").style.width = `${porcentajeBarra}%`;
 }
 
 function render(){
@@ -364,6 +418,7 @@ quiz.innerHTML = "";
 questions.forEach((q,i)=>{
 let div = document.createElement("div");
 div.className = "question" + (i===current ? " active" : "");
+if (i !== current) div.style.display = "none";
 
 let opts = "";
 
@@ -403,7 +458,7 @@ render();
 });
 });
 
-// Eventos de botones
+// Eventos de navegación
 quiz.querySelectorAll('button[data-action]').forEach(btn => {
 btn.addEventListener('click', (e) => {
 const action = e.currentTarget.getAttribute('data-action');
@@ -414,6 +469,12 @@ if(action === 'finish') calificar();
 });
 
 actualizarProgreso();
+}
+
+function iniciarExamen(){
+document.getElementById("pantallaInicio").classList.add("oculto");
+document.getElementById("pantallaExamen").classList.remove("oculto");
+render();
 }
 
 function nextQuestion(){
@@ -435,12 +496,8 @@ function calificar(){
 if(evaluado) return;
 evaluado = true;
 
-let correctas = 0;
-questions.forEach((q, i) => {
-if(answers[i] === q.a) correctas++;
-});
+let correctas = calcularPuntajeActual();
 
-// Obtener percentil y ranking en tiempo real de eval-bots.js
 const res = calcularResultadoEval(correctas, questions.length);
 
 document.getElementById("resAciertos").textContent = `${correctas} / ${questions.length}`;
@@ -449,8 +506,9 @@ document.getElementById("resPercentil").textContent = `${res.percentil}%`;
 document.getElementById("resNivel").textContent = res.nivel;
 document.getElementById("resPosicion").textContent = `#${res.posicion} de ${res.ranking.length}`;
 
+document.getElementById("pantallaExamen").classList.add("oculto");
 const panel = document.getElementById("resultadoPanel");
-panel.style.display = "block";
+panel.classList.remove("oculto");
 panel.scrollIntoView({ behavior:"smooth" });
 }
 
@@ -458,15 +516,17 @@ function reiniciar(){
 current = 0;
 answers = new Array(questions.length).fill(null);
 evaluado = false;
-document.getElementById("resultadoPanel").style.display = "none";
-render();
+document.getElementById("resultadoPanel").classList.add("oculto");
+document.getElementById("pantallaExamen").classList.add("oculto");
+document.getElementById("pantallaInicio").classList.remove("oculto");
 window.scrollTo({ top:0, behavior:"smooth" });
 }
 
+document.getElementById("startBtn").addEventListener("click", iniciarExamen);
 document.getElementById("btnCalificar").addEventListener("click", calificar);
 document.getElementById("btnReiniciar").addEventListener("click", reiniciar);
+document.getElementById("btnReintentar").addEventListener("click", reiniciar);
 
-render();
 </script>
 
 </body>
