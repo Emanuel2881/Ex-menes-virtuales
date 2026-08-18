@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Modo Evaluación - Examen 10 (Verbal)</title>
+
+<style>
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+}
+
+body{
+  font-family:Arial, Helvetica, sans-serif;
+  background:linear-gradient(135deg,#fdf2f8,#fce7f3,#fbcfe8);
+  color:#831843;
+  min-height:100vh;
+  padding:30px 15px;
+}
+
+.container{
+  max-width:950px;
+  margin:auto;
+  background:rgba(255,255,255,0.95);
+  padding:25px;
+  border-radius:24px;
+  box-shadow:0 12px 35px rgba(0,0,0,0.08);
+}
+
+.header{
+  text-align:center;
+  margin-bottom:20px;
+}
+
+.header h1{
+  font-size:clamp(1.9rem,4vw,2.7rem);
+  margin-bottom:10px;
+  color:#be185d;
+}
+
+.header p{
+  color:#9d174d;
+  opacity:0.9;
+  line-height:1.5;
+}
+
+.badge-eval{
+  display:inline-block;
+  background:#db2777;
+  color:white;
+  padding:6px 14px;
+  border-radius:20px;
+  font-size:0.85rem;
+  font-weight:bold;
+  margin-bottom:10px;
+}
+
+.inicio-panel{
+  text-align:center;
+  padding:20px 10px;
+}
+
+.stats-bar{
+  display:flex;
+  flex-wrap:wrap;
+  gap:12px;
+  justify-content:center;
+  align-items:center;
+  margin-bottom:20px;
+}
+
+.stat-box{
+  background:#fff;
+  border:1px solid #fbcfe8;
+  border-radius:14px;
+  padding:12px 18px;
+  min-width:150px;
+  text-align:center;
+  box-shadow:0 4px 12px rgba(0,0,0,0.05);
+}
+
+.stat-label{
+  display:block;
+  font-size:0.9rem;
+  color:#db2777;
+  margin-bottom:4px;
+  font-weight:bold;
+}
+
+.stat-value{
+  display:block;
+  font-size:1.15rem;
+  color:#831843;
+  font-weight:bold;
+}
+
+.timer{
+  color:#be185d !important;
+}
+
+.progreso-container{
+  width:100%;
+  height:14px;
+  background:#fce7f3;
+  border-radius:20px;
+  overflow:hidden;
+  margin-bottom:20px;
+  border:1px solid #fbcfe8;
+}
+
+.barra-progreso{
+  width:0%;
+  height:100%;
+  background:#db2777;
+  transition:width 0.3s ease;
+}
+
+.question{
+  background:#fdf2f8;
+  border:1px solid #fbcfe8;
+  border-radius:20px;
+  padding:20px;
+  margin-bottom:18px;
+}
+
+.question h3{
+  font-size:1.08rem;
+  line-height:1.6;
+  color:#be185d;
+  margin-bottom:14px;
+}
+
+.option{
+  display:block;
+  background:#fce7f3;
+  padding:12px 14px;
+  margin:10px 0;
+  border-radius:12px;
+  cursor:pointer;
+  border:1px solid transparent;
+  transition:0.2s ease;
+  color:#9d174d;
+}
+
+.option:hover{
+  background:#fbcfe8;
+  border-color:#f472b6;
+}
+
+.option.selected{
+  background:#db2777;
+  color:white;
+  border-color:#be185d;
+}
+
+.navigation{
+  display:flex;
+  flex-wrap:wrap;
+  gap:12px;
+  justify-content:center;
+  margin-top:18px;
+}
+
+button{
+  border:none;
+  border-radius:14px;
+  padding:12px 20px;
+  font-size:1rem;
+  font-weight:bold;
+  cursor:pointer;
+  transition:0.2s ease;
+  display:inline-block;
+  text-align:center;
+}
+
+button:hover{
+  transform:translateY(-1px);
+}
+
+.prev{
+  background:#fbcfe8;
+  color:#831843;
+}
+
+.prev:hover{
+  background:#f472b6;
+  color:white;
+}
+
+.next{
+  background:#ec4899;
+  color:white;
+}
+
+.next:hover{
+  background:#db2777;
+}
+
+.actions{
+  display:flex;
+  justify-content:center;
+  flex-wrap:wrap;
+  gap:12px;
+  margin-top:25px;
+}
+
+.btn-primary{
+  background:#db2777;
+  color:white;
+  font-size:1.1rem;
+  padding:14px 28px;
+}
+
+.btn-primary:hover{
+  background:#be185d;
+}
+
+.btn-secondary{
+  background:#fbcfe8;
+  color:#831843;
+  font-size:1.1rem;
+  padding:14px 28px;
+}
+
+.btn-secondary:hover{
+  background:#f472b6;
+}
+
+.oculto{
+  display:none !important;
+}
+
+/* RESULTADOS */
+
+.result-card{
+  background:white;
+  border:1px solid #fbcfe8;
+  border-radius:20px;
+  padding:25px;
+  margin-top:20px;
+  text-align:center;
+  box-shadow:0 8px 25px rgba(0,0,0,0.05);
+}
+
+.result-card h2{
+  color:#be185d;
+  margin-bottom:15px;
+}
+
+.metrics-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit, minmax(130px, 1fr));
+  gap:12px;
+  margin:20px 0;
+}
+
+.metric-box{
+  background:#fdf2f8;
+  border:1px solid #fbcfe8;
+  padding:12px;
+  border-radius:12px;
+}
+
+.metric-box h4{
+  font-size:0.85rem;
+  color:#db2777;
+  margin-bottom:4px;
+}
+
+.metric-box p{
+  font-size:1.25rem;
+  font-weight:bold;
+  color:#831843;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="header">
+  <span class="badge-eval">EVALUACIÓN DE PRUEBA - EXAMEN 10 (REPASO)</span>
+  <h1>🗣️ Examen Verbal 10</h1>
+  <p>Responde las 50 preguntas en un tiempo límite de 20 minutos. ¡Demuestra tu dominio total!</p>
+</div>
+
+<!-- PANTALLA INICIO -->
+<div id="pantallaInicio" class="inicio-panel">
+  <div class="question" style="display:block; margin-bottom:20px;">
+    <h3>Evaluación de Habilidad Verbal - Nivel Avanzado (50 Preguntas)</h3>
+    <p style="color:#9d174d; margin-top:8px;">Este examen cuenta con temporizador de 20 minutos y abarca un repaso general acumulativo.</p>
+  </div>
+  <button type="button" class="btn-primary" id="startBtn">Iniciar examen</button>
+</div>
+
+<!-- PANTALLA EXAMEN -->
+<div id="pantallaExamen" class="oculto">
+
+  <div class="stats-bar">
+    <div class="stat-box">
+      <span class="stat-label">Pregunta actual</span>
+      <span class="stat-value"><span id="qNum">1</span> / 50</span>
+    </div>
+    <div class="stat-box">
+      <span class="stat-label">Progreso</span>
+      <span class="stat-value" id="progress">0 / 50</span>
+    </div>
+    <div class="stat-box">
+      <span class="stat-label">Puntaje actual</span>
+      <span class="stat-value" id="puntajeText">0</span>
+    </div>
+    <div class="stat-box">
+      <span class="stat-label">Tiempo restante</span>
+      <span class="stat-value timer" id="timer">20:00</span>
+    </div>
+  </div>
+
+  <div class="progreso-container">
+    <div class="barra-progreso" id="barraProgreso"></div>
+  </div>
+
+  <div id="quiz"></div>
+
+  <div class="actions">
+    <button type="button" class="btn-primary" id="btnCalificar">
+      Finalizar y Calificar
+    </button>
+    <button type="button" class="btn-secondary" id="btnReiniciar">
+      Reiniciar
+    </button>
+  </div>
+
+</div>
+
+<!-- TARJETA DE RESULTADOS -->
+<div class="result-card oculto" id="resultadoPanel">
+  <h2>📊 Resultado de la Evaluación</h2>
+  <div class="metrics-grid">
+    <div class="metric-box">
+      <h4>Aciertos</h4>
+      <p id="resAciertos">0 / 50</p>
+    </div>
+    <div class="metric-box">
+      <h4>Porcentaje</h4>
+      <p id="resPorcentaje">0%</p>
+    </div>
+    <div class="metric-box">
+      <h4>Percentil</h4>
+      <p id="resPercentil">0%</p>
+    </div>
+    <div class="metric-box">
+      <h4>Nivel</h4>
+      <p id="resNivel">-</p>
+    </div>
+    <div class="metric-box">
+      <h4>Posición Bot</h4>
+      <p id="resPosicion">#--</p>
+    </div>
+  </div>
+
+  <div class="actions">
+    <button type="button" class="btn-secondary" id="btnReintentar">Reintentar Verbal</button>
+    <button type="button" class="btn-primary" id="btnIrMathAleatorio">Ir al Examen de Matemáticas Aleatorio ➡️</button>
+  </div>
+
+</div>
+
+</div>
+
+<script type="module">
+import { calcularResultadoEval } from './eval-bots.js';
+
+const questions = [
+  {q:"SOL es a DÍA como LUNA es a ___",o:["Estrella","Noche","Oscuridad","Cielo"],a:1},
+  {q:"MÉDICO es a HOSPITAL como MAESTRO es a ___",o:["Alumno","Libro","Escuela","Clase"],a:2},
+  {q:"PERRO es a LADRAR como GATO es a ___",o:["Dormir","Maullar","Arañar","Morder"],a:1},
+  {q:"PIE es a CUERPO como BOMBILLA es a ___",o:["Luz","Lámpara","Cable","Energía"],a:1},
+  {q:"LIBRO es a LEER como RADIO es a ___",o:["Ver","Escuchar","Hablar","Mirar"],a:1},
+  {q:"HAMBRE es a COMER como SED es a ___",o:["Dormir","Tomar","Beber","Agua"],a:2},
+  {q:"PINTOR es a BROCHA como ESCRITOR es a ___",o:["Libro","Lápiz","Papel","Historia"],a:1},
+  {q:"FRÍO es a CALIENTE como OSCURO es a ___",o:["Claro","Negro","Noche","Luz"],a:0},
+  {q:"ABEJA es a MIEL como VACA es a ___",o:["Pasto","Leche","Queso","Carne"],a:1},
+  {q:"AUTO es a CONDUCTOR como AVIÓN es a ___",o:["Capitán","Piloto","Mecánico","Motor"],a:1},
+
+  {q:"NORTE es a SUR como ESTE es a ___",o:["Centro","Oeste","Abajo","Arriba"],a:1},
+  {q:"LÁPIZ es a PAPEL como TIZA es a ___",o:["Borrador","Libro","Pizarra","Mesa"],a:2},
+  {q:"MADERA es a PAPEL como ARENA es a ___",o:["Vidrio","Piedra","Roca","Cemento"],a:0},
+  {q:"RELOJ es a TIEMPO como BALANZA es a ___",o:["Peso","Altura","Velocidad","Volumen"],a:0},
+  {q:"PEZ es a AGUA como AVE es a ___",o:["Árbol","Nido","Cielo","Aire"],a:3},
+  {q:"CAMINAR es a PIERNA como ESCRIBIR es a ___",o:["Brazo","Papel","Mano","Lápiz"],a:2},
+  {q:"ZAPATO es a PIE como GUANTE es a ___",o:["Brazo","Mano","Dedo","Piel"],a:1},
+  {q:"TRISTE es a LLORAR como FELIZ es a ___",o:["Reír","Hablar","Cantar","Jugar"],a:0},
+  {q:"OREJA es a ESCUCHAR como OJO es a ___",o:["Mirar","Leer","Observar","Hablar"],a:2},
+  {q:"PÁJARO es a NIDO como ARAÑA es a ___",o:["Tela","Red","Cueva","Telaraña"],a:3},
+
+  {q:"REY es a CORONA como GRADUADO es a ___",o:["Diploma","Universidad","Birrete","Título"],a:2},
+  {q:"AGUA es a RÍO como ARENA es a ___",o:["Playa","Desierto","Tierra","Montaña"],a:1},
+  {q:"CORAZÓN es a CUERPO como MOTOR es a ___",o:["Carro","Gasolina","Máquina","Rueda"],a:0},
+  {q:"FUEGO es a CALOR como HIELO es a ___",o:["Frío","Agua","Nieve","Vapor"],a:0},
+  {q:"PINTURA es a BROCHA como MÚSICA es a ___",o:["Micrófono","Instrumento","Sonido","Radio"],a:1},
+  {q:"BIBLIOTECA es a LIBROS como ZOOLÓGICO es a ___",o:["Jaulas","Animales","Parque","Visitantes"],a:1},
+  {q:"GALLINA es a HUEVO como ABEJA es a ___",o:["Panal","Miel","Colmena","Polen"],a:1},
+  {q:"DÍA es a SOL como NOCHE es a ___",o:["Oscuridad","Estrella","Luna","Sueño"],a:2},
+  {q:"MÚSICA es a OÍDO como PINTURA es a ___",o:["Museo","Vista","Color","Arte"],a:1},
+  {q:"CUCHARA es a SOPA como TENEDOR es a ___",o:["Carne","Comida","Plato","Cuchillo"],a:0},
+
+  {q:"UNIVERSIDAD es a ESTUDIANTE como ESTADIO es a ___",o:["Jugador","Equipo","Aficionado","Partido"],a:0},
+  {q:"CEREBRO es a PENSAR como CORAZÓN es a ___",o:["Respirar","Mover","Sentir","Caminar"],a:2},
+  {q:"AUTO es a GASOLINA como CUERPO es a ___",o:["Movimiento","Agua","Comida","Energía"],a:2},
+  {q:"LUNA es a SATÉLITE como TIERRA es a ___",o:["Estrella","Universo","Planeta","Sol"],a:2},
+  {q:"SOLTERO es a CASADO como VIVO es a ___",o:["Dormido","Triste","Muerto","Viejo"],a:2},
+  {q:"MESA es a MADERA como VASO es a ___",o:["Agua","Plástico","Vidrio","Cocina"],a:2},
+  {q:"NUBE es a LLUVIA como VOLCÁN es a ___",o:["Fuego","Lava","Montaña","Piedra"],a:1},
+  {q:"DOCTOR es a PACIENTE como MAESTRO es a ___",o:["Escuela","Libro","Alumno","Clase"],a:2},
+  {q:"TRIÁNGULO es a TRES como CUADRADO es a ___",o:["Cuatro","Lados","Ángulos","Forma"],a:0},
+  {q:"CARTA es a SOBRE como REGALO es a ___",o:["Caja","Tarjeta","Papel","Moño"],a:0},
+
+  {q:"PÁGINA es a LIBRO como CAPÍTULO es a ___",o:["Texto","Hoja","Obra","Biblioteca"],a:2},
+  {q:"ESCUELA es a EDUCACIÓN como IGLESIA es a ___",o:["Religión","Biblia","Fe","Oración"],a:0},
+  {q:"PLUMA es a ESCRIBIR como PINCEL es a ___",o:["Pintar","Dibujar","Colorear","Borrar"],a:0},
+  {q:"LEÓN es a SELVA como CAMELLO es a ___",o:["Arena","Sabana","Desierto","Oasis"],a:2},
+  {q:"TELÉFONO es a LLAMAR como TELEVISOR es a ___",o:["Mirar","Escuchar","Grabar","Hablar"],a:0},
+  {q:"CORRER es a VELOCIDAD como ESTUDIAR es a ___",o:["Memoria","Libro","Aprendizaje","Escuela"],a:2},
+  {q:"MÚSICO es a ORQUESTA como JUGADOR es a ___",o:["Equipo","Cancha","Pelota","Uniforme"],a:0},
+  {q:"SOL es a LUZ como FUEGO es a ___",o:["Rojo","Leña","Humo","Calor"],a:3},
+  {q:"BIFURCADO es a RAMIFICADO como RESISTENTE es a ___",o:["Fuerte","Duradero","Compacto","Sensible"],a:0},
+  {q:"ENCUBIERTO es a CLANDESTINO como ENDEBLE es a ___",o:["Simple","Comprimido","Delicado","Doblado"],a:2}
+];
+
+let current = 0;
+let answers = new Array(questions.length).fill(null);
+let evaluado = false;
+let tiempoRestante = 20 * 60;
+let timerInterval = null;
+
+const quiz = document.getElementById("quiz");
+
+function calcularPuntajeActual() {
+  let aciertos = 0;
+  questions.forEach((q, i) => {
+    if(answers[i] === q.a) aciertos++;
+  });
+  return aciertos;
+}
+
+function actualizarProgreso(){
+  const respondidas = answers.filter(a => a !== null).length;
+  document.getElementById("progress").textContent = `${respondidas} / ${questions.length}`;
+  document.getElementById("qNum").textContent = current + 1;
+  document.getElementById("puntajeText").textContent = calcularPuntajeActual();
+
+  const porcentajeBarra = ((current + 1) / questions.length) * 100;
+  document.getElementById("barraProgreso").style.width = `${porcentajeBarra}%`;
+}
+
+function render(){
+  quiz.innerHTML = "";
+
+  questions.forEach((q,i)=>{
+    let div = document.createElement("div");
+    div.className = "question" + (i===current ? " active" : "");
+    if (i !== current) div.style.display = "none";
+
+    let opts = "";
+
+    q.o.forEach((op,j)=>{
+      let extraClass = answers[i] === j ? " selected" : "";
+
+      opts += `
+        <div class="option${extraClass}" data-q="${i}" data-o="${j}">
+          ${String.fromCharCode(65+j)}. ${op}
+        </div>
+      `;
+    });
+
+    div.innerHTML = `
+      <h3>${i+1}. ${q.q}</h3>
+      ${opts}
+      <div class="navigation">
+        <button type="button" class="prev" data-action="prev" ${i===0 ? "disabled" : ""}>Anterior</button>
+        ${i===questions.length-1
+          ? `<button type="button" class="next" data-action="finish">Finalizar</button>`
+          : `<button type="button" class="next" data-action="next">Siguiente</button>`
+        }
+      </div>
+    `;
+
+    quiz.appendChild(div);
+  });
+
+  quiz.querySelectorAll('.option').forEach(opt => {
+    opt.addEventListener('click', (e) => {
+      if(evaluado) return;
+      const qIdx = parseInt(e.currentTarget.getAttribute('data-q'));
+      const oIdx = parseInt(e.currentTarget.getAttribute('data-o'));
+      answers[qIdx] = oIdx;
+      render();
+    });
+  });
+
+  quiz.querySelectorAll('button[data-action]').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      const action = e.currentTarget.getAttribute('data-action');
+      if(action === 'next') nextQuestion();
+      if(action === 'prev') prevQuestion();
+      if(action === 'finish') calificar();
+    });
+  });
+
+  actualizarProgreso();
+}
+
+function iniciarCronometro(){
+  timerInterval = setInterval(() => {
+    let minutos = Math.floor(tiempoRestante / 60);
+    let segundos = tiempoRestante % 60;
+    if(segundos < 10) segundos = "0" + segundos;
+
+    document.getElementById("timer").textContent = `${minutos}:${segundos}`;
+    tiempoRestante--;
+
+    if(tiempoRestante < 0){
+      clearInterval(timerInterval);
+      calificar();
+      alert("⏰ El tiempo ha terminado.");
+    }
+  }, 1000);
+}
+
+function iniciarExamen(){
+  document.getElementById("pantallaInicio").classList.add("oculto");
+  document.getElementById("pantallaExamen").classList.remove("oculto");
+  iniciarCronometro();
+  render();
+}
+
+function nextQuestion(){
+  if(current < questions.length-1){
+    current++;
+    render();
+    window.scrollTo({ top:0, behavior:"smooth" });
+  }
+}
+
+function prevQuestion(){
+  if(current > 0){
+    current--;
+    render();
+  }
+}
+
+function calificar(){
+  if(evaluado) return;
+  evaluado = true;
+  if(timerInterval) clearInterval(timerInterval);
+
+  let correctas = calcularPuntajeActual();
+  
+  let notaEscalada = Math.round((correctas / questions.length) * 100);
+  localStorage.setItem("verbal", notaEscalada);
+
+  let res = { porcentaje: 0, percentil: 50, nivel: "Promedio", posicion: 1, ranking: [] };
+  if (typeof calcularResultadoEval === "function") {
+    res = calcularResultadoEval(correctas, questions.length);
+  } else {
+    res.porcentaje = notaEscalada;
+  }
+
+  document.getElementById("resAciertos").textContent = `${correctas} / ${questions.length}`;
+  document.getElementById("resPorcentaje").textContent = `${res.porcentaje}%`;
+  document.getElementById("resPercentil").textContent = `${res.percentil}%`;
+  document.getElementById("resNivel").textContent = res.nivel;
+  document.getElementById("resPosicion").textContent = `#${res.posicion} de ${res.ranking ? res.ranking.length : 30}`;
+
+  document.getElementById("pantallaExamen").classList.add("oculto");
+  const panel = document.getElementById("resultadoPanel");
+  panel.classList.remove("oculto");
+  panel.scrollIntoView({ behavior:"smooth" });
+}
+
+function reiniciar(){
+  current = 0;
+  answers = new Array(questions.length).fill(null);
+  evaluado = false;
+  tiempoRestante = 20 * 60;
+  if(timerInterval) clearInterval(timerInterval);
+
+  document.getElementById("resultadoPanel").classList.add("oculto");
+  document.getElementById("pantallaExamen").classList.add("oculto");
+  document.getElementById("pantallaInicio").classList.remove("oculto");
+  window.scrollTo({ top:0, behavior:"smooth" });
+}
+
+document.getElementById("startBtn").addEventListener("click", iniciarExamen);
+document.getElementById("btnCalificar").addEventListener("click", calificar);
+document.getElementById("btnReiniciar").addEventListener("click", reiniciar);
+document.getElementById("btnReintentar").addEventListener("click", reiniciar);
+
+document.getElementById("btnIrMathAleatorio").addEventListener("click", () => {
+  const examenesMatematicas = [
+    "mate-eval-1.html",
+    "mate-eval-2.html",
+    "mate-eval-3.html",
+    "mate-eval-4.html",
+    "mate-eval-5.html",
+    "mate-eval-6.html",
+    "mate-eval-7.html",
+    "mate-eval-8.html",
+    "mate-eval-9.html",
+    "mate-eval-10.html"
+  ];
+  
+  const indiceAleatorio = Math.floor(Math.random() * examenesMatematicas.length);
+  window.location.href = examenesMatematicas[indiceAleatorio];
+});
+</script>
+
+</body>
+</html>
