@@ -12,21 +12,59 @@ margin:0;
 padding:0;
 }
 
+:root {
+--bg-gradient: linear-gradient(135deg,#fff1f2,#ffe4e6,#fecdd3);
+--container-bg: rgba(255,255,255,0.95);
+--text-main: #7f1d1d;
+--title-color: #9f1239;
+--subtitle-color: #881337;
+--link-color: #be123c;
+--card-bg: #fff;
+--card-border: #fecdd3;
+--card-shadow: rgba(0,0,0,0.04);
+--card-hover-shadow: rgba(225,29,72,0.12);
+--btn-bg: #e11d48;
+--btn-hover: #be123c;
+--sec-bg: white;
+--sec-border: #ffe4e6;
+--slider-bg: #fecdd3;
+}
+
+body.modo-evaluacion {
+--bg-gradient: linear-gradient(135deg,#4c0519,#27030a,#1a0105);
+--container-bg: rgba(30, 4, 10, 0.95);
+--text-main: #fecdd3;
+--title-color: #fda4af;
+--subtitle-color: #f43f5e;
+--link-color: #fb7185;
+--card-bg: #1f0409;
+--card-border: #881337;
+--card-shadow: rgba(0,0,0,0.4);
+--card-hover-shadow: rgba(244,63,94,0.3);
+--btn-bg: #be123c;
+--btn-hover: #9f1239;
+--sec-bg: #2b060d;
+--sec-border: #881337;
+--slider-bg: #881337;
+}
+
 body{
 font-family:Arial, Helvetica, sans-serif;
-background:linear-gradient(135deg,#fff1f2,#ffe4e6,#fecdd3);
-color:#7f1d1d;
+background: var(--bg-gradient);
+color: var(--text-main);
 min-height:100vh;
 padding:30px 15px;
+transition: background 0.3s, color 0.3s;
 }
 
 .container{
 max-width:950px;
 margin:auto;
-background:rgba(255,255,255,0.95);
+background: var(--container-bg);
 padding:25px;
 border-radius:24px;
 box-shadow:0 12px 35px rgba(0,0,0,0.08);
+transition: background 0.3s;
 }
 
 .header{
@@ -37,18 +75,18 @@ margin-bottom:20px;
 .header h1{
 font-size:clamp(1.9rem,4vw,2.7rem);
 margin-bottom:10px;
-color:#9f1239;
+color: var(--title-color);
 }
 
 .header p{
-color:#881337;
+color: var(--subtitle-color);
 opacity:0.9;
 }
 
 .top-link{
 display:inline-block;
 margin-top:12px;
-color:#be123c;
+color: var(--link-color);
 text-decoration:none;
 font-weight:bold;
 }
@@ -61,12 +99,12 @@ margin-top:20px;
 }
 
 .exam-card{
-background:#fff;
-border:1px solid #fecdd3;
+background: var(--card-bg);
+border:1px solid var(--card-border);
 border-radius:20px;
 padding:20px;
-box-shadow:0 8px 20px rgba(0,0,0,0.04);
-transition:transform 0.2s, box-shadow 0.2s;
+box-shadow:0 8px 20px var(--card-shadow);
+transition:transform 0.2s, box-shadow 0.2s, background 0.3s, border-color 0.3s;
 display:flex;
 flex-direction:column;
 justify-content:space-between;
@@ -74,17 +112,17 @@ justify-content:space-between;
 
 .exam-card:hover{
 transform:translateY(-4px);
-box-shadow:0 12px 25px rgba(225,29,72,0.12);
+box-shadow:0 12px 25px var(--card-hover-shadow);
 }
 
 .exam-card h3{
-color:#9f1239;
+color: var(--title-color);
 margin-bottom:8px;
 font-size:1.2rem;
 }
 
 .exam-card p{
-color:#881337;
+color: var(--subtitle-color);
 font-size:0.92rem;
 margin-bottom:15px;
 line-height:1.4;
@@ -93,7 +131,7 @@ line-height:1.4;
 .btn{
 display:inline-block;
 text-align:center;
-background:#e11d48;
+background: var(--btn-bg);
 color:white;
 text-decoration:none;
 padding:10px 16px;
@@ -103,13 +141,13 @@ transition:background 0.2s;
 }
 
 .btn:hover{
-background:#be123c;
+background: var(--btn-hover);
 }
 
 /* CONTENEDOR MODO SECUENCIA */
 .secuencia-container {
-    background: white;
-    border: 2px solid #ffe4e6;
+    background: var(--sec-bg);
+    border: 2px solid var(--sec-border);
     border-radius: 16px;
     padding: 15px 20px;
     margin-bottom: 25px;
@@ -117,16 +155,17 @@ background:#be123c;
     align-items: center;
     justify-content: space-between;
     box-shadow: 0 4px 15px rgba(225,29,72,0.05);
+    transition: background 0.3s, border-color 0.3s;
 }
 
 .secuencia-info h3 {
-    color: #881337;
+    color: var(--subtitle-color);
     margin: 0 0 5px 0;
     font-size: 1.1rem;
 }
 
 .secuencia-info p {
-    color: #9f1239;
+    color: var(--title-color);
     margin: 0;
     font-size: 0.9rem;
     opacity: 0.8;
@@ -151,7 +190,7 @@ background:#be123c;
   position: absolute;
   cursor: pointer;
   top: 0; left: 0; right: 0; bottom: 0;
-  background-color: #fecdd3;
+  background-color: var(--slider-bg);
   transition: .3s;
   border-radius: 34px;
 }
@@ -183,16 +222,16 @@ input:checked + .slider:before {
 <div class="container">
 
 <div class="header">
-<h1>💬 Aptitud Verbal</h1>
-<p>Selecciona un examen para practicar analogías y relaciones verbales</p>
+<h1 id="tituloPrincipal">💬 Aptitud Verbal</h1>
+<p id="subtituloPrincipal">Selecciona un examen para practicar analogías y relaciones verbales</p>
 <a class="top-link" href="../index.html">← Volver al Menú Principal</a>
 </div>
 
 <!-- PANEL MODO SECUENCIA -->
 <div class="secuencia-container">
     <div class="secuencia-info">
-        <h3>Modo Examen Completo</h3>
-        <p>Realiza 1 examen al azar de cada materia de forma seguida con Ranking Global al final.</p>
+        <h3 id="tituloSwitch">Modo Examen Completo</h3>
+        <p id="descSwitch">Realiza 1 examen al azar de cada materia de forma seguida con Ranking Global al final.</p>
     </div>
     <label class="switch">
         <input type="checkbox" id="chkSecuencia" onchange="toggleModoSecuencia(this.checked)">
@@ -205,79 +244,108 @@ input:checked + .slider:before {
 <div class="exam-card">
 <h3>Examen 1</h3>
 <p>15 preguntas de analogías verbales con explicación.</p>
-<a class="btn" href="data/verbal-examen1.html">Iniciar Examen</a>
+<a class="btn btn-examen" data-normal="data/verbal-examen1.html" data-eval="eval/verbal-eval-1.html" href="data/verbal-examen1.html">Iniciar Examen</a>
 </div>
 
 <div class="exam-card">
 <h3>Examen 2</h3>
 <p>15 preguntas de analogías verbales con explicación.</p>
-<a class="btn" href="data/verbal-examen2.html">Iniciar Examen</a>
+<a class="btn btn-examen" data-normal="data/verbal-examen2.html" data-eval="eval/verbal-eval-2.html" href="data/verbal-examen2.html">Iniciar Examen</a>
 </div>
 
 <div class="exam-card">
 <h3>Examen 3</h3>
 <p>15 preguntas de analogías verbales con explicación.</p>
-<a class="btn" href="data/verbal-examen3.html">Iniciar Examen</a>
+<a class="btn btn-examen" data-normal="data/verbal-examen3.html" data-eval="eval/verbal-eval-3.html" href="data/verbal-examen3.html">Iniciar Examen</a>
 </div>
 
 <div class="exam-card">
 <h3>Examen 4</h3>
 <p>15 preguntas de analogías verbales con explicación.</p>
-<a class="btn" href="data/verbal-examen4.html">Iniciar Examen</a>
+<a class="btn btn-examen" data-normal="data/verbal-examen4.html" data-eval="eval/verbal-eval-4.html" href="data/verbal-examen4.html">Iniciar Examen</a>
 </div>
 
 <div class="exam-card">
 <h3>Examen 5</h3>
 <p>15 preguntas de analogías verbales con explicación.</p>
-<a class="btn" href="data/verbal-examen5.html">Iniciar Examen</a>
+<a class="btn btn-examen" data-normal="data/verbal-examen5.html" data-eval="eval/verbal-eval-5.html" href="data/verbal-examen5.html">Iniciar Examen</a>
 </div>
 
 <div class="exam-card">
 <h3>Examen 6</h3>
 <p>15 preguntas de analogías verbales con explicación.</p>
-<a class="btn" href="data/verbal-examen6.html">Iniciar Examen</a>
+<a class="btn btn-examen" data-normal="data/verbal-examen6.html" data-eval="eval/verbal-eval-6.html" href="data/verbal-examen6.html">Iniciar Examen</a>
 </div>
 
 <div class="exam-card">
 <h3>Examen 7</h3>
 <p>15 preguntas de analogías verbales con explicación.</p>
-<a class="btn" href="data/verbal-examen7.html">Iniciar Examen</a>
+<a class="btn btn-examen" data-normal="data/verbal-examen7.html" data-eval="eval/verbal-eval-7.html" href="data/verbal-examen7.html">Iniciar Examen</a>
 </div>
 
 <div class="exam-card">
 <h3>Examen 8</h3>
 <p>15 preguntas de analogías verbales con explicación.</p>
-<a class="btn" href="data/verbal-examen8.html">Iniciar Examen</a>
+<a class="btn btn-examen" data-normal="data/verbal-examen8.html" data-eval="eval/verbal-eval-8.html" href="data/verbal-examen8.html">Iniciar Examen</a>
 </div>
 
 <div class="exam-card">
 <h3>Examen 9</h3>
 <p>15 preguntas de analogías verbales con explicación.</p>
-<a class="btn" href="data/verbal-examen9.html">Iniciar Examen</a>
+<a class="btn btn-examen" data-normal="data/verbal-examen9.html" data-eval="eval/verbal-eval-9.html" href="data/verbal-examen9.html">Iniciar Examen</a>
 </div>
 
- <div class="exam-card">
+<div class="exam-card">
 <h3>Examen 10</h3>
 <p>50 preguntas de analogías verbales con explicación.</p>
-<a class="btn" href="data/verbal-examen10.html">Iniciar Examen</a>
+<a class="btn btn-examen" data-normal="data/verbal-examen10.html" data-eval="eval/verbal-eval-10.html" href="data/verbal-examen10.html">Iniciar Examen</a>
 </div>
    
 </div>
 
 </div>
 
-<script type="module">
-    import { toggleModoSecuencia, esModoSecuencia } from './secuenciaExamenes.js';
+<script>
+    // Función para actualizar la interfaz visual (colores y rutas)
+    window.actualizarInterfazEvaluacion = function(activo) {
+        if (activo) {
+            document.body.classList.add('modo-evaluacion');
+            document.getElementById('tituloPrincipal').innerText = "📝 Evaluación Verbal";
+            document.getElementById('subtituloPrincipal').innerText = "Modo de evaluación formal activado";
+            document.getElementById('tituloSwitch').innerText = "Modo Evaluación";
+            document.getElementById('descSwitch').innerText = "Estás realizando exámenes en modo evaluación formal con rutas protegidas.";
+        } else {
+            document.body.classList.remove('modo-evaluacion');
+            document.getElementById('tituloPrincipal').innerText = "💬 Aptitud Verbal";
+            document.getElementById('subtituloPrincipal').innerText = "Selecciona un examen para practicar analogías y relaciones verbales";
+            document.getElementById('tituloSwitch').innerText = "Modo Examen Completo";
+            document.getElementById('descSwitch').innerText = "Realiza 1 examen al azar de cada materia de forma seguida con Ranking Global al final.";
+        }
 
-    // Exponer la función al objeto window para que el HTML la encuentre
-    window.toggleModoSecuencia = toggleModoSecuencia;
+        // Cambiar las rutas de todos los botones dinámicamente
+        const botones = document.querySelectorAll('.btn-examen');
+        botones.forEach(btn => {
+            const nuevaRuta = activo ? btn.getAttribute('data-eval') : btn.getAttribute('data-normal');
+            btn.setAttribute('href', nuevaRuta);
+        });
+    };
+
+    // Función que maneja el cambio del switch y lo guarda localmente
+    window.toggleModoSecuencia = function(activo) {
+        localStorage.setItem('modoSecuenciaVerbal', JSON.stringify(activo));
+        window.actualizarInterfazEvaluacion(activo);
+    };
     
-    // Sincronizar el checkbox al cargar la página
+    // Cargar el estado guardado al iniciar la página
     document.addEventListener('DOMContentLoaded', () => {
+        const estadoGuardado = localStorage.getItem('modoSecuenciaVerbal');
+        const activo = estadoGuardado ? JSON.parse(estadoGuardado) : false;
+        
         const chk = document.getElementById('chkSecuencia');
         if (chk) {
-            chk.checked = esModoSecuencia();
+            chk.checked = activo;
         }
+        window.actualizarInterfazEvaluacion(activo);
     });
 </script>
 
