@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Modo Evaluación - Examen 16 (Verbal)</title>
+
+<style>
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+}
+
+body{
+  font-family:Arial, Helvetica, sans-serif;
+  background:linear-gradient(135deg,#fdf2f8,#fce7f3,#fbcfe8);
+  color:#831843;
+  min-height:100vh;
+  padding:30px 15px;
+}
+
+.container{
+  max-width:950px;
+  margin:auto;
+  background:rgba(255,255,255,0.95);
+  padding:25px;
+  border-radius:24px;
+  box-shadow:0 12px 35px rgba(0,0,0,0.08);
+}
+
+.header{
+  text-align:center;
+  margin-bottom:20px;
+}
+
+.header h1{
+  font-size:clamp(1.9rem,4vw,2.7rem);
+  margin-bottom:10px;
+  color:#be185d;
+}
+
+.header p{
+  color:#9d174d;
+  opacity:0.9;
+  line-height:1.5;
+}
+
+.badge-eval{
+  display:inline-block;
+  background:#db2777;
+  color:white;
+  padding:6px 14px;
+  border-radius:20px;
+  font-size:0.85rem;
+  font-weight:bold;
+  margin-bottom:10px;
+}
+
+.inicio-panel{
+  text-align:center;
+  padding:20px 10px;
+}
+
+.stats-bar{
+  display:flex;
+  flex-wrap:wrap;
+  gap:12px;
+  justify-content:center;
+  align-items:center;
+  margin-bottom:20px;
+}
+
+.stat-box{
+  background:#fff;
+  border:1px solid #fbcfe8;
+  border-radius:14px;
+  padding:12px 18px;
+  min-width:150px;
+  text-align:center;
+  box-shadow:0 4px 12px rgba(0,0,0,0.05);
+}
+
+.stat-label{
+  display:block;
+  font-size:0.9rem;
+  color:#db2777;
+  margin-bottom:4px;
+  font-weight:bold;
+}
+
+.stat-value{
+  display:block;
+  font-size:1.15rem;
+  color:#831843;
+  font-weight:bold;
+}
+
+.progreso-container{
+  width:100%;
+  height:14px;
+  background:#fce7f3;
+  border-radius:20px;
+  overflow:hidden;
+  margin-bottom:20px;
+  border:1px solid #fbcfe8;
+}
+
+.barra-progreso{
+  width:0%;
+  height:100%;
+  background:#db2777;
+  transition:width 0.3s ease;
+}
+
+.question{
+  background:#fdf2f8;
+  border:1px solid #fbcfe8;
+  border-radius:20px;
+  padding:20px;
+  margin-bottom:18px;
+}
+
+.question h3{
+  font-size:1.08rem;
+  line-height:1.6;
+  color:#be185d;
+  margin-bottom:14px;
+}
+
+.option{
+  display:block;
+  background:#fce7f3;
+  padding:12px 14px;
+  margin:10px 0;
+  border-radius:12px;
+  cursor:pointer;
+  border:1px solid transparent;
+  transition:0.2s ease;
+  color:#9d174d;
+}
+
+.option:hover{
+  background:#fbcfe8;
+  border-color:#f472b6;
+}
+
+.option.selected{
+  background:#db2777;
+  color:white;
+  border-color:#be185d;
+}
+
+.navigation{
+  display:flex;
+  flex-wrap:wrap;
+  gap:12px;
+  justify-content:center;
+  margin-top:18px;
+}
+
+button{
+  border:none;
+  border-radius:14px;
+  padding:12px 20px;
+  font-size:1rem;
+  font-weight:bold;
+  cursor:pointer;
+  transition:0.2s ease;
+  display:inline-block;
+  text-align:center;
+}
+
+button:hover{
+  transform:translateY(-1px);
+}
+
+.prev{
+  background:#fbcfe8;
+  color:#831843;
+}
+
+.prev:hover{
+  background:#f472b6;
+  color:white;
+}
+
+.next{
+  background:#ec4899;
+  color:white;
+}
+
+.next:hover{
+  background:#db2777;
+}
+
+.actions{
+  display:flex;
+  justify-content:center;
+  flex-wrap:wrap;
+  gap:12px;
+  margin-top:25px;
+}
+
+.btn-primary{
+  background:#db2777;
+  color:white;
+  font-size:1.1rem;
+  padding:14px 28px;
+}
+
+.btn-primary:hover{
+  background:#be185d;
+}
+
+.btn-secondary{
+  background:#fbcfe8;
+  color:#831843;
+  font-size:1.1rem;
+  padding:14px 28px;
+}
+
+.btn-secondary:hover{
+  background:#f472b6;
+}
+
+.oculto{
+  display:none !important;
+}
+
+/* RESULTADOS */
+
+.result-card{
+  background:white;
+  border:1px solid #fbcfe8;
+  border-radius:20px;
+  padding:25px;
+  margin-top:20px;
+  text-align:center;
+  box-shadow:0 8px 25px rgba(0,0,0,0.05);
+}
+
+.result-card h2{
+  color:#be185d;
+  margin-bottom:15px;
+}
+
+.metrics-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit, minmax(130px, 1fr));
+  gap:12px;
+  margin:20px 0;
+}
+
+.metric-box{
+  background:#fdf2f8;
+  border:1px solid #fbcfe8;
+  padding:12px;
+  border-radius:12px;
+}
+
+.metric-box h4{
+  font-size:0.85rem;
+  color:#db2777;
+  margin-bottom:4px;
+}
+
+.metric-box p{
+  font-size:1.25rem;
+  font-weight:bold;
+  color:#831843;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="header">
+  <span class="badge-eval">EVALUACIÓN DE PRUEBA - EXAMEN 1</span>
+  <h1>🗣️ Examen Verbal 16</h1>
+  <p>Responde las 25 preguntas. Al finalizar obtendrás tus aciertos, percentil y nivel en vivo.</p>
+</div>
+
+<!-- PANTALLA INICIO -->
+<div id="pantallaInicio" class="inicio-panel">
+  <div class="question" style="display:block; margin-bottom:20px;">
+    <h3>Evaluación de Analogías Verbales</h3>
+    <p style="color:#9d174d; margin-top:8px;">Demuestra tu habilidad verbal resolviendo la serie completa a tu propio ritmo.</p>
+  </div>
+  <button type="button" class="btn-primary" id="startBtn">Iniciar examen</button>
+</div>
+
+<!-- PANTALLA EXAMEN -->
+<div id="pantallaExamen" class="oculto">
+
+  <div class="stats-bar">
+    <div class="stat-box">
+      <span class="stat-label">Pregunta actual</span>
+      <span class="stat-value"><span id="qNum">1</span> / 25</span>
+    </div>
+    <div class="stat-box">
+      <span class="stat-label">Progreso</span>
+      <span class="stat-value" id="progress">0 / 25</span>
+    </div>
+    <div class="stat-box">
+      <span class="stat-label">Puntaje actual</span>
+      <span class="stat-value" id="puntajeText">0</span>
+    </div>
+  </div>
+
+  <div class="progreso-container">
+    <div class="barra-progreso" id="barraProgreso"></div>
+  </div>
+
+  <div id="quiz"></div>
+
+  <div class="actions">
+    <button type="button" class="btn-primary" id="btnCalificar">
+      Finalizar y Calificar
+    </button>
+    <button type="button" class="btn-secondary" id="btnReiniciar">
+      Reiniciar
+    </button>
+  </div>
+
+</div>
+
+<!-- TARJETA DE RESULTADOS -->
+<div class="result-card oculto" id="resultadoPanel">
+  <h2>📊 Resultado de la Evaluación</h2>
+  <div class="metrics-grid">
+    <div class="metric-box">
+      <h4>Aciertos</h4>
+      <p id="resAciertos">0 / 25</p>
+    </div>
+    <div class="metric-box">
+      <h4>Porcentaje</h4>
+      <p id="resPorcentaje">0%</p>
+    </div>
+    <div class="metric-box">
+      <h4>Percentil</h4>
+      <p id="resPercentil">0%</p>
+    </div>
+    <div class="metric-box">
+      <h4>Nivel</h4>
+      <p id="resNivel">-</p>
+    </div>
+    <div class="metric-box">
+      <h4>Posición Bot</h4>
+      <p id="resPosicion">#--</p>
+    </div>
+  </div>
+
+  <div class="actions">
+    <button type="button" class="btn-secondary" id="btnReintentar">Reintentar Verbal</button>
+    <button type="button" class="btn-primary" id="btnIrMathAleatorio">Ir al Examen de Matemáticas Aleatorio ➡️</button>
+  </div>
+
+</div>
+
+</div>
+
+<script type="module">
+import { calcularResultadoEval } from './eval-bots.js';
+
+const questions = [
+
+{q:"AXIOMA es a MATEMÁTICA como POSTULADO es a ___",o:["Geometría","Historia","Literatura","Biología"],a:0,exp:"Un axioma es un principio aceptado como base de un sistema matemático; un postulado cumple una función semejante dentro de sistemas como la geometría."},
+
+{q:"ESTETOSCOPIO es a AUSCULTACIÓN como OTOSCOPIO es a ___",o:["Palpación","Percusión","Inspección","Visualización"],a:3,exp:"El estetoscopio permite realizar la auscultación; el otoscopio permite visualizar el interior del oído."},
+
+{q:"CENIT es a NADIR como ORIGEN es a ___",o:["Destino","Principio","Trayectoria","Inicio"],a:0,exp:"Cenit y nadir representan puntos opuestos; origen y destino representan respectivamente el punto de partida y el punto de llegada."},
+
+{q:"PECULIO es a DINERO como HERENCIA es a ___",o:["Legado","Familia","Testamento","Propiedad"],a:0,exp:"El peculio se refiere a bienes o dinero propios; una herencia constituye un conjunto de bienes o derechos recibidos como legado."},
+
+{q:"ORQUÍDEA es a FLOR como ROBLE es a ___",o:["Bosque","Planta","Árbol","Madera"],a:2,exp:"La orquídea pertenece al grupo de las flores; el roble pertenece al grupo de los árboles."},
+
+{q:"HEMOGLOBINA es a OXÍGENO como INTESTINO es a ___",o:["Digestión","Nutrientes","Bilis","Sangre"],a:1,exp:"La hemoglobina transporta oxígeno; el intestino absorbe nutrientes."},
+
+{q:"CÓDIGO MORSE es a PUNTO como BRAILLE es a ___",o:["Línea","Relieve","Tinta","Sonido"],a:1,exp:"El código Morse utiliza puntos y rayas para representar información; el sistema Braille utiliza puntos en relieve."},
+
+{q:"SISMO es a SISMÓGRAFO como LLUVIA es a ___",o:["Pluviómetro","Barómetro","Higrómetro","Anemómetro"],a:0,exp:"El sismógrafo registra movimientos sísmicos; el pluviómetro mide o registra la cantidad de lluvia."},
+
+{q:"ANACRONISMO es a TIEMPO como SOLECISMO es a ___",o:["Ortografía","Gramática","Fonética","Semántica"],a:1,exp:"El anacronismo consiste en presentar algo fuera de su época; el solecismo consiste en un error contra las normas gramaticales."},
+
+{q:"PULSACIÓN es a CORAZÓN como PERISTALTISMO es a ___",o:["Pulmón","Intestino","Cerebro","Riñón"],a:1,exp:"La pulsación es un movimiento característico relacionado con el corazón; el peristaltismo es un movimiento característico del tubo digestivo, especialmente del intestino."},
+
+{q:"ALEACIÓN es a METALES como ENSALADA es a ___",o:["Verduras","Ingredientes","Recipiente","Aderezo"],a:1,exp:"Una aleación combina metales; una ensalada combina distintos ingredientes."},
+
+{q:"ECLIPSE es a ASTRO como MAREA es a ___",o:["Océano","Luna","Gravedad","Agua"],a:0,exp:"Un eclipse es un fenómeno astronómico relacionado con los astros; la marea es un fenómeno que se manifiesta principalmente en los océanos."},
+
+{q:"LARINGOSCOPIO es a LARINGE como ENDOSCOPIO es a ___",o:["Órgano interno","Piel","Oído","Hueso"],a:0,exp:"El laringoscopio permite examinar la laringe; el endoscopio permite examinar órganos o cavidades internas."},
+
+{q:"FECUNDO es a ESTÉRIL como DÓCIL es a ___",o:["Manso","Sumiso","Rebelde","Tranquilo"],a:2,exp:"Fecundo y estéril son antónimos; dócil y rebelde también expresan cualidades opuestas."},
+
+{q:"SAVIA es a PLANTA como LINFA es a ___",o:["Hueso","Organismo","Sangre","Músculo"],a:1,exp:"La savia circula por las plantas; la linfa circula por el organismo formando parte del sistema linfático."},
+
+{q:"PRÓTESIS es a MIEMBRO como ORTESIS es a ___",o:["Órgano","Segmento corporal","Enfermedad","Medicamento"],a:1,exp:"Una prótesis reemplaza total o parcialmente una estructura corporal; una ortesis proporciona soporte o corrección a una parte del cuerpo."},
+
+{q:"NÚCLEO es a ÁTOMO como CEREBRO es a ___",o:["Sistema nervioso","Cuerpo","Músculo","Cráneo"],a:0,exp:"El núcleo es una estructura central del átomo; el cerebro es el órgano principal del sistema nervioso."},
+
+{q:"EPIDEMIÓLOGO es a ENFERMEDAD como METEORÓLOGO es a ___",o:["Clima","Temperatura","Atmósfera","Tormenta"],a:0,exp:"El epidemiólogo estudia la distribución y comportamiento de enfermedades en poblaciones; el meteorólogo estudia fenómenos atmosféricos y el clima."},
+
+{q:"CONTRATO es a ACUERDO como SENTENCIA es a ___",o:["Juicio","Decisión","Tribunal","Demanda"],a:1,exp:"Un contrato formaliza un acuerdo; una sentencia formaliza la decisión de un órgano judicial."},
+
+{q:"RAÍZ es a ANCLAJE como HOJA es a ___",o:["Fotosíntesis","Absorción","Germinación","Sostén"],a:0,exp:"La raíz cumple la función de anclaje de la planta; la hoja cumple la función fundamental de realizar la fotosíntesis."},
+
+{q:"LÓBULO es a CEREBRO como PÉTALO es a ___",o:["Fruto","Flor","Tallo","Semilla"],a:1,exp:"El lóbulo es una división estructural del cerebro; el pétalo es una parte estructural de la flor."},
+
+{q:"COLOIDE es a DISPERSIÓN como SOLUCIÓN es a ___",o:["Mezcla","Disolución","Suspensión","Precipitación"],a:1,exp:"Un coloide es un sistema de dispersión; una solución es una mezcla homogénea resultante de una disolución."},
+
+{q:"EPÍGRAFE es a TEXTO como LEYENDA es a ___",o:["Mapa","Novela","Poema","Diccionario"],a:0,exp:"Un epígrafe acompaña o introduce un texto; una leyenda acompaña un mapa para explicar sus símbolos."},
+
+{q:"MITO es a TRADICIÓN como TEORÍA es a ___",o:["Evidencia","Ciencia","Hipótesis","Opinión"],a:1,exp:"El mito se transmite y conserva dentro de una tradición cultural; una teoría científica se desarrolla y fundamenta dentro de la ciencia."},
+
+{q:"METABOLISMO es a ENERGÍA como HOMEOSTASIS es a ___",o:["Equilibrio","Movimiento","Crecimiento","Reproducción"],a:0,exp:"El metabolismo comprende procesos mediante los cuales el organismo obtiene y utiliza energía; la homeostasis mantiene el equilibrio interno del organismo."}
+
+];
+let current = 0;
+let answers = new Array(questions.length).fill(null);
+let evaluado = false;
+
+const quiz = document.getElementById("quiz");
+
+function calcularPuntajeActual() {
+  let aciertos = 0;
+  questions.forEach((q, i) => {
+    if(answers[i] === q.a) aciertos++;
+  });
+  return aciertos;
+}
+
+function actualizarProgreso(){
+  const respondidas = answers.filter(a => a !== null).length;
+  document.getElementById("progress").textContent = `${respondidas} / ${questions.length}`;
+  document.getElementById("qNum").textContent = current + 1;
+  document.getElementById("puntajeText").textContent = calcularPuntajeActual();
+
+  const porcentajeBarra = ((current + 1) / questions.length) * 100;
+  document.getElementById("barraProgreso").style.width = `${porcentajeBarra}%`;
+}
+
+function render(){
+  quiz.innerHTML = "";
+
+  questions.forEach((q,i)=>{
+    let div = document.createElement("div");
+    div.className = "question" + (i===current ? " active" : "");
+    if (i !== current) div.style.display = "none";
+
+    let opts = "";
+
+    q.o.forEach((op,j)=>{
+      let extraClass = answers[i] === j ? " selected" : "";
+
+      opts += `
+        <div class="option${extraClass}" data-q="${i}" data-o="${j}">
+          ${String.fromCharCode(65+j)}. ${op}
+        </div>
+      `;
+    });
+
+    div.innerHTML = `
+      <h3>${i+1}. ${q.q}</h3>
+      ${opts}
+      <div class="navigation">
+        <button type="button" class="prev" data-action="prev" ${i===0 ? "disabled" : ""}>Anterior</button>
+        ${i===questions.length-1
+          ? `<button type="button" class="next" data-action="finish">Finalizar</button>`
+          : `<button type="button" class="next" data-action="next">Siguiente</button>`
+        }
+      </div>
+    `;
+
+    quiz.appendChild(div);
+  });
+
+  quiz.querySelectorAll('.option').forEach(opt => {
+    opt.addEventListener('click', (e) => {
+      if(evaluado) return;
+      const qIdx = parseInt(e.currentTarget.getAttribute('data-q'));
+      const oIdx = parseInt(e.currentTarget.getAttribute('data-o'));
+      answers[qIdx] = oIdx;
+      render();
+    });
+  });
+
+  quiz.querySelectorAll('button[data-action]').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      const action = e.currentTarget.getAttribute('data-action');
+      if(action === 'next') nextQuestion();
+      if(action === 'prev') prevQuestion();
+      if(action === 'finish') calificar();
+    });
+  });
+
+  actualizarProgreso();
+}
+
+function iniciarExamen(){
+  document.getElementById("pantallaInicio").classList.add("oculto");
+  document.getElementById("pantallaExamen").classList.remove("oculto");
+  render();
+}
+
+function nextQuestion(){
+  if(current < questions.length-1){
+    current++;
+    render();
+    window.scrollTo({ top:0, behavior:"smooth" });
+  }
+}
+
+function prevQuestion(){
+  if(current > 0){
+    current--;
+    render();
+  }
+}
+
+function calificar(){
+  if(evaluado) return;
+  evaluado = true;
+
+  let correctas = calcularPuntajeActual();
+  
+  let notaEscalada = Math.round((correctas / questions.length) * 100);
+  localStorage.setItem("verbal", notaEscalada);
+
+  let res = { porcentaje: 0, percentil: 50, nivel: "Promedio", posicion: 1, ranking: [] };
+  if (typeof calcularResultadoEval === "function") {
+    res = calcularResultadoEval(correctas, questions.length);
+  } else {
+    res.porcentaje = notaEscalada;
+  }
+
+  document.getElementById("resAciertos").textContent = `${correctas} / ${questions.length}`;
+  document.getElementById("resPorcentaje").textContent = `${res.porcentaje}%`;
+  document.getElementById("resPercentil").textContent = `${res.percentil}%`;
+  document.getElementById("resNivel").textContent = res.nivel;
+  document.getElementById("resPosicion").textContent = `#${res.posicion} de ${res.ranking ? res.ranking.length : 30}`;
+
+  document.getElementById("pantallaExamen").classList.add("oculto");
+  const panel = document.getElementById("resultadoPanel");
+  panel.classList.remove("oculto");
+  panel.scrollIntoView({ behavior:"smooth" });
+}
+
+function reiniciar(){
+  current = 0;
+  answers = new Array(questions.length).fill(null);
+  evaluado = false;
+  document.getElementById("resultadoPanel").classList.add("oculto");
+  document.getElementById("pantallaExamen").classList.add("oculto");
+  document.getElementById("pantallaInicio").classList.remove("oculto");
+  window.scrollTo({ top:0, behavior:"smooth" });
+}
+
+document.getElementById("startBtn").addEventListener("click", iniciarExamen);
+document.getElementById("btnCalificar").addEventListener("click", calificar);
+document.getElementById("btnReiniciar").addEventListener("click", reiniciar);
+document.getElementById("btnReintentar").addEventListener("click", reiniciar);
+
+// Lógica para saltar a un examen de matemáticas aleatorio al finalizar verbal
+document.getElementById("btnIrMathAleatorio").addEventListener("click", () => {
+  const examenesMatematicas = [
+    "mate-eval-1.html",
+    "mate-eval-2.html",
+    "mate-eval-3.html",
+    "mate-eval-4.html",
+    "mate-eval-5.html",
+    "mate-eval-6.html",
+    "mate-eval-7.html",
+    "mate-eval-8.html",
+    "mate-eval-9.html",
+    "mate-eval-10.html"
+  ];
+  
+  const indiceAleatorio = Math.floor(Math.random() * examenesMatematicas.length);
+  window.location.href = examenesMatematicas[indiceAleatorio];
+});
+</script>
+
+</body>
+</html>
