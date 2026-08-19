@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Examen Habilidad Numérica 16</title>
+<title>Examen Habilidad Numérica 16 - Nivel 3</title>
 
 <style>
 *{
@@ -272,7 +272,7 @@ padding:18px;
 
 <div class="header">
 <h1>🧠 Habilidad Numérica 16</h1>
-<p>Examen interactivo - Modo Difícil</p>
+<p>Examen interactivo - Nivel 3 (Difícil)</p>
 </div>
 
 <div class="stats-bar">
@@ -602,12 +602,13 @@ function finish(){
 
     let porcentaje = Math.round((correct / questions.length) * 100);
 
-    // MODO DIFÍCIL: Generación de bots con notas exigentes (rango 60% - 100%)
+    // MODO NIVEL 3: Generación de bots con notas entre 75% y 100%
     const bots = [];
-    for (let i = 1; i <= 30; i++) {
+    for(let i=1; i<=30; i++){
+        const notaBot = Math.floor(Math.random() * 26) + 75; // Genera 75 - 100
         bots.push({
             nombre: `Bot_${i}`,
-            nota: 60 + Math.floor(Math.random() * 41)
+            nota: notaBot
         });
     }
 
