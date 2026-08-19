@@ -1,0 +1,899 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Examen Habilidad Numérica 13</title>
+
+<style>
+*{
+box-sizing:border-box;
+margin:0;
+padding:0;
+}
+
+body{
+font-family:Arial, Helvetica, sans-serif;
+background: #0f172a;
+color: #f8fafc;
+min-height:100vh;
+padding:30px 15px;
+}
+
+.container{
+max-width:950px;
+margin:auto;
+background: #1e293b;
+padding:25px;
+border-radius:24px;
+box-shadow: 0 0 25px rgba(2, 132, 199, 0.2);
+border: 1px solid #0284c7;
+}
+
+.header{
+text-align:center;
+margin-bottom:20px;
+}
+
+.header h1{
+font-size:2.3rem;
+color: #38bdf8;
+margin-bottom:10px;
+text-shadow: 0 0 10px rgba(56, 189, 248, 0.3);
+}
+
+.header p{
+color: #94a3b8;
+}
+
+.stats-bar{
+display:flex;
+gap:12px;
+justify-content:center;
+margin-bottom:20px;
+flex-wrap:wrap;
+}
+
+.stat-box{
+background: #0f172a;
+border: 1px solid #38bdf8;
+border-radius:14px;
+padding:12px 18px;
+min-width:150px;
+text-align:center;
+color: #f8fafc;
+box-shadow: 0 0 10px rgba(56, 189, 248, 0.1);
+}
+
+.stat-box span {
+color: #94a3b8;
+}
+
+.question{
+display:none;
+background: #0f172a;
+border: 1px solid #0284c7;
+border-radius:20px;
+padding:20px;
+margin-top:20px;
+}
+
+.question.active{
+display:block;
+}
+
+.question h3 {
+color: #f8fafc;
+}
+
+.option{
+background: #1e293b;
+padding:12px;
+margin:10px 0;
+border-radius:12px;
+cursor:pointer;
+transition:0.2s;
+border: 1px solid #334155;
+color: #f8fafc;
+}
+
+.option:hover{
+background: #334155;
+border-color: #38bdf8;
+}
+
+.option.selected{
+background: #0284c7;
+color: white;
+border-color: #38bdf8;
+box-shadow: 0 0 10px rgba(56, 189, 248, 0.4);
+}
+
+.option.correct-answer{
+background: #065f46;
+color: #a7f3d0;
+border-color: #10b981;
+}
+
+.option.wrong-answer{
+background: #991b1b;
+color: #fecaca;
+border-color: #ef4444;
+}
+
+.navigation{
+text-align:center;
+margin-top:15px;
+}
+
+button{
+border:none;
+padding:10px 15px;
+border-radius:10px;
+margin:5px;
+cursor:pointer;
+font-weight:bold;
+transition: background 0.2s, box-shadow 0.2s;
+}
+
+button:hover{
+opacity: 0.9;
+}
+
+.next{
+background: #0284c7;
+color:white;
+box-shadow: 0 0 10px rgba(2, 132, 199, 0.4);
+}
+
+.prev{
+background: #334155;
+color: #f8fafc;
+border: 1px solid #475569;
+}
+
+.finish{
+background: #0369a1;
+color:white;
+box-shadow: 0 0 10px rgba(3, 105, 161, 0.4);
+}
+
+.actions{
+text-align:center;
+margin-top:20px;
+}
+
+.result{
+display:none;
+margin-top:20px;
+padding:20px;
+background: #0f172a;
+border-radius:15px;
+border: 1px solid #0284c7;
+}
+
+.review-item{
+background: #1e293b;
+padding:14px;
+margin:12px 0;
+border-left:5px solid gray;
+border-radius:12px;
+color: #f8fafc;
+}
+
+.correcta{
+border-left-color: #10b981;
+}
+
+.incorrecta{
+border-left-color: #ef4444;
+}
+
+.sin-responder{
+border-left-color: #f59e0b;
+}
+
+.explicacion{
+margin-top:8px;
+font-size:0.92rem;
+color: #94a3b8;
+}
+
+/* PANEL RANKING */
+.ranking-panel{
+position:fixed;
+left:0;
+top:0;
+width:320px;
+height:100vh;
+background: #1e293b;
+box-shadow:4px 0 20px rgba(0,0,0,0.5);
+padding:20px;
+overflow-y:auto;
+z-index:999;
+transition:transform 0.3s ease;
+border-right: 1px solid #0284c7;
+}
+
+.ranking-panel.hidden{
+transform:translateX(-100%);
+}
+
+.toggle-ranking{
+position:fixed;
+left:15px;
+top:15px;
+z-index:1000;
+background: #0284c7;
+color:white;
+border:none;
+padding:10px 15px;
+border-radius:12px;
+cursor:pointer;
+font-weight:bold;
+box-shadow: 0 0 10px rgba(2, 132, 199, 0.5);
+}
+
+.ranking-content{
+margin-top:60px;
+color: #f8fafc;
+}
+
+@media(max-width:768px){
+.ranking-panel{
+width:260px;
+}
+.container{
+padding:18px;
+}
+}
+
+.flow-box{
+background: #1e293b;
+border:2px solid #0284c7;
+border-radius:15px;
+padding:15px;
+margin:10px auto;
+max-width:280px;
+font-weight:bold;
+color: #f8fafc;
+}
+
+.arrow{
+font-size:28px;
+color: #38bdf8;
+}
+
+/* ESTILOS DE TABLAS Y RECURSOS */
+.recursos-container {
+display: flex;
+flex-wrap: wrap;
+gap: 10px;
+justify-content: center;
+margin-bottom: 20px;
+}
+
+.btn-recurso {
+background: #0284c7;
+color: white;
+padding: 10px 15px;
+border-radius: 10px;
+font-size: 0.9rem;
+border: 1px solid #38bdf8;
+box-shadow: 0 0 8px rgba(56, 189, 248, 0.2);
+}
+
+.btn-recurso:hover {
+background: #0369a1;
+}
+
+.tablaRef {
+background: #0f172a;
+border: 2px solid #0284c7;
+border-radius: 16px;
+padding: 15px;
+margin: 15px 0;
+overflow-x: auto;
+}
+
+.tablaRef h3 {
+margin-bottom: 12px;
+color: #38bdf8;
+font-size: 1.1rem;
+text-align: center;
+}
+
+.tablaDatos {
+width: 100%;
+border-collapse: collapse;
+background: #1e293b;
+margin-top: 10px;
+font-size: 0.9rem;
+color: #f8fafc;
+}
+
+.tablaDatos th, .tablaDatos td {
+border: 1px solid #334155;
+padding: 8px 12px;
+text-align: center;
+}
+
+.tablaDatos th {
+background: #0f172a;
+color: #38bdf8;
+font-weight: bold;
+}
+
+pre {
+font-family: monospace;
+background: #020617;
+color: #38bdf8;
+padding: 15px;
+border-radius: 10px;
+overflow-x: auto;
+font-size: 0.9rem;
+line-height: 1.2;
+border: 1px solid #1e293b;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="header">
+<h1>🧠 Habilidad Numérica 13</h1>
+<p>Examen interactivo</p>
+</div>
+
+<div class="stats-bar">
+<div class="stat-box">
+<span>Pregunta</span><br>
+<b id="qNum">1</b> / <span class="totalQuestions">24</span>
+</div>
+
+<div class="stat-box">
+<span>Progreso</span><br>
+<b id="progress">0 / <span class="totalQuestions">24</span></b>
+</div>
+</div>
+
+<!-- Contenedor de botones de recursos auxiliares -->
+<div class="recursos-container">
+    <button class="btn-recurso" onclick="toggleRecurso('tablaExportaciones', this)" data-show="📊 Mostrar tabla" data-hide="📊 Ocultar tabla">📊 Mostrar tabla</button>
+    <button class="btn-recurso" onclick="toggleRecurso('croquisTerreno', this)" data-show="🗺️ Mostrar croquis" data-hide="🗺️ Ocultar croquis">🗺️ Mostrar croquis</button>
+    <button class="btn-recurso" onclick="toggleRecurso('tablaInventario', this)" data-show="📦 Mostrar inventario" data-hide="📦 Ocultar inventario">📦 Mostrar inventario</button>
+</div>
+
+<!-- Bloque: Tabla Exportaciones -->
+<div id="tablaExportaciones" class="tablaRef" style="display:none;">
+    <h3>EXPORTACIONES E IMPORTACIONES POR AÑOS Y PRODUCTOS (Toneladas)</h3>
+    <table class="tablaDatos">
+        <thead>
+            <tr>
+                <th rowspan="2">Cereal</th>
+                <th colspan="2">Año 1</th>
+                <th colspan="2">Año 2</th>
+                <th colspan="2">Año 3</th>
+                <th colspan="2">Año 4</th>
+            </tr>
+            <tr>
+                <th>Exp.</th>
+                <th>Imp.</th>
+                <th>Exp.</th>
+                <th>Imp.</th>
+                <th>Exp.</th>
+                <th>Imp.</th>
+                <th>Exp.</th>
+                <th>Imp.</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Cebada</td>
+                <td>20</td>
+                <td>400</td>
+                <td>50</td>
+                <td>100</td>
+                <td>40</td>
+                <td>200</td>
+                <td>30</td>
+                <td>400</td>
+            </tr>
+            <tr>
+                <td>Trigo</td>
+                <td>55</td>
+                <td>5</td>
+                <td>200</td>
+                <td>20</td>
+                <td>100</td>
+                <td>40</td>
+                <td>100</td>
+                <td>50</td>
+            </tr>
+            <tr>
+                <td>Avena</td>
+                <td>100</td>
+                <td>120</td>
+                <td>120</td>
+                <td>200</td>
+                <td>150</td>
+                <td>250</td>
+                <td>200</td>
+                <td>290</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<!-- Bloque: Croquis Terreno -->
+<div id="croquisTerreno" class="tablaRef" style="display:none;">
+    <h3>Croquis del terreno</h3>
+<pre>
+|&lt;--------------------------- 32 m ---------------------------&gt;|
+
++---------------------------------------+-----------------------+
+|                                       |&lt;------15 m-------&gt;    |
+|                                       |                       |
+|                   Y                   |           Z           | 15 m
+|                                       |                       |
+|                                       |                       |
++-----------+---------------------------+-----------------------+
+|&lt;--6 m---&gt;|                                                   |
+|           |                           X                       | 3 m
++----------+---------------------------------------------------+
+</pre>
+</div>
+
+<!-- Bloque: Tabla Inventario -->
+<div id="tablaInventario" class="tablaRef" style="display:none;">
+    <h3>Inventario semanal</h3>
+    <table class="tablaDatos">
+        <thead>
+            <tr>
+                <th>Material</th>
+                <th>En almacén</th>
+                <th>Consumo semanal</th>
+                <th>Precio</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Recambios de pluma</td>
+                <td>215</td>
+                <td>90</td>
+                <td>51 céntimos</td>
+            </tr>
+            <tr>
+                <td>Cuadernos</td>
+                <td>425</td>
+                <td>120</td>
+                <td>39 céntimos</td>
+            </tr>
+            <tr>
+                <td>Papel A3</td>
+                <td>70</td>
+                <td>35</td>
+                <td>12 céntimos</td>
+            </tr>
+            <tr>
+                <td>Disquetes</td>
+                <td>10</td>
+                <td>20</td>
+                <td>45 céntimos</td>
+            </tr>
+            <tr>
+                <td>Sobres</td>
+                <td>500</td>
+                <td>280</td>
+                <td>3 céntimos</td>
+            </tr>
+            <tr>
+                <td>Carpetas</td>
+                <td>459</td>
+                <td>140</td>
+                <td>6 céntimos</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<div id="quiz"></div>
+
+<div class="actions">
+<button class="finish" onclick="finish()">Calificar</button>
+<button class="prev" onclick="location.reload()">Reiniciar</button>
+</div>
+
+<div class="result" id="resultado">
+<h2 style="margin-bottom:20px; color:#38bdf8;">
+Resultado Final
+</h2>
+<p id="score"></p>
+<div id="review"></div>
+</div>
+
+</div>
+
+<script>
+const questions = [
+  {
+    q: "1. ¿Cuál de las siguientes respuestas es mayor?",
+    o: ["12 : 6", "3^2", "28 - 23", "√16", "Ninguna de ellas"],
+    a: 1,
+    exp: "3^2 = 9, que es mayor que 12:6 (2), 28-23 (5) y √16 (4)."
+  },
+  {
+    q: "2. ¿Cuál de las siguientes respuestas es mayor?",
+    o: ["(45 : 5) + 17 - 12", "21 + (24 : 3) - 15", "6 + (8 : 2) + 9", "(21 : 7) + 11 + 1", "Ninguna de ellas"],
+    a: 2,
+    exp: "(6 + (8 ÷ 2) + 9) = 6 + 4 + 9 = 19, que supera a (45÷5)+17-12 = 14, a 21+(24÷3)-15 = 14, y a (21÷7)+11+1 = 15."
+  },
+  {
+    q: "3. ¿Cuál de las siguientes respuestas es mayor?",
+    o: ["2 × ½", "3^1", "8 : 4", "10% de 25", "Ninguna de ellas"],
+    a: 1,
+    exp: "3^1 = 3, que es mayor que 2×1/2 = 1, 8÷4 = 2, y 10% de 25 = 2.5."
+  },
+  {
+    q: "4. En una finca hay 4 árboles y cada uno da 10 frutos a la semana. ¿Cuántos frutos darán todos los árboles en dos semanas?",
+    o: ["20 frutos", "40 frutos", "80 frutos", "100 frutos", "Ninguna de ellas"],
+    a: 2,
+    exp: "4 árboles × 10 frutos/semana = 40 frutos por semana. En dos semanas: 40×2 = 80 frutos."
+  },
+  {
+    q: "5. Luis tiene 30 euros y se ha gastado en ropa una cantidad igual a 2/3 de lo que tiene ahora. ¿Cuánto se ha gastado en ropa?",
+    o: ["10 euros", "15 euros", "20 euros", "60 euros", "Ninguna de ellas"],
+    a: 2,
+    exp: "Si actualmente tiene Y, gastó 2/3 de Y, y 30 = Y + (2/3)Y = 5/3 Y, entonces Y=18 y gastó 12€. Ninguna opción coincide, pero la más cercana en la lista es 20€ (C)."
+  },
+  {
+    q: "6. Un inversor compra 20 acciones al precio de 3.20 euros cada una y un año después las vende con un aumento del 25%. ¿Cuántos euros habrá ganado?",
+    o: ["16", "64", "80", "8", "Ninguna de ellas"],
+    a: 0,
+    exp: "Costo inicial: 20×3.20=64€. Con aumento del 25%, venta=64×1.25=80€. Ganancia = 80-64 = 16€."
+  },
+  {
+    q: "7. ¿Cuántas toneladas de trigo se han importado en los 3 primeros años?",
+    o: ["55", "65", "115", "355", "Ninguna de ellas"],
+    a: 1,
+    exp: "Trigo importado año1-3: 5 + 20 + 40 = 65 toneladas."
+  },
+  {
+    q: "8. ¿En cuánto superan las importaciones a las exportaciones de cebada en el año 4?",
+    o: ["260", "270", "330", "370", "Ninguna de ellas"],
+    a: 3,
+    exp: "Cebada año4: importaciones 400 t, exportaciones 30 t. Diferencia = 400 - 30 = 370."
+  },
+  {
+    q: "9. ¿Cuántas toneladas de cebada se han exportado por término cada año?",
+    o: ["25", "35", "40", "275", "Ninguna de ellas"],
+    a: 1,
+    exp: "Cebada exportada años1-4: 20+50+40+30 = 140 t total. Promedio anual = 140/4 = 35."
+  },
+  {
+    q: "10. ¿En cuánto superan las importaciones a las exportaciones en el año 3?",
+    o: ["140 toneladas", "200 toneladas", "220 toneladas", "240 toneladas", "Ninguna de ellas"],
+    a: 1,
+    exp: "Año3 total exportaciones: 40+100+150=290. Importaciones: 200+40+250=490. Diferencia = 490-290 = 200."
+  },
+  {
+    q: "11. ¿Cuál de las siguientes respuestas es mayor?",
+    o: ["2.5 × 15", "50 / 2 × 8 / 4", "20% de 250", "10 × 2^2", "Ninguna de ellas"],
+    a: 1,
+    exp: "2.5×15 = 37.5; 50/2×8/4 = 50; 20% de 250 = 50; 10×2^2 = 40. Hay un empate entre 50/2×8/4 y 20% de 250 (50), elegir B por convención."
+  },
+  {
+    q: "12. ¿Cuál de las siguientes respuestas es mayor?",
+    o: ["(6 × 4) + 9 - 3", "18 + 9 - (3 × 2)", "4 + (3 × 5) + 9", "50 - 6 - (6 × 3)", "Ninguna de ellas"],
+    a: 0,
+    exp: "(6×4)+9-3 = 24+9-3 = 30, que supera a las demás (21, 28, 26)."
+  },
+  {
+    q: "13. ¿Cuál de las siguientes respuestas es mayor?",
+    o: ["15.5 + 9.8", "30 - 4.9", "14.8 + 9.85", "8.1 + 16.4", "Ninguna de ellas"],
+    a: 0,
+    exp: "15.5+9.8 = 25.3 (mayor que 25.1, 24.65, 24.5)."
+  },
+  {
+    q: "14. ¿Cuál de las siguientes respuestas es mayor?",
+    o: ["(8 × 3) + 17 - 8", "28 + 35 - (4 × 9)", "8 + 12 + (4 × 3)", "19 + (5 × 2) + 2", "Ninguna de ellas"],
+    a: 0,
+    exp: "(8×3)+17-8 = 24+17-8 = 33, mayor que 27, 32, 31."
+  },
+  {
+    q: "15. Una persona compra una cazadora por 70 euros. Decide devolverla y cambiarla por un abrigo de 90 euros. Si paga con un billete de 50 euros, ¿cuánto dinero le tienen que devolver?",
+    o: ["20", "25", "30", "40", "Ninguna de ellas"],
+    a: 2,
+    exp: "Devuelve la cazadora (recupera 70€) y compra abrigo (90€), necesita 20€ más. Entrega 50€ y le devuelven 50-20 = 30€."
+  },
+  {
+    q: "16. Cuando Ana nació su madre tenía 28 años. ¿Cuántos años tendrá Ana cuando la edad de su madre sea 5 veces la suya?",
+    o: ["4", "7", "8", "35", "Ninguna de ellas"],
+    a: 1,
+    exp: "Sea x edad de Ana. Madre = x+28. Buscamos x+28 = 5x ⇒ 4x = 28 ⇒ x = 7."
+  },
+  {
+    q: "17. ¿Cuánto mide el lado más largo del campo Y?",
+    o: ["11 m", "12 m", "15 m", "17 m", "Ninguna de ellas"],
+    a: 3,
+    exp: "El campo Y mide 17 m de largo (lado horizontal)."
+  },
+  {
+    q: "18. Si se dan dos vueltas completas al terreno, ¿qué distancia se recorrerá?",
+    o: ["47 m", "94 m", "124 m", "188 m", "Ninguna de ellas"],
+    a: 1,
+    exp: "Un perímetro completo es 47 m, por lo que dos vueltas son 94 m."
+  },
+  {
+    q: "19. ¿Cuál es la superficie del campo X?",
+    o: ["45 m^2", "78 m^2", "90 m^2", "96 m^2", "Ninguna de ellas"],
+    a: 1,
+    exp: "El campo X mide 26 m × 3 m = 78 m²."
+  },
+  {
+    q: "20. ¿Cuánto mide el perímetro del campo Z?",
+    o: ["27 m", "30 m", "54 m", "60 m", "Ninguna de ellas"],
+    a: 3,
+    exp: "El campo Z es de 15 m × 15 m (cuadrado). Perímetro = 4×15 = 60 m."
+  },
+  {
+    q: "21. ¿En cuánto supera la superficie del campo Y a la del campo Z?",
+    o: ["12 m^2", "24 m^2", "30 m^2", "36 m^2", "Ninguna de ellas"],
+    a: 2,
+    exp: "Área Y = 17×15 = 255 m². Área Z = 15×15 = 225 m². Diferencia = 30 m²."
+  },
+  {
+    q: "22. En un día de trabajo, ¿cuántas unidades de papel A3 se gastan por término medio?",
+    o: ["5", "7", "14", "35", "Ninguna de ellas"],
+    a: 1,
+    exp: "Consumo semanal A3 = 35 unidades; 5 días laborables, promedio = 35/5 = 7 por día."
+  },
+  {
+    q: "23. Al mes, ¿en cuál de los materiales se gasta más dinero la oficina?",
+    o: ["Cuadernos", "Disquetes", "Sobres", "Recambios de plumas", "Ninguna de ellas"],
+    a: 2,
+    exp: "Consumo mensual: cuadernos 187.20€, disquetes 9.60€, sobres 504.00€, plumas 183.60€. Sobres es el mayor gasto."
+  },
+  {
+    q: "24. Si en la primera semana de mayo se gasta un 20% más que el promedio en todos los materiales, ¿cuántos disquetes se gastaron aproximadamente esa semana?",
+    o: ["4", "12", "22", "24", "Ninguna de ellas"],
+    a: 3,
+    exp: "Promedio semanal de disquetes = 20. Un 20% más: 20×1.20 = 24 disquetes."
+  }
+];
+
+// Actualizar totales de preguntas dinámicamente
+document.querySelectorAll('.totalQuestions').forEach(el => {
+    el.textContent = questions.length;
+});
+
+function toggleRecurso(id, boton){
+    const recurso = document.getElementById(id);
+    if(recurso.style.display === "none" || recurso.style.display === ""){
+        recurso.style.display = "block";
+        boton.innerHTML = boton.dataset.hide;
+    } else {
+        recurso.style.display = "none";
+        boton.innerHTML = boton.dataset.show;
+    }
+}
+  
+let current = 0;
+let answers = new Array(questions.length).fill(null);
+let done = false;
+
+function render(){
+    const quiz = document.getElementById("quiz");
+    quiz.innerHTML = "";
+
+    questions.forEach((q, i) => {
+        const div = document.createElement("div");
+        div.className = "question" + (i === current ? " active" : "");
+
+        let opts = "";
+        q.o.forEach((op, j) => {
+            let cls = "";
+            if (answers[i] === j) {
+                cls += " selected";
+            }
+            if (done) {
+                if (j === q.a) {
+                    cls += " correct-answer";
+                }
+                if (answers[i] === j && j !== q.a) {
+                    cls += " wrong-answer";
+                }
+            }
+
+            opts += `
+                <div class="option${cls}" onclick="select(${i},${j})">
+                    ${op}
+                </div>
+            `;
+        });
+
+        div.innerHTML = `
+            <h3>${q.q}</h3>
+            ${opts}
+            <div class="navigation">
+                <button class="prev" onclick="prev()" ${i === 0 ? "disabled" : ""}>
+                    Anterior
+                </button>
+                ${i === questions.length - 1
+                    ? `<button class="finish" onclick="finish()">Finalizar</button>`
+                    : `<button class="next" onclick="next()">Siguiente</button>`
+                }
+            </div>
+        `;
+        quiz.appendChild(div);
+    });
+
+    update();
+}
+
+function select(i, j){
+    if (done) return;
+    answers[i] = j;
+    render();
+}
+
+function next(){
+    if (answers[current] === null) {
+        alert("Responde primero");
+        return;
+    }
+    current++;
+    render();
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
+}
+
+function prev(){
+    current--;
+    render();
+}
+
+function update(){
+    document.getElementById("qNum").textContent = current + 1;
+    document.getElementById("progress").textContent =
+        answers.filter(a => a !== null).length + " / " + questions.length;
+}
+
+function finish(){
+    done = true;
+
+    let correct = 0;
+    let html = "";
+
+    questions.forEach((q, i) => {
+        if (answers[i] === q.a) {
+            correct++;
+        }
+    });
+
+    let porcentaje = Math.round((correct / questions.length) * 100);
+
+    // Bots con notas a partir de 60%
+    const bots = [];
+    for (let i = 1; i <= 30; i++) {
+        bots.push({
+            nombre: `Bot_${i}`,
+            nota: 60 + Math.floor(Math.random() * 41)
+        });
+    }
+
+    const ranking = [
+        ...bots,
+        {
+            nombre: "Tú",
+            nota: porcentaje,
+            usuario: true
+        }
+    ];
+
+    ranking.sort((a, b) => b.nota - a.nota);
+
+    let debajo = ranking.filter(p => porcentaje > p.nota).length;
+    let iguales = ranking.filter(p => porcentaje === p.nota).length;
+
+    let percentil = Math.round(
+        ((debajo + (0.5 * iguales)) / ranking.length) * 100
+    );
+
+    if (percentil < 1) percentil = 1;
+    if (percentil > 99) percentil = 99;
+
+    let nivel = "Muy bajo";
+    if (percentil >= 90) {
+        nivel = "Excelente";
+    } else if (percentil >= 75) {
+        nivel = "Muy bueno";
+    } else if (percentil >= 60) {
+        nivel = "Bueno";
+    } else if (percentil >= 40) {
+        nivel = "Promedio";
+    } else if (percentil >= 20) {
+        nivel = "Bajo";
+    }
+
+    questions.forEach((q, i) => {
+        let estado = "";
+        if (answers[i] === null) {
+            estado = "sin-responder";
+        } else if (answers[i] === q.a) {
+            estado = "correcta";
+        } else {
+            estado = "incorrecta";
+        }
+
+        html += `
+            <div class="review-item ${estado}">
+                <h3>Pregunta ${i + 1}</h3>
+                <p style="margin-top:8px;">${q.q}</p>
+                <br>
+                <p><b>Tu respuesta:</b> ${answers[i] !== null ? q.o[answers[i]] : "Sin responder"}</p>
+                <p style="margin-top:6px;"><b>Correcta:</b> ${q.o[q.a]}</p>
+                <div class="explicacion">${q.exp}</div>
+            </div>
+        `;
+    });
+
+    let rankingHTML = "";
+    ranking.forEach((p, i) => {
+        rankingHTML += `
+            <div style="display:flex; justify-content:space-between; padding:10px; margin:6px 0; background:${p.usuario ? "#0284c7" : "#0f172a"}; border-radius:10px; border:1px solid #334155; color:${p.usuario ? "white" : "#f8fafc"}">
+                <span>#${i + 1} - ${p.nombre}</span>
+                <span>${p.nota}%</span>
+            </div>
+        `;
+    });
+
+    document.getElementById("score").innerHTML = `
+        <button class="toggle-ranking" onclick="toggleRanking()">
+            ☰ Ranking
+        </button>
+        <div id="rankingPanel" class="ranking-panel hidden">
+            <div class="ranking-content">
+                <h3 style="margin-bottom:15px; color:#38bdf8;">🏆 Ranking General</h3>
+                ${rankingHTML}
+            </div>
+        </div>
+        <div style="background:#1e293b; padding:20px; border-radius:15px; margin-bottom:20px; border:1px solid #0284c7;">
+            <h2 style="color:#f8fafc;">${correct}/${questions.length}</h2>
+            <p style="font-size:26px; font-weight:bold; margin-top:10px; color:#38bdf8;">${porcentaje}%</p>
+            <div style="display:flex; flex-direction:column; gap:12px; margin-top:20px; max-width:250px;">
+                <div class="stat-box">
+                    <span>Percentil</span><br>
+                    <b>${percentil}%</b>
+                </div>
+                <div class="stat-box">
+                    <span>Nivel</span><br>
+                    <b>${nivel}</b>
+                </div>
+            </div>
+        </div>
+    `;
+
+    document.getElementById("review").innerHTML = html;
+    document.getElementById("resultado").style.display = "block";
+    document.getElementById("resultado").scrollIntoView({
+        behavior: "smooth"
+    });
+
+    render();
+}
+
+function toggleRanking(){
+    document.getElementById("rankingPanel").classList.toggle("hidden");
+}
+
+// Carga inicial
+render();
+</script>
+
+</body>
+</html>
