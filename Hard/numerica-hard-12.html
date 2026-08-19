@@ -1,0 +1,861 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Examen Habilidad Numérica 12</title>
+
+<style>
+*{
+box-sizing:border-box;
+margin:0;
+padding:0;
+}
+
+body{
+font-family:Arial, Helvetica, sans-serif;
+background:linear-gradient(135deg,#eff6ff,#dbeafe,#bfdbfe);
+color:#1e3a8a;
+min-height:100vh;
+padding:30px 15px;
+}
+
+.container{
+max-width:950px;
+margin:auto;
+background:rgba(255,255,255,0.95);
+padding:25px;
+border-radius:24px;
+box-shadow:0 12px 35px rgba(0,0,0,0.08);
+}
+
+.header{
+text-align:center;
+margin-bottom:20px;
+}
+
+.header h1{
+font-size:2.3rem;
+color:#1d4ed8;
+margin-bottom:10px;
+}
+
+.header p{
+color:#1e40af;
+}
+
+.stats-bar{
+display:flex;
+gap:12px;
+justify-content:center;
+margin-bottom:20px;
+flex-wrap:wrap;
+}
+
+.stat-box{
+background:#fff;
+border:1px solid #93c5fd;
+border-radius:14px;
+padding:12px 18px;
+min-width:150px;
+text-align:center;
+}
+
+.question{
+display:none;
+background:#eff6ff;
+border:1px solid #93c5fd;
+border-radius:20px;
+padding:20px;
+}
+
+.question.active{
+display:block;
+}
+
+.option{
+background:#dbeafe;
+padding:12px;
+margin:10px 0;
+border-radius:12px;
+cursor:pointer;
+transition:0.2s;
+}
+
+.option:hover{
+background:#bfdbfe;
+}
+
+.option.selected{
+background:#2563eb;
+color:white;
+}
+
+.option.correct-answer{
+background:#bbf7d0;
+}
+
+.option.wrong-answer{
+background:#fecaca;
+}
+
+.navigation{
+text-align:center;
+margin-top:15px;
+}
+
+button{
+border:none;
+padding:10px 15px;
+border-radius:10px;
+margin:5px;
+cursor:pointer;
+}
+
+.next{
+background:#2563eb;
+color:white;
+}
+
+.prev{
+background:#93c5fd;
+}
+
+.finish{
+background:#1d4ed8;
+color:white;
+}
+
+.actions{
+text-align:center;
+margin-top:20px;
+}
+
+.result{
+display:none;
+margin-top:20px;
+padding:20px;
+background:#eff6ff;
+border-radius:15px;
+}
+
+.review-item{
+background:white;
+padding:14px;
+margin:12px 0;
+border-left:5px solid gray;
+border-radius:12px;
+}
+
+.correcta{
+border-left-color:green;
+}
+
+.incorrecta{
+border-left-color:red;
+}
+
+.sin-responder{
+border-left-color:orange;
+}
+
+.explicacion{
+margin-top:8px;
+font-size:0.92rem;
+color:#374151;
+}
+
+/* PANEL RANKING */
+.ranking-panel{
+position:fixed;
+left:0;
+top:0;
+width:320px;
+height:100vh;
+background:white;
+box-shadow:4px 0 20px rgba(0,0,0,0.1);
+padding:20px;
+overflow-y:auto;
+z-index:999;
+transition:transform 0.3s ease;
+}
+
+.ranking-panel.hidden{
+transform:translateX(-100%);
+}
+
+.toggle-ranking{
+position:fixed;
+left:15px;
+top:15px;
+z-index:1000;
+background:#2563eb;
+color:white;
+border:none;
+padding:10px 15px;
+border-radius:12px;
+cursor:pointer;
+font-weight:bold;
+}
+
+.ranking-content{
+margin-top:60px;
+}
+
+@media(max-width:768px){
+.ranking-panel{
+width:260px;
+}
+.container{
+padding:18px;
+}
+}
+
+.flow-box{
+background:white;
+border:2px solid #2563eb;
+border-radius:15px;
+padding:15px;
+margin:10px auto;
+max-width:280px;
+font-weight:bold;
+}
+
+.arrow{
+font-size:28px;
+color:#2563eb;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="header">
+<h1>🧠 Habilidad Numérica 12</h1>
+<p>Examen interactivo</p>
+</div>
+
+<div class="stats-bar">
+<div class="stat-box">
+<span>Pregunta</span><br>
+<b id="qNum">1</b> / <span class="totalQuestions">40</span>
+</div>
+
+<div class="stat-box">
+<span>Progreso</span><br>
+<b id="progress">0 / <span class="totalQuestions">40</span></b>
+</div>
+</div>
+
+<div style="text-align:center;margin-bottom:20px;">
+<button class="next" onclick="toggleDiagrama(event)">
+📋 Mostrar diagrama de flujo
+</button>
+</div>
+
+<div id="contenedorDiagrama" style="display:none;margin-bottom:20px;">
+<div style="background:#eff6ff;border:1px solid #93c5fd;border-radius:20px;padding:20px;text-align:center;">
+<h3 style="margin-bottom:20px;">
+Diagrama de flujo (Preguntas 39 y 40)
+</h3>
+
+<div class="flow-box">
+🔢 Introducir número
+</div>
+
+<div class="arrow">
+⬇
+</div>
+
+<div class="flow-box">
+➕ Multiplicar X2
+</div>
+
+<div class="arrow">
+⬇
+</div>
+
+<div class="flow-box">
+❓ ¿Número > 15?
+</div>
+
+<div style="margin:10px;">
+<span style="color:green;font-weight:bold;">
+Sí ↓
+</span>
+&nbsp;&nbsp;&nbsp;&nbsp;
+<span style="color:red;font-weight:bold;">
+No ↩ volver a sumar 6
+</span>
+</div>
+
+<div class="flow-box">
+➗ Dividir entre 4
+</div>
+
+<div class="arrow">
+⬇
+</div>
+
+<div class="flow-box">
+❓ ¿Número ≤ 7?
+</div>
+
+<div style="margin:10px;">
+<span style="color:green;font-weight:bold;">
+Sí ↓
+</span>
+&nbsp;&nbsp;&nbsp;&nbsp;
+<span style="color:red;font-weight:bold;">
+No ↩ dividir otra vez
+</span>
+</div>
+
+<div class="flow-box">
+Restale 1
+</div>
+
+<div class="arrow">
+⬇
+</div>
+
+<div class="flow-box" style="background:#bbf7d0;border-color:green;">
+🏁 Resultado final
+</div>
+
+</div>
+</div>
+
+<div id="quiz"></div>
+
+<div class="actions">
+<button class="finish" onclick="finish()">Calificar</button>
+<button class="prev" onclick="location.reload()">Reiniciar</button>
+</div>
+
+<div class="result" id="resultado">
+<h2 style="margin-bottom:20px;">
+Resultado Final
+</h2>
+<p id="score"></p>
+<div id="review"></div>
+</div>
+
+</div>
+
+<script>
+const questions = [
+  {
+    "q": "1. ¿Qué cifra debería reemplazar a la F en esta división cuyo resultado es correcto? F73 : F3 = 11",
+    "o": ["9", "8", "6", "4", "Ninguna de ellas"],
+    "a": 3,
+    "exp": "20000+1010·F = 6000·F+5132 implica F=4. De hecho, 473÷43=11."
+  },
+  {
+    "q": "2. 3x² + 7x - 9x + 10 =",
+    "o": ["-60x² + 10", "3x² - 63x + 10", "3x² - 2x + 10", "3x² - 16x + 10", "Ninguna de ellas"],
+    "a": 2,
+    "exp": "Se combinan términos semejantes: 7x - 9x = -2x, dando 3x² - 2x + 10."
+  },
+  {
+    "q": "3. 5 - 12 =",
+    "o": ["−12 + 5", "12 − 5", "−(5 − 12)", "−(12 + 5)", "Ninguna de ellas"],
+    "a": 0,
+    "exp": "5−12 = −7, lo cual coincide con −12+5 = −7."
+  },
+  {
+    "q": "4. ¿Qué cifra debería ir en lugar de la P en esta suma cuyo resultado es correcto? 4 P P P 4 + 4 P P 7 = 47671",
+    "o": ["9", "8", "3", "2", "Ninguna de ellas"],
+    "a": 2,
+    "exp": "Probando P=3: 43334+4337=47671, lo cual concuerda con el total dado."
+  },
+  {
+    "q": "5. ¿Cuál es el resto de dividir 2.480.739 entre 20?",
+    "o": ["1", "9", "29", "39", "Ninguna de ellas"],
+    "a": 3,
+    "exp": "2.480.739÷20 = 124036 rem. 39, pues 20·124036=2.480.720 y sobra 19; el resto es 19+20=39."
+  },
+  {
+    "q": "6. ¿Qué número puede sustituir a la L para que la proporción sea correcta? 4/L = L/36",
+    "o": ["3", "9", "12", "18", "Ninguna de ellas"],
+    "a": 2,
+    "exp": "Multiplicando en cruz: L² = 4·36 = 144, de donde L = 12."
+  },
+  {
+    "q": "7. ½ + ¼ + ½ + ½ =",
+    "o": ["½", "¾", "4/3", "3/2", "Ninguna de ellas"],
+    "a": 4,
+    "exp": "La suma es 1/2+1/4+1/2+1/2 = 7/4 = 1.75. Ninguna de las opciones A–D equivale a 7/4."
+  },
+  {
+    "q": "8. El 30% del 50% de 300 es:",
+    "o": ["150", "90", "50", "45", "Ninguna de ellas"],
+    "a": 3,
+    "exp": "El 50% de 300 es 150, y el 30% de 150 es 45."
+  },
+  {
+    "q": "9. ¿Qué número debería sustituir a la K para que esta división sea correcta? 11K8 : 47 = K4",
+    "o": ["2", "3", "5", "6", "Ninguna de ellas"],
+    "a": 0,
+    "exp": "Comprobación: si K=2, 1128÷47=24, es decir, coincide con \"24\" y K=2 en ambos dividendos."
+  },
+  {
+    "q": "10. 4 = 10% de ______",
+    "o": ["0,4", "4", "40", "400", "Ninguna de ellas"],
+    "a": 2,
+    "exp": "Si 4 es el 10%, el total es 4÷0,10 = 40."
+  },
+  {
+    "q": "11. 16x² + 4y² + 3x² =",
+    "o": ["19x² + 4y²", "19x⁴ + 4y²", "23x² y²", "23x⁴ y²", "Ninguna de ellas"],
+    "a": 0,
+    "exp": "Se suman 16x² + 3x² = 19x², dejando +4y² intacto."
+  },
+  {
+    "q": "12. ¿Qué número debe sustituir a la N para que la proporción sea correcta? 8/12 = N/6",
+    "o": ["16", "5", "4", "2", "Ninguna de ellas"],
+    "a": 2,
+    "exp": "8/12 equivale a 2/3. Planteamos N/6 = 2/3 ⇒ N = 6·(2/3) = 4."
+  },
+  {
+    "q": "13. Si 2x² + 6x = 2x² + 3x + 5, entonces x =",
+    "o": ["-2,5", "-5/4", "-1", "0,6", "Ninguna de ellas"],
+    "a": 4,
+    "exp": "2x² + 6x = 2x² + 3x + 5 ⇒ 6x = 3x + 5 ⇒ 3x = 5 ⇒ x = 5/3. Ninguna de las opciones es 5/3."
+  },
+  {
+    "q": "14. ¿Qué suma es MAYOR que uno?",
+    "o": ["1/5 + 3/4", "2/3 + 3/8", "8/12 + 1/3", "5/8 + 1/4", "Ninguna de ellas"],
+    "a": 1,
+    "exp": "2/3 + 3/8 = 0,666... + 0,375 = 1,0416..., que es mayor que 1."
+  },
+  {
+    "q": "15. ¿Qué cifra debe sustituir a la J en esta suma cuyo resultado es correcto?\n```\n  2 4 J 4\n+   2 J J 7\n  _______\n    5 4 J 1\n```",
+    "o": ["0", "6", "8", "9", "Ninguna de ellas"],
+    "a": 3,
+    "exp": "Resolviendo por columnas se obtiene J=9. (Por ejemplo, unidades: 4+7=11, acarreo 1, decenas: J+J+1=10+J implica J=9.)"
+  },
+  {
+    "q": "16. ¿Qué número debería continuar la serie? 100 | 9 | 64 | 7 | ?",
+    "o": ["5", "36", "49", "8", "Ninguna de ellas"],
+    "a": 1,
+    "exp": "Pareja de valores: 100 (10²) y 9 (=10-1), luego 64 (8²) y 7 (=8-1). Luego vendría 36 (6²) y 5 (=6-1), por lo que el siguiente es 36."
+  },
+  {
+    "q": "17. ¿Cuál es el número MÁS PEQUEÑO que es divisible exactamente por 2, 4, 7 y 21?",
+    "o": ["1176", "168", "84", "42", "Ninguna de ellas"],
+    "a": 2,
+    "exp": "El mínimo común múltiplo de 2, 4, 7 y 21 es 84."
+  },
+  {
+    "q": "18. ¿Qué cifra debería sustituir a la N en esta resta cuyo resultado es correcto?\n```\n  3 N 3 N 3\n-   3 N N 3\n  _________\n    3 2 7 0 0\n```",
+    "o": ["1", "4", "5", "6", "Ninguna de ellas"],
+    "a": 3,
+    "exp": "Resolviendo la resta encadenada se obtiene N=6 (36363 - 3663 = 32700)."
+  },
+  {
+    "q": "19. 15/21 ÷ 7/3 =",
+    "o": ["15/49", "5/3", "15/7", "15", "Ninguna de ellas"],
+    "a": 0,
+    "exp": "15/21 = 5/7, y (5/7)÷(7/3) = 5/7·3/7 = 15/49."
+  },
+  {
+    "q": "20. ¿Cuál es el resultado de 84.189 × 1,99 redondeado al número entero más próximo?",
+    "o": ["168", "167", "160", "86", "Ninguna de ellas"],
+    "a": 4,
+    "exp": "84.189×1,99 ≈ 167.530, que redondea a 167530, ninguna opción coincide."
+  },
+  {
+    "q": "21. ¿Qué cifra debe sustituir a la R en esta resta cuyo resultado es correcto?\n```\n  3 R 3 3\n-   9 R 9\n  _______\n    2 R 5 4\n```",
+    "o": ["0", "1", "6", "8", "Ninguna de ellas"],
+    "a": 4,
+    "exp": "La resta da R=7 (31333 - 9R9 = 2R54). Ninguna de las opciones A–D es 7."
+  },
+  {
+    "q": "22. ¿Qué número es divisible exactamente entre 3?",
+    "o": ["766", "768", "769", "976", "Ninguna de ellas"],
+    "a": 1,
+    "exp": "Sumando dígitos de 768: 7+6+8=21, múltiplo de 3, por lo que 768 es divisible por 3."
+  },
+  {
+    "q": "23. y + x + 7x - 6y =",
+    "o": ["8x + 5y", "7x - 6y", "7x² - 6y²", "5y - 8x", "Ninguna de ellas"],
+    "a": 4,
+    "exp": "y + x + 7x - 6y = 8x - 5y. Ninguna de las opciones A–D coincide con 8x - 5y."
+  },
+  {
+    "q": "24. ¿Qué número continuaría la serie? 2.400 | 1.200 | 600 | 300 | ?",
+    "o": ["0", "100", "150", "200", "Ninguna de ellas"],
+    "a": 2,
+    "exp": "Cada término se divide por 2: 300/2 = 150."
+  },
+  {
+    "q": "25. ¿Cuál es el millar más próximo al que podría redondearse 710 × 80?",
+    "o": ["50.000", "55.000", "57.000", "60.000", "Ninguna de ellas"],
+    "a": 2,
+    "exp": "710×80 = 56.800, redondeado al millar más cercano es 57.000."
+  },
+  {
+    "q": "26. ¿Qué cifra debería sustituir a la A en esta multiplicación cuyo resultado es correcto?\n```\n      6 A 6\n    x   A 2\n  ___________\n    6 4 0 3 2\n```",
+    "o": ["9", "7", "5", "1", "Ninguna de ellas"],
+    "a": 0,
+    "exp": "Probar A=9: 696×92 = 64032, que coincide."
+  },
+  {
+    "q": "27. mn = y. Si y = 10, entonces m =",
+    "o": ["10 - n", "n - 10", "n/10", "10/n", "Ninguna de ellas"],
+    "a": 3,
+    "exp": "De mn = 10 se despeja m = 10/n."
+  },
+  {
+    "q": "28. 5×2 / 4×15 =",
+    "o": ["6", "5/6", "2/3", "1/6", "Ninguna de ellas"],
+    "a": 3,
+    "exp": "5×2 / (4×15) = 10/60 = 1/6."
+  },
+  {
+    "q": "29. ¿Qué número debe sustituir a la T para que la proporción sea correcta? 13/T = 0,2/0,8",
+    "o": ["6,5", "5,2", "4,0", "1,04", "Ninguna de ellas"],
+    "a": 4,
+    "exp": "13/T = 0.2/0.8 = 0.25 ⇒ T = 13/0.25 = 52, no aparece, por lo tanto Ninguna de ellas."
+  },
+  {
+    "q": "30. ¿Qué valores de x hacen que sea verdadera la expresión x + 3 ≥ 11?",
+    "o": ["5, 6, 7", "6, 7, 8", "7, 8, 9", "8, 9, 10", "Ninguna de ellas"],
+    "a": 3,
+    "exp": "x+3 ≥ 11 ⇔ x ≥ 8. Los valores 8, 9, 10 cumplen la desigualdad."
+  },
+  {
+    "q": "31. ¿Qué cifra debe sustituir a la F en la siguiente división cuyo resultado es correcto? 2F1F2 : F855 = 6 (resto = 2)",
+    "o": ["9", "7", "4", "3", "Ninguna de ellas"],
+    "a": 3,
+    "exp": "Planteamos 2F1F2 = F855·6 + 2 ⇒ F=3 (se verifica: 2 3 1 3 2 ÷ 3855 = 6 rem 2)."
+  },
+  {
+    "q": "32. ¿Cuál de las siguientes expresiones vale uno?",
+    "o": ["(-3×2)/6", "-6", "(-2×-3)/6", "(-3×-2)/6", "Ninguna de ellas"],
+    "a": 2,
+    "exp": "(-2×-3)/6 = 6/6 = 1."
+  },
+  {
+    "q": "33. ¿Qué cifra debería sustituir a la J en esta multiplicación cuyo resultado es correcto?\n```\n      1 J 5 6\n    x        J\n  ___________\n      5 8 2 J\n```",
+    "o": ["3", "4", "7", "9", "Ninguna de ellas"],
+    "a": 1,
+    "exp": "Probando J=4: 1456×4 = 5824, coincide con el resultado dado."
+  },
+  {
+    "q": "34. ¿Cuál es el resultado, redondeado al número entero más próximo, de la siguiente operación? (1 1/9) × (2 2/3) × (5 1/5)",
+    "o": ["20", "15", "10", "5", "Ninguna de ellas"],
+    "a": 1,
+    "exp": "(10/9)×(8/3)×(26/5) = 2080/135 ≈ 15,407, que redondeado es 15."
+  },
+  {
+    "q": "35. ¿Qué número debería sustituir a la H para que la proporción fuera correcta? 12%/9% = 4%/H",
+    "o": ["0,03%", "0,3%", "3%", "30%", "Ninguna de ellas"],
+    "a": 2,
+    "exp": "12/9 = 4/H ⇒ H = (4·9)/12 = 3. Por lo tanto H = 3%."
+  },
+  {
+    "q": "36. 2 × 100.000 + 8 × 1.000 + 9 × 10 =",
+    "o": ["28.090", "28.900", "190.000", "208.090", "Ninguna de ellas"],
+    "a": 3,
+    "exp": "2×100000 + 8×1000 + 9×10 = 200000 + 8000 + 90 = 208090."
+  },
+  {
+    "q": "37. Si x = 10, entonces 3x² - x =",
+    "o": ["50", "200", "270", "290", "Ninguna de ellas"],
+    "a": 3,
+    "exp": "3(10)² - 10 = 300 - 10 = 290."
+  },
+  {
+    "q": "38. a = ½ b h. Si b = 6y, a = 14, entonces h =",
+    "o": ["14/3", "7/3", "7", "6", "Ninguna de ellas"],
+    "a": 4,
+    "exp": "14 = ½·6y·h ⇒ 14 = 3y·h ⇒ h = 14/(3y). Ninguna opción coincide exactamente con 14/(3y)."
+  },
+  {
+    q: "39. Si introduce el número 8, ¿cuántas veces pasará por el paso 4 para llegar al final?",
+    o: ["8", "4", "2", "1", "Ninguna de ellas"],
+    a: 3,
+    exp: "Con 8: 8×2=16. Como 16>15 pasa al paso 4: 16÷4=4. Como 4≤7 termina. Solo pasa una vez por el paso 4."
+  },
+  {
+    q: "40. Si introduce el número 3, ¿cuál será el número cuando llegue al final?",
+    o: ["6", "5", "3", "2", "Ninguna de ellas"],
+    a: 1,
+    exp: "Con 3: 3×2=6, 6×2=12, 12×2=24. Luego 24÷4=6 y como 6≤7 se resta 1: 6-1=5."
+  }
+];
+
+document.querySelectorAll('.totalQuestions').forEach(el => {
+    el.textContent = questions.length;
+});
+
+function toggleDiagrama(event){
+    let d = document.getElementById("contenedorDiagrama");
+    let b = event.target;
+
+    if(d.style.display === "none"){
+        d.style.display = "block";
+        b.innerHTML = "📋 Ocultar diagrama de flujo";
+    } else {
+        d.style.display = "none";
+        b.innerHTML = "📋 Mostrar diagrama de flujo";
+    }
+}
+  
+let current = 0;
+let answers = new Array(questions.length).fill(null);
+let done = false;
+
+function render(){
+    const quiz = document.getElementById("quiz");
+    quiz.innerHTML = "";
+
+    questions.forEach((q, i) => {
+        const div = document.createElement("div");
+        div.className = "question" + (i === current ? " active" : "");
+
+        let opts = "";
+        q.o.forEach((op, j) => {
+            let cls = "";
+            if (answers[i] === j) {
+                cls += " selected";
+            }
+            if (done) {
+                if (j === q.a) {
+                    cls += " correct-answer";
+                }
+                if (answers[i] === j && j !== q.a) {
+                    cls += " wrong-answer";
+                }
+            }
+
+            opts += `
+                <div class="option${cls}" onclick="select(${i},${j})">
+                    ${op}
+                </div>
+            `;
+        });
+
+        div.innerHTML = `
+            <h3>${q.q}</h3>
+            ${opts}
+            <div class="navigation">
+                <button class="prev" onclick="prev()" ${i === 0 ? "disabled" : ""}>
+                    Anterior
+                </button>
+                ${i === questions.length - 1
+                    ? `<button class="finish" onclick="finish()">Finalizar</button>`
+                    : `<button class="next" onclick="next()">Siguiente</button>`
+                }
+            </div>
+        `;
+        quiz.appendChild(div);
+    });
+
+    update();
+}
+
+function select(i, j){
+    if (done) return;
+    answers[i] = j;
+    render();
+}
+
+function next(){
+    if (answers[current] === null) {
+        alert("Responde primero");
+        return;
+    }
+    current++;
+    render();
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
+}
+
+function prev(){
+    current--;
+    render();
+}
+
+function update(){
+    document.getElementById("qNum").textContent = current + 1;
+    document.getElementById("progress").textContent =
+        answers.filter(a => a !== null).length + " / " + questions.length;
+}
+
+function finish(){
+    done = true;
+
+    let correct = 0;
+    let html = "";
+
+    questions.forEach((q, i) => {
+        if (answers[i] === q.a) {
+            correct++;
+        }
+    });
+
+    let porcentaje = Math.round((correct / questions.length) * 100);
+
+    // BOTS MÁS DIFICILES: Generan notas significativamente más altas (entre 60% y 100%)
+    const bots = [];
+    for (let i = 1; i <= 30; i++) {
+        bots.push({
+            nombre: `Bot_${i}`,
+            nota: Math.floor(Math.random() * 41) + 60
+        });
+    }
+
+    const ranking = [
+        ...bots,
+        {
+            nombre: "Tú",
+            nota: porcentaje,
+            usuario: true
+        }
+    ];
+
+    ranking.sort((a, b) => b.nota - a.nota);
+
+    let debajo = ranking.filter(p => porcentaje > p.nota).length;
+    let iguales = ranking.filter(p => porcentaje === p.nota).length;
+
+    // Cálculo base de percentil frente al grupo
+    let percentilBase = ((debajo + (0.5 * iguales)) / ranking.length);
+
+    // APLICACIÓN DE CURVA DURA: Eleva exponencialmente el requisito para percentiles altos
+    let percentil = Math.round(Math.pow(percentilBase, 1.8) * 100);
+
+    if (percentil < 1) percentil = 1;
+    if (percentil > 99) percentil = 99;
+
+    // NIVELES MÁS EXIGENTES
+    let nivel = "Muy bajo";
+    if (percentil >= 95) {
+        nivel = "Excelente";
+    } else if (percentil >= 80) {
+        nivel = "Muy bueno";
+    } else if (percentil >= 65) {
+        nivel = "Bueno";
+    } else if (percentil >= 45) {
+        nivel = "Promedio";
+    } else if (percentil >= 25) {
+        nivel = "Bajo";
+    }
+
+    questions.forEach((q, i) => {
+        let estado = "";
+        if (answers[i] === null) {
+            estado = "sin-responder";
+        } else if (answers[i] === q.a) {
+            estado = "correcta";
+        } else {
+            estado = "incorrecta";
+        }
+
+        html += `
+            <div class="review-item ${estado}">
+                <h3>Pregunta ${i + 1}</h3>
+                <p style="margin-top:8px;">${q.q}</p>
+                <br>
+                <p><b>Tu respuesta:</b> ${answers[i] !== null ? q.o[answers[i]] : "Sin responder"}</p>
+                <p style="margin-top:6px;"><b>Correcta:</b> ${q.o[q.a]}</p>
+                <div class="explicacion">${q.exp}</div>
+            </div>
+        `;
+    });
+
+    let rankingHTML = "";
+    ranking.forEach((p, i) => {
+        rankingHTML += `
+            <div style="display:flex; justify-content:space-between; padding:10px; margin:6px 0; background:${p.usuario ? "#dbeafe" : "white"}; border-radius:10px;">
+                <span>#${i + 1} - ${p.nombre}</span>
+                <span>${p.nota}%</span>
+            </div>
+        `;
+    });
+
+    document.getElementById("score").innerHTML = `
+        <button class="toggle-ranking" onclick="toggleRanking()">
+            ☰ Ranking
+        </button>
+        <div id="rankingPanel" class="ranking-panel hidden">
+            <div class="ranking-content">
+                <h3 style="margin-bottom:15px;">🏆 Ranking General</h3>
+                ${rankingHTML}
+            </div>
+        </div>
+        <div style="background:white; padding:20px; border-radius:15px; margin-bottom:20px;">
+            <h2>${correct}/${questions.length}</h2>
+            <p style="font-size:26px; font-weight:bold; margin-top:10px; color:#1d4ed8;">${porcentaje}%</p>
+            <div style="display:flex; flex-direction:column; gap:12px; margin-top:20px; max-width:250px;">
+                <div class="stat-box">
+                    <span>Percentil</span><br>
+                    <b>${percentil}%</b>
+                </div>
+                <div class="stat-box">
+                    <span>Nivel</span><br>
+                    <b>${nivel}</b>
+                </div>
+            </div>
+        </div>
+    `;
+
+    document.getElementById("review").innerHTML = html;
+    document.getElementById("resultado").style.display = "block";
+    document.getElementById("resultado").scrollIntoView({
+        behavior: "smooth"
+    });
+
+    if (window.enviarResultadoFinal) {
+        window.enviarResultadoFinal({
+            correctas: correct,
+            total: questions.length,
+            porcentaje
+        });
+    }
+
+    render();
+}
+
+function toggleRanking(){
+    document.getElementById("rankingPanel").classList.toggle("hidden");
+}
+
+window.mostrarResultadosParty = function(data){
+    const ranking = [...data].sort((a, b) => b.porcentaje - a.porcentaje);
+    let html = `<div class="party-grid">`;
+
+    ranking.forEach((j, i) => {
+        let medal = i === 0 ? "🥇" : i === 1 ? "🥈" : i === 2 ? "🥉" : "";
+        html += `
+            <div class="party-card">
+                <h3>${medal} Jugador ${i + 1}</h3>
+                <p>${j.correctas}/${j.total}</p>
+                <p>${j.porcentaje}%</p>
+            </div>
+        `;
+    });
+
+    html += `</div>`;
+    html += `<div class="party-winner">🏆 Mejor: ${ranking[0].porcentaje}%</div>`;
+
+    document.getElementById("partyResultadoContenido").innerHTML = html;
+    document.getElementById("resultadoParty").style.display = "block";
+};
+
+// Carga inicial
+render();
+</script>
+
+<script type="module" src="../party/party-timer.js"></script>
+<script type="module" src="../party/party-resultados.js"></script>
+
+</body>
+</html>
