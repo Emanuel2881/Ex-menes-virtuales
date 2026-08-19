@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Examen Habilidad Numérica 12</title>
+<title>Examen Habilidad Numérica 12 - Modo Difícil</title>
 
 <style>
 *{
@@ -14,8 +14,8 @@ padding:0;
 
 body{
 font-family:Arial, Helvetica, sans-serif;
-background:linear-gradient(135deg,#eff6ff,#dbeafe,#bfdbfe);
-color:#1e3a8a;
+background: #0f172a;
+color: #f8fafc;
 min-height:100vh;
 padding:30px 15px;
 }
@@ -23,10 +23,11 @@ padding:30px 15px;
 .container{
 max-width:950px;
 margin:auto;
-background:rgba(255,255,255,0.95);
+background: #1e293b;
 padding:25px;
 border-radius:24px;
-box-shadow:0 12px 35px rgba(0,0,0,0.08);
+box-shadow: 0 0 25px rgba(2, 132, 199, 0.2);
+border: 1px solid #0284c7;
 }
 
 .header{
@@ -36,12 +37,13 @@ margin-bottom:20px;
 
 .header h1{
 font-size:2.3rem;
-color:#1d4ed8;
+color: #38bdf8;
 margin-bottom:10px;
+text-shadow: 0 0 10px rgba(56, 189, 248, 0.3);
 }
 
 .header p{
-color:#1e40af;
+color: #94a3b8;
 }
 
 .stats-bar{
@@ -53,50 +55,70 @@ flex-wrap:wrap;
 }
 
 .stat-box{
-background:#fff;
-border:1px solid #93c5fd;
+background: #0f172a;
+border: 1px solid #38bdf8;
 border-radius:14px;
 padding:12px 18px;
 min-width:150px;
 text-align:center;
+color: #f8fafc;
+box-shadow: 0 0 10px rgba(56, 189, 248, 0.1);
+}
+
+.stat-box span {
+color: #94a3b8;
 }
 
 .question{
 display:none;
-background:#eff6ff;
-border:1px solid #93c5fd;
+background: #0f172a;
+border: 1px solid #0284c7;
 border-radius:20px;
 padding:20px;
+margin-top:20px;
 }
 
 .question.active{
 display:block;
 }
 
+.question h3 {
+color: #f8fafc;
+}
+
 .option{
-background:#dbeafe;
+background: #1e293b;
 padding:12px;
 margin:10px 0;
 border-radius:12px;
 cursor:pointer;
 transition:0.2s;
+border: 1px solid #334155;
+color: #f8fafc;
 }
 
 .option:hover{
-background:#bfdbfe;
+background: #334155;
+border-color: #38bdf8;
 }
 
 .option.selected{
-background:#2563eb;
-color:white;
+background: #0284c7;
+color: white;
+border-color: #38bdf8;
+box-shadow: 0 0 10px rgba(56, 189, 248, 0.4);
 }
 
 .option.correct-answer{
-background:#bbf7d0;
+background: #065f46;
+color: #a7f3d0;
+border-color: #10b981;
 }
 
 .option.wrong-answer{
-background:#fecaca;
+background: #991b1b;
+color: #fecaca;
+border-color: #ef4444;
 }
 
 .navigation{
@@ -110,20 +132,30 @@ padding:10px 15px;
 border-radius:10px;
 margin:5px;
 cursor:pointer;
+font-weight:bold;
+transition: background 0.2s, box-shadow 0.2s;
+}
+
+button:hover{
+opacity: 0.9;
 }
 
 .next{
-background:#2563eb;
+background: #0284c7;
 color:white;
+box-shadow: 0 0 10px rgba(2, 132, 199, 0.4);
 }
 
 .prev{
-background:#93c5fd;
+background: #334155;
+color: #f8fafc;
+border: 1px solid #475569;
 }
 
 .finish{
-background:#1d4ed8;
+background: #0369a1;
 color:white;
+box-shadow: 0 0 10px rgba(3, 105, 161, 0.4);
 }
 
 .actions{
@@ -135,34 +167,36 @@ margin-top:20px;
 display:none;
 margin-top:20px;
 padding:20px;
-background:#eff6ff;
+background: #0f172a;
 border-radius:15px;
+border: 1px solid #0284c7;
 }
 
 .review-item{
-background:white;
+background: #1e293b;
 padding:14px;
 margin:12px 0;
 border-left:5px solid gray;
 border-radius:12px;
+color: #f8fafc;
 }
 
 .correcta{
-border-left-color:green;
+border-left-color: #10b981;
 }
 
 .incorrecta{
-border-left-color:red;
+border-left-color: #ef4444;
 }
 
 .sin-responder{
-border-left-color:orange;
+border-left-color: #f59e0b;
 }
 
 .explicacion{
 margin-top:8px;
 font-size:0.92rem;
-color:#374151;
+color: #94a3b8;
 }
 
 /* PANEL RANKING */
@@ -172,12 +206,13 @@ left:0;
 top:0;
 width:320px;
 height:100vh;
-background:white;
-box-shadow:4px 0 20px rgba(0,0,0,0.1);
+background: #1e293b;
+box-shadow:4px 0 20px rgba(0,0,0,0.5);
 padding:20px;
 overflow-y:auto;
 z-index:999;
 transition:transform 0.3s ease;
+border-right: 1px solid #0284c7;
 }
 
 .ranking-panel.hidden{
@@ -189,17 +224,19 @@ position:fixed;
 left:15px;
 top:15px;
 z-index:1000;
-background:#2563eb;
+background: #0284c7;
 color:white;
 border:none;
 padding:10px 15px;
 border-radius:12px;
 cursor:pointer;
 font-weight:bold;
+box-shadow: 0 0 10px rgba(2, 132, 199, 0.5);
 }
 
 .ranking-content{
 margin-top:60px;
+color: #f8fafc;
 }
 
 @media(max-width:768px){
@@ -212,18 +249,19 @@ padding:18px;
 }
 
 .flow-box{
-background:white;
-border:2px solid #2563eb;
+background:#1e293b;
+border:2px solid #0284c7;
 border-radius:15px;
 padding:15px;
 margin:10px auto;
 max-width:280px;
 font-weight:bold;
+color: #f8fafc;
 }
 
 .arrow{
 font-size:28px;
-color:#2563eb;
+color:#38bdf8;
 }
 </style>
 </head>
@@ -234,7 +272,7 @@ color:#2563eb;
 
 <div class="header">
 <h1>🧠 Habilidad Numérica 12</h1>
-<p>Examen interactivo</p>
+<p>Examen interactivo - Modo Difícil 🔥</p>
 </div>
 
 <div class="stats-bar">
@@ -256,8 +294,8 @@ color:#2563eb;
 </div>
 
 <div id="contenedorDiagrama" style="display:none;margin-bottom:20px;">
-<div style="background:#eff6ff;border:1px solid #93c5fd;border-radius:20px;padding:20px;text-align:center;">
-<h3 style="margin-bottom:20px;">
+<div style="background:#0f172a;border:1px solid #0284c7;border-radius:20px;padding:20px;text-align:center;">
+<h3 style="margin-bottom:20px; color:#38bdf8;">
 Diagrama de flujo (Preguntas 39 y 40)
 </h3>
 
@@ -282,11 +320,11 @@ Diagrama de flujo (Preguntas 39 y 40)
 </div>
 
 <div style="margin:10px;">
-<span style="color:green;font-weight:bold;">
+<span style="color:#10b981;font-weight:bold;">
 Sí ↓
 </span>
 &nbsp;&nbsp;&nbsp;&nbsp;
-<span style="color:red;font-weight:bold;">
+<span style="color:#ef4444;font-weight:bold;">
 No ↩ volver a sumar 6
 </span>
 </div>
@@ -304,11 +342,11 @@ No ↩ volver a sumar 6
 </div>
 
 <div style="margin:10px;">
-<span style="color:green;font-weight:bold;">
+<span style="color:#10b981;font-weight:bold;">
 Sí ↓
 </span>
 &nbsp;&nbsp;&nbsp;&nbsp;
-<span style="color:red;font-weight:bold;">
+<span style="color:#ef4444;font-weight:bold;">
 No ↩ dividir otra vez
 </span>
 </div>
@@ -321,7 +359,7 @@ Restale 1
 ⬇
 </div>
 
-<div class="flow-box" style="background:#bbf7d0;border-color:green;">
+<div class="flow-box" style="background:#065f46;border-color:#10b981;color:#a7f3d0;">
 🏁 Resultado final
 </div>
 
@@ -336,7 +374,7 @@ Restale 1
 </div>
 
 <div class="result" id="resultado">
-<h2 style="margin-bottom:20px;">
+<h2 style="margin-bottom:20px; color:#38bdf8;">
 Resultado Final
 </h2>
 <p id="score"></p>
@@ -540,7 +578,7 @@ const questions = [
     "exp": "(-2×-3)/6 = 6/6 = 1."
   },
   {
-    "q": "33. ¿Qué cifra debería sustituir a la J en esta multiplicación cuyo resultado es correcto?\n```\n      1 J 5 6\n    x        J\n  ___________\n      5 8 2 J\n```",
+    "q": "33. ¿Qué cifra debería sustituir a la J en esta multiplicación cuyo resultado es correcto?\n```\n      1 J 5 6\n    x       J\n  ___________\n      5 8 2 J\n```",
     "o": ["3", "4", "7", "9", "Ninguna de ellas"],
     "a": 1,
     "exp": "Probando J=4: 1456×4 = 5824, coincide con el resultado dado."
@@ -576,16 +614,16 @@ const questions = [
     "exp": "14 = ½·6y·h ⇒ 14 = 3y·h ⇒ h = 14/(3y). Ninguna opción coincide exactamente con 14/(3y)."
   },
   {
-    q: "39. Si introduce el número 8, ¿cuántas veces pasará por el paso 4 para llegar al final?",
-    o: ["8", "4", "2", "1", "Ninguna de ellas"],
-    a: 3,
-    exp: "Con 8: 8×2=16. Como 16>15 pasa al paso 4: 16÷4=4. Como 4≤7 termina. Solo pasa una vez por el paso 4."
+    "q": "39. Si introduce el número 8, ¿cuántas veces pasará por el paso 4 para llegar al final?",
+    "o": ["8", "4", "2", "1", "Ninguna de ellas"],
+    "a": 3,
+    "exp": "Con 8: 8×2=16. Como 16>15 pasa al paso 4: 16÷4=4. Como 4≤7 termina. Solo pasa una vez por el paso 4."
   },
   {
-    q: "40. Si introduce el número 3, ¿cuál será el número cuando llegue al final?",
-    o: ["6", "5", "3", "2", "Ninguna de ellas"],
-    a: 1,
-    exp: "Con 3: 3×2=6, 6×2=12, 12×2=24. Luego 24÷4=6 y como 6≤7 se resta 1: 6-1=5."
+    "q": "40. Si introduce el número 3, ¿cuál será el número cuando llegue al final?",
+    "o": ["6", "5", "3", "2", "Ninguna de ellas"],
+    "a": 1,
+    "exp": "Con 3: 3×2=6, 6×2=12, 12×2=24. Luego 24÷4=6 y como 6≤7 se resta 1: 6-1=5."
   }
 ];
 
@@ -605,7 +643,7 @@ function toggleDiagrama(event){
         b.innerHTML = "📋 Mostrar diagrama de flujo";
     }
 }
-  
+
 let current = 0;
 let answers = new Array(questions.length).fill(null);
 let done = false;
@@ -703,7 +741,7 @@ function finish(){
 
     let porcentaje = Math.round((correct / questions.length) * 100);
 
-    // BOTS MÁS DIFICILES: Generan notas significativamente más altas (entre 60% y 100%)
+    // MODO DÍFICIL: Generación de notas de Bots ajustadas de 60% a 100%
     const bots = [];
     for (let i = 1; i <= 30; i++) {
         bots.push({
@@ -774,7 +812,7 @@ function finish(){
     let rankingHTML = "";
     ranking.forEach((p, i) => {
         rankingHTML += `
-            <div style="display:flex; justify-content:space-between; padding:10px; margin:6px 0; background:${p.usuario ? "#dbeafe" : "white"}; border-radius:10px;">
+            <div style="display:flex; justify-content:space-between; padding:10px; margin:6px 0; background:${p.usuario ? "#0284c7" : "#0f172a"}; border-radius:10px; border:1px solid #334155; color:${p.usuario ? "white" : "#f8fafc"}">
                 <span>#${i + 1} - ${p.nombre}</span>
                 <span>${p.nota}%</span>
             </div>
@@ -787,13 +825,13 @@ function finish(){
         </button>
         <div id="rankingPanel" class="ranking-panel hidden">
             <div class="ranking-content">
-                <h3 style="margin-bottom:15px;">🏆 Ranking General</h3>
+                <h3 style="margin-bottom:15px; color:#38bdf8;">🏆 Ranking General</h3>
                 ${rankingHTML}
             </div>
         </div>
-        <div style="background:white; padding:20px; border-radius:15px; margin-bottom:20px;">
-            <h2>${correct}/${questions.length}</h2>
-            <p style="font-size:26px; font-weight:bold; margin-top:10px; color:#1d4ed8;">${porcentaje}%</p>
+        <div style="background:#1e293b; padding:20px; border-radius:15px; margin-bottom:20px; border:1px solid #0284c7;">
+            <h2 style="color:#f8fafc;">${correct}/${questions.length}</h2>
+            <p style="font-size:26px; font-weight:bold; margin-top:10px; color:#38bdf8;">${porcentaje}%</p>
             <div style="display:flex; flex-direction:column; gap:12px; margin-top:20px; max-width:250px;">
                 <div class="stat-box">
                     <span>Percentil</span><br>
@@ -813,14 +851,6 @@ function finish(){
         behavior: "smooth"
     });
 
-    if (window.enviarResultadoFinal) {
-        window.enviarResultadoFinal({
-            correctas: correct,
-            total: questions.length,
-            porcentaje
-        });
-    }
-
     render();
 }
 
@@ -828,34 +858,8 @@ function toggleRanking(){
     document.getElementById("rankingPanel").classList.toggle("hidden");
 }
 
-window.mostrarResultadosParty = function(data){
-    const ranking = [...data].sort((a, b) => b.porcentaje - a.porcentaje);
-    let html = `<div class="party-grid">`;
-
-    ranking.forEach((j, i) => {
-        let medal = i === 0 ? "🥇" : i === 1 ? "🥈" : i === 2 ? "🥉" : "";
-        html += `
-            <div class="party-card">
-                <h3>${medal} Jugador ${i + 1}</h3>
-                <p>${j.correctas}/${j.total}</p>
-                <p>${j.porcentaje}%</p>
-            </div>
-        `;
-    });
-
-    html += `</div>`;
-    html += `<div class="party-winner">🏆 Mejor: ${ranking[0].porcentaje}%</div>`;
-
-    document.getElementById("partyResultadoContenido").innerHTML = html;
-    document.getElementById("resultadoParty").style.display = "block";
-};
-
-// Carga inicial
 render();
 </script>
-
-<script type="module" src="../party/party-timer.js"></script>
-<script type="module" src="../party/party-resultados.js"></script>
 
 </body>
 </html>
