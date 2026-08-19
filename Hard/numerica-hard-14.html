@@ -256,7 +256,7 @@ padding:18px;
 
 <div class="header">
 <h1>🧠 Habilidad Numérica 14</h1>
-<p>Examen interactivo - Modo Difícil 🔥</p>
+<p>Examen interactivo - Modo Difícil (Nivel 3) 🔥</p>
 </div>
 
 <div class="stats-bar">
@@ -453,12 +453,13 @@ function finish(){
 
     let porcentaje = Math.round((correct / questions.length) * 100);
 
-    // MODO DÍFICIL: Generación de notas de Bots ajustadas de 60% a 100%
+    // GENERACIÓN DE BOTS NIVEL 3 (Notas de bots entre 75% y 100%)
     const bots = [];
-    for (let i = 1; i <= 30; i++) {
+    for(let i=1; i<=30; i++){
+        const notaBot = Math.floor(Math.random() * 26) + 75; // Genera 75 - 100
         bots.push({
             nombre: `Bot_${i}`,
-            nota: 60 + Math.floor(Math.random() * 41)
+            nota: notaBot
         });
     }
 
