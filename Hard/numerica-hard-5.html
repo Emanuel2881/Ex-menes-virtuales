@@ -1,0 +1,790 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Examen Habilidad Numérica 5 (MODO DIFICIL)</title>
+
+<style>
+
+*{
+box-sizing:border-box;
+margin:0;
+padding:0;
+}
+
+body{
+font-family:Arial, Helvetica, sans-serif;
+background:linear-gradient(135deg, #0b1329, #111c38, #070d1d);
+color:#e2e8f0;
+min-height:100vh;
+padding:30px 15px;
+}
+
+.container{
+max-width:950px;
+margin:auto;
+background:rgba(15, 23, 42, 0.95);
+padding:25px;
+border-radius:24px;
+box-shadow:0 12px 35px rgba(0,0,0,0.6);
+border: 1px solid #1e293b;
+}
+
+.header{
+text-align:center;
+margin-bottom:20px;
+}
+
+.header h1{
+font-size:2.3rem;
+color:#38bdf8;
+margin-bottom:10px;
+text-shadow: 0 0 12px rgba(56, 189, 248, 0.3);
+}
+
+.header p{
+color:#94a3b8;
+}
+
+.stats-bar{
+display:flex;
+gap:12px;
+justify-content:center;
+margin-bottom:20px;
+flex-wrap:wrap;
+}
+
+.stat-box{
+background:#1e293b;
+border:1px solid #334155;
+border-radius:14px;
+padding:12px 18px;
+min-width:150px;
+text-align:center;
+color:#e2e8f0;
+box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+
+.stat-box span{
+color:#94a3b8;
+}
+
+.question{
+display:none;
+background:#1e293b;
+border:1px solid #0284c7;
+border-radius:20px;
+padding:20px;
+box-shadow: 0 0 15px rgba(2, 132, 199, 0.15);
+}
+
+.question.active{
+display:block;
+}
+
+.question h3 {
+color: #f8fafc;
+margin-bottom: 15px;
+}
+
+.option{
+background:#0f172a;
+color:#cbd5e1;
+padding:12px;
+margin:10px 0;
+border-radius:12px;
+border: 1px solid #334155;
+cursor:pointer;
+transition:0.2s;
+}
+
+.option:hover{
+background:#1e293b;
+border-color:#38bdf8;
+color:#ffffff;
+}
+
+.option.selected{
+background:#0284c7;
+color:white;
+border-color:#38bdf8;
+box-shadow: 0 0 10px rgba(56, 189, 248, 0.4);
+}
+
+.option.correct-answer{
+background:#065f46;
+color:#a7f3d0;
+border-color:#10b981;
+}
+
+.option.wrong-answer{
+background:#881337;
+color:#fecdd3;
+border-color:#f43f5e;
+}
+
+.navigation{
+text-align:center;
+margin-top:15px;
+}
+
+button{
+border:none;
+padding:10px 15px;
+border-radius:10px;
+margin:5px;
+cursor:pointer;
+font-weight:bold;
+transition: 0.2s;
+}
+
+.next{
+background:#0284c7;
+color:white;
+}
+
+.next:hover{
+background:#0369a1;
+}
+
+.prev{
+background:#334155;
+color:#94a3b8;
+}
+
+.prev:hover{
+background:#475569;
+color:white;
+}
+
+.finish{
+background:#2563eb;
+color:white;
+}
+
+.finish:hover{
+background:#1d4ed8;
+}
+
+.actions{
+text-align:center;
+margin-top:20px;
+}
+
+.actions button{
+background:#1e293b;
+color:#e2e8f0;
+border:1px solid #334155;
+}
+
+.actions button:hover{
+background:#334155;
+}
+
+.result{
+display:none;
+margin-top:20px;
+padding:20px;
+background:#1e293b;
+border-radius:15px;
+border:1px solid #334155;
+}
+
+.review-item{
+background:#0f172a;
+padding:14px;
+margin:12px 0;
+border-left:5px solid gray;
+border-radius:12px;
+color:#e2e8f0;
+}
+
+.correcta{
+border-left-color:#10b981;
+}
+
+.incorrecta{
+border-left-color:#f43f5e;
+}
+
+.sin-responder{
+border-left-color:#f59e0b;
+}
+
+.explicacion{
+margin-top:8px;
+font-size:0.92rem;
+color:#94a3b8;
+}
+
+/* PANEL RANKING */
+
+.ranking-panel{
+position:fixed;
+left:0;
+top:0;
+width:320px;
+height:100vh;
+background:#0f172a;
+border-right: 1px solid #334155;
+box-shadow:4px 0 20px rgba(0,0,0,0.5);
+padding:20px;
+overflow-y:auto;
+z-index:999;
+transition:transform 0.3s ease;
+color: #e2e8f0;
+}
+
+.ranking-panel.hidden{
+transform:translateX(-100%);
+}
+
+.toggle-ranking{
+position:fixed;
+left:15px;
+top:15px;
+z-index:1000;
+background:#0284c7;
+color:white;
+border:none;
+padding:10px 15px;
+border-radius:12px;
+cursor:pointer;
+font-weight:bold;
+}
+
+.ranking-content{
+margin-top:60px;
+}
+
+@media(max-width:768px){
+
+.ranking-panel{
+width:260px;
+}
+
+.container{
+padding:18px;
+}
+
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="header">
+<h1>🧠 Habilidad Numérica 5 (MODO DIFÍCIL)</h1>
+<p>Relaciones y patrones numéricos</p>
+</div>
+
+<div class="stats-bar">
+
+<div class="stat-box">
+<span>Pregunta</span><br>
+<b id="qNum">1</b> / 20
+</div>
+
+<div class="stat-box">
+<span>Progreso</span><br>
+<b id="progress">0 / 20</b>
+</div>
+
+</div>
+
+<div id="quiz"></div>
+
+<div class="actions">
+<button onclick="finish()">Calificar</button>
+<button onclick="resetExam()">Reiniciar</button>
+</div>
+
+<div class="result" id="resultado">
+
+<h2 style="margin-bottom:20px; color:#38bdf8;">
+Resultado Final
+</h2>
+
+<p id="score"></p>
+
+<div id="review"></div>
+
+</div>
+
+</div>
+
+<script>
+
+const questions = [
+
+{q:"2 es a 4 como 3 es a ?",o:["5","6","7","8","Ninguna"],a:1,exp:"Se multiplica por 2: 3 × 2 = 6"},
+{q:"10 es a 5 como 20 es a ?",o:["5","10","15","20","Ninguna"],a:1,exp:"Se divide entre 2: 20 ÷ 2 = 10"},
+{q:"5 es a 25 como 6 es a ?",o:["30","31","36","40","Ninguna"],a:2,exp:"Se eleva al cuadrado: 6² = 36"},
+{q:"8 es a 4 como 16 es a ?",o:["6","8","10","12","Ninguna"],a:1,exp:"Se divide entre 2: 16 ÷ 2 = 8"},
+{q:"3 es a 9 como 4 es a ?",o:["12","13","14","16","Ninguna"],a:0,exp:"Se multiplica por 3: 4 × 3 = 12"},
+{q:"7 es a 14 como 9 es a ?",o:["16","17","18","19","Ninguna"],a:2,exp:"Se multiplica por 2: 9 × 2 = 18"},
+{q:"100 es a 50 como 60 es a ?",o:["20","25","30","35","Ninguna"],a:2,exp:"Se divide entre 2: 60 ÷ 2 = 30"},
+{q:"4 es a 16 como 5 es a ?",o:["20","21","25","30","Ninguna"],a:2,exp:"Se eleva al cuadrado: 5² = 25"},
+{q:"9 es a 3 como 81 es a ?",o:["9","12","18","27","Ninguna"],a:0,exp:"Se divide entre 3: 81 ÷ 9 = 9"},
+{q:"6 es a 36 como 7 es a ?",o:["42","43","49","56","Ninguna"],a:2,exp:"Se eleva al cuadrado: 7² = 49"},
+{q:"12 es a 6 como 18 es a ?",o:["8","9","10","12","Ninguna"],a:1,exp:"Se divide entre 2: 18 ÷ 2 = 9"},
+{q:"15 es a 45 como 20 es a ?",o:["50","55","60","65","Ninguna"],a:2,exp:"Se multiplica por 3: 20 × 3 = 60"},
+{q:"2 es a 8 como 3 es a ?",o:["9","12","15","18","Ninguna"],a:1,exp:"Se multiplica por 4: 3 × 4 = 12"},
+{q:"5 es a 10 como 7 es a ?",o:["12","13","14","15","Ninguna"],a:2,exp:"Se multiplica por 2: 7 × 2 = 14"},
+{q:"8 es a 64 como 6 es a ?",o:["30","32","34","36","Ninguna"],a:3,exp:"Se eleva al cuadrado: 6² = 36"},
+{q:"7 es a 21 como 9 es a ?",o:["25","27","29","30","Ninguna"],a:1,exp:"Se multiplica por 3: 9 × 3 = 27"},
+{q:"10 es a 100 como 12 es a ?",o:["120","124","144","150","Ninguna"],a:2,exp:"Se eleva al cuadrado: 12² = 144"},
+{q:"3 es a 27 como 4 es a ?",o:["64","81","32","48","Ninguna"],a:0,exp:"Se eleva al cubo: 4³ = 64"},
+{q:"6 es a 3 como 15 es a ?",o:["5","6","7","8","Ninguna"],a:0,exp:"Se divide entre 2: 15 ÷ 3 = 5"},
+{q:"20 es a 4 como 30 es a ?",o:["5","6","7","8","Ninguna"],a:1,exp:"Se divide entre 5: 30 ÷ 5 = 6"}
+
+];
+
+let current=0;
+let answers=new Array(questions.length).fill(null);
+let done=false;
+
+function render(){
+
+const quiz=document.getElementById("quiz");
+
+quiz.innerHTML="";
+
+questions.forEach((q,i)=>{
+
+const div=document.createElement("div");
+
+div.className="question"+(i===current?" active":"");
+
+let opts="";
+
+q.o.forEach((op,j)=>{
+
+let cls="";
+
+if(answers[i]===j){
+
+cls+=" selected";
+
+}
+
+if(done){
+
+if(j===q.a){
+
+cls+=" correct-answer";
+
+}
+
+if(answers[i]===j && j!==q.a){
+
+cls+=" wrong-answer";
+
+}
+
+}
+
+opts+=`
+
+<div class="option${cls}" onclick="select(${i},${j})">
+${op}
+</div>
+
+`;
+
+});
+
+div.innerHTML=`
+
+<h3>${q.q}</h3>
+
+${opts}
+
+<div class="navigation">
+
+<button class="prev"
+onclick="prev()"
+${i===0?"disabled":""}>
+Anterior
+</button>
+
+${i===questions.length-1
+
+? `<button class="finish" onclick="finish()">Finalizar</button>`
+
+: `<button class="next" onclick="next()">Siguiente</button>`
+
+}
+
+</div>
+
+`;
+
+quiz.appendChild(div);
+
+});
+
+update();
+
+}
+
+function select(i,j){
+
+if(done)return;
+
+answers[i]=j;
+
+render();
+
+}
+
+function next(){
+
+if(answers[current]===null){
+
+alert("Responde primero");
+
+return;
+
+}
+
+current++;
+
+render();
+
+window.scrollTo({
+top:0,
+behavior:"smooth"
+});
+
+}
+
+function prev(){
+
+current--;
+
+render();
+
+}
+
+function update(){
+
+document.getElementById("qNum").textContent=current+1;
+
+document.getElementById("progress").textContent=
+answers.filter(a=>a!==null).length+" / "+questions.length;
+
+}
+
+function finish(){
+
+done=true;
+
+let correct=0;
+let html="";
+
+questions.forEach((q,i)=>{
+
+if(answers[i]===q.a){
+
+correct++;
+
+}
+
+});
+
+let porcentaje=Math.round(
+(correct/questions.length)*100
+);
+
+// BOTS Y RANKING
+const bots=[];
+
+for(let i=1;i<=30;i++){
+
+bots.push({
+
+nombre:`Bot_${i}`,
+
+nota:Math.floor(
+Math.random()*71
+)+30
+
+});
+
+}
+
+const ranking=[
+
+...bots,
+
+{
+
+nombre:"Tú",
+nota:porcentaje,
+usuario:true
+
+}
+
+];
+
+ranking.sort(
+
+(a,b)=>b.nota-a.nota
+
+);
+
+// CALCULO DEL PERCENTIL AJUSTADO (Escala 60% en adelante)
+let percentil = 0;
+if (porcentaje > 0) {
+    percentil = Math.min(100, Math.round(60 + (porcentaje / 100) * 40));
+}
+
+// NIVEL
+let nivel = "Exigente";
+if (percentil >= 95) nivel = "Sobresaliente";
+else if (percentil >= 85) nivel = "Avanzado";
+else if (percentil >= 70) nivel = "Competitivo";
+
+// REVIEW
+questions.forEach((q,i)=>{
+
+let estado="";
+
+if(answers[i]===null){
+
+estado="sin-responder";
+
+}
+
+else if(answers[i]===q.a){
+
+estado="correcta";
+
+}
+
+else{
+
+estado="incorrecta";
+
+}
+
+html+=`
+
+<div class="review-item ${estado}">
+
+<h3>
+Pregunta ${i+1}
+</h3>
+
+<p style="margin-top:8px;">
+${q.q}
+</p>
+
+<br>
+
+<p>
+<b>Tu respuesta:</b>
+
+${
+answers[i]!==null
+
+?
+
+q.o[answers[i]]
+
+:
+
+"Sin responder"
+
+}
+</p>
+
+<p style="margin-top:6px;">
+<b>Correcta:</b>
+
+${q.o[q.a]}
+</p>
+
+<div class="explicacion">
+
+${q.exp}
+
+</div>
+
+</div>
+
+`;
+
+});
+
+// RANKING HTML
+let rankingHTML="";
+
+ranking.forEach((p,i)=>{
+
+rankingHTML+=`
+
+<div style="
+display:flex;
+justify-content:space-between;
+padding:10px;
+margin:6px 0;
+background:${p.usuario ? "#0284c7" : "#0f172a"};
+color:${p.usuario ? "white" : "#e2e8f0"};
+border-radius:10px;
+">
+
+<span>
+#${i+1} - ${p.nombre}
+</span>
+
+<span>
+${p.nota}%
+</span>
+
+</div>
+
+`;
+
+});
+
+// MOSTRAR
+document.getElementById("score").innerHTML=
+
+`
+
+<button class="toggle-ranking" onclick="toggleRanking()">
+☰ Ranking
+</button>
+
+<div id="rankingPanel" class="ranking-panel hidden">
+
+<div class="ranking-content">
+
+<h3 style="margin-bottom:15px; color:#38bdf8;">
+🏆 Ranking General
+</h3>
+
+${rankingHTML}
+
+</div>
+
+</div>
+
+<div style="
+background:#0f172a;
+padding:20px;
+border-radius:15px;
+margin-bottom:20px;
+border:1px solid #334155;
+">
+
+<h2>
+${correct}/${questions.length}
+</h2>
+
+<p style="
+font-size:26px;
+font-weight:bold;
+margin-top:10px;
+color:#38bdf8;
+">
+${porcentaje}%
+</p>
+
+<div style="
+display:flex;
+flex-direction:column;
+gap:12px;
+margin-top:20px;
+max-width:250px;
+">
+
+<div class="stat-box">
+<span>Percentil Calibrado</span><br>
+<b>${percentil}%</b>
+</div>
+
+<div class="stat-box">
+<span>Nivel</span><br>
+<b>${nivel}</b>
+</div>
+
+</div>
+
+</div>
+
+`;
+
+document.getElementById("review")
+.innerHTML=html;
+
+document.getElementById("resultado")
+.style.display="block";
+
+document.getElementById("resultado")
+.scrollIntoView({
+
+behavior:"smooth"
+
+});
+
+if(window.enviarResultadoFinal){
+
+window.enviarResultadoFinal({
+
+correctas:correct,
+total:questions.length,
+porcentaje
+
+});
+
+}
+
+render();
+
+}
+
+function toggleRanking(){
+
+document.getElementById("rankingPanel")
+.classList.toggle("hidden");
+
+}
+
+function resetExam(){
+
+current=0;
+
+answers=new Array(questions.length).fill(null);
+
+done=false;
+
+document.getElementById("resultado")
+.style.display="none";
+
+render();
+
+}
+
+window.select = select;
+window.next = next;
+window.prev = prev;
+window.finish = finish;
+window.toggleRanking = toggleRanking;
+window.resetExam = resetExam;
+
+render();
+
+</script>
+
+<script type="module" src="../party/party-timer.js"></script>
+<script type="module" src="../party/party-resultados.js"></script>
+
+</body>
+</html>
