@@ -6,7 +6,6 @@
 <title>Factor N (MODO DIFÍCIL)</title>
 
 <style>
-
 *{
 box-sizing:border-box;
 margin:0;
@@ -226,7 +225,6 @@ color:#94a3b8;
 }
 
 /* PANEL RANKING */
-
 .ranking-panel{
 position:fixed;
 left:0;
@@ -266,29 +264,22 @@ margin-top:60px;
 }
 
 @media(max-width:700px){
-
 .sum{
 font-size:1.4rem;
 }
-
 .buttons{
 flex-direction:column;
 }
-
 .answer-btn{
 width:100%;
 }
-
 .config{
 flex-direction:column;
 }
-
 .ranking-panel{
 width:260px;
 }
-
 }
-
 </style>
 </head>
 
@@ -306,11 +297,7 @@ Cargando banco...
 <div class="config" id="config" style="display:none;">
 
 <div class="config-item">
-
-<label for="count">
-Cantidad de preguntas
-</label>
-
+<label for="count">Cantidad de preguntas</label>
 <select id="count">
 <option value="5">5</option>
 <option value="10" selected>10</option>
@@ -324,34 +311,16 @@ Cantidad de preguntas
 <option value="80">80</option>
 <option value="90">90</option>
 </select>
-
 </div>
 
 <div class="config-item">
-
-<label for="timeMinutes">
-Tiempo en minutos
-</label>
-
-<input
-id="timeMinutes"
-type="number"
-min="0"
-step="1"
-value="5"
-placeholder="Ej. 5"
->
-
+<label for="timeMinutes">Tiempo en minutos</label>
+<input id="timeMinutes" type="number" min="0" step="1" value="5" placeholder="Ej. 5">
 </div>
 
 <div class="config-item">
-
 <label>&nbsp;</label>
-
-<button class="start-btn" onclick="start()">
-Empezar
-</button>
-
+<button class="start-btn" onclick="start()">Empezar</button>
 </div>
 
 </div>
@@ -361,48 +330,26 @@ Escribe 0 en tiempo si quieres jugar sin límite.
 </div>
 
 <div class="topbar" id="topbar">
-
 <div class="stat-box" id="progress"></div>
-
 <div class="stat-box" id="scoreLive"></div>
-
 <div class="stat-box" id="timer"></div>
-
 </div>
 
 <div id="quiz"></div>
 
 <div class="result" id="result">
-
 <h2 id="score" style="color:#60a5fa;"></h2>
-
 <div id="statsResult"></div>
-
 <div id="review"></div>
-
 <p id="finalMessage" style="margin-top:15px; color:#cbd5e1;"></p>
-
-<button
-onclick="location.reload()"
-style="
-margin-top:15px;
-background:#2563eb;
-color:white;
-font-weight:bold;
-cursor:pointer;
-border:none;
-padding:10px 20px;
-border-radius:10px;
-">
+<button onclick="location.reload()" style="margin-top:15px; background:#2563eb; color:white; font-weight:bold; cursor:pointer; border:none; padding:10px 20px; border-radius:10px;">
 Reiniciar
 </button>
-
 </div>
 
 </div>
 
 <script>
-
 let allQuestions = [];
 let questions = [];
 let current = 0;
@@ -410,140 +357,86 @@ let score = 0;
 let timerInterval = null;
 let timeLeft = 0;
 let done = false;
-
 let userAnswers = [];
 
 async function load(){
-
 try{
-
 const res = await fetch("../banco/mate.json");
-
 if(!res.ok){
-
 throw new Error("No se pudo leer el archivo JSON");
-
 }
-
 const data = await res.json();
-
 if(!Array.isArray(data)){
-
 throw new Error("El JSON no tiene formato de arreglo");
-
 }
 
 allQuestions = data.filter(q =>
-
 q &&
 Array.isArray(q.nums) &&
 q.nums.length === 4 &&
 typeof q.result === "number" &&
 typeof q.isCorrect === "boolean"
-
 );
 
 if(allQuestions.length === 0){
-
 throw new Error("No hay preguntas válidas");
-
 }
 
-document.getElementById("status").innerText =
-"Banco cargado: " + allQuestions.length + " preguntas";
-
+document.getElementById("status").innerText = "Banco cargado: " + allQuestions.length + " preguntas";
 document.getElementById("config").style.display = "flex";
-
 document.getElementById("hintText").style.display = "block";
-
 ajustarSelectorPreguntas();
-
 }catch(e){
-
-document.getElementById("status").innerText =
-"Error cargando ../banco/mate.json";
-
+document.getElementById("status").innerText = "Error cargando ../banco/mate.json";
 console.error(e);
-
 }
-
 }
 
 function ajustarSelectorPreguntas(){
-
 const select = document.getElementById("count");
-
 const maxDisponibles = allQuestions.length;
 
 Array.from(select.options).forEach(option => {
-
 const value = parseInt(option.value, 10);
-
 option.disabled = value > maxDisponibles;
-
 });
 
 if(parseInt(select.value, 10) > maxDisponibles){
-
 select.value = String(maxDisponibles);
-
 }
-
 }
 
 function shuffle(arr){
-
 const copy = [...arr];
-
 for(let i = copy.length - 1; i > 0; i--){
-
 const j = Math.floor(Math.random() * (i + 1));
-
 [copy[i], copy[j]] = [copy[j], copy[i]];
-
 }
-
 return copy;
-
 }
 
 function formatTime(totalSeconds){
-
 const m = Math.floor(totalSeconds / 60);
-
 const s = totalSeconds % 60;
-
 return m + ":" + String(s).padStart(2,"0");
-
 }
 
 function start(){
-
-const requestedCount =
-parseInt(document.getElementById("count").value, 10);
-
-const minutesInput =
-parseInt(document.getElementById("timeMinutes").value, 10);
+const requestedCount = parseInt(document.getElementById("count").value, 10);
+const minutesInput = parseInt(document.getElementById("timeMinutes").value, 10);
 
 const safeCount = Math.min(
-
 isNaN(requestedCount) ? 10 : requestedCount,
-
 allQuestions.length
-
 );
 
-const safeMinutes =
-isNaN(minutesInput) || minutesInput < 0 ? 0 : minutesInput;
-
+const safeMinutes = isNaN(minutesInput) || minutesInput < 0 ? 0 : minutesInput;
 timeLeft = safeMinutes * 60;
 
 questions = shuffle(allQuestions).slice(0, safeCount);
-
 current = 0;
 score = 0;
 done = false;
-
 userAnswers = [];
 
 document.getElementById("config").style.display = "none";
@@ -551,425 +444,200 @@ document.getElementById("hintText").style.display = "none";
 document.getElementById("status").style.display = "none";
 document.getElementById("result").style.display = "none";
 document.getElementById("topbar").style.display = "flex";
-
-document.getElementById("scoreLive").innerText =
-"Puntaje: 0";
+document.getElementById("scoreLive").innerText = "Puntaje: 0";
 
 if(timerInterval){
-
 clearInterval(timerInterval);
-
 timerInterval = null;
-
 }
 
 if(timeLeft > 0){
-
 updateTimer();
-
 timerInterval = setInterval(() => {
-
 timeLeft--;
-
 updateTimer();
-
 if(timeLeft <= 0){
-
 finish(true);
-
 }
-
 }, 1000);
-
 }else{
-
-document.getElementById("timer").innerText =
-"Sin tiempo";
-
+document.getElementById("timer").innerText = "Sin tiempo";
 }
 
 render();
-
 }
 
 function updateTimer(){
-
-document.getElementById("timer").innerText =
-formatTime(timeLeft);
-
+document.getElementById("timer").innerText = formatTime(timeLeft);
 }
 
 function render(){
-
 if(current >= questions.length){
-
 finish(false);
-
 return;
-
 }
 
 const q = questions[current];
-
 const quiz = document.getElementById("quiz");
 
-document.getElementById("progress").innerText =
-"Pregunta " + (current + 1) + " / " + questions.length;
-
-document.getElementById("scoreLive").innerText =
-"Puntaje: " + score;
+document.getElementById("progress").innerText = "Pregunta " + (current + 1) + " / " + questions.length;
+document.getElementById("scoreLive").innerText = "Puntaje: " + score;
 
 let html = `<div class="sum">`;
-
 q.nums.forEach(n => {
-
 html += n + "<br>";
-
 });
-
 html += `<div class="line"></div>${q.result}</div>`;
 
 html += `
-
 <div class="buttons">
-
-<button
-class="answer-btn true"
-onclick="answer(true)"
->
-✔ Verdadero
-</button>
-
-<button
-class="answer-btn false"
-onclick="answer(false)"
->
-❌ Falso
-</button>
-
+<button class="answer-btn true" onclick="answer(true)">✔ Verdadero</button>
+<button class="answer-btn false" onclick="answer(false)">❌ Falso</button>
 </div>
-
 `;
 
 quiz.innerHTML = html;
-
 }
 
 function answer(user){
-
 const q = questions[current];
-
 userAnswers.push(user);
 
 if(user === q.isCorrect){
-
 score++;
-
 }
 
 current++;
-
 render();
-
 }
 
 function finish(timeUp){
-
-if(done)return;
-
+if(done) return;
 done = true;
 
 if(timerInterval){
-
 clearInterval(timerInterval);
-
 timerInterval = null;
-
 }
 
 document.getElementById("quiz").innerHTML = "";
-
 document.getElementById("topbar").style.display = "none";
-
 document.getElementById("result").style.display = "block";
 
-let porcentaje = Math.round(
-(score / questions.length) * 100
-);
+let porcentaje = Math.round((score / questions.length) * 100);
 
+// MODIFICACIÓN SOLICITADA: Nivel 3 de exigencia para los bots (notas entre 75% y 100%)
 const bots = [];
-
-for(let i=1;i<=30;i++){
-
+for(let i = 1; i <= 30; i++){
+const notaBot = Math.floor(Math.random() * 26) + 75; // Notas aleatorias de 75 a 100
 bots.push({
-
-nombre:`Bot_${i}`,
-
-nota:Math.floor(Math.random()*71)+30
-
+nombre: `Bot_${i}`,
+nota: notaBot
 });
-
 }
 
 const ranking = [
-
 ...bots,
-
 {
-nombre:"Tú",
-nota:porcentaje,
-usuario:true
+nombre: "Tú",
+nota: porcentaje,
+usuario: true
 }
-
 ];
 
-ranking.sort((a,b)=>b.nota-a.nota);
+ranking.sort((a, b) => b.nota - a.nota);
 
-// CALCULO DEL PERCENTIL AJUSTADO (Escala 60% en adelante)
-let percentil = 0;
-if (porcentaje > 0) {
-    percentil = Math.min(100, Math.round(60 + (porcentaje / 100) * 40));
+let percentil;
+if (porcentaje >= 60) {
+percentil = Math.round(60 + ((porcentaje - 60) / 40) * 39);
+} else {
+percentil = Math.round((porcentaje / 60) * 59);
 }
 
-// NIVEL
-let nivel = "Exigente";
-if (percentil >= 95) nivel = "Sobresaliente";
-else if (percentil >= 85) nivel = "Avanzado";
-else if (percentil >= 70) nivel = "Competitivo";
+if(percentil < 1) percentil = 1;
+if(percentil > 99) percentil = 99;
 
-document.getElementById("score").innerHTML =
+let nivel = "Muy bajo";
+if(percentil >= 90) nivel = "Excelente";
+else if(percentil >= 75) nivel = "Muy bueno";
+else if(percentil >= 60) nivel = "Bueno";
+else if(percentil >= 40) nivel = "Promedio";
+else if(percentil >= 20) nivel = "Bajo";
 
-`
+let rankingHTML = "";
+ranking.forEach((p, i) => {
+rankingHTML += `
+<div style="display:flex; justify-content:space-between; padding:10px; margin:6px 0; background:${p.usuario ? "#2563eb" : "#0f172a"}; color:${p.usuario ? "white" : "#e2e8f0"}; border-radius:10px; font-weight:${p.usuario ? "bold" : "normal"};">
+<span>#${i+1} - ${p.nombre}</span>
+<span>${p.nota}%</span>
+</div>
+`;
+});
 
-<button class="toggle-ranking" onclick="toggleRanking()">
-☰ Ranking
-</button>
-
+document.getElementById("score").innerHTML = `
+<button class="toggle-ranking" onclick="toggleRanking()">☰ Ranking</button>
 <div id="rankingPanel" class="ranking-panel hidden">
-
 <div class="ranking-content">
-
-<h3 style="margin-bottom:15px; color:#60a5fa;">
-🏆 Ranking General
-</h3>
-
-${ranking.map((p,i)=>`
-
-<div style="
-display:flex;
-justify-content:space-between;
-padding:10px;
-margin:6px 0;
-background:${p.usuario ? "#2563eb" : "#0f172a"};
-color:${p.usuario ? "white" : "#e2e8f0"};
-border-radius:10px;
-">
-
-<span>
-#${i+1} - ${p.nombre}
-</span>
-
-<span>
-${p.nota}%
-</span>
-
+<h3 style="margin-bottom:15px; color:#60a5fa;">🏆 Ranking General</h3>
+${rankingHTML}
 </div>
-
-`).join("")}
-
 </div>
-
+<div style="background:#0f172a; padding:20px; border-radius:15px; margin-bottom:20px; border:1px solid #334155;">
+<h2>${score}/${questions.length}</h2>
+<p style="font-size:28px; font-weight:bold; margin-top:10px; color:#60a5fa;">${porcentaje}%</p>
+<div style="display:flex; gap:12px; justify-content:center; margin-top:20px; flex-wrap:wrap;">
+<div class="stat-box"><span>Percentil</span><br><b style="color:#60a5fa;">${percentil}%</b></div>
+<div class="stat-box"><span>Nivel</span><br><b style="color:#60a5fa;">${nivel}</b></div>
 </div>
-
-<div style="
-background:#0f172a;
-padding:20px;
-border-radius:15px;
-margin-bottom:20px;
-border:1px solid #334155;
-">
-
-<h2>
-${score}/${questions.length}
-</h2>
-
-<p style="
-font-size:28px;
-font-weight:bold;
-margin-top:10px;
-color:#60a5fa;
-">
-${porcentaje}%
-</p>
-
-<div style="
-display:flex;
-flex-direction:column;
-gap:12px;
-margin-top:20px;
-max-width:250px;
-">
-
-<div class="stat-box">
-<span>Percentil Calibrado</span><br>
-<b>${percentil}%</b>
 </div>
-
-<div class="stat-box">
-<span>Nivel</span><br>
-<b>${nivel}</b>
-</div>
-
-</div>
-
-</div>
-
 `;
 
 let reviewHTML = "";
-
-questions.forEach((q,i)=>{
-
+questions.forEach((q, i) => {
 const user = userAnswers[i];
-
 const correcta = q.isCorrect;
-
-const estado =
-user === correcta
-? "correcta"
-: "incorrecta";
+const estado = user === correcta ? "correcta" : "incorrecta";
 
 reviewHTML += `
-
 <div class="review-item ${estado}">
-
-<h3>
-Pregunta ${i+1}
-</h3>
-
+<h3>Pregunta ${i+1}</h3>
 <p style="margin-top:8px;">
-
 <b>Operación:</b><br>
-
 ${q.nums.join("<br>")}
-
 <br><br>
-
-Resultado propuesto:
-<b>${q.result}</b>
-
+Resultado propuesto: <b>${q.result}</b>
 </p>
-
 <br>
-
-<p>
-<b>Tu respuesta:</b>
-${user ? "Verdadero" : "Falso"}
-</p>
-
-<p style="margin-top:6px;">
-<b>Correcta:</b>
-${correcta ? "Verdadero" : "Falso"}
-</p>
-
-<div class="explicacion">
-${q.explanation || "Revisa la suma cuidadosamente."}
+<p><b>Tu respuesta:</b> ${user ? "Verdadero" : "Falso"}</p>
+<p style="margin-top:6px;"><b>Correcta:</b> ${correcta ? "Verdadero" : "Falso"}</p>
+<div class="explicacion" style="margin-top:8px; font-size:0.92rem; color:#cbd5e1; background:#1e293b; padding:10px; border-radius:8px;">
+<b>Explicación:</b> ${q.explanation || "Revisa la suma cuidadosamente."}
 </div>
-
 </div>
-
 `;
-
 });
 
-document.getElementById("review").innerHTML =
-reviewHTML;
-
-document.getElementById("finalMessage").innerText =
-timeUp
-? "⏰ Se acabó el tiempo."
-: "✅ Examen finalizado.";
+document.getElementById("review").innerHTML = reviewHTML;
+document.getElementById("finalMessage").innerText = timeUp ? "⏰ Se acabó el tiempo." : "✅ Examen finalizado.";
 
 if(window.enviarResultadoFinal){
-
 window.enviarResultadoFinal({
-
-correctas:score,
-total:questions.length,
+correctas: score,
+total: questions.length,
 porcentaje
-
 });
-
 }
-
 }
 
 function toggleRanking(){
-
-document.getElementById("rankingPanel")
-.classList.toggle("hidden");
-
+document.getElementById("rankingPanel").classList.toggle("hidden");
 }
 
 window.start = start;
 window.answer = answer;
 window.toggleRanking = toggleRanking;
 
-window.mostrarResultadosParty = function(data){
-
-const ranking=[...data].sort((a,b)=>b.porcentaje-a.porcentaje);
-
-let html=`<div class="party-grid">`;
-
-ranking.forEach((j,i)=>{
-
-let medal=i===0?"🥇":i===1?"🥈":i===2?"🥉":"";
-
-html+=`
-
-<div class="party-card">
-
-<h3>
-${medal} Jugador ${i+1}
-</h3>
-
-<p>
-${j.correctas}/${j.total}
-</p>
-
-<p>
-${j.porcentaje}%
-</p>
-
-</div>
-
-`;
-
-});
-
-html+=`</div>`;
-
-html+=`
-
-<div class="party-winner">
-
-🏆 Mejor:
-${ranking[0].porcentaje}%
-
-</div>
-
-`;
-
-document.getElementById("partyResultadoContenido")
-.innerHTML=html;
-
-document.getElementById("resultadoParty")
-.style.display="block";
-
-};
-
 load();
-
 </script>
 
 <script type="module" src="../party/party-timer.js"></script>
