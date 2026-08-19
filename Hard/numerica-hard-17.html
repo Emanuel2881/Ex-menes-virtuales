@@ -265,7 +265,7 @@ button:hover{
 
 <div class="header">
   <h1>🧠 Habilidad Numérica 17</h1>
-  <p>Procedimientos y lógica (Modo Difícil)</p>
+  <p>Procedimientos y lógica (Modo Difícil - Nivel 3)</p>
 </div>
 
 <div class="stats-bar">
@@ -411,7 +411,7 @@ const questions = [
   },
   {
     id: 17,
-    q: "¿Qué número debe sustituir a la M en este problema de multiplicación?\n  3M4\nx   4\n-----\n 1216",
+    q: "¿Qué número debe sustituir a la M en este problema de multiplicación?\n  3M4\nx    4\n-----\n 1216",
     o: ["A) 0", "B) 2", "C) 4", "D) 5", "N) Ninguna de las anteriores."],
     a: 0,
     exp: "1216 / 4 = 304. Por lo tanto M = 0."
@@ -667,25 +667,23 @@ function finish(){
 
   let porcentaje = Math.round((correct / questions.length) * 100);
 
-  // Modo Difícil: Bots simulados con notas ajustadas
+  // GENERACIÓN DE BOTS NIVEL 3 (Notas de bots entre 75% y 100%)
   const bots = [];
-  for(let i = 1; i <= 30; i++){
+  for(let i=1; i<=30; i++){
+    const notaBot = Math.floor(Math.random() * 26) + 75; // Genera 75 - 100
     bots.push({
       nombre: `Bot_${i}`,
-      nota: Math.floor(Math.random() * 51) + 20 // Rendimiento bot más exigente (20% a 70%)
+      nota: notaBot
     });
   }
 
   const ranking = [...bots, { nombre: "Tú", nota: porcentaje, usuario: true }];
   ranking.sort((a, b) => b.nota - a.nota);
 
-  // Cálculo de percentil ajustado para Modo Difícil (Curva calibrada desde el 60% hacia arriba)
   let percentil;
   if (porcentaje >= 60) {
-    // Escala del percentil 60 al 99 para puntuaciones del 60% al 100%
     percentil = Math.round(60 + ((porcentaje - 60) / 40) * 39);
   } else {
-    // Escala proporcional bajo el 60%
     percentil = Math.round((porcentaje / 60) * 59);
   }
 
