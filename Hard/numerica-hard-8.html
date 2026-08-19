@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Examen Habilidad Numérica 8 (MODO DIFICIL)</title>
+<title>Examen Habilidad Numérica 8 (Nivel 3)</title>
 
 <style>
 
@@ -278,7 +278,7 @@ padding:18px;
 <div class="container">
 
 <div class="header">
-<h1>🧠 Habilidad Numérica 8 (MODO DIFÍCIL)</h1>
+<h1>🧠 Habilidad Numérica 8 (Nivel 3)</h1>
 <p>Simulacro mixto avanzado</p>
 </div>
 
@@ -299,8 +299,8 @@ padding:18px;
 <div id="quiz"></div>
 
 <div class="actions">
-<button class="finish" onclick="finish()">Calificar</button>
-<button class="prev" onclick="resetExam()">Reiniciar</button>
+<button onclick="finish()">Calificar</button>
+<button onclick="resetExam()">Reiniciar</button>
 </div>
 
 <div class="result" id="resultado">
@@ -340,7 +340,7 @@ const questions = [
 {q:"Serie: 2, 5, 10, 17, ?",o:["24","25","26","27","Ninguna"],a:2,exp:"+3,+5,+7,+9 → 26"},
 {q:"Promedio de 5, 10, 15, 20",o:["10","12.5","15","17.5","Ninguna"],a:1,exp:"50/4=12.5"},
 {q:"Área de rectángulo 6×7",o:["36","40","42","45","Ninguna"],a:2,exp:"=42"},
-{q:"Perímetro de cuadrado lado 9",o:["27","30","36","40","Ninguna"],a:2,exp:"9×4=36"},
+{q:"Perí perímetro de cuadrado lado 9",o:["27","30","36","40","Ninguna"],a:2,exp:"9×4=36"},
 {q:"Si 4x = 36, ¿x?",o:["6","7","8","9","Ninguna"],a:3,exp:"x=9"},
 {q:"Si x² = 64, ¿x?",o:["6","7","8","9","Ninguna"],a:2,exp:"x=8"},
 {q:"Serie: 10, 20, 40, 80, ?",o:["120","140","160","180","Ninguna"],a:2,exp:"×2"},
@@ -506,18 +506,14 @@ let porcentaje=Math.round(
 (correct/questions.length)*100
 );
 
-const bots=[];
-
-for(let i=1;i<=30;i++){
-
-bots.push({
-
-nombre:`Bot_${i}`,
-
-nota:Math.floor(Math.random()*71)+30
-
-});
-
+// GENERACIÓN DE BOTS NIVEL 3 (Notas de bots entre 75% y 100%)
+const bots = [];
+for(let i=1; i<=30; i++){
+    const notaBot = Math.floor(Math.random() * 26) + 75; // Genera 75 - 100
+    bots.push({
+        nombre: `Bot_${i}`,
+        nota: notaBot
+    });
 }
 
 const ranking=[
