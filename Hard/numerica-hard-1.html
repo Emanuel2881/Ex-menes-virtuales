@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Examen Habilidad Numérica 1 (MODO DIFICIL)</title>
+<title>Examen Habilidad Numérica - Nivel 3</title>
 
 <style>
 
@@ -241,10 +241,8 @@ transform:translateX(-100%);
 }
 
 .toggle-ranking{
-position:fixed;
-left:15px;
-top:15px;
-z-index:1000;
+display:inline-block;
+margin-bottom:15px;
 background:#0284c7;
 color:white;
 border:none;
@@ -255,7 +253,18 @@ font-weight:bold;
 }
 
 .ranking-content{
-margin-top:60px;
+margin-top:20px;
+}
+
+.badge-nivel{
+display:inline-block;
+background:#0284c7;
+color:white;
+font-size:0.8rem;
+padding:3px 8px;
+border-radius:6px;
+margin-bottom:10px;
+font-weight:bold;
 }
 
 @media(max-width:768px){
@@ -278,8 +287,8 @@ padding:18px;
 <div class="container">
 
 <div class="header">
-<h1>🧠 Habilidad Numérica 1 (MODO DIFÍCIL)</h1>
-<p>Examen interactivo</p>
+<h1>🧠 Habilidad Numérica 1 (Nivel 3)</h1>
+<p>Examen interactivo con ranking de competencia</p>
 </div>
 
 <div class="stats-bar">
@@ -309,7 +318,7 @@ padding:18px;
 Resultado Final
 </h2>
 
-<p id="score"></p>
+<div id="score"></div>
 
 <div id="review"></div>
 
@@ -486,36 +495,55 @@ answers.filter(a=>a!==null).length+" / "+questions.length;
 
 function finish(){
 
+if(done) return;
 done=true;
 
 let correct=0;
-let html="";
+let incorrectas=0;
+let sinResponder=0;
 
 questions.forEach((q,i)=>{
-
-if(answers[i]===q.a){
-
-correct++;
-
-}
-
+if(answers[i]===q.a) correct++;
+else if(answers[i]===null) sinResponder++;
+else incorrectas++;
 });
 
 let porcentaje=Math.round(
 (correct/questions.length)*100
 );
 
-// Cálculo del Percentil ajustado (Escala 60% en adelante)
-let percentil = 0;
-if (porcentaje > 0) {
-    percentil = Math.min(100, Math.round(60 + (porcentaje / 100) * 40));
+// GENERACIÓN DE BOTS NIVEL 3 (Notas de bots entre 75% y 100%)
+const bots = [];
+for(let i=1; i<=30; i++){
+    const notaBot = Math.floor(Math.random() * 26) + 75; // Genera 75 - 100
+    bots.push({
+        nombre: `Bot_${i}`,
+        nota: notaBot
+    });
 }
 
-let nivel = "Exigente";
-if (percentil >= 95) nivel = "Sobresaliente";
-else if (percentil >= 85) nivel = "Avanzado";
-else if (percentil >= 70) nivel = "Competitivo";
+const ranking = [
+    ...bots,
+    { nombre: "Tú", nota: porcentaje, usuario: true }
+];
 
+ranking.sort((a,b) => b.nota - a.nota);
+
+let debajo = ranking.filter(p => porcentaje > p.nota).length;
+let iguales = ranking.filter(p => porcentaje === p.nota).length;
+let percentil = Math.round((debajo + (0.5 * iguales)) / ranking.length * 100);
+
+if(percentil < 1) percentil = 1;
+if(percentil > 99) percentil = 99;
+
+let nivel = "Muy bajo";
+if(percentil >= 90) nivel = "Excelente";
+else if(percentil >= 75) nivel = "Muy bueno";
+else if(percentil >= 60) nivel = "Bueno";
+else if(percentil >= 40) nivel = "Promedio";
+else if(percentil >= 20) nivel = "Bajo";
+
+let html="";
 questions.forEach((q,i)=>{
 
 let estado="";
@@ -571,53 +599,33 @@ ${q.exp}
 
 });
 
-document.getElementById("score").innerHTML=
+document.getElementById("score").innerHTML=`
+<button class="toggle-ranking" onclick="toggleRanking()">🏆 Ver Ranking</button>
 
-`
-
-<div style="
-background:#0f172a;
-padding:20px;
-border-radius:15px;
-margin-bottom:20px;
-border: 1px solid #334155;
-">
-
-<h2>
-${correct}/${questions.length}
-</h2>
-
-<p style="
-font-size:26px;
-font-weight:bold;
-margin-top:10px;
-color:#38bdf8;
-">
-${porcentaje}%
-</p>
-
-<div style="
-display:flex;
-flex-direction:column;
-gap:12px;
-margin-top:20px;
-max-width:250px;
-">
-
-<div class="stat-box">
-<span>Percentil Calibrado</span><br>
-<b>${percentil}%</b>
+<div id="rankingPanel" class="ranking-panel hidden">
+<div class="ranking-content">
+<span class="badge-nivel">Nivel 3 (Dificultad Alta)</span>
+<h3 style="margin-bottom:15px; color:#38bdf8;">🏆 Ranking General</h3>
+${ranking.map((p,i)=>`
+<div style="display:flex; justify-content:space-between; padding:10px; margin:6px 0; background:${p.usuario ? "#1e293b" : "#0f172a"}; border: 1px solid ${p.usuario ? "#38bdf8" : "#334155"}; border-radius:10px;">
+<span>#${i+1} - ${p.nombre}</span>
+<span>${p.nota}%</span>
+</div>
+`).join("")}
+</div>
 </div>
 
-<div class="stat-box">
-<span>Nivel</span><br>
-<b>${nivel}</b>
+<div style="background:#0f172a; padding:20px; border-radius:15px; margin-bottom:20px; border: 1px solid #334155;">
+<h2>${correct}/${questions.length}</h2>
+<p style="font-size:26px; font-weight:bold; margin-top:10px; color:#38bdf8;">${porcentaje}%</p>
+<div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(140px,1fr)); gap:10px; margin-top:15px;">
+<div class="stat-box"><span>Correctas</span><br><b>${correct}</b></div>
+<div class="stat-box"><span>Incorrectas</span><br><b>${incorrectas}</b></div>
+<div class="stat-box"><span>Sin responder</span><br><b>${sinResponder}</b></div>
+<div class="stat-box"><span>Percentil</span><br><b>${percentil}%</b></div>
+<div class="stat-box"><span>Nivel</span><br><b>${nivel}</b></div>
 </div>
-
 </div>
-
-</div>
-
 `;
 
 document.getElementById("review")
@@ -635,10 +643,18 @@ render();
 
 }
 
+function toggleRanking(){
+const panel = document.getElementById("rankingPanel");
+if(panel){
+panel.classList.toggle("hidden");
+}
+}
+
 window.select = select;
 window.next = next;
 window.prev = prev;
 window.finish = finish;
+window.toggleRanking = toggleRanking;
 
 render();
 
