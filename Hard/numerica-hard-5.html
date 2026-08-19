@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Examen Habilidad Numérica 5 (MODO DIFICIL)</title>
+<title>Examen Habilidad Numérica 5 (Nivel 3)</title>
 
 <style>
 
@@ -278,7 +278,7 @@ padding:18px;
 <div class="container">
 
 <div class="header">
-<h1>🧠 Habilidad Numérica 5 (MODO DIFÍCIL)</h1>
+<h1>🧠 Habilidad Numérica 5 (Nivel 3)</h1>
 <p>Relaciones y patrones numéricos</p>
 </div>
 
@@ -501,21 +501,14 @@ let porcentaje=Math.round(
 (correct/questions.length)*100
 );
 
-// BOTS Y RANKING
-const bots=[];
-
-for(let i=1;i<=30;i++){
-
-bots.push({
-
-nombre:`Bot_${i}`,
-
-nota:Math.floor(
-Math.random()*71
-)+30
-
-});
-
+// GENERACIÓN DE BOTS NIVEL 3 (Notas de bots entre 75% y 100%)
+const bots = [];
+for(let i=1; i<=30; i++){
+    const notaBot = Math.floor(Math.random() * 26) + 75; // Genera 75 - 100
+    bots.push({
+        nombre: `Bot_${i}`,
+        nota: notaBot
+    });
 }
 
 const ranking=[
