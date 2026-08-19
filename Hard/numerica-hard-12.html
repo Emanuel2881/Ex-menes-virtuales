@@ -536,7 +536,7 @@ const questions = [
     "exp": "710×80 = 56.800, redondeado al millar más cercano es 57.000."
   },
   {
-    "q": "26. ¿Qué cifra debería sustituir a la A en esta multiplicación cuyo resultado es correcto?\n```\n      6 A 6\n    x   A 2\n  ___________\n    6 4 0 3 2\n```",
+    "q": "26. ¿Qué cifra debería sustituir a la A en esta multiplicación cuyo resultado es correcto?\n```\n     6 A 6\n   x   A 2\n  -----------\n    6 4 0 3 2\n```",
     "o": ["9", "7", "5", "1", "Ninguna de ellas"],
     "a": 0,
     "exp": "Probar A=9: 696×92 = 64032, que coincide."
@@ -578,7 +578,7 @@ const questions = [
     "exp": "(-2×-3)/6 = 6/6 = 1."
   },
   {
-    "q": "33. ¿Qué cifra debería sustituir a la J en esta multiplicación cuyo resultado es correcto?\n```\n      1 J 5 6\n    x       J\n  ___________\n      5 8 2 J\n```",
+    "q": "33. ¿Qué cifra debería sustituir a la J en esta multiplicación cuyo resultado es correcto?\n```\n     1 J 5 6\n   x       J\n  -----------\n     5 8 2 J\n```",
     "o": ["3", "4", "7", "9", "Ninguna de ellas"],
     "a": 1,
     "exp": "Probando J=4: 1456×4 = 5824, coincide con el resultado dado."
@@ -741,12 +741,13 @@ function finish(){
 
     let porcentaje = Math.round((correct / questions.length) * 100);
 
-    // MODO DÍFICIL: Generación de notas de Bots ajustadas de 60% a 100%
+    // GENERACIÓN DE BOTS NIVEL 3 (Notas de bots entre 75% y 100%)
     const bots = [];
-    for (let i = 1; i <= 30; i++) {
+    for(let i = 1; i <= 30; i++){
+        const notaBot = Math.floor(Math.random() * 26) + 75; // Genera 75 - 100
         bots.push({
             nombre: `Bot_${i}`,
-            nota: Math.floor(Math.random() * 41) + 60
+            nota: notaBot
         });
     }
 
