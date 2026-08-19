@@ -344,7 +344,7 @@ border: 1px solid #1e293b;
 
 <div class="header">
 <h1>🧠 Habilidad Numérica 13</h1>
-<p>Examen interactivo</p>
+<p>Examen interactivo - Modo Difícil</p>
 </div>
 
 <div class="stats-bar">
@@ -441,7 +441,7 @@ border: 1px solid #1e293b;
 |                                       |                       |
 +-----------+---------------------------+-----------------------+
 |&lt;--6 m---&gt;|                                                   |
-|           |                           X                       | 3 m
+|           |                       X                           | 3 m
 +----------+---------------------------------------------------+
 </pre>
 </div>
@@ -777,7 +777,7 @@ function finish(){
 
     let porcentaje = Math.round((correct / questions.length) * 100);
 
-    // Bots con notas a partir de 60%
+    // MODO DIFICIL: Generación de bots con notas exigentes (rango 60% - 100%)
     const bots = [];
     for (let i = 1; i <= 30; i++) {
         bots.push({
