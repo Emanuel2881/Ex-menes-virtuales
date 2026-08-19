@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Examen Habilidad Numérica 9 (MODO DIFICIL)</title>
+
+<style>
+
+*{
+box-sizing:border-box;
+margin:0;
+padding:0;
+}
+
+body{
+font-family:Arial, Helvetica, sans-serif;
+background:linear-gradient(135deg, #1e1b4b, #0f172a, #1e3a8a);
+color:#dbeafe;
+min-height:100vh;
+padding:30px 15px;
+}
+
+.container{
+max-width:950px;
+margin:auto;
+background:rgba(15, 23, 42, 0.95);
+padding:25px;
+border-radius:24px;
+box-shadow:0 12px 35px rgba(0,0,0,0.6);
+border: 1px solid #1e293b;
+}
+
+.header{
+text-align:center;
+margin-bottom:20px;
+}
+
+.header h1{
+font-size:2.3rem;
+color:#60a5fa;
+margin-bottom:10px;
+text-shadow: 0 0 12px rgba(96, 165, 250, 0.3);
+}
+
+.header p{
+color:#94a3b8;
+}
+
+.stats-bar{
+display:flex;
+gap:12px;
+justify-content:center;
+margin-bottom:20px;
+flex-wrap:wrap;
+}
+
+.stat-box{
+background:#1e293b;
+border:1px solid #334155;
+border-radius:14px;
+padding:12px 18px;
+min-width:150px;
+text-align:center;
+color:#e2e8f0;
+box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+
+.stat-box span{
+color:#94a3b8;
+}
+
+.question{
+display:none;
+background:#1e293b;
+border:1px solid #3b82f6;
+border-radius:20px;
+padding:20px;
+box-shadow: 0 0 15px rgba(59, 130, 246, 0.15);
+}
+
+.question.active{
+display:block;
+}
+
+.question h3 {
+color: #f8fafc;
+margin-bottom: 15px;
+}
+
+.option{
+background:#0f172a;
+color:#cbd5e1;
+padding:12px;
+margin:10px 0;
+border-radius:12px;
+border: 1px solid #334155;
+cursor:pointer;
+transition:0.2s;
+}
+
+.option:hover{
+background:#1e293b;
+border-color:#60a5fa;
+color:#ffffff;
+}
+
+.option.selected{
+background:#2563eb;
+color:white;
+border-color:#60a5fa;
+box-shadow: 0 0 10px rgba(96, 165, 250, 0.4);
+}
+
+.option.correct-answer{
+background:#065f46;
+color:#a7f3d0;
+border-color:#10b981;
+}
+
+.option.wrong-answer{
+background:#881337;
+color:#fecdd3;
+border-color:#f43f5e;
+}
+
+.navigation{
+text-align:center;
+margin-top:15px;
+}
+
+button{
+border:none;
+padding:10px 15px;
+border-radius:10px;
+margin:5px;
+cursor:pointer;
+font-weight:bold;
+transition: 0.2s;
+}
+
+.next{
+background:#2563eb;
+color:white;
+}
+
+.next:hover{
+background:#1d4ed8;
+}
+
+.prev{
+background:#334155;
+color:#94a3b8;
+}
+
+.prev:hover{
+background:#475569;
+color:white;
+}
+
+.finish{
+background:#1d4ed8;
+color:white;
+}
+
+.finish:hover{
+background:#1e40af;
+}
+
+.actions{
+text-align:center;
+margin-top:20px;
+}
+
+.actions button{
+background:#1e293b;
+color:#e2e8f0;
+border:1px solid #334155;
+}
+
+.actions button:hover{
+background:#334155;
+}
+
+.result{
+display:none;
+margin-top:20px;
+padding:20px;
+background:#1e293b;
+border-radius:15px;
+border:1px solid #334155;
+}
+
+.review-item{
+background:#0f172a;
+padding:14px;
+margin:12px 0;
+border-left:5px solid gray;
+border-radius:12px;
+color:#e2e8f0;
+}
+
+.correcta{
+border-left-color:#10b981;
+}
+
+.incorrecta{
+border-left-color:#f43f5e;
+}
+
+.sin-responder{
+border-left-color:#f59e0b;
+}
+
+.explicacion{
+margin-top:8px;
+font-size:0.92rem;
+color:#94a3b8;
+}
+
+/* PANEL RANKING */
+
+.ranking-panel{
+position:fixed;
+left:0;
+top:0;
+width:320px;
+height:100vh;
+background:#0f172a;
+border-right: 1px solid #334155;
+box-shadow:4px 0 20px rgba(0,0,0,0.5);
+padding:20px;
+overflow-y:auto;
+z-index:999;
+transition:transform 0.3s ease;
+color: #e2e8f0;
+}
+
+.ranking-panel.hidden{
+transform:translateX(-100%);
+}
+
+.toggle-ranking{
+position:fixed;
+left:15px;
+top:15px;
+z-index:1000;
+background:#2563eb;
+color:white;
+border:none;
+padding:10px 15px;
+border-radius:12px;
+cursor:pointer;
+font-weight:bold;
+}
+
+.ranking-content{
+margin-top:60px;
+}
+
+@media(max-width:768px){
+
+.ranking-panel{
+width:260px;
+}
+
+.container{
+padding:18px;
+}
+
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="header">
+<h1>🧠 Habilidad Numérica 9 (MODO DIFÍCIL)</h1>
+<p>Simulacro final avanzado</p>
+</div>
+
+<div class="stats-bar">
+
+<div class="stat-box">
+<span>Pregunta</span><br>
+<b id="qNum">1</b> / 25
+</div>
+
+<div class="stat-box">
+<span>Progreso</span><br>
+<b id="progress">0 / 25</b>
+</div>
+
+</div>
+
+<div id="quiz"></div>
+
+<div class="actions">
+<button class="finish" onclick="finish()">Calificar</button>
+<button class="prev" onclick="resetExam()">Reiniciar</button>
+</div>
+
+<div class="result" id="resultado">
+
+<h2 style="margin-bottom:20px; color:#60a5fa;">
+Resultado Final
+</h2>
+
+<p id="score"></p>
+
+<div id="review"></div>
+
+</div>
+
+</div>
+
+<script>
+
+const questions = [
+
+{q:"Serie: 2, 3, 5, 9, 17, ?",o:["25","29","33","35","Ninguna"],a:2,exp:"Se multiplica por 2 y se resta 1 → 17×2−1=33"},
+{q:"Serie: 1, 2, 4, 7, 11, ?",o:["14","15","16","17","Ninguna"],a:2,exp:"Se suma 1,2,3,4,5 → 11+5=16"},
+{q:"Serie: 3, 6, 18, 72, 360, ?",o:["720","1080","1800","2160","Ninguna"],a:3,exp:"Se multiplica por 2,3,4,5,6 → 360×6=2160"},
+{q:"Serie: 100, 95, 85, 70, 50, ?",o:["25","30","35","40","Ninguna"],a:0,exp:"Se resta 5,10,15,20,25 → 50−25=25"},
+{q:"Serie: 1, 4, 9, 16, 25, 36, ?",o:["42","49","50","64","Ninguna"],a:1,exp:"Son cuadrados → 7²=49"},
+{q:"Si 5x - 3 = 22, ¿x?",o:["4","5","6","7","Ninguna"],a:1,exp:"5x=25 → x=5"},
+{q:"Si 2x + 7 = 19, ¿x?",o:["5","6","7","8","Ninguna"],a:1,exp:"2x=12 → x=6"},
+{q:"Si x/4 + 3 = 11, ¿x?",o:["24","28","32","36","Ninguna"],a:2,exp:"x/4=8 → x=32"},
+{q:"(7/8)+(3/4)",o:["9/8","11/8","13/8","15/8","Ninguna"],a:2,exp:"7/8 + 6/8 = 13/8"},
+{q:"(9/5)×(10/3)",o:["5","6","7","8","Ninguna"],a:1,exp:"90/15=6"},
+{q:"(12/5)÷(3/2)",o:["6/5","8/5","4/5","10/5","Ninguna"],a:1,exp:"(12/5)×(2/3)=24/15=8/5"},
+{q:"35% de 200",o:["60","65","70","75","Ninguna"],a:2,exp:"0.35×200=70"},
+{q:"12 es el 25% de un número, ¿cuál es?",o:["36","40","44","48","Ninguna"],a:3,exp:"12 ÷ 0.25 = 48"},
+{q:"Si 15 es el 60% de un número, ¿cuál es?",o:["20","22","25","30","Ninguna"],a:2,exp:"15 ÷ 0.6 = 25"},
+{q:"(8×6)+(20÷4)",o:["50","52","53","56","Ninguna"],a:2,exp:"48 + 5 = 53"},
+{q:"(15×3)+(18÷2)",o:["45","48","51","54","Ninguna"],a:3,exp:"45 + 9 = 54"},
+{q:"Serie: 2, 6, 7, 21, 22, ?",o:["44","66","67","88","Ninguna"],a:1,exp:"Se alterna ×3 y +1 → 22×3=66"},
+{q:"Serie: 1, 3, 7, 15, 31, ?",o:["47","55","63","71","Ninguna"],a:2,exp:"Se multiplica por 2 y se suma 1 → 63"},
+{q:"Promedio de 10, 20, 30, 50",o:["25","27.5","30","32.5","Ninguna"],a:1,exp:"(10+20+30+50)/4=27.5"},
+{q:"Área rectángulo 9×8",o:["64","70","72","75","Ninguna"],a:2,exp:"9×8=72"},
+{q:"Perímetro cuadrado lado 11",o:["33","40","44","48","Ninguna"],a:2,exp:"11×4=44"},
+{q:"Si x² = 121, ¿x?",o:["9","10","11","12","Ninguna"],a:2,exp:"x=11"},
+{q:"Si 3x = 27, ¿x?",o:["7","8","9","10","Ninguna"],a:2,exp:"x=9"},
+{q:"Serie: 4, 8, 16, 32, 64, ?",o:["96","112","128","144","Ninguna"],a:2,exp:"Se multiplica por 2"},
+{q:"Serie: 5, 11, 23, 47, ?",o:["79","87","95","99","Ninguna"],a:2,exp:"Se multiplica por 2 y se suma 1 → 95"}
+
+];
+
+let current=0;
+let answers=new Array(questions.length).fill(null);
+let done=false;
+
+function render(){
+
+const quiz=document.getElementById("quiz");
+
+quiz.innerHTML="";
+
+questions.forEach((q,i)=>{
+
+const div=document.createElement("div");
+
+div.className="question"+(i===current?" active":"");
+
+let opts="";
+
+q.o.forEach((op,j)=>{
+
+let cls="";
+
+if(answers[i]===j){
+
+cls+=" selected";
+
+}
+
+if(done){
+
+if(j===q.a){
+
+cls+=" correct-answer";
+
+}
+
+if(answers[i]===j && j!==q.a){
+
+cls+=" wrong-answer";
+
+}
+
+}
+
+opts+=`
+
+<div class="option${cls}" onclick="select(${i},${j})">
+${op}
+</div>
+
+`;
+
+});
+
+div.innerHTML=`
+
+<h3>${q.q}</h3>
+
+${opts}
+
+<div class="navigation">
+
+<button class="prev"
+onclick="prev()"
+${i===0?"disabled":""}>
+Anterior
+</button>
+
+${i===questions.length-1
+
+? `<button class="finish" onclick="finish()">Finalizar</button>`
+
+: `<button class="next" onclick="next()">Siguiente</button>`
+
+}
+
+</div>
+
+`;
+
+quiz.appendChild(div);
+
+});
+
+update();
+
+}
+
+function select(i,j){
+
+if(done)return;
+
+answers[i]=j;
+
+render();
+
+}
+
+function next(){
+
+if(answers[current]===null){
+
+alert("Responde primero");
+
+return;
+
+}
+
+current++;
+
+render();
+
+window.scrollTo({
+top:0,
+behavior:"smooth"
+});
+
+}
+
+function prev(){
+
+current--;
+
+render();
+
+}
+
+function update(){
+
+document.getElementById("qNum").textContent=current+1;
+
+document.getElementById("progress").textContent=
+answers.filter(a=>a!==null).length+" / "+questions.length;
+
+}
+
+function finish(){
+
+done=true;
+
+let correct=0;
+let html="";
+
+questions.forEach((q,i)=>{
+
+if(answers[i]===q.a){
+
+correct++;
+
+}
+
+});
+
+let porcentaje=Math.round(
+(correct/questions.length)*100
+);
+
+const bots=[];
+
+for(let i=1;i<=30;i++){
+
+bots.push({
+
+nombre:`Bot_${i}`,
+
+nota:Math.floor(Math.random()*71)+30
+
+});
+
+}
+
+const ranking=[
+
+...bots,
+
+{
+
+nombre:"Tú",
+nota:porcentaje,
+usuario:true
+
+}
+
+];
+
+ranking.sort((a,b)=>b.nota-a.nota);
+
+// CALCULO DEL PERCENTIL AJUSTADO (Escala 60% en adelante)
+let percentil = 0;
+if (porcentaje > 0) {
+    percentil = Math.min(100, Math.round(60 + (porcentaje / 100) * 40));
+}
+
+// NIVEL
+let nivel = "Exigente";
+if (percentil >= 95) nivel = "Sobresaliente";
+else if (percentil >= 85) nivel = "Avanzado";
+else if (percentil >= 70) nivel = "Competitivo";
+
+questions.forEach((q,i)=>{
+
+let estado="";
+
+if(answers[i]===null){
+
+estado="sin-responder";
+
+}
+else if(answers[i]===q.a){
+
+estado="correcta";
+
+}
+else{
+
+estado="incorrecta";
+
+}
+
+html+=`
+
+<div class="review-item ${estado}">
+
+<h3>
+Pregunta ${i+1}
+</h3>
+
+<p style="margin-top:8px;">
+${q.q}
+</p>
+
+<br>
+
+<p>
+<b>Tu respuesta:</b>
+
+${
+answers[i]!==null
+?
+q.o[answers[i]]
+:
+"Sin responder"
+}
+
+</p>
+
+<p style="margin-top:6px;">
+<b>Correcta:</b>
+
+${q.o[q.a]}
+
+</p>
+
+<div class="explicacion">
+
+${q.exp}
+
+</div>
+
+</div>
+
+`;
+
+});
+
+let rankingHTML="";
+
+ranking.forEach((p,i)=>{
+
+rankingHTML+=`
+
+<div style="
+display:flex;
+justify-content:space-between;
+padding:10px;
+margin:6px 0;
+background:${p.usuario ? "#2563eb" : "#0f172a"};
+color:${p.usuario ? "white" : "#e2e8f0"};
+border-radius:10px;
+">
+
+<span>
+#${i+1} - ${p.nombre}
+</span>
+
+<span>
+${p.nota}%
+</span>
+
+</div>
+
+`;
+
+});
+
+document.getElementById("score").innerHTML=
+
+`
+
+<button class="toggle-ranking" onclick="toggleRanking()">
+☰ Ranking
+</button>
+
+<div id="rankingPanel" class="ranking-panel hidden">
+
+<div class="ranking-content">
+
+<h3 style="margin-bottom:15px; color:#60a5fa;">
+🏆 Ranking General
+</h3>
+
+${rankingHTML}
+
+</div>
+
+</div>
+
+<div style="
+background:#0f172a;
+padding:20px;
+border-radius:15px;
+margin-bottom:20px;
+border:1px solid #334155;
+">
+
+<h2>
+${correct}/${questions.length}
+</h2>
+
+<p style="
+font-size:26px;
+font-weight:bold;
+margin-top:10px;
+color:#60a5fa;
+">
+${porcentaje}%
+</p>
+
+<div style="
+display:flex;
+flex-direction:column;
+gap:12px;
+margin-top:20px;
+max-width:250px;
+">
+
+<div class="stat-box">
+<span>Percentil Calibrado</span><br>
+<b>${percentil}%</b>
+</div>
+
+<div class="stat-box">
+<span>Nivel</span><br>
+<b>${nivel}</b>
+</div>
+
+</div>
+
+</div>
+
+`;
+
+document.getElementById("review")
+.innerHTML=html;
+
+document.getElementById("resultado")
+.style.display="block";
+
+document.getElementById("resultado")
+.scrollIntoView({
+behavior:"smooth"
+});
+
+if(window.enviarResultadoFinal){
+
+window.enviarResultadoFinal({
+
+correctas:correct,
+total:questions.length,
+porcentaje
+
+});
+
+}
+
+render();
+
+}
+
+function toggleRanking(){
+
+document.getElementById("rankingPanel")
+.classList.toggle("hidden");
+
+}
+
+function resetExam(){
+
+current=0;
+
+answers=new Array(questions.length).fill(null);
+
+done=false;
+
+document.getElementById("resultado")
+.style.display="none";
+
+render();
+
+}
+
+window.select = select;
+window.next = next;
+window.prev = prev;
+window.finish = finish;
+window.toggleRanking = toggleRanking;
+window.resetExam = resetExam;
+
+window.mostrarResultadosParty = function(data){
+
+const ranking=[...data].sort((a,b)=>b.porcentaje-a.porcentaje);
+
+let html=`<div class="party-grid">`;
+
+ranking.forEach((j,i)=>{
+
+let medal=i===0?"🥇":i===1?"🥈":i===2?"🥉":"";
+
+html+=`
+
+<div class="party-card">
+
+<h3>
+${medal} Jugador ${i+1}
+</h3>
+
+<p>
+${j.correctas}/${j.total}
+</p>
+
+<p>
+${j.porcentaje}%
+</p>
+
+</div>
+
+`;
+
+});
+
+html+=`</div>`;
+
+html+=`
+
+<div class="party-winner">
+
+🏆 Mejor:
+${ranking[0].porcentaje}%
+
+</div>
+
+`;
+
+document.getElementById("partyResultadoContenido")
+.innerHTML=html;
+
+document.getElementById("resultadoParty")
+.style.display="block";
+
+};
+
+render();
+
+</script>
+
+<script type="module" src="../party/party-timer.js"></script>
+<script type="module" src="../party/party-resultados.js"></script>
+
+</body>
+</html>
